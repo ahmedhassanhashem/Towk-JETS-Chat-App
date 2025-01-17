@@ -6,7 +6,7 @@
     <groupId>gov.iti.jets</groupId>
     <version>1.0.0</version>
   </parent>
-    <artifactId>client</artifactId>
+    <artifactId>Client-App</artifactId>
     <version>1.0.0</version>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
