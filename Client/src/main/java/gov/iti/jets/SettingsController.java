@@ -51,70 +51,40 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class ChatsController {
-
+public class SettingsController {
 
 
     private Stage stage;
-    private Scene contactScene;
-    private Scene addContactScene;
-    private Scene userInfoScene;
-    private Scene groupsScene;
-    private Scene settingsScene;
+    private Scene accountScene;
+    private Scene dashboardScene;
 
 
-    public void setSettingsScene(Scene s){
-        settingsScene = s;
-    }
-    public void setGroupsSceneScene(Scene s){
-        groupsScene = s;
-    }
-    public void setuserInfoScene(Scene s){
-        userInfoScene = s;
+    public void setAccountScene(Scene s){
+        accountScene = s;
     }
 
-    public void setcontactScene(Scene s){
-        contactScene = s;
-    }
-
-    public void setAddContactScene(Scene s){
-        addContactScene = s;
+    public void setDashboardScene(Scene s){
+        dashboardScene = s;
     }
 
     public void setStage(Stage s){
         stage =s;
     }
-    @FXML
-    private void addContact(MouseEvent event){
-        // System.out.println("aa");
-        stage.setScene(addContactScene);
-    }
-    @FXML
-    private void contacts(MouseEvent event){
-        // System.out.println("aa");
-        stage.setScene(contactScene);
-    }
 
     @FXML
-    private void userInfo(MouseEvent event){
-        Stage info = new Stage();
-        info.initOwner(stage);
-        info.initModality(Modality.APPLICATION_MODAL);
-        info.setScene(userInfoScene);
-        info.show();
-    }
-
-    @FXML
-    private void settings(MouseEvent event){
+    private void account(ActionEvent event){
         // System.out.println("aa");
-        stage.setScene(settingsScene);
+        stage.setScene(accountScene);
     }
     
     @FXML
-    private void groups(MouseEvent event){
-        stage.setScene(groupsScene);
+    private void dashboard(ActionEvent event){
+        // System.out.println("aa");
+        stage.setScene(dashboardScene);
     }
-    
+
+
+
     @FXML
     private void initialize() {
 

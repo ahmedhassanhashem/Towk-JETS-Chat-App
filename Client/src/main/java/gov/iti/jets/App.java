@@ -87,12 +87,54 @@ public class App extends Application {
 		BorderPane userInfo = userInfoLoader.load();
         UserInfoController userInfoController = userInfoLoader.getController();
 
-        var userInfoScene = new Scene(userInfo, width-100, height+100);
+        var userInfoScene = new Scene(userInfo, width-100, height+300);
 
         dashController.setuserInfoScene(userInfoScene);
         chatsController.setuserInfoScene(userInfoScene);
         contactController.setuserInfoScene(userInfoScene);
         addContactController.setuserInfoScene(userInfoScene);
+
+        FXMLLoader groupsLoader = new FXMLLoader(getClass().getResource("/Groups.fxml"));
+		GridPane groupsBoard = groupsLoader.load();
+        GroupsController groupsController = groupsLoader.getController();
+
+        var groupsScene = new Scene(groupsBoard, width+200, height+100);
+
+        groupsController.setStage(stage);
+        groupsController.setAddContactScene(addContactScene);
+        groupsController.setchatsScene(chatsScene);
+        groupsController.setuserInfoScene(userInfoScene);
+        groupsController.setcontactScene(contactScene);
+        dashController.setGroupsSceneScene(groupsScene);
+        chatsController.setGroupsSceneScene(groupsScene);
+        contactController.setGroupsSceneScene(groupsScene);
+        addContactController.setGroupsSceneScene(groupsScene);
+
+        FXMLLoader settingsLoader = new FXMLLoader(getClass().getResource("/Settings.fxml"));
+		BorderPane settingsBoard = settingsLoader.load();
+        SettingsController settingsController = settingsLoader.getController();
+
+        var settingsScene = new Scene(settingsBoard, width+200, height+100);
+
+        settingsController.setDashboardScene(dashScene);
+        settingsController.setStage(stage);
+
+        groupsController.setSettingsScene(settingsScene);
+        addContactController.setSettingsScene(settingsScene);
+        chatsController.setSettingsScene(settingsScene);
+        contactController.setSettingsScene(settingsScene);
+        dashController.setSettingsScene(settingsScene);
+
+        FXMLLoader accountLoader = new FXMLLoader(getClass().getResource("/Account.fxml"));
+		BorderPane accountBoard = accountLoader.load();
+        AccountController accountController = accountLoader.getController();
+
+        var accountScene = new Scene(accountBoard, width+200, height+100);
+
+        settingsController.setAccountScene(accountScene);
+        accountController.setDashboardScene(dashScene);
+        accountController.setSettingsScene(settingsScene);
+        accountController.setStage(stage);
 
 
         registerController.setdashScene(dashScene);
