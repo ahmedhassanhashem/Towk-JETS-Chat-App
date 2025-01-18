@@ -59,7 +59,16 @@ public class ContactController {
     private Scene chatsScene;
     private Scene addContactScene;
     private Scene userInfoScene;
+    private Scene groupsScene;
+    private Scene settingsScene;
 
+
+    public void setSettingsScene(Scene s){
+        settingsScene = s;
+    }
+    public void setGroupsSceneScene(Scene s){
+        groupsScene = s;
+    }
     public void setuserInfoScene(Scene s){
         userInfoScene = s;
     }
@@ -96,6 +105,17 @@ public class ContactController {
         info.show();
     }
 
+    @FXML
+    private void settings(MouseEvent event){
+        // System.out.println("aa");
+        stage.setScene(settingsScene);
+    }
+    
+    @FXML
+    private void groups(MouseEvent event){
+        stage.setScene(groupsScene);
+    }
+    
     @FXML
     private void initialize() {
 

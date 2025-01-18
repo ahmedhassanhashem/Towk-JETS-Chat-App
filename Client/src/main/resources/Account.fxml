@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" stylesheets="@styles/stylee.css" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gov.iti.jets.AccountController">
+   <left>
+      <VBox spacing="10" style="-fx-background-color: #f0f0f0; -fx-min-width: 200;" styleClass="sidebar" stylesheets="@styles/stylee.css">
+           <padding>
+                <Insets bottom="20" left="10" right="10" top="20" />
+            </padding>
+         <children>
+            <HBox alignment="CENTER" spacing="10">
+               <children>
+                  <Label style="-fx-font-size: 20; -fx-font-weight: bold;" text="Settings" />
+               </children>
+            </HBox>
+            <Button onAction="#settings" fx:id="profileBtn" maxWidth="Infinity" styleClass="sidebar-button" stylesheets="@styles/stylee.css" text="Profile">
+               <VBox.margin>
+                  <Insets top="100.0" />
+               </VBox.margin></Button>
+            <Button fx:id="accountBtn" maxWidth="Infinity" styleClass="sidebar-button" stylesheets="@styles/stylee.css" text="Account" />
+         </children>
+      </VBox>
+   </left>
+   <center>
+      <StackPane prefHeight="150.0" prefWidth="200.0" stylesheets="@styles/stylee.css" BorderPane.alignment="CENTER">
+         <children>
+            <VBox fx:id="profilePane" spacing="20" style="-fx-background-color: #f5f5f5;;" stylesheets="@styles/stylee.css" visible="true">
+                <padding>
+                    <Insets bottom="20" left="20" right="20" top="20" />
+                </padding>
+               <children>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Account Setting">
+                     <font>
+                        <Font name="System Bold" size="18.0" />
+                     </font>
+                  </Text>
+                  <HBox alignment="CENTER_LEFT">
+                     <VBox.margin>
+                        <Insets bottom="20.0" />
+                     </VBox.margin>
+                  </HBox>
+                  <Label text="Change Password">
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin>
+                  </Label>
+                  <TextField promptText="display your name" styleClass="namefield" />
+                  <Label layoutX="30.0" layoutY="184.0" text="Confirm Password">
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
+                  </Label>
+                  <TextField layoutX="30.0" layoutY="224.0" promptText="display your name" styleClass="namefield" />
+                  <Button onAction="#dashboard" maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefWidth="80.0" styleClass="action-button" text="Save" />
+                  <HBox prefHeight="100.0" prefWidth="200.0">
+                     <children>
+                        <Button mnemonicParsing="false" style="-fx-background-color: #f5f5f5;;">
+                            
+                                 <graphic>
+              <ImageView fitHeight="20" fitWidth="20">
+                  <image>
+                      <Image url="@images/bin.png" />
+                  </image>
+              </ImageView>
+          </graphic>
+                        </Button>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Delete Account">
+                           <font>
+                              <Font name="System Bold" size="18.0" />
+                           </font>
+                        </Text>
+                     </children>
+                  </HBox>
+               </children>
+            </VBox>
+         </children>
+      </StackPane>
+   </center>
+</BorderPane>
