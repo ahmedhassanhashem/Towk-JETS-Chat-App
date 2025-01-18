@@ -36,6 +36,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import javafx.stage.FileChooser;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 
@@ -58,6 +59,11 @@ public class AddContactController {
     private Scene chatsScene;
     private Scene contactScene;
     // private Scene addContactScene;
+    private Scene userInfoScene;
+
+    public void setuserInfoScene(Scene s){
+        userInfoScene = s;
+    }
 
     public void setchatsScene(Scene s){
         chatsScene = s;
@@ -87,6 +93,15 @@ public class AddContactController {
     private void contacts(MouseEvent event){
         // System.out.println("aa");
         stage.setScene(contactScene);
+    }
+
+    @FXML
+    private void userInfo(MouseEvent event){
+        Stage info = new Stage();
+        info.initOwner(stage);
+        info.initModality(Modality.APPLICATION_MODAL);
+        info.setScene(userInfoScene);
+        info.show();
     }
 
     @FXML

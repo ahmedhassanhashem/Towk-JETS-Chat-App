@@ -36,7 +36,6 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import javafx.stage.FileChooser;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 
@@ -51,50 +50,11 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class ContactController {
+public class UserInfoController {
 
 
 
-    private Stage stage;
-    private Scene chatsScene;
-    private Scene addContactScene;
-    private Scene userInfoScene;
 
-    public void setuserInfoScene(Scene s){
-        userInfoScene = s;
-    }
-
-    public void setchatsScene(Scene s){
-        chatsScene = s;
-    }
-
-    public void setAddContactScene(Scene s){
-        addContactScene = s;
-    }
-
-    public void setStage(Stage s){
-        stage =s;
-    }
-    @FXML
-    private void addContact(MouseEvent event){
-        // System.out.println("aa");
-        stage.setScene(addContactScene);
-    }
-
-    @FXML
-    private void chats(MouseEvent event){
-        // System.out.println("aa");
-        stage.setScene(chatsScene);
-    }
-
-    @FXML
-    private void userInfo(MouseEvent event){
-        Stage info = new Stage();
-        info.initOwner(stage);
-        info.initModality(Modality.APPLICATION_MODAL);
-        info.setScene(userInfoScene);
-        info.show();
-    }
 
     @FXML
     private void initialize() {
