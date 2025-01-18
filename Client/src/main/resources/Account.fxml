@@ -25,7 +25,7 @@
                   <Label style="-fx-font-size: 20; -fx-font-weight: bold;" text="Settings" />
                </children>
             </HBox>
-            <Button onAction="#settings" fx:id="profileBtn" maxWidth="Infinity" styleClass="sidebar-button" stylesheets="@styles/stylee.css" text="Profile">
+            <Button fx:id="profileBtn" maxWidth="Infinity" onAction="#settings" styleClass="sidebar-button" stylesheets="@styles/stylee.css" text="Profile">
                <VBox.margin>
                   <Insets top="100.0" />
                </VBox.margin></Button>
@@ -66,7 +66,12 @@
                      </font>
                   </Label>
                   <TextField layoutX="30.0" layoutY="224.0" promptText="display your name" styleClass="namefield" />
-                  <Button onAction="#dashboard" maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefWidth="80.0" styleClass="action-button" text="Save" />
+                  <HBox spacing="30.0">
+                     <children>
+                        <Button maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#dashboard" prefWidth="80.0" styleClass="action-button" text="Leave" />
+                        <Button layoutX="10.0" layoutY="10.0" maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#dashboard" prefWidth="80.0" styleClass="action-button" text="Save" />
+                     </children>
+                  </HBox>
                   <HBox prefHeight="100.0" prefWidth="200.0">
                      <children>
                         <Button mnemonicParsing="false" style="-fx-background-color: #f5f5f5;;">

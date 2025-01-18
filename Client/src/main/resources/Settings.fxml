@@ -34,7 +34,7 @@
                <VBox.margin>
                   <Insets top="100.0" />
                </VBox.margin></Button>
-            <Button onAction="#account" fx:id="accountBtn" maxWidth="Infinity" styleClass="sidebar-button" stylesheets="@styles/stylee.css" text="Account" />
+            <Button fx:id="accountBtn" maxWidth="Infinity" onAction="#account" styleClass="sidebar-button" stylesheets="@styles/stylee.css" text="Account" />
          </children>
       </VBox>
    </left>
@@ -126,11 +126,12 @@
                            </HBox.margin></Label>
                      </children>
                   </HBox>
-                  <Button onAction="#dashboard" maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefWidth="80.0" styleClass="action-button" text="Save">
-                     <VBox.margin>
-                        <Insets />
-                     </VBox.margin>
-                  </Button>
+                  <HBox spacing="30.0">
+                     <children>
+                        <Button maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#dashboard" prefWidth="80.0" styleClass="action-button" text="Leave" />
+                        <Button layoutX="10.0" layoutY="10.0" maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#dashboard" prefWidth="80.0" styleClass="action-button" text="Save" />
+                     </children>
+                  </HBox>
                </children>
             </VBox>
          </children>
