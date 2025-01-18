@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<BorderPane fx:id="porderPane2" styleClass="borderPane2" stylesheets="@styles/stylee.css" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml" fx:controller="gov.iti.jets.UserInfoController">
+   <center>
+      <VBox fx:id="id2vbox" alignment="CENTER" BorderPane.alignment="CENTER">
+         <children>
+            <HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="200.0">
+               <children>
+                  <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@images/user.png" />
+                     </image>
+                  </ImageView>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Name">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets top="5.0" />
+                     </HBox.margin>
+                  </Text>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Amina">
+                     <HBox.margin>
+                        <Insets left="20.0" top="5.0" />
+                     </HBox.margin>
+                  </Text>
+               </children>
+            </HBox>
+            <HBox layoutX="10.0" layoutY="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="200.0">
+               <children>
+                  <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@images/mail.png" />
+                     </image>
+                  </ImageView>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Email">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets top="5.0" />
+                     </HBox.margin>
+                  </Text>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="amina@gmail.com">
+                     <HBox.margin>
+                        <Insets left="20.0" top="5.0" />
+                     </HBox.margin>
+                  </Text>
+               </children>
+            </HBox>
+            <HBox layoutX="10.0" layoutY="110.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="200.0">
+               <children>
+                  <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@images/user%20(1).png" />
+                     </image>
+                  </ImageView>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Gender">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets top="5.0" />
+                     </HBox.margin>
+                  </Text>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Female">
+                     <HBox.margin>
+                        <Insets left="20.0" top="5.0" />
+                     </HBox.margin>
+                  </Text>
+               </children>
+            </HBox>
+            <HBox layoutX="10.0" layoutY="210.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="200.0">
+               <children>
+                  <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@images/calendar.png" />
+                     </image>
+                  </ImageView>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="DateOfBirth">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets top="5.0" />
+                     </HBox.margin>
+                  </Text>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="1/1/2000">
+                     <HBox.margin>
+                        <Insets left="20.0" top="5.0" />
+                     </HBox.margin>
+                  </Text>
+               </children>
+            </HBox>
+            <HBox layoutX="10.0" layoutY="310.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="200.0">
+               <children>
+                  <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@images/germany.png" />
+                     </image>
+                  </ImageView>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Country">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets top="5.0" />
+                     </HBox.margin>
+                  </Text>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Egypt">
+                     <HBox.margin>
+                        <Insets left="20.0" top="5.0" />
+                     </HBox.margin>
+                  </Text>
+               </children>
+            </HBox>
+            <HBox layoutX="10.0" layoutY="332.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="200.0">
+               <children>
+                  <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@images/online.png" />
+                     </image>
+                  </ImageView>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Mode">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets top="5.0" />
+                     </HBox.margin>
+                  </Text>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="AWAY">
+                     <HBox.margin>
+                        <Insets left="20.0" top="5.0" />
+                     </HBox.margin>
+                  </Text>
+               </children>
+            </HBox>
+            <HBox layoutX="10.0" layoutY="346.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="200.0">
+               <children>
+                  <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@images/padlock.png" />
+                     </image>
+                  </ImageView>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Password">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets top="5.0" />
+                     </HBox.margin>
+                  </Text>
+               </children>
+            </HBox>
+         </children>
+         <BorderPane.margin>
+            <Insets bottom="10.0" />
+         </BorderPane.margin>
+      </VBox>
+   </center>
+   <top>
+      <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+         <children>
+            <HBox maxHeight="-Infinity" minHeight="-Infinity" prefHeight="40.0" prefWidth="200.0">
+               <children>
+                  <Text fill="#3fb77b" strokeType="OUTSIDE" strokeWidth="0.0" text="User Info">
+                     <font>
+                        <Font name="Arial Bold" size="36.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets left="20.0" />
+                     </HBox.margin>
+                  </Text>
+                  <Button mnemonicParsing="false" style="-fx-background-color: f0f3f4;" textFill="#f0f3f4">
+                     <graphic>
+                        <ImageView fitHeight="20" fitWidth="20">
+                           <image>
+                              <Image url="@images/close.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                     <HBox.margin>
+                        <Insets left="400.0" />
+                     </HBox.margin>
+                  </Button>
+               </children>
+               <VBox.margin>
+                  <Insets bottom="10.0" />
+               </VBox.margin>
+            </HBox>
+            <ImageView fitHeight="70.0" fitWidth="70.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@images/userphoto.png" />
+               </image>
+               <VBox.margin>
+                  <Insets top="10.0" />
+               </VBox.margin>
+            </ImageView>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Amina">
+               <font>
+                  <Font name="Arial Bold" size="14.0" />
+               </font>
+            </Text>
+         </children>
+      </VBox>
+   </top>
+</BorderPane>

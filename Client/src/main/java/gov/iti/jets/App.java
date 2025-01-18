@@ -48,6 +48,15 @@ public class App extends Application {
 
         var dashScene = new Scene(dashBoard, width+200, height+100);
 
+        FXMLLoader chatsLoader = new FXMLLoader(getClass().getResource("/Chats.fxml"));
+		GridPane chats = chatsLoader.load();
+        ChatsController chatsController = chatsLoader.getController();
+
+        var chatsScene = new Scene(chats, width+200, height+100);
+
+        chatsController.setStage(stage);
+        dashController.setchatsScene(chatsScene);
+
         FXMLLoader contactLoader = new FXMLLoader(getClass().getResource("/Contact.fxml"));
 		GridPane contactBoard = contactLoader.load();
         ContactController contactController = contactLoader.getController();
@@ -56,8 +65,9 @@ public class App extends Application {
 
         dashController.setStage(stage);
         dashController.setcontactScene(contactScene);
+        chatsController.setcontactScene(contactScene);
         contactController.setStage(stage);
-        contactController.setchatsScene(dashScene);
+        contactController.setchatsScene(chatsScene);
 
         FXMLLoader addContactLoader = new FXMLLoader(getClass().getResource("/AddNewContacts.fxml"));
 		GridPane addContactBoard = addContactLoader.load();
@@ -66,11 +76,24 @@ public class App extends Application {
         var addContactScene = new Scene(addContactBoard, width+200, height+100);
         contactController.setAddContactScene(addContactScene);
         dashController.setAddContactScene(addContactScene);
+        chatsController.setAddContactScene(addContactScene);
         loginController.setdashScene(dashScene);
 
         addContactController.setStage(stage);
-        addContactController.setchatsScene(dashScene);
+        addContactController.setchatsScene(chatsScene);
         addContactController.setcontactScene(contactScene);
+
+        FXMLLoader userInfoLoader = new FXMLLoader(getClass().getResource("/User_Info.fxml"));
+		BorderPane userInfo = userInfoLoader.load();
+        UserInfoController userInfoController = userInfoLoader.getController();
+
+        var userInfoScene = new Scene(userInfo, width-100, height+100);
+
+        dashController.setuserInfoScene(userInfoScene);
+        chatsController.setuserInfoScene(userInfoScene);
+        contactController.setuserInfoScene(userInfoScene);
+        addContactController.setuserInfoScene(userInfoScene);
+
 
         registerController.setdashScene(dashScene);
         stage.setScene(loginScene);

@@ -29,7 +29,7 @@
          <children>
             <HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="80.0" prefWidth="140.0">
                <children>
-                  <ImageView fitHeight="60.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true" styleClass="image_style">
+                  <ImageView onMouseClicked="#userInfo" fitHeight="60.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true" styleClass="image_style">
                      <image>
                         <Image url="@images/userphoto.png" />
                      </image>

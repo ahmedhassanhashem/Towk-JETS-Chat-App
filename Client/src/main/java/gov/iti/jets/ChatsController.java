@@ -51,12 +51,12 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class ContactController {
+public class ChatsController {
 
 
 
     private Stage stage;
-    private Scene chatsScene;
+    private Scene contactScene;
     private Scene addContactScene;
     private Scene userInfoScene;
 
@@ -64,8 +64,8 @@ public class ContactController {
         userInfoScene = s;
     }
 
-    public void setchatsScene(Scene s){
-        chatsScene = s;
+    public void setcontactScene(Scene s){
+        contactScene = s;
     }
 
     public void setAddContactScene(Scene s){
@@ -80,11 +80,10 @@ public class ContactController {
         // System.out.println("aa");
         stage.setScene(addContactScene);
     }
-
     @FXML
-    private void chats(MouseEvent event){
+    private void contacts(MouseEvent event){
         // System.out.println("aa");
-        stage.setScene(chatsScene);
+        stage.setScene(contactScene);
     }
 
     @FXML
