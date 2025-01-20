@@ -15,7 +15,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<GridPane alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="603.0" prefWidth="772.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml" fx:controller="gov.iti.jets.AddContactController">
+<GridPane alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="603.0" prefWidth="772.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml" fx:controller="gov.iti.jets.controller.AddContactController">
    <columnConstraints>
       <ColumnConstraints hgrow="SOMETIMES" maxWidth="182.4000244140625" minWidth="10.0" prefWidth="140.79998779296875" />
       <ColumnConstraints hgrow="SOMETIMES" maxWidth="416.7999862670898" minWidth="10.0" prefWidth="230.40001220703124" />
@@ -33,7 +33,7 @@
                <children>
                   <ImageView onMouseClicked="#userInfo" fitHeight="60.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true" styleClass="image_style">
                      <image>
-                        <Image url="@images/userphoto.png" />
+                        <Image url="@../images/userphoto.png" />
                      </image>
                      <HBox.margin>
                         <Insets left="10.0" top="10.0" />
@@ -53,7 +53,7 @@
                <children>
                   <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@images/bubble-chat.png" />
+                        <Image url="@../images/bubble-chat.png" />
                      </image>
                      <HBox.margin>
                         <Insets left="20.0" />
@@ -76,7 +76,7 @@
                <children>
                   <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@images/contact.png" />
+                        <Image url="@../images/contact.png" />
                      </image>
                      <HBox.margin>
                         <Insets left="20.0" />
@@ -99,7 +99,7 @@
                <children>
                   <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@images/group.png" />
+                        <Image url="@../images/group.png" />
                      </image>
                      <HBox.margin>
                         <Insets left="20.0" />
@@ -119,7 +119,7 @@
                <children>
                   <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@images/settings.png" />
+                        <Image url="@../images/settings.png" />
                      </image>
                      <HBox.margin>
                         <Insets left="20.0" />
@@ -139,7 +139,7 @@
                <children>
                   <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@images/bell.png" />
+                        <Image url="@../images/bell.png" />
                      </image>
                      <HBox.margin>
                         <Insets left="20.0" />
@@ -159,7 +159,7 @@
                <children>
                   <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@images/robotic.png" />
+                        <Image url="@../images/robotic.png" />
                      </image>
                      <HBox.margin>
                         <Insets left="20.0" />
@@ -224,7 +224,7 @@
                      <children>
                         <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@images/plus.png" />
+                              <Image url="@../images/plus.png" />
                            </image>
                         </ImageView>
                         <Text fill="#3fb77b" strokeType="OUTSIDE" strokeWidth="0.0" text="add another number">

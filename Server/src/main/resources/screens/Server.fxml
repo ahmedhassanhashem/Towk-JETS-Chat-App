@@ -16,7 +16,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<GridPane styleClass="grid" stylesheets="@Styles/server.css" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gov.iti.jets.ServerController">
+<GridPane styleClass="grid" stylesheets="@../styles/server.css" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gov.iti.jets.controller.ServerController">
   <columnConstraints>
     <ColumnConstraints hgrow="NEVER" maxWidth="200" minWidth="200" prefWidth="200" />
     <ColumnConstraints hgrow="NEVER" />
@@ -44,7 +44,7 @@
                <graphic>
                   <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@images/system.png" />
+                        <Image url="@../images/system.png" />
                      </image>
                   </ImageView>
                </graphic>
@@ -58,7 +58,7 @@
                <graphic>
                   <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@images/analytics.png" />
+                        <Image url="@../images/analytics.png" />
                      </image>
                   </ImageView>
                </graphic>
@@ -67,7 +67,7 @@
                <graphic>
                   <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@images/announcement.png" />
+                        <Image url="@../images/announcement.png" />
                      </image>
                   </ImageView>
                </graphic>
@@ -76,7 +76,7 @@
                <graphic>
                   <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@images/logout.png" />
+                        <Image url="@../images/logout.png" />
                      </image>
                   </ImageView>
                </graphic>

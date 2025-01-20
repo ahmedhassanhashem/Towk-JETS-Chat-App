@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -14,9 +12,8 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
-<?import javafx.scene.text.Text?>
 
-<GridPane alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="603.0" prefWidth="772.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml" fx:controller="gov.iti.jets.ChatsController">
+<GridPane alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="603.0" prefWidth="772.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml" fx:controller="gov.iti.jets.controller.ContactController">
    <columnConstraints>
       <ColumnConstraints hgrow="SOMETIMES" maxWidth="182.4000244140625" minWidth="10.0" prefWidth="140.79998779296875" />
       <ColumnConstraints hgrow="SOMETIMES" maxWidth="416.7999862670898" minWidth="10.0" prefWidth="230.40001220703124" />
@@ -34,7 +31,7 @@
                <children>
                   <ImageView onMouseClicked="#userInfo" fitHeight="60.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true" styleClass="image_style">
                      <image>
-                        <Image url="@images/userphoto.png" />
+                        <Image url="@../images/userphoto.png" />
                      </image>
                      <HBox.margin>
                         <Insets left="10.0" top="10.0" />
@@ -54,13 +51,13 @@
                <children>
                   <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@images/bubble-chat.png" />
+                        <Image url="@../images/bubble-chat.png" />
                      </image>
                      <HBox.margin>
                         <Insets left="20.0" />
                      </HBox.margin>
                   </ImageView>
-                  <Label alignment="BOTTOM_LEFT" nodeOrientation="LEFT_TO_RIGHT" opacity="0.33" text="Chats" textFill="#1f2020">
+                  <Label onMouseClicked="#chats" alignment="BOTTOM_LEFT" nodeOrientation="LEFT_TO_RIGHT" text="Chats" textFill="#1f2020">
                      <font>
                         <Font name="Arial Bold" size="11.0" />
                      </font>
@@ -77,13 +74,13 @@
                <children>
                   <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@images/contact.png" />
+                        <Image url="@../images/contact.png" />
                      </image>
                      <HBox.margin>
                         <Insets left="20.0" />
                      </HBox.margin>
                   </ImageView>
-                  <Label  onMouseClicked="#contacts" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="50.0" text="Contacts">
+                  <Label maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" opacity="0.4" prefHeight="30.0" prefWidth="50.0" text="Contacts">
                      <font>
                         <Font name="Arial Bold" size="11.0" />
                      </font>
@@ -100,7 +97,7 @@
                <children>
                   <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@images/group.png" />
+                        <Image url="@../images/group.png" />
                      </image>
                      <HBox.margin>
                         <Insets left="20.0" />
@@ -120,7 +117,7 @@
                <children>
                   <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@images/settings.png" />
+                        <Image url="@../images/settings.png" />
                      </image>
                      <HBox.margin>
                         <Insets left="20.0" />
@@ -140,7 +137,7 @@
                <children>
                   <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@images/bell.png" />
+                        <Image url="@../images/bell.png" />
                      </image>
                      <HBox.margin>
                         <Insets left="20.0" />
@@ -160,7 +157,7 @@
                <children>
                   <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@images/robotic.png" />
+                        <Image url="@../images/robotic.png" />
                      </image>
                      <HBox.margin>
                         <Insets left="20.0" />
@@ -187,7 +184,7 @@
                <children>
                   <ImageView fitHeight="20.0" fitWidth="20.0" layoutX="10.0" layoutY="10.0">
                      <image>
-                        <Image url="@images/search.png" />
+                        <Image url="@../images/search.png" />
                      </image>
                      <HBox.margin>
                         <Insets left="10.0" top="25.0" />
@@ -203,7 +200,7 @@
                         <Insets left="15.0" top="25.0" />
                      </HBox.margin>
                      <image>
-                        <Image url="@images/add-user.png" />
+                        <Image url="@../images/add-user.png" />
                      </image>
                   </ImageView>
                </children>
@@ -219,10 +216,10 @@
                            <children>
                               <ImageView fitHeight="50.0" fitWidth="70.0" pickOnBounds="true" preserveRatio="true">
                                  <HBox.margin>
-                                    <Insets left="20.0" />
+                                    <Insets />
                                  </HBox.margin>
                                  <image>
-                                    <Image url="@images/boy.png" />
+                                    <Image url="@../images/boy.png" />
                                  </image>
                               </ImageView>
                               <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
@@ -231,8 +228,27 @@
                                        <font>
                                           <Font size="18.0" />
                                        </font>
+                                       <VBox.margin>
+                                          <Insets right="20.0" />
+                                       </VBox.margin>
                                     </Label>
-                                    <Label text="last message" />
+                                    <HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="20.0" prefWidth="140.0">
+                                       <children>
+                                          <Label text="your bio">
+                                             <HBox.margin>
+                                                <Insets left="10.0" />
+                                             </HBox.margin>
+                                          </Label>
+                                          <Label text="online" textFill="#5fc566">
+                                             <HBox.margin>
+                                                <Insets left="40.0" />
+                                             </HBox.margin>
+                                             <font>
+                                                <Font name="System Bold" size="12.0" />
+                                             </font>
+                                          </Label>
+                                       </children>
+                                    </HBox>
                                  </children>
                               </VBox>
                            </children>
@@ -248,10 +264,10 @@
                            <children>
                               <ImageView fitHeight="50.0" fitWidth="70.0" pickOnBounds="true" preserveRatio="true">
                                  <HBox.margin>
-                                    <Insets left="20.0" />
+                                    <Insets />
                                  </HBox.margin>
                                  <image>
-                                    <Image url="@images/girl.png" />
+                                    <Image url="@../images/girl.png" />
                                  </image>
                               </ImageView>
                               <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
@@ -261,7 +277,23 @@
                                           <Font size="18.0" />
                                        </font>
                                     </Label>
-                                    <Label text="last message" />
+                                    <HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="20.0" prefWidth="140.0">
+                                       <children>
+                                          <Label text="your bio">
+                                             <HBox.margin>
+                                                <Insets left="10.0" />
+                                             </HBox.margin>
+                                          </Label>
+                                          <Label text="offline" textFill="#c4606b">
+                                             <HBox.margin>
+                                                <Insets left="40.0" />
+                                             </HBox.margin>
+                                             <font>
+                                                <Font name="System Bold" size="12.0" />
+                                             </font>
+                                          </Label>
+                                       </children>
+                                    </HBox>
                                  </children>
                               </VBox>
                            </children>
@@ -272,130 +304,17 @@
             </VBox>
          </children>
       </VBox>
-      <BorderPane fx:id="borderPane" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: white;" styleClass="borderPane" stylesheets="@styles/stylee.css" GridPane.columnIndex="2" GridPane.rowSpan="3">
-         <top>
-            <VBox maxHeight="-Infinity" minHeight="-Infinity" prefHeight="80.0" style="-fx-background-color: white;" BorderPane.alignment="CENTER">
-               <children>
-                  <HBox maxHeight="-Infinity" minHeight="-Infinity" prefHeight="70.0" prefWidth="200.0">
-                     <children>
-                        <ImageView fitHeight="60.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@images/omar.png" />
-                           </image>
-                           <HBox.margin>
-                              <Insets top="10.0" />
-                           </HBox.margin>
-                        </ImageView>
-                        <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="100.0">
-                           <children>
-                              <Label text="Omar">
-                                 <VBox.margin>
-                                    <Insets top="20.0" />
-                                 </VBox.margin>
-                                 <font>
-                                    <Font name="Arial Bold" size="12.0" />
-                                 </font></Label>
-                              <HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="320.0">
-                                 <children>
-                                    <Label maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" text="Online">
-                                       <HBox.margin>
-                                          <Insets />
-                                       </HBox.margin></Label>
-                                    <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
-                                       <HBox.margin>
-                                          <Insets bottom="20.0" left="250.0" />
-                                       </HBox.margin>
-                                       <image>
-                                          <Image url="@images/chatsearch.png" />
-                                       </image>
-                                    </ImageView>
-                                 </children>
-                                 <VBox.margin>
-                                    <Insets bottom="10.0" />
-                                 </VBox.margin>
-                              </HBox>
-                           </children>
-                           <HBox.margin>
-                              <Insets left="10.0" />
-                           </HBox.margin>
-                        </VBox>
-                     </children>
-                  </HBox>
-               </children>
-            </VBox>
-         </top>
-         <bottom>
-            <HBox alignment="CENTER" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="70.0" prefWidth="200.0" style="-fx-background-color: white;" BorderPane.alignment="CENTER">
-               <children>
-                  <Button mnemonicParsing="false" style="-fx-background-color: white;">
-                        <graphic>
-        <ImageView fitHeight="20" fitWidth="20">
-            <image>
-                <Image url="@images/attach-file.png" />
-            </image>
-        </ImageView>
-    </graphic>
-                     <HBox.margin>
-                        <Insets right="30.0" />
-                     </HBox.margin>
-                      
-                  </Button>
-                  <TextField maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="230.0" promptText="Type a message" />
-                  <Button mnemonicParsing="false" style="-fx-background-color: white;">
-                             <graphic>
-        <ImageView fitHeight="20" fitWidth="20">
-            <image>
-                <Image url="@images/smile.png" />
-            </image>
-        </ImageView>
-    </graphic>
-                     <HBox.margin>
-                        <Insets left="10.0" />
-                     </HBox.margin>
-                  </Button>
-                  <Button mnemonicParsing="false" style="-fx-background-color: white;">
-                             <graphic>
-        <ImageView fitHeight="20" fitWidth="20">
-            <image>
-                <Image url="@images/send.png" />
-            </image>
-        </ImageView>
-    </graphic>
-                     <HBox.margin>
-                        <Insets left="20.0" />
-                     </HBox.margin>
-                  </Button>
-               </children></HBox>
-         </bottom>
+      <BorderPane fx:id="borderPane" prefHeight="200.0" prefWidth="200.0" styleClass="borderPane" stylesheets="@../styles/stylee.css" GridPane.columnIndex="2" GridPane.rowSpan="3">
          <center>
-       
-         </center>
-         <center>
-            <ListView fx:id="chatListView" styleClass="chat-list-view" stylesheets="@styles/stylee.css" BorderPane.alignment="CENTER">
-              <VBox alignment="CENTER" spacing="10">
-          
-            <VBox alignment="CENTER_RIGHT" spacing="10">
-                <HBox alignment="CENTER_RIGHT" maxWidth="-Infinity" styleClass="sent-message">
-                    <Text style="-fx-font-size: 14px;" text="Hello! How are you?" />
-                </HBox>
-                <HBox alignment="CENTER_RIGHT" maxWidth="-Infinity" styleClass="sent-message">
-                    <Text style="-fx-font-size: 14px;" text="Lets talk about our new project" />
-                </HBox>
-            </VBox>
-           
-              
-              
-               <VBox alignment="CENTER_LEFT" spacing="10">
-                <HBox alignment="CENTER_LEFT" maxWidth="-Infinity" styleClass="received-message">
-                    <Text style="-fx-font-size: 14px;" text="I am fine. And you?" wrappingWidth="122.671875" />
-                </HBox>
-                <HBox alignment="CENTER_LEFT" maxWidth="-Infinity" styleClass="received-message">
-                    <Text style="-fx-font-size: 14px;" text="I will happy to talk about project" />
-                </HBox>
-            </VBox>
-        </VBox>
-            </ListView>
-       
+            <Label BorderPane.alignment="CENTER">
+               <graphic>
+                  <ImageView fitHeight="150.0" fitWidth="550.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/logo5.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Label>
          </center></BorderPane>
    </children>
 </GridPane>

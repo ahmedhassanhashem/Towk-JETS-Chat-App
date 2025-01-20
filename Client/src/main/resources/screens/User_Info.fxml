@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<BorderPane fx:id="porderPane2" prefHeight="700" prefWidth="600" style="-fx-background-color: #f4f4f4; -fx-background-radius: 15; -fx-background-insets: 0;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gov.iti.jets.UserInfoController">
+<BorderPane fx:id="porderPane2" prefHeight="700" prefWidth="600" style="-fx-background-color: #f4f4f4; -fx-background-radius: 15; -fx-background-insets: 0;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gov.iti.jets.controller.UserInfoController">
    <center>
       <StackPane prefHeight="448.0" prefWidth="600.0" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS">
          <padding>
@@ -20,7 +20,7 @@
                      <children>
                         <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@images/name.png" />
+                              <Image url="@../images/name.png" />
                            </image>
                         </ImageView>
                         <Text style="-fx-font-weight: bold;" text="Name" />
@@ -31,7 +31,7 @@
                      <children>
                         <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@images/mail.png" />
+                              <Image url="@../images/mail.png" />
                            </image>
                         </ImageView>
                         <Text style="-fx-font-weight: bold;" text="Email" />
@@ -42,7 +42,7 @@
                      <children>
                         <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@images/gender-fluid.png" />
+                              <Image url="@../images/gender-fluid.png" />
                            </image>
                         </ImageView>
                         <Text style="-fx-font-weight: bold;" text="Gender" />
@@ -53,7 +53,7 @@
                      <children>
                         <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@images/calendar.png" />
+                              <Image url="@../images/calendar.png" />
                            </image>
                         </ImageView>
                         <Text style="-fx-font-weight: bold;" text="DateOfBirth" />
@@ -64,7 +64,7 @@
                      <children>
                         <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@images/germany.png" />
+                              <Image url="@../images/germany.png" />
                            </image>
                         </ImageView>
                         <Text style="-fx-font-weight: bold;" text="Country" />
@@ -75,7 +75,7 @@
                      <children>
                         <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@images/online.png" />
+                              <Image url="@../images/online.png" />
                            </image>
                         </ImageView>
                         <Text style="-fx-font-weight: bold;" text="Mode" />
@@ -98,7 +98,7 @@
                      <graphic>
                         <ImageView fitHeight="20" fitWidth="20">
                            <image>
-                              <Image url="@images/close.png" />
+                              <Image url="@../images/close.png" />
                            </image>
                         </ImageView>
                      </graphic>
@@ -110,7 +110,7 @@
             </HBox>
             <ImageView fitHeight="151.0" fitWidth="171.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@images/userphoto.png" />
+                  <Image url="@../images/userphoto.png" />
                </image>
             </ImageView>
             <Text style="-fx-font-size: 20; -fx-font-weight: bold;" text="Amina" />

@@ -1,4 +1,4 @@
-package gov.iti.jets;
+package gov.iti.jets.controller;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -51,14 +51,13 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class AddContactController {
+public class ContactController {
 
 
 
     private Stage stage;
     private Scene chatsScene;
-    private Scene contactScene;
-    // private Scene addContactScene;
+    private Scene addContactScene;
     private Scene userInfoScene;
     private Scene groupsScene;
     private Scene settingsScene;
@@ -78,30 +77,23 @@ public class AddContactController {
         chatsScene = s;
     }
 
-    public void setcontactScene(Scene s){
-        contactScene = s;
+    public void setAddContactScene(Scene s){
+        addContactScene = s;
     }
-
 
     public void setStage(Stage s){
         stage =s;
     }
-    // @FXML
-    // private void addContact(MouseEvent event){
-    //     // System.out.println("aa");
-    //     stage.setScene(addContactScene);
-    // }
+    @FXML
+    private void addContact(MouseEvent event){
+        // System.out.println("aa");
+        stage.setScene(addContactScene);
+    }
 
     @FXML
     private void chats(MouseEvent event){
         // System.out.println("aa");
         stage.setScene(chatsScene);
-    }
-
-    @FXML
-    private void contacts(MouseEvent event){
-        // System.out.println("aa");
-        stage.setScene(contactScene);
     }
 
     @FXML

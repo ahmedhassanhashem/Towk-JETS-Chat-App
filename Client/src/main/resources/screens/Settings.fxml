@@ -18,9 +18,9 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" stylesheets="@styles/stylee.css" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gov.iti.jets.SettingsController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" stylesheets="@styles/stylee.css" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gov.iti.jets.controller.SettingsController">
    <left>
-      <VBox spacing="10" style="-fx-background-color: #f0f0f0; -fx-min-width: 200;" styleClass="sidebar" stylesheets="@styles/stylee.css">
+      <VBox spacing="10" style="-fx-background-color: #f0f0f0; -fx-min-width: 200;" styleClass="sidebar" stylesheets="@../styles/stylee.css">
            <padding>
                 <Insets bottom="20" left="10" right="10" top="20" />
             </padding>
@@ -55,7 +55,7 @@
                      <children>
                         <ImageView fx:id="largeProfileImage" fitHeight="50.0" fitWidth="50.0">
                            <image>
-                              <Image url="@images/user%20(2).png" />
+                              <Image url="@../images/user%20(2).png" />
                            </image>
                            <HBox.margin>
                               <Insets bottom="20.0" />

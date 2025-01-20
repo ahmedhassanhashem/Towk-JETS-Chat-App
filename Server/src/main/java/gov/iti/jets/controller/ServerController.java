@@ -1,4 +1,4 @@
-package gov.iti.jets;
+package gov.iti.jets.controller;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -215,11 +215,11 @@ public class ServerController {
 
     @FXML
     private void initialize() throws IOException {
-        FXMLLoader manageLoader= new FXMLLoader(getClass().getResource("/manage.fxml"));
+        FXMLLoader manageLoader= new FXMLLoader(getClass().getResource("/screens/manage.fxml"));
         manage = manageLoader.load();
-        FXMLLoader announceLoader= new FXMLLoader(getClass().getResource("/announce.fxml"));
+        FXMLLoader announceLoader= new FXMLLoader(getClass().getResource("/screens/announce.fxml"));
         announce = announceLoader.load();
-        FXMLLoader chartLoader= new FXMLLoader(getClass().getResource("/chart.fxml"));
+        FXMLLoader chartLoader= new FXMLLoader(getClass().getResource("/screens/chart.fxml"));
         chart = chartLoader.load();
 
         // announce.maxHeightProperty().bind(anchor.heightProperty());

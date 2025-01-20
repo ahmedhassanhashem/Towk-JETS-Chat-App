@@ -1,4 +1,4 @@
-package gov.iti.jets;
+package gov.iti.jets.controller;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -49,32 +49,31 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class LoginPageController {
-
+public class RegistrationPageController {
+    
     private Stage stage;
-    private Scene signup;
-    private Scene serverScene;
+    private Scene signin;
+    private Scene dashScene;
 
-    @FXML
-    private void gotoSingup(){
-        stage.setScene(signup);
+    public void setdashScene(Scene s){
+        dashScene = s;
     }
 
+    @FXML
+    private void next(){
+        stage.setScene(dashScene);
+    }
     public void setStage(Stage stage){
         this.stage = stage;
     }
 
-    @FXML
-    private void signIn(ActionEvent event){
-        // System.out.println("aa");
-        stage.setScene(serverScene);
+    public void setSignIn(Scene s){
+        signin = s;
     }
 
-    public void setServerScene(Scene s){
-        serverScene = s;
-    }
-    public void setSignUp(Scene s){
-        signup = s;
+    @FXML
+    private void gotoSingin(){
+        stage.setScene(signin);
     }
 
     // @FXML

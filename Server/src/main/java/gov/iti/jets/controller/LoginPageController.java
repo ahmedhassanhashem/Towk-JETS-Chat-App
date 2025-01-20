@@ -1,4 +1,4 @@
-package gov.iti.jets;
+package gov.iti.jets.controller;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -29,14 +29,12 @@ import javafx.scene.control.TreeView;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.WritableImage;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import javafx.stage.FileChooser;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 
@@ -51,71 +49,50 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class ContactController {
-
-
+public class LoginPageController {
 
     private Stage stage;
-    private Scene chatsScene;
-    private Scene addContactScene;
-    private Scene userInfoScene;
-    private Scene groupsScene;
-    private Scene settingsScene;
+    private Scene signup;
+    private Scene serverScene;
 
-
-    public void setSettingsScene(Scene s){
-        settingsScene = s;
-    }
-    public void setGroupsSceneScene(Scene s){
-        groupsScene = s;
-    }
-    public void setuserInfoScene(Scene s){
-        userInfoScene = s;
-    }
-
-    public void setchatsScene(Scene s){
-        chatsScene = s;
-    }
-
-    public void setAddContactScene(Scene s){
-        addContactScene = s;
-    }
-
-    public void setStage(Stage s){
-        stage =s;
-    }
     @FXML
-    private void addContact(MouseEvent event){
+    private void gotoSingup(){
+        stage.setScene(signup);
+    }
+
+    public void setStage(Stage stage){
+        this.stage = stage;
+    }
+
+    @FXML
+    private void signIn(ActionEvent event){
         // System.out.println("aa");
-        stage.setScene(addContactScene);
+        stage.setScene(serverScene);
     }
 
-    @FXML
-    private void chats(MouseEvent event){
-        // System.out.println("aa");
-        stage.setScene(chatsScene);
+    public void setServerScene(Scene s){
+        serverScene = s;
+    }
+    public void setSignUp(Scene s){
+        signup = s;
     }
 
-    @FXML
-    private void userInfo(MouseEvent event){
-        Stage info = new Stage();
-        info.initOwner(stage);
-        info.initModality(Modality.APPLICATION_MODAL);
-        info.setScene(userInfoScene);
-        info.show();
-    }
+    // @FXML
+    // private ListView<FlowPane> list;
 
-    @FXML
-    private void settings(MouseEvent event){
-        // System.out.println("aa");
-        stage.setScene(settingsScene);
-    }
-    
-    @FXML
-    private void groups(MouseEvent event){
-        stage.setScene(groupsScene);
-    }
-    
+    // @FXML
+    // private TextField txtF;
+
+    // private TreeItem<FlowPane> allroot;
+    // @FXML
+    // private void onEnter(ActionEvent event){
+       
+    // }
+
+
+
+
+
     @FXML
     private void initialize() {
 

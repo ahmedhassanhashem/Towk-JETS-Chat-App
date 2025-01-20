@@ -1,4 +1,4 @@
-package gov.iti.jets;
+package gov.iti.jets.controller;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -51,70 +51,39 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class GroupsController {
+public class SettingsController {
 
 
     private Stage stage;
-    private Scene contactScene;
-    private Scene addContactScene;
-    private Scene chatsScene;
-    private Scene userInfoScene;
-    private Scene settingsScene;
+    private Scene accountScene;
+    private Scene dashboardScene;
 
 
-    public void setSettingsScene(Scene s){
-        settingsScene = s;
-    }
-    public void setuserInfoScene(Scene s){
-        userInfoScene = s;
+    public void setAccountScene(Scene s){
+        accountScene = s;
     }
 
-    public void setcontactScene(Scene s){
-        contactScene = s;
-    }
-
-    public void setchatsScene(Scene s){
-        chatsScene = s;
-    }
-
-    public void setAddContactScene(Scene s){
-        addContactScene = s;
+    public void setDashboardScene(Scene s){
+        dashboardScene = s;
     }
 
     public void setStage(Stage s){
         stage =s;
     }
-    @FXML
-    private void addContact(MouseEvent event){
-        // System.out.println("aa");
-        stage.setScene(addContactScene);
-    }
-    @FXML
-    private void contacts(MouseEvent event){
-        // System.out.println("aa");
-        stage.setScene(contactScene);
-    }
 
     @FXML
-    private void chats(MouseEvent event){
+    private void account(ActionEvent event){
         // System.out.println("aa");
-        stage.setScene(chatsScene);
+        stage.setScene(accountScene);
+    }
+    
+    @FXML
+    private void dashboard(ActionEvent event){
+        // System.out.println("aa");
+        stage.setScene(dashboardScene);
     }
 
-    @FXML
-    private void userInfo(MouseEvent event){
-        Stage info = new Stage();
-        info.initOwner(stage);
-        info.initModality(Modality.APPLICATION_MODAL);
-        info.setScene(userInfoScene);
-        info.show();
-    }
 
-    @FXML
-    private void settings(MouseEvent event){
-        // System.out.println("aa");
-        stage.setScene(settingsScene);
-    }
 
     @FXML
     private void initialize() {
