@@ -56,11 +56,11 @@
       
    <VBox alignment="CENTER" prefHeight="194.0" prefWidth="577.0" GridPane.columnSpan="2" GridPane.rowSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="TOP">
    <children>
-      <TextField maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="231.0" promptText="Phone Number">
+      <TextField fx:id="phoneField" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="231.0" promptText="Phone Number">
                <VBox.margin>
                   <Insets bottom="30.0" />
                </VBox.margin></TextField>
-      <PasswordField maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="231.0" promptText="Password">
+      <PasswordField fx:id="passwordField" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="231.0" promptText="Password">
                <VBox.margin>
                   <Insets bottom="30.0" />
                </VBox.margin></PasswordField>

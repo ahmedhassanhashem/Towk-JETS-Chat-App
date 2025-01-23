@@ -20,8 +20,11 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TreeCell;
 import javafx.scene.control.TreeItem;
@@ -43,17 +46,52 @@ import java.net.UnknownHostException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import gov.iti.jets.ConSingleton;
 
 public class RegistrationPageController {
     
     private Stage stage;
     private Scene signin;
     private Scene serverScene;
+    private Connection con;
+    
+
+    @FXML
+    private TextField nameField;
+    @FXML
+    private TextField phoneField;
+    @FXML
+    private ComboBox<String> genderField;
+    @FXML
+    private TextField emailField;
+    @FXML
+    private DatePicker dateField;
+    @FXML
+    private ComboBox<String> countryField;
+    @FXML
+    private PasswordField passwordField;
+    @FXML
+    private PasswordField password2Field;
+
+
+
+
+
+
+
     
     public void setStage(Stage stage){
         this.stage = stage;
@@ -69,7 +107,17 @@ public class RegistrationPageController {
 
     @FXML
     private void next(){
+        if(checkUser(phoneField.getText())){
+            System.out.println("User already there!");
+            return;
+        }
+        if(password2Field.equals(passwordField) &&insertRecord( phoneField.getText(), nameField.getText(), countryField.getValue(), genderField.getValue()
+        , emailField.getText(), dateField.getValue(), passwordField.getText(), true, "Online", "Available"))
         stage.setScene(serverScene);
+        else{
+            System.out.println("Not correct");
+        }
+        // System.out.println(countryField.getValue());
     }
     
     @FXML
@@ -95,6 +143,65 @@ public class RegistrationPageController {
 
     @FXML
     private void initialize() {
+                ConSingleton meh = ConSingleton.getInstance();
+        con = meh.conn();
+        // Statement stmt;
+        // ResultSet re;
+        // try {
+        // stmt =
+        // con.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_UPDATABLE);
+        // re = stmt.executeQuery("SELECT * FROM employee");
+        // } catch (SQLException e) {
+        // // TODO Auto-generated catch block
+        // e.printStackTrace();
+        // }
+
+    }
+        private Boolean insertRecord(String phone, String name, String country, String gender, String email, LocalDate birthdate, String password,
+            Boolean firstLogin, String userStatus, String userMode)
+             {
+                if(phone.length() !=11 || name.length() ==0 || password.length() ==0 || gender.length()==0 
+                || birthdate ==null ||gender.length()==0 || country.length()==0)return false;
+        String sql2 = "INSERT INTO `User` (`phone`, `name` , `country`, `gender`, `email`, `birthdate`,`password`, `firstLogin`, `userStatus` , `userMode`) VALUES(?,?,?,?,?,?,?,?,?,?)";
+        try {
+        PreparedStatement preparedStatement = con.prepareStatement(sql2);
+            java.sql.Date birthdate2= java.sql.Date.valueOf(birthdate.toString());
+            preparedStatement.setString(1, phone);
+            preparedStatement.setString(2, name);
+            preparedStatement.setString(3, country);
+            preparedStatement.setString(4, gender);
+            preparedStatement.setString(5, email);
+            preparedStatement.setDate(6, birthdate2);
+            preparedStatement.setString(7, password);
+            preparedStatement.setBoolean(8, firstLogin);
+            preparedStatement.setString(9, userStatus);
+            preparedStatement.setString(10, userMode);
+            preparedStatement.executeUpdate();
+            System.out.println("Record inserted successfully.");
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
+
+        private Boolean checkUser(String phone){
+        String sql2 = "Select * From User where phone = ?";
+        ResultSet re;
+        try {
+            PreparedStatement preparedStatement = con.prepareStatement(sql2);
+                preparedStatement.setString(1, phone);
+                // preparedStatement.setString(2, password);
+                re =preparedStatement.executeQuery();
+                if(re.next()){
+                    return true;
+                }else return false;
+            } catch (SQLException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+                return false;
+            }
 
     }
 }

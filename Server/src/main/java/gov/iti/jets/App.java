@@ -59,7 +59,7 @@ public class App extends Application {
         Scene serverScene = new Scene(server, width+200, height+20);
         loginController.setServerScene(serverScene);
         registerController.setServerScene(serverScene);
-        stage.setResizable(false);
+        // stage.setResizable(false);
         stage.setScene(loginScene);
         stage.show();
     }
