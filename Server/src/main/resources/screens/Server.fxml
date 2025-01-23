@@ -8,39 +8,29 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<GridPane styleClass="grid" stylesheets="@../styles/server.css" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gov.iti.jets.controller.ServerController">
+<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" styleClass="grid" stylesheets="@../styles/server.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gov.iti.jets.controller.ServerController">
   <columnConstraints>
     <ColumnConstraints hgrow="NEVER" maxWidth="200" minWidth="200" prefWidth="200" />
     <ColumnConstraints hgrow="NEVER" />
     <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" />
   </columnConstraints>
   <rowConstraints>
-    <RowConstraints maxHeight="142.4000015258789" minHeight="50" prefHeight="50" vgrow="SOMETIMES" />
-      <RowConstraints  vgrow="ALWAYS" />
+    <RowConstraints maxHeight="142.4000015258789" minHeight="50.0" prefHeight="50.0" vgrow="SOMETIMES" />
+      <RowConstraints vgrow="ALWAYS" />
     <RowConstraints maxHeight="154.40001525878904" minHeight="10.0" prefHeight="164.40001525878904" vgrow="ALWAYS" />
+      <RowConstraints />
     <!-- <RowConstraints minHeight="30.0" prefHeight="30.0" vgrow="ALWAYS" /> -->
   </rowConstraints>
    <children>
-      <!-- <Region GridPane.rowIndex="3" /> -->
-      <Label  styleClass="row0" prefHeight="50" prefWidth="900" text="Towk" textAlignment="JUSTIFY" textFill="#4b978f" GridPane.columnSpan="3" GridPane.rowIndex="0" GridPane.vgrow="NEVER" GridPane.hgrow="NEVER">
-         <font>
-            <Font name="Arial" size="48.0" />
-         </font>
-         <padding>
-            <Insets left="70.0" />
-         </padding>
-      </Label>
-      <VBox styleClass="col0" alignment="CENTER" nodeOrientation="LEFT_TO_RIGHT" spacing="20.0" GridPane.rowIndex="1" GridPane.rowSpan="3" GridPane.vgrow="ALWAYS" GridPane.hgrow="ALWAYS">
+      <VBox alignment="CENTER" nodeOrientation="LEFT_TO_RIGHT" spacing="20.0" styleClass="col0" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.rowSpan="3" GridPane.vgrow="ALWAYS">
          <children>
-            <Button styleClass="button" alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#manageButton" prefHeight="34.0" prefWidth="160.0" text="Manage">
+            <Button alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#manageButton" prefHeight="34.0" prefWidth="160.0" styleClass="button" text="Manage">
                <graphic>
                   <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -49,7 +39,7 @@
                   </ImageView>
                </graphic>
             </Button>
-            <MenuButton styleClass="menu-button" alignment="BASELINE_LEFT" mnemonicParsing="false" prefHeight="34.0" prefWidth="160.0" text="Statistics">
+            <MenuButton alignment="BASELINE_LEFT" mnemonicParsing="false" prefHeight="34.0" prefWidth="160.0" styleClass="menu-button" text="Statistics">
               <items>
                 <MenuItem mnemonicParsing="false" onAction="#status" text="Status" />
                 <MenuItem mnemonicParsing="false" onAction="#gender" text="Gender" />
@@ -63,7 +53,7 @@
                   </ImageView>
                </graphic>
             </MenuButton>
-            <Button styleClass="button" alignment="BASELINE_LEFT" layoutX="110.0" layoutY="64.0" mnemonicParsing="false" onAction="#announceButton" prefHeight="34.0" prefWidth="160.0" text="Announce">
+            <Button alignment="BASELINE_LEFT" layoutX="110.0" layoutY="64.0" mnemonicParsing="false" onAction="#announceButton" prefHeight="34.0" prefWidth="160.0" styleClass="button" text="Announce">
                <graphic>
                   <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -72,7 +62,7 @@
                   </ImageView>
                </graphic>
             </Button>
-            <Button styleClass="button" onAction="#signOut" alignment="BASELINE_LEFT" layoutX="110.0" layoutY="117.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="160.0" text="Sign out">
+            <Button alignment="BASELINE_LEFT" layoutX="110.0" layoutY="117.0" mnemonicParsing="false" onAction="#signOut" prefHeight="34.0" prefWidth="160.0" styleClass="button" text="Sign out">
                <graphic>
                   <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -86,13 +76,25 @@
             <Insets />
          </GridPane.margin> -->
       </VBox>
-      <AnchorPane fx:id="anchor" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.vgrow="NEVER" GridPane.hgrow="NEVER" GridPane.rowIndex="1" GridPane.rowSpan="2" AnchorPane.topAnchor="0.0" AnchorPane.bottomAnchor="0.0" 
-            AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+      <AnchorPane fx:id="anchor" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.hgrow="NEVER" GridPane.rowIndex="1" GridPane.rowSpan="2" GridPane.vgrow="NEVER">
          <children>
             <!-- <BorderPane fx:id="borderPane" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <right>
                   <Region prefHeight="286.0" prefWidth="41.0" BorderPane.alignment="CENTER" />
                </right></BorderPane> -->
+         </children>
+      </AnchorPane>
+      <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnSpan="2147483647">
+         <children>
+            <!-- <Region GridPane.rowIndex="3" /> -->
+            <Label styleClass="row0" text="Towk" textAlignment="JUSTIFY" textFill="#4b978f" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <font>
+                  <Font name="Arial" size="48.0" />
+               </font>
+               <padding>
+                  <Insets left="70.0" />
+               </padding>
+            </Label>
          </children>
       </AnchorPane>
    </children>
