@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import java.lang.String?>
+<?import java.net.URL?>
 <?import javafx.collections.FXCollections?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
@@ -18,9 +19,9 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" stylesheets="@styles/stylee.css" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gov.iti.jets.controller.SettingsController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gov.iti.jets.controller.SettingsController">
    <left>
-      <VBox spacing="10" style="-fx-background-color: #f0f0f0; -fx-min-width: 200;" styleClass="sidebar" stylesheets="@../styles/stylee.css">
+      <VBox spacing="10" style="-fx-background-color: #f0f0f0; -fx-min-width: 200;" styleClass="sidebar" stylesheets="@../styles/style.css">
            <padding>
                 <Insets bottom="20" left="10" right="10" top="20" />
             </padding>
@@ -30,18 +31,18 @@
                   <Label style="-fx-font-size: 20; -fx-font-weight: bold;" text="Settings" />
                </children>
             </HBox>
-            <Button fx:id="profileBtn" maxWidth="Infinity" styleClass="sidebar-button" stylesheets="@styles/stylee.css" text="Profile">
+            <Button fx:id="profileBtn" maxWidth="Infinity" styleClass="sidebar-button" stylesheets="@../styles/style.css" text="Profile">
                <VBox.margin>
                   <Insets top="100.0" />
                </VBox.margin></Button>
-            <Button fx:id="accountBtn" maxWidth="Infinity" onAction="#account" styleClass="sidebar-button" stylesheets="@styles/stylee.css" text="Account" />
+            <Button fx:id="accountBtn" maxWidth="Infinity" onAction="#account" styleClass="sidebar-button" stylesheets="@styles/style.css" text="Account" />
          </children>
       </VBox>
    </left>
    <center>
-      <StackPane prefHeight="150.0" prefWidth="200.0" stylesheets="@styles/stylee.css" BorderPane.alignment="CENTER">
+      <StackPane prefHeight="150.0" prefWidth="200.0" stylesheets="@styles/style.css" BorderPane.alignment="CENTER">
          <children>
-            <VBox fx:id="profilePane" spacing="20" style="-fx-background-color: #f5f5f5;;" stylesheets="@styles/stylee.css" visible="true">
+            <VBox fx:id="profilePane" spacing="20" style="-fx-background-color: #f5f5f5;;" stylesheets="@styles/style.css" visible="true">
                 <padding>
                     <Insets bottom="20" left="20" right="20" top="20" />
                 </padding>
@@ -137,4 +138,8 @@
          </children>
       </StackPane>
    </center>
+   <stylesheets>
+      <URL value="@styles/style.css" />
+      <URL value="@../styles/style.css" />
+   </stylesheets>
 </BorderPane>
