@@ -2,6 +2,8 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -10,7 +12,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane minHeight="500.0" minWidth="800.0" prefHeight="700.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane minHeight="500.0" minWidth="800.0" prefHeight="700.0" prefWidth="900.0" stylesheets="@../styles/style.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gov.iti.jets.controller.DashboardController">
    <left>
       <VBox maxWidth="140.0" minWidth="130.0" prefHeight="700.0" prefWidth="139.0" style="-fx-background-color: linear-gradient(to bottom, #13547a 0%, #80d0c7 100%);" BorderPane.alignment="CENTER">
          <children>
@@ -40,7 +42,7 @@
                   <Insets top="50.0" />
                </padding>
                <!-- Chats -->
-               <HBox alignment="CENTER_LEFT" minHeight="40.0">
+               <HBox styleClass="hbox" onMouseClicked="#chats" alignment="CENTER_LEFT" minHeight="40.0">
                   <children>
                      <ImageView fitHeight="30.0" fitWidth="30.0">
                         <image>
@@ -50,7 +52,7 @@
                            <Insets left="20.0" />
                         </HBox.margin>
                      </ImageView>
-                     <Label onMouseClicked="#chats" text="Chats" textFill="WHITE">
+                     <Label  text="Chats" textFill="WHITE">
                         <font>
                            <Font name="Arial Bold" size="11.0" />
                         </font>
@@ -61,7 +63,7 @@
                   </children>
                </HBox>
                <!-- Contacts -->
-               <HBox alignment="CENTER_LEFT" minHeight="40.0">
+               <HBox styleClass="hbox" onMouseClicked="#contacts" alignment="CENTER_LEFT" minHeight="40.0">
                   <children>
                      <ImageView fitHeight="30.0" fitWidth="30.0">
                         <image>
@@ -71,7 +73,7 @@
                            <Insets left="20.0" />
                         </HBox.margin>
                      </ImageView>
-                     <Label onMouseClicked="#contacts" text="Contacts" textFill="WHITE">
+                     <Label  text="Contacts" textFill="WHITE">
                         <font>
                            <Font name="Arial Bold" size="11.0" />
                         </font>
@@ -82,7 +84,7 @@
                   </children>
                </HBox>
                <!-- Groups -->
-               <HBox alignment="CENTER_LEFT" minHeight="40.0">
+               <HBox styleClass="hbox" onMouseClicked="#groups" alignment="CENTER_LEFT" minHeight="40.0">
                   <children>
                      <ImageView fitHeight="30.0" fitWidth="30.0">
                         <image>
@@ -92,7 +94,7 @@
                            <Insets left="20.0" />
                         </HBox.margin>
                      </ImageView>
-                     <Label onMouseClicked="#groups" text="Groups" textFill="WHITE">
+                     <Label  text="Groups" textFill="WHITE">
                         <font>
                            <Font name="Arial Bold" size="11.0" />
                         </font>
@@ -103,7 +105,7 @@
                   </children>
                </HBox>
                <!-- Settings -->
-               <HBox alignment="CENTER_LEFT" minHeight="40.0">
+               <HBox styleClass="hbox" onMouseClicked="#settings" alignment="CENTER_LEFT" minHeight="40.0">
                   <children>
                      <ImageView fitHeight="30.0" fitWidth="30.0">
                         <image>
@@ -113,7 +115,7 @@
                            <Insets left="20.0" />
                         </HBox.margin>
                      </ImageView>
-                     <Label onMouseClicked="#settings" text="Settings" textFill="WHITE">
+                     <Label  text="Settings" textFill="WHITE">
                         <font>
                            <Font name="Arial Bold" size="11.0" />
                         </font>
@@ -124,7 +126,7 @@
                   </children>
                </HBox>
                <!-- Notifications -->
-               <HBox alignment="CENTER_LEFT" minHeight="40.0">
+               <HBox styleClass="hbox" onMouseClicked="#notifications" alignment="CENTER_LEFT" minHeight="40.0">
                   <children>
                      <ImageView fitHeight="30.0" fitWidth="30.0">
                         <image>
@@ -134,7 +136,7 @@
                            <Insets left="20.0" />
                         </HBox.margin>
                      </ImageView>
-                     <Label text="Notifications" textFill="WHITE">
+                     <Label  text="Notifications" textFill="WHITE">
                         <font>
                            <Font name="Arial Bold" size="11.0" />
                         </font>
@@ -145,7 +147,7 @@
                   </children>
                </HBox>
                <!-- Chatbot -->
-               <HBox alignment="CENTER_LEFT" minHeight="40.0">
+               <HBox styleClass="hbox" alignment="CENTER_LEFT" minHeight="40.0">
                   <children>
                      <ImageView fitHeight="30.0" fitWidth="30.0">
                         <image>
@@ -165,7 +167,7 @@
                      </Label>
                   </children>
                </HBox>
-                  <HBox alignment="CENTER_LEFT" minHeight="40.0">
+                  <HBox styleClass="hbox" onMouseClicked="#announcements" alignment="CENTER_LEFT" minHeight="40.0">
                   <children>
                      <ImageView fitHeight="30.0" fitWidth="30.0">
                         <image>
@@ -175,7 +177,7 @@
                            <Insets left="20.0" />
                         </HBox.margin>
                      </ImageView>
-                     <Label text="announcment" textFill="WHITE">
+                     <Label  text="announcment" textFill="WHITE">
                         <font>
                            <Font name="Arial Bold" size="11.0" />
                         </font>
@@ -185,7 +187,7 @@
                      </Label>
                   </children>
                </HBox>
-                <HBox alignment="CENTER_LEFT" minHeight="40.0">
+                <HBox styleClass="hbox" onMouseClicked="#signOut" alignment="CENTER_LEFT" minHeight="40.0">
                   <children>
                      <ImageView fitHeight="30.0" fitWidth="30.0">
                         <image>
@@ -210,6 +212,11 @@
       </VBox>
    </left>
    <center>
-      <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+      <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+         <children>
+            <BorderPane fx:id="borderPane" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+               
+            </BorderPane>
+         </children></AnchorPane>
    </center>
 </BorderPane>

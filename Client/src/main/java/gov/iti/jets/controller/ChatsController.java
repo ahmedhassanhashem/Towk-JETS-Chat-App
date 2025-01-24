@@ -14,6 +14,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
@@ -21,6 +22,7 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TreeCell;
@@ -30,6 +32,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.WritableImage;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
@@ -56,67 +59,192 @@ public class ChatsController {
 
 
     private Stage stage;
-    private Scene contactScene;
-    private Scene addContactScene;
-    private Scene userInfoScene;
-    private Scene groupsScene;
-    private Scene settingsScene;
+    ObservableList<HBox> contacts =FXCollections.observableArrayList();
+    @FXML
+    private ListView<HBox> listView;
+    @FXML
+    private BorderPane borderPane;
 
 
-    public void setSettingsScene(Scene s){
-        settingsScene = s;
-    }
-    public void setGroupsSceneScene(Scene s){
-        groupsScene = s;
-    }
-    public void setuserInfoScene(Scene s){
-        userInfoScene = s;
-    }
-
-    public void setcontactScene(Scene s){
-        contactScene = s;
-    }
-
-    public void setAddContactScene(Scene s){
-        addContactScene = s;
-    }
 
     public void setStage(Stage s){
         stage =s;
     }
     @FXML
     private void addContact(MouseEvent event){
-        // System.out.println("aa");
-        stage.setScene(addContactScene);
-    }
-    @FXML
-    private void contacts(MouseEvent event){
-        // System.out.println("aa");
-        stage.setScene(contactScene);
-    }
-
-    @FXML
-    private void userInfo(MouseEvent event){
+        AnchorPane hold =null;
+                FXMLLoader addContactLoader = new FXMLLoader(getClass().getResource("/screens/AddNewContacts.fxml"));
+        try {
+            hold = addContactLoader.load();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        var addContactScene = new Scene(hold, 500, 400);
         Stage info = new Stage();
         info.initOwner(stage);
         info.initModality(Modality.APPLICATION_MODAL);
-        info.setScene(userInfoScene);
+        info.setScene(addContactScene);
         info.show();
     }
+    public void chatScene(){
+        listView.setItems(contacts);
+        HBox hold =null;
+        FXMLLoader addContactLoader = new FXMLLoader(getClass().getResource("/screens/ChatCad.fxml"));
 
-    @FXML
-    private void settings(MouseEvent event){
-        // System.out.println("aa");
-        stage.setScene(settingsScene);
+        try {
+            hold = addContactLoader.load();
+        } catch (IOException e) {
+ 
+            e.printStackTrace();
+        }
+        // final BorderPane chat;
+        final FXMLLoader chatLoader = new FXMLLoader(getClass().getResource("/screens/messageChat.fxml"));
+
+        // try {
+        //     chat = chatLoader.load();
+        // } catch (IOException e) {
+ 
+        //     e.printStackTrace();
+        // }
+
+        contacts.add(hold);
+
+        listView.setCellFactory(new Callback<ListView<HBox>,ListCell<HBox>>() {
+            @Override
+            public ListCell<HBox> call(ListView<HBox> p){
+                return new ListCell<HBox>(){
+                    protected void updateItem(HBox item,boolean empty){
+                        super.updateItem(item, empty);
+                        if (item == null || empty) {
+                            setText(null);
+                            setGraphic(null);
+                        } else {
+                            setGraphic(item);
+                            this.setOnMouseClicked((e)->{
+                                try {
+                                    final BorderPane chat = chatLoader.load();
+                                    // chat.setTop(new VBox());
+                                    borderPane.setCenter(chat);
+                                } catch (IOException e1) {
+                                    // TODO Auto-generated catch block
+                                    e1.printStackTrace();
+                                }
+                            });
+                        }
+                    }
+
+                };
+
+            }
+        });
     }
-    
-    @FXML
-    private void groups(MouseEvent event){
-        stage.setScene(groupsScene);
+    public void contactScene(){
+        listView.setItems(contacts);
+        HBox hold =null;
+        FXMLLoader addContactLoader = new FXMLLoader(getClass().getResource("/screens/CardContact.fxml"));
+
+        try {
+            hold = addContactLoader.load();
+        } catch (IOException e) {
+ 
+            e.printStackTrace();
+        }
+        // final BorderPane chat;
+        final FXMLLoader chatLoader = new FXMLLoader(getClass().getResource("/screens/messageChat.fxml"));
+
+        // try {
+        //     chat = chatLoader.load();
+        // } catch (IOException e) {
+ 
+        //     e.printStackTrace();
+        // }
+
+        contacts.add(hold);
+
+        listView.setCellFactory(new Callback<ListView<HBox>,ListCell<HBox>>() {
+            @Override
+            public ListCell<HBox> call(ListView<HBox> p){
+                return new ListCell<HBox>(){
+                    protected void updateItem(HBox item,boolean empty){
+                        super.updateItem(item, empty);
+                        if (item == null || empty) {
+                            setText(null);
+                            setGraphic(null);
+                        } else {
+                            setGraphic(item);
+                            this.setOnMouseClicked((e)->{
+                                try {
+                                    final BorderPane chat = chatLoader.load();
+                                    // chat.setTop(new VBox());
+                                    borderPane.setCenter(chat);
+                                } catch (IOException e1) {
+                                    // TODO Auto-generated catch block
+                                    e1.printStackTrace();
+                                }
+                            });
+                        }
+                    }
+
+                };
+
+            }
+        });
     }
-    
+
+    public void groupScene(){
+        listView.setItems(contacts);
+        HBox hold =null;
+        FXMLLoader addContactLoader = new FXMLLoader(getClass().getResource("/screens/CardContact.fxml"));
+
+        try {
+            hold = addContactLoader.load();
+        } catch (IOException e) {
+ 
+            e.printStackTrace();
+        }
+        // final BorderPane chat;
+        final FXMLLoader chatLoader = new FXMLLoader(getClass().getResource("/screens/messageChat.fxml"));
+
+        // try {
+        //     chat = chatLoader.load();
+        // } catch (IOException e) {
+ 
+        //     e.printStackTrace();
+        // }
+
+        contacts.add(hold);
+
+        listView.setCellFactory(new Callback<ListView<HBox>,ListCell<HBox>>() {
+            @Override
+            public ListCell<HBox> call(ListView<HBox> p){
+                return new ListCell<HBox>(){
+                    protected void updateItem(HBox item,boolean empty){
+                        super.updateItem(item, empty);
+                        if (item == null || empty) {
+                            setText(null);
+                            setGraphic(null);
+                        } else {
+                            setGraphic(item);
+                            this.setOnMouseClicked((e)->{
+                                try {
+                                    final BorderPane chat = chatLoader.load();
+                                    // chat.setTop(new VBox());
+                                    borderPane.setCenter(chat);
+                                } catch (IOException e1) {
+                                    // TODO Auto-generated catch block
+                                    e1.printStackTrace();
+                                }
+                            });
+                        }
+                    }
+
+                };
+
+            }
+        });
+    }
     @FXML
     private void initialize() {
-
+ 
     }
 }

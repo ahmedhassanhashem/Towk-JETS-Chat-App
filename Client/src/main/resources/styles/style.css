@@ -26,13 +26,13 @@
 
 .list1{
     
-     -fx-background-image: url('whats3.jpg');
+     -fx-background-image: url('../images/whats3.jpg');
     -fx-background-size: cover; 
     -fx-background-repeat: no-repeat; 
     -fx-background-position: center; 
 }
 .chat-list-view {
-    -fx-background-image: url('whats3.jpg');
+    -fx-background-image: url('../images/whats3.jpg');
     -fx-background-size: cover;
     -fx-background-repeat: no-repeat;
     -fx-background-position: center;
@@ -289,4 +289,23 @@ userModeComboBox .arrow-button {
 .pagination .left-arrow:pressed,
 .pagination .right-arrow:pressed {
     -fx-background-color: #2d9195;
+}
+
+.hbox {
+    -fx-background-color: transparent;
+    -fx-cursor: hand;
+    -fx-effect: null;
+}
+
+.hbox:hover {
+    -fx-background-color: transparent;
+    -fx-effect: dropshadow(gaussian, rgba(50, 205, 50, 0.6), 15, 0.8, 0, 4);
+    -fx-text-fill: #32cd32; /* Brighter green for text hover */
+    -fx-scale-x: 1.1;
+    -fx-scale-y: 1.1;
+}
+
+.hbox .text {
+    -fx-text-fill: #ffffff;
+    -fx-transition: all 0.3s ease;
 }
