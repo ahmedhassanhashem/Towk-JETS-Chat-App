@@ -51,3 +51,8 @@
 .menu-button .button {
     -fx-padding: 0 10px; /* Ensure the button has adequate padding */
 }
+
+.login {
+
+    -fx-background-color: linear-gradient(from 0% 0% to 0% 100%,#799612,#bce359);
+}

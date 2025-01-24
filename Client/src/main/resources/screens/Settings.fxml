@@ -36,7 +36,7 @@
          <children>
             <HBox alignment="CENTER" spacing="10">
                <children>
-                  <Button mnemonicParsing="false" style="-fx-background-color: #f0f0f0;">
+                  <Button onAction="#backButton" mnemonicParsing="false" style="-fx-background-color: #f0f0f0;">
                      <graphic>
                         <ImageView fitHeight="45.0" fitWidth="49.0" pickOnBounds="true" preserveRatio="true">
                            <image>
