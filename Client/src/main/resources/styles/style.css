@@ -110,8 +110,20 @@
 }
 
 .action-button:hover {
-    -fx-background-color: #45e592;
+    -fx-background-color: #38d9a9; 
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 10, 0, 0, 0); 
+    -fx-scale-x: 1.03;
+    -fx-scale-y: 1.03;
 }
+
+.action-button:pressed {
+    -fx-background-color: #32c193; 
+    -fx-effect: innershadow(gaussian, rgba(0, 0, 0, 0.4), 8, 0, 0, 0); 
+    -fx-scale-x: 0.98;
+    -fx-scale-y: 0.98;
+    -fx-translate-y: 2px; 
+}
+
 
 
 .namefield {
@@ -211,3 +223,70 @@ userModeComboBox .arrow-button {
 
 
 
+.chat-list-view .list-cell {
+    -fx-background-color: transparent;
+
+}
+
+.sent-message-container {
+    -fx-padding: 5;
+}
+
+.received-message-container {
+    -fx-padding: 5;
+}
+
+.list-cell:filled:selected:focused, .list-cell:filled:selected {
+    -fx-background-color: transparent;
+}
+
+.list-cell:filled:hover {
+    -fx-background-color: transparent;
+}
+
+.list-cell {
+    -fx-background-color: transparent;
+}
+
+.list-view {
+    -fx-background-insets: 0;
+    -fx-padding: 0;
+}
+
+
+
+.pagination .control-box {
+  -fx-alignment: center; 
+  -fx-spacing: 10px;                  
+}
+
+
+
+
+
+
+.pagination .left-arrow,
+.pagination .right-arrow {
+    -fx-background-color: transparent;
+    -fx-cursor: hand; 
+}
+
+.pagination .left-arrow {
+    -fx-shape: "M10 0 L0 10 L10 20 Z"; 
+    -fx-background-color: #40c9d1; 
+}
+
+.pagination .right-arrow {
+    -fx-shape: "M0 0 L10 10 L0 20 Z";
+    -fx-background-color: #40c9d1;
+}
+
+.pagination .left-arrow:hover,
+.pagination .right-arrow:hover {
+    -fx-background-color: #38b2bb; 
+}
+
+.pagination .left-arrow:pressed,
+.pagination .right-arrow:pressed {
+    -fx-background-color: #2d9195;
+}
