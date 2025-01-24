@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<GridPane alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="603.0" prefWidth="772.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml" fx:controller="gov.iti.jets.controller.ContactController">
+<GridPane alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="603.0" prefWidth="772.0" stylesheets="@../styles/style.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gov.iti.jets.controller.ContactController">
    <columnConstraints>
       <ColumnConstraints hgrow="SOMETIMES" maxWidth="182.4000244140625" minWidth="10.0" prefWidth="140.79998779296875" />
       <ColumnConstraints hgrow="SOMETIMES" maxWidth="416.7999862670898" minWidth="10.0" prefWidth="230.40001220703124" />
@@ -29,7 +29,7 @@
          <children>
             <HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="80.0" prefWidth="140.0">
                <children>
-                  <ImageView onMouseClicked="#userInfo" fitHeight="60.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true" styleClass="image_style">
+                  <ImageView fitHeight="60.0" fitWidth="60.0" onMouseClicked="#userInfo" pickOnBounds="true" preserveRatio="true" styleClass="image_style">
                      <image>
                         <Image url="@../images/userphoto.png" />
                      </image>
@@ -57,7 +57,7 @@
                         <Insets left="20.0" />
                      </HBox.margin>
                   </ImageView>
-                  <Label onMouseClicked="#chats" alignment="BOTTOM_LEFT" nodeOrientation="LEFT_TO_RIGHT" text="Chats" textFill="#1f2020">
+                  <Label alignment="BOTTOM_LEFT" nodeOrientation="LEFT_TO_RIGHT" onMouseClicked="#chats" text="Chats" textFill="#1f2020">
                      <font>
                         <Font name="Arial Bold" size="11.0" />
                      </font>
@@ -195,7 +195,7 @@
                         <Insets top="25.0" />
                      </HBox.margin>
                   </TextField>
-                  <ImageView onMouseClicked="#addContact" fitHeight="20.0" fitWidth="20.0" layoutX="10.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="20.0" fitWidth="20.0" layoutX="10.0" layoutY="10.0" onMouseClicked="#addContact" pickOnBounds="true" preserveRatio="true">
                      <HBox.margin>
                         <Insets left="15.0" top="25.0" />
                      </HBox.margin>
@@ -304,7 +304,7 @@
             </VBox>
          </children>
       </VBox>
-      <BorderPane fx:id="borderPane" prefHeight="200.0" prefWidth="200.0" styleClass="borderPane" stylesheets="@../styles/stylee.css" GridPane.columnIndex="2" GridPane.rowSpan="3">
+      <BorderPane fx:id="borderPane" prefHeight="200.0" prefWidth="200.0" styleClass="borderPane" stylesheets="@../styles/style.css" GridPane.columnIndex="2" GridPane.rowSpan="3">
          <center>
             <Label BorderPane.alignment="CENTER">
                <graphic>
