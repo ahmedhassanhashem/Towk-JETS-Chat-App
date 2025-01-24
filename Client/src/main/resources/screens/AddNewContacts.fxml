@@ -1,259 +1,46 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Pagination?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
-<?import javafx.scene.text.Text?>
 
-<GridPane alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="603.0" prefWidth="772.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml" fx:controller="gov.iti.jets.controller.AddContactController">
-   <columnConstraints>
-      <ColumnConstraints hgrow="SOMETIMES" maxWidth="182.4000244140625" minWidth="10.0" prefWidth="140.79998779296875" />
-      <ColumnConstraints hgrow="SOMETIMES" maxWidth="416.7999862670898" minWidth="10.0" prefWidth="230.40001220703124" />
-      <ColumnConstraints hgrow="SOMETIMES" maxWidth="415.4000305175781" minWidth="10.0" prefWidth="401.5999877929688" />
-   </columnConstraints>
-   <rowConstraints>
-      <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="100.0" vgrow="SOMETIMES" />
-      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-   </rowConstraints>
+
+<AnchorPane prefHeight="282.0" prefWidth="551.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gov.iti.jets.controller.AddContactController">
    <children>
-      <VBox maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="140.0" style="-fx-background-color: linear-gradient(to bottom, #2af598 0%, #009efd 100%);;" GridPane.halignment="CENTER" GridPane.rowSpan="3" GridPane.valignment="CENTER">
+      <Pagination layoutY="5.0" maxHeight="-Infinity" maxPageIndicatorCount="5" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" pageCount="5" prefHeight="238.0" prefWidth="634.0" stylesheets="@../styles/style.css" />
+      <VBox alignment="CENTER" layoutX="70.0" layoutY="28.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="171.0" prefWidth="500.0" spacing="10.0">
          <children>
-            <HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="80.0" prefWidth="140.0">
+            <HBox alignment="TOP_CENTER" prefHeight="50.0" prefWidth="600.0" spacing="20.0">
                <children>
-                  <ImageView onMouseClicked="#userInfo" fitHeight="60.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true" styleClass="image_style">
-                     <image>
-                        <Image url="@../images/userphoto.png" />
-                     </image>
-                     <HBox.margin>
-                        <Insets left="10.0" top="10.0" />
-                     </HBox.margin>
-                  </ImageView>
-                  <Label text="Amina">
-                     <HBox.margin>
-                        <Insets left="10.0" top="30.0" />
-                     </HBox.margin>
+                  <Label maxWidth="-Infinity" minWidth="-Infinity" prefHeight="50.0" prefWidth="55.0" text="Name">
                      <font>
-                        <Font name="Arial Bold" size="12.0" />
+                        <Font name="Arial Bold" size="14.0" />
                      </font>
                   </Label>
+                  <TextField maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="50.0" prefWidth="400.0" promptText="Enter contact Name" HBox.hgrow="NEVER" />
                </children>
             </HBox>
-            <HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="140.0">
+            <HBox alignment="TOP_CENTER" prefHeight="50.0" prefWidth="600.0" spacing="20.0">
                <children>
-                  <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../images/bubble-chat.png" />
-                     </image>
-                     <HBox.margin>
-                        <Insets left="20.0" />
-                     </HBox.margin>
-                  </ImageView>
-                  <Label onMouseClicked="#chats" alignment="BOTTOM_LEFT" nodeOrientation="LEFT_TO_RIGHT" text="Chats" textFill="#1f2020">
+                  <Label prefHeight="50.0" prefWidth="55.0" text="Number">
                      <font>
-                        <Font name="Arial Bold" size="11.0" />
+                        <Font name="Arial Bold" size="14.0" />
                      </font>
-                     <HBox.margin>
-                        <Insets left="10.0" top="10.0" />
-                     </HBox.margin>
                   </Label>
-               </children>
-               <VBox.margin>
-                  <Insets top="50.0" />
-               </VBox.margin>
-            </HBox>
-            <HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="140.0">
-               <children>
-                  <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../images/contact.png" />
-                     </image>
-                     <HBox.margin>
-                        <Insets left="20.0" />
-                     </HBox.margin>
-                  </ImageView>
-                  <Label onMouseClicked="#contacts" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="50.0" text="Contacts">
-                     <font>
-                        <Font name="Arial Bold" size="11.0" />
-                     </font>
-                     <HBox.margin>
-                        <Insets left="10.0" />
-                     </HBox.margin>
-                  </Label>
-               </children>
-               <VBox.margin>
-                  <Insets />
-               </VBox.margin>
-            </HBox>
-            <HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="140.0">
-               <children>
-                  <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../images/group.png" />
-                     </image>
-                     <HBox.margin>
-                        <Insets left="20.0" />
-                     </HBox.margin>
-                  </ImageView>
-                  <Label onMouseClicked="#groups" text="Groups">
-                     <font>
-                        <Font name="Arial Bold" size="11.0" />
-                     </font>
-                     <HBox.margin>
-                        <Insets left="10.0" top="10.0" />
-                     </HBox.margin>
-                  </Label>
-               </children>
-            </HBox>
-            <HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="122.0">
-               <children>
-                  <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../images/settings.png" />
-                     </image>
-                     <HBox.margin>
-                        <Insets left="20.0" />
-                     </HBox.margin>
-                  </ImageView>
-                  <Label onMouseClicked="#settings" text="Settings">
-                     <font>
-                        <Font name="Arial Bold" size="11.0" />
-                     </font>
-                     <HBox.margin>
-                        <Insets left="10.0" top="10.0" />
-                     </HBox.margin>
-                  </Label>
-               </children>
-            </HBox>
-            <HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="140.0">
-               <children>
-                  <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../images/bell.png" />
-                     </image>
-                     <HBox.margin>
-                        <Insets left="20.0" />
-                     </HBox.margin>
-                  </ImageView>
-                  <Label maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="70.0" text="Notifications">
-                     <font>
-                        <Font name="Arial Bold" size="11.0" />
-                     </font>
-                     <HBox.margin>
-                        <Insets left="10.0" />
-                     </HBox.margin>
-                  </Label>
-               </children>
-            </HBox>
-            <HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="140.0">
-               <children>
-                  <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../images/robotic.png" />
-                     </image>
-                     <HBox.margin>
-                        <Insets left="20.0" />
-                     </HBox.margin>
-                  </ImageView>
-                  <Label maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="50.0" text="Chatbot">
-                     <font>
-                        <Font name="Arial Bold" size="11.0" />
-                     </font>
-                     <HBox.margin>
-                        <Insets left="10.0" />
-                     </HBox.margin>
-                  </Label>
+                  <TextField maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="50.0" prefWidth="400.0" promptText="Enter Phone Number" HBox.hgrow="NEVER" />
                </children>
             </HBox>
          </children>
-         <GridPane.margin>
-            <Insets />
-         </GridPane.margin>
       </VBox>
-      <BorderPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowSpan="3">
-         <top>
-            <Text fill="#3fb77b" strokeType="OUTSIDE" strokeWidth="0.0" text="Add New Contact" BorderPane.alignment="TOP_CENTER">
-               <font>
-                  <Font name="Arial Bold" size="48.0" />
-               </font>
-               <BorderPane.margin>
-                  <Insets top="30.0" />
-               </BorderPane.margin>
-            </Text>
-         </top>
-         <center>
-            <VBox alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="500.0" style="-fx-background-color: white;" BorderPane.alignment="CENTER">
-               <children>
-                  <Label text="Name">
-                     <font>
-                        <Font name="Arial Bold" size="14.0" />
-                     </font>
-                     <VBox.margin>
-                        <Insets bottom="10.0" top="20.0" />
-                     </VBox.margin>
-                  </Label>
-                  <TextField maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="50.0" prefWidth="400.0" promptText="Enter contact Name">
-                     <VBox.margin>
-                        <Insets />
-                     </VBox.margin>
-                  </TextField>
-                  <Label text="Number">
-                     <VBox.margin>
-                        <Insets bottom="10.0" top="20.0" />
-                     </VBox.margin>
-                     <font>
-                        <Font name="Arial Bold" size="14.0" />
-                     </font>
-                  </Label>
-                  <TextField maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="50.0" prefWidth="400.0" promptText="Enter Phone Number">
-                     <VBox.margin>
-                        <Insets />
-                     </VBox.margin>
-                  </TextField>
-                  <HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="50.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
-                     <children>
-                        <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../images/plus.png" />
-                           </image>
-                        </ImageView>
-                        <Text fill="#3fb77b" strokeType="OUTSIDE" strokeWidth="0.0" text="add another number">
-                           <font>
-                              <Font size="14.0" />
-                           </font>
-                           <HBox.margin>
-                              <Insets left="10.0" top="5.0" />
-                           </HBox.margin>
-                        </Text>
-                     </children>
-                     <VBox.margin>
-                        <Insets top="10.0" />
-                     </VBox.margin>
-                  </HBox>
-                  <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="50.0" prefWidth="100.0" style="-fx-background-color: #3fb77b;" text="Save Contact">
-                     <VBox.margin>
-                        <Insets bottom="30.0" left="300.0" />
-                     </VBox.margin>
-                  </Button>
-               </children>
-               <BorderPane.margin>
-                  <Insets bottom="20.0" left="20.0" right="20.0" />
-               </BorderPane.margin>
-               <padding>
-                  <Insets left="40.0" />
-               </padding>
-            </VBox>
-         </center>
-      </BorderPane>
+      <Button layoutX="280.0" layoutY="228.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="30.0" prefWidth="80.0" style="-fx-background-color: linear-gradient(to bottom, #13547a 0%, #80d0c7 100%);" styleClass="action-button" stylesheets="@../styles/style.css" text="Add">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Button>
    </children>
-</GridPane>
+</AnchorPane>
