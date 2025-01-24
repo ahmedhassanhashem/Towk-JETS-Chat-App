@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import javafx.collections.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
 <?import java.lang.String?>
 <?import java.net.URL?>
 <?import javafx.collections.FXCollections?>
@@ -19,7 +27,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gov.iti.jets.controller.SettingsController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" stylesheets="@../styles/style.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gov.iti.jets.controller.SettingsController">
    <left>
       <VBox spacing="10" style="-fx-background-color: #f0f0f0; -fx-min-width: 200;" styleClass="sidebar" stylesheets="@../styles/style.css">
            <padding>
@@ -28,14 +36,23 @@
          <children>
             <HBox alignment="CENTER" spacing="10">
                <children>
-                  <Label style="-fx-font-size: 20; -fx-font-weight: bold;" text="Settings" />
+                  <Button mnemonicParsing="false" style="-fx-background-color: #f0f0f0;">
+                     <graphic>
+                        <ImageView fitHeight="45.0" fitWidth="49.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../images/left-arrow.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+                  <Label style="-fx-font-size: 30; -fx-font-weight: bold;" text="Settings" textFill="#13547a" />
                </children>
             </HBox>
-            <Button fx:id="profileBtn" maxWidth="Infinity" styleClass="sidebar-button" stylesheets="@../styles/style.css" text="Profile">
+            <Button fx:id="profileBtn" maxWidth="Infinity" style="-fx-background-color: linear-gradient(to bottom, #13547a 0%, #80d0c7 100%);" styleClass="sidebar-button" stylesheets="@../styles/style.css" text="Profile">
                <VBox.margin>
                   <Insets top="100.0" />
                </VBox.margin></Button>
-            <Button fx:id="accountBtn" maxWidth="Infinity" onAction="#account" styleClass="sidebar-button" stylesheets="@../styles/style.css" text="Account" />
+            <Button fx:id="accountBtn" maxWidth="Infinity" onAction="#account" style="-fx-background-color: linear-gradient(to bottom, #13547a 0%, #80d0c7 100%);" styleClass="sidebar-button" stylesheets="@../styles/style.css" text="Account" />
          </children>
       </VBox>
    </left>
@@ -71,7 +88,7 @@
                         <Insets bottom="20.0" />
                      </VBox.margin>
                   </HBox>
-                  <Label text="Display Name">
+                  <Label text="Name">
                      <font>
                         <Font name="System Bold" size="14.0" />
                      </font>
@@ -79,7 +96,7 @@
                         <Insets />
                      </VBox.margin>
                   </Label>
-                  <TextField promptText="display your name" styleClass="namefield" />
+                  <TextField promptText="Write your name" styleClass="namefield" />
                   <Label text="Bio">
                      <font>
                         <Font name="System Bold" size="14.0" />
@@ -88,7 +105,7 @@
                         <Insets />
                      </VBox.margin>
                   </Label>
-                  <TextArea promptText="writ some thing about you self" styleClass="bioarea">
+                  <TextArea promptText="Write something about your self" styleClass="bioarea">
                      <VBox.margin>
                         <Insets />
                      </VBox.margin></TextArea>
@@ -127,10 +144,9 @@
                            </HBox.margin></Label>
                      </children>
                   </HBox>
-                  <HBox spacing="30.0">
+                  <HBox alignment="TOP_RIGHT" prefHeight="66.0" prefWidth="550.0" spacing="30.0">
                      <children>
-                        <Button maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#dashboard" prefWidth="80.0" styleClass="action-button" text="Leave" />
-                        <Button layoutX="10.0" layoutY="10.0" maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#dashboard" prefWidth="80.0" styleClass="action-button" text="Save" />
+                        <Button layoutX="10.0" layoutY="10.0" maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#dashboard" prefWidth="80.0" style="-fx-background-color: linear-gradient(to bottom, #13547a 0%, #80d0c7 100%);" styleClass="action-button" text="Save" textFill="WHITE" />
                      </children>
                   </HBox>
                </children>
