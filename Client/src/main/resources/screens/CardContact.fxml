@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.text.Text?>
+
+<HBox alignment="CENTER_LEFT" minHeight="70.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <ImageView fitHeight="40.0" fitWidth="40.0">
+         <image>
+            <Image url="@../images/boy.png" />
+         </image>
+         <HBox.margin>
+            <Insets left="20.0" />
+         </HBox.margin>
+      </ImageView>
+      <VBox alignment="CENTER_LEFT" prefWidth="100.0" style="-fx-background-color: white;" HBox.hgrow="ALWAYS">
+         <children>
+            <Label alignment="CENTER" text="ContactName" VBox.vgrow="ALWAYS" />
+            <HBox alignment="CENTER_LEFT" maxHeight="-Infinity" prefHeight="20.0" VBox.vgrow="ALWAYS">
+               <children>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="bio" />
+                  <Circle fill="DODGERBLUE" radius="4.0" stroke="BLACK" strokeType="INSIDE" style="-fx-fill: green;">
+                     <HBox.margin>
+                        <Insets left="60.0" />
+                     </HBox.margin>
+                  </Circle>
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+   </children>
+</HBox>
