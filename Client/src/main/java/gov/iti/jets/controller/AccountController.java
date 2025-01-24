@@ -81,6 +81,11 @@ public class AccountController {
         stage.setScene(dashboardScene);
     }
 
+    @FXML
+    private void backButton(ActionEvent event){
+
+        stage.setScene(dashboardScene);
+    }
 
 
 

@@ -31,7 +31,7 @@ public class App extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
-        stage.setTitle("Browsar");
+        // stage.setTitle("Browsar");
 
         int width = 640,height = 480;
 
@@ -87,7 +87,7 @@ public class App extends Application {
         contactController.setAddContactScene(addContactScene);
         dashController.setAddContactScene(addContactScene);
         chatsController.setAddContactScene(addContactScene);
-        loginController.setdashScene(dashScene);
+        loginController.setDashScene(dashScene);
 
         addContactController.setStage(stage);
         addContactController.setchatsScene(chatsScene);
@@ -146,8 +146,8 @@ public class App extends Application {
         accountController.setSettingsScene(settingsScene);
         accountController.setStage(stage);
 
-
-        registerController.setdashScene(dashScene);
+        loginController.setDashScene(dashScene);
+        registerController.setDashScene(dashScene);
         stage.setScene(loginScene);
         stage.show();
     }

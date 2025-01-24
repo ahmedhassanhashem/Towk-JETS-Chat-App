@@ -4,9 +4,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 
-
-
-
 import java.io.*;
 
 import javafx.application.Platform;
@@ -22,6 +19,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TreeCell;
 import javafx.scene.control.TreeItem;
@@ -43,37 +41,53 @@ import java.net.UnknownHostException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import gov.iti.jets.ConSingleton;
+
 public class LoginPageController {
 
     private Stage stage;
     private Scene signup;
     private Scene serverScene;
+    private Connection con;
 
     @FXML
-    private void gotoSingup(){
+    private TextField phoneField;
+
+    @FXML
+    private PasswordField passwordField;
+
+    @FXML
+    private void gotoSingup() {
         stage.setScene(signup);
     }
 
-    public void setStage(Stage stage){
+    public void setStage(Stage stage) {
         this.stage = stage;
     }
 
     @FXML
-    private void signIn(ActionEvent event){
+    private void signIn(ActionEvent event) {
         // System.out.println("aa");
+        if(checkUser(phoneField.getText(), passwordField.getText()))
         stage.setScene(serverScene);
+        else{
+            System.out.println("Wrong user/pass");
+        }
     }
 
-    public void setServerScene(Scene s){
+    public void setServerScene(Scene s) {
+        
         serverScene = s;
     }
-    public void setSignUp(Scene s){
+
+    public void setSignUp(Scene s) {
         signup = s;
     }
 
@@ -86,15 +100,43 @@ public class LoginPageController {
     // private TreeItem<FlowPane> allroot;
     // @FXML
     // private void onEnter(ActionEvent event){
-       
+
     // }
-
-
-
-
 
     @FXML
     private void initialize() {
+        ConSingleton meh = ConSingleton.getInstance();
+        con = meh.conn();
+        // Statement stmt;
+        // ResultSet re;
+        // try {
+        // stmt =
+        // con.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_UPDATABLE);
+        // re = stmt.executeQuery("SELECT * FROM employee");
+        // } catch (SQLException e) {
+        // // TODO Auto-generated catch block
+        // e.printStackTrace();
+        // }
+    }
+
+    private Boolean checkUser(String phone,String password){
+        String sql2 = "Select * From User where phone = ? And password = ?";
+        ResultSet re;
+        try {
+            PreparedStatement preparedStatement = con.prepareStatement(sql2);
+                preparedStatement.setString(1, phone);
+                preparedStatement.setString(2, password);
+                re =preparedStatement.executeQuery();
+                if(re.next()){
+                    return true;
+                }else return false;
+            } catch (SQLException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+                return false;
+            }
 
     }
+
+
 }

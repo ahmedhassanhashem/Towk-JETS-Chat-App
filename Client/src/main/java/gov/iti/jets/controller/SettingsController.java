@@ -83,6 +83,12 @@ public class SettingsController {
         stage.setScene(dashboardScene);
     }
 
+    @FXML
+    private void backButton(ActionEvent event){
+        System.out.println("aa");
+        stage.setScene(dashboardScene);
+    }
+
 
 
     @FXML
