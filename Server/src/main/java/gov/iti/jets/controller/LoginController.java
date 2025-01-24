@@ -7,6 +7,8 @@ import java.io.IOException;
 import java.io.*;
 
 import javafx.application.Platform;
+import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -30,6 +32,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.image.WritableImage;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
+import javafx.scene.input.KeyCombination;
 import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.BorderStroke;
@@ -57,23 +60,18 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import gov.iti.jets.ConSingleton;
 import gov.iti.jets.dao.UserDAO;
 import gov.iti.jets.dto.UserDTO;
 
-
-public class LoginPageController {
+public class LoginController {
 
     private Stage stage;
-    private Scene signup;
-    private Scene dashScene;
+    private Scene serverScene;
     private UserDAO userDao = new UserDAO();
 
     @FXML
     private Button loginButton;
-
-
-    @FXML
-    private Label invalid;
 
     @FXML
     private TextField phoneField;
@@ -82,23 +80,28 @@ public class LoginPageController {
     private PasswordField passwordField;
 
     @FXML
-    private void gotoSignup() {
-        stage.setScene(signup);
-    }
+    private Label invalid;
 
     public void setStage(Stage stage) {
         this.stage = stage;
+        // ReadOnlyDoubleProperty h = stage.heightProperty();
+        var w = stage.widthProperty().multiply(0.3);
+        phoneField.prefWidthProperty().bind(w);
+        passwordField.prefWidthProperty().bind(w);
+
+        // invalid.minWidthProperty().bind(w);
+        // invalid.minHeightProperty().bind(h);
     }
 
     @FXML
     private void signIn(ActionEvent event) {
-
-                UserDTO user = new UserDTO();
+        // System.out.println("aa");
+        UserDTO user = new UserDTO();
         user.setPhone(phoneField.getText());
         user.setPassword(passwordField.getText());
         user = userDao.read(user);
         if(user != null)
-        Platform.runLater(() -> stage.setScene(dashScene));
+        Platform.runLater(() -> stage.setScene(serverScene));
         // stage.setScene(serverScene);
         else{
             Platform.runLater(() ->{
@@ -110,29 +113,16 @@ public class LoginPageController {
         }
     }
 
-    public void setDashScene(Scene s) {
+    public void setServerScene(Scene s) {
         
-        dashScene = s;
+        serverScene = s;
     }
 
-    public void setSignUp(Scene s) {
-        signup = s;
-    }
 
-    // @FXML
-    // private ListView<FlowPane> list;
-
-    // @FXML
-    // private TextField txtF;
-
-    // private TreeItem<FlowPane> allroot;
-    // @FXML
-    // private void onEnter(ActionEvent event){
-
-    // }
 
     @FXML
     private void initialize() {
+        // phoneField.onKeyTypedProperty(()-> invalid.setVisible(false));
         phoneField.setOnKeyPressed((e)-> {
             
             invalid.setVisible(false);
@@ -144,14 +134,12 @@ public class LoginPageController {
             phoneField.setBorder(null);   
             passwordField.setBorder(null); 
         });
-        
         loginButton.sceneProperty().addListener((observable, oldScene, newScene)-> {
             if(newScene !=null) setSaveAccelerator(loginButton);
             });
+        
 
-
-
-}
+    }
     private void setSaveAccelerator(Button button) {
         if(button==null) {
             System.out.println("Button is null! "); 

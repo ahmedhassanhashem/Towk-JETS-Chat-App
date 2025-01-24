@@ -2,7 +2,7 @@ package gov.iti.jets;
 
 import java.io.IOException;
 
-
+import gov.iti.jets.controller.LoginController;
 import gov.iti.jets.controller.LoginPageController;
 import gov.iti.jets.controller.RegistrationPageController;
 import gov.iti.jets.controller.ServerController;
@@ -29,22 +29,15 @@ public class App extends Application {
 
         int width = 640,height = 480;
 
-        FXMLLoader registerLoader = new FXMLLoader(getClass().getResource("/screens/Registration Page.fxml"));
-		GridPane rootRegister = registerLoader.load();
-        RegistrationPageController registerController = registerLoader.getController();
 
-        FXMLLoader loginLoader = new FXMLLoader(getClass().getResource("/screens/Login Page.fxml"));
+        FXMLLoader loginLoader = new FXMLLoader(getClass().getResource("/screens/Login.fxml"));
 		GridPane rootLogin = loginLoader.load();
-        LoginPageController loginController = loginLoader.getController();
+        LoginController loginController = loginLoader.getController();
         
         Scene loginScene = new Scene(rootLogin, width, height);
-        Scene registerScene = new Scene(rootRegister, width, height);
 
         loginController.setStage(stage);
-        loginController.setSignUp(registerScene);
 
-        registerController.setStage(stage);
-        registerController.setSignIn(loginScene);
 
         // var scene = new Scene(loginScene, width, height);
 
@@ -58,7 +51,6 @@ public class App extends Application {
 
         Scene serverScene = new Scene(server, width+200, height+20);
         loginController.setServerScene(serverScene);
-        registerController.setServerScene(serverScene);
         // stage.setResizable(false);
         stage.setScene(loginScene);
         stage.show();
