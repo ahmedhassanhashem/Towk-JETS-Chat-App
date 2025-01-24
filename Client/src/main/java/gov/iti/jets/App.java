@@ -16,6 +16,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
@@ -36,62 +37,31 @@ public class App extends Application {
         int width = 640,height = 480;
 
         FXMLLoader registerLoader = new FXMLLoader(getClass().getResource("/screens/Registration Page.fxml"));
-		GridPane rootLogin = registerLoader.load();
+		GridPane rootRegister = registerLoader.load();
         RegistrationPageController registerController = registerLoader.getController();
 
         FXMLLoader loginLoader = new FXMLLoader(getClass().getResource("/screens/Login Page.fxml"));
-		GridPane rootRegister = loginLoader.load();
+		GridPane rootLogin = loginLoader.load();
         LoginPageController loginController = loginLoader.getController();
         
         Scene loginScene = new Scene(rootLogin, width, height);
         Scene registerScene = new Scene(rootRegister, width, height);
 
         loginController.setStage(stage);
-        loginController.setSignUp(loginScene);
+        loginController.setSignUp(registerScene);
 
         registerController.setStage(stage);
-        registerController.setSignIn(registerScene);
+        registerController.setSignIn(loginScene);
 
-        FXMLLoader dashLoader = new FXMLLoader(getClass().getResource("/screens/DashBoard.fxml"));
-		GridPane dashBoard = dashLoader.load();
+
+        FXMLLoader dashLoader = new FXMLLoader(getClass().getResource("/screens/base.fxml"));
+		BorderPane dashBoard = dashLoader.load();
         DashboardController dashController = dashLoader.getController();
 
         var dashScene = new Scene(dashBoard, width+200, height+100);
 
-        FXMLLoader chatsLoader = new FXMLLoader(getClass().getResource("/screens/Chats.fxml"));
-		GridPane chats = chatsLoader.load();
-        ChatsController chatsController = chatsLoader.getController();
-
-        var chatsScene = new Scene(chats, width+200, height+100);
-
-        chatsController.setStage(stage);
-        dashController.setchatsScene(chatsScene);
-
-        FXMLLoader contactLoader = new FXMLLoader(getClass().getResource("/screens/Contact.fxml"));
-		GridPane contactBoard = contactLoader.load();
-        ContactController contactController = contactLoader.getController();
-
-        var contactScene = new Scene(contactBoard, width+200, height+100);
-
         dashController.setStage(stage);
-        dashController.setcontactScene(contactScene);
-        chatsController.setcontactScene(contactScene);
-        contactController.setStage(stage);
-        contactController.setchatsScene(chatsScene);
-
-        FXMLLoader addContactLoader = new FXMLLoader(getClass().getResource("/screens/AddNewContacts.fxml"));
-		GridPane addContactBoard = addContactLoader.load();
-        AddContactController addContactController = addContactLoader.getController();
-
-        var addContactScene = new Scene(addContactBoard, width+200, height+100);
-        contactController.setAddContactScene(addContactScene);
-        dashController.setAddContactScene(addContactScene);
-        chatsController.setAddContactScene(addContactScene);
-        loginController.setDashScene(dashScene);
-
-        addContactController.setStage(stage);
-        addContactController.setchatsScene(chatsScene);
-        addContactController.setcontactScene(contactScene);
+        dashController.setLoginsScene(loginScene);
 
         FXMLLoader userInfoLoader = new FXMLLoader(getClass().getResource("/screens/User_Info.fxml"));
 		BorderPane userInfo = userInfoLoader.load();
@@ -100,25 +70,6 @@ public class App extends Application {
         var userInfoScene = new Scene(userInfo, width-100, height+300);
 
         dashController.setuserInfoScene(userInfoScene);
-        chatsController.setuserInfoScene(userInfoScene);
-        contactController.setuserInfoScene(userInfoScene);
-        addContactController.setuserInfoScene(userInfoScene);
-
-        FXMLLoader groupsLoader = new FXMLLoader(getClass().getResource("/screens/Groups.fxml"));
-		GridPane groupsBoard = groupsLoader.load();
-        GroupsController groupsController = groupsLoader.getController();
-
-        var groupsScene = new Scene(groupsBoard, width+200, height+100);
-
-        groupsController.setStage(stage);
-        groupsController.setAddContactScene(addContactScene);
-        groupsController.setchatsScene(chatsScene);
-        groupsController.setuserInfoScene(userInfoScene);
-        groupsController.setcontactScene(contactScene);
-        dashController.setGroupsSceneScene(groupsScene);
-        chatsController.setGroupsSceneScene(groupsScene);
-        contactController.setGroupsSceneScene(groupsScene);
-        addContactController.setGroupsSceneScene(groupsScene);
 
         FXMLLoader settingsLoader = new FXMLLoader(getClass().getResource("/screens/Settings.fxml"));
 		BorderPane settingsBoard = settingsLoader.load();
@@ -128,12 +79,8 @@ public class App extends Application {
 
         settingsController.setDashboardScene(dashScene);
         settingsController.setStage(stage);
-
-        groupsController.setSettingsScene(settingsScene);
-        addContactController.setSettingsScene(settingsScene);
-        chatsController.setSettingsScene(settingsScene);
-        contactController.setSettingsScene(settingsScene);
         dashController.setSettingsScene(settingsScene);
+
 
         FXMLLoader accountLoader = new FXMLLoader(getClass().getResource("/screens/Account.fxml"));
 		BorderPane accountBoard = accountLoader.load();

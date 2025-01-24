@@ -143,6 +143,7 @@ public class RegistrationPageController {
         }else{
 
             stage.setScene(dashScene);
+            
         }
         // if(checkUser(phoneField.getText())){
         //     System.out.println("User already there!");

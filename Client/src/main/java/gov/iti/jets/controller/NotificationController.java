@@ -22,9 +22,8 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
-import javafx.scene.control.Tab;
-import javafx.scene.control.TabPane;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TreeCell;
 import javafx.scene.control.TreeItem;
@@ -54,40 +53,63 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class AddContactController {
-
+public class NotificationController {
 
 
     private Stage stage;
-    private Scene chatsScene;
-    private Scene contactScene;
-    // private Scene addContactScene;
-    private Scene userInfoScene;
-    private Scene groupsScene;
     private Scene settingsScene;
-    private int pageCounter = 2;
-
+    private Scene dashboardScene;
+    ObservableList<HBox> contacts =FXCollections.observableArrayList();
     @FXML
-    private TabPane tabPane;
+    private ListView<HBox> listView;
 
+
+    public void setSettingsScene(Scene s){
+        settingsScene = s;
+    }
+
+    public void setDashboardScene(Scene s){
+        dashboardScene = s;
+    }
 
     public void setStage(Stage s){
         stage =s;
     }
-    
+
+
+
+
     @FXML
     private void initialize() {
-        Tab tab = null;
-        FXMLLoader addContactLoader = new FXMLLoader(getClass().getResource("/screens/ContactTab.fxml"));
-		try {
-            tab = addContactLoader.load();
+        listView.setItems(contacts);
+        HBox hold =null;
+        FXMLLoader addContactLoader = new FXMLLoader(getClass().getResource("/screens/FriendRequestCard.fxml"));
+
+        try {
+            hold = addContactLoader.load();
         } catch (IOException e) {
+ 
             e.printStackTrace();
         }
-        ContactTabController addContactController = addContactLoader.getController();
-        addContactController.setTabPane(tabPane);
-        addContactController.setPageCounter(1);
-        tabPane.getTabs().add(tab);
-        tabPane.getSelectionModel().select(tab);
+        contacts.add(hold);
+        addContactLoader = new FXMLLoader(getClass().getResource("/screens/FriendRequestCard.fxml"));
+
+        try {
+            hold = addContactLoader.load();
+        } catch (IOException e) {
+ 
+            e.printStackTrace();
+        }
+        contacts.add(hold);
+        addContactLoader = new FXMLLoader(getClass().getResource("/screens/FriendRequestCard.fxml"));
+
+        try {
+            hold = addContactLoader.load();
+        } catch (IOException e) {
+ 
+            e.printStackTrace();
+        }
+        contacts.add(hold);
+
     }
 }

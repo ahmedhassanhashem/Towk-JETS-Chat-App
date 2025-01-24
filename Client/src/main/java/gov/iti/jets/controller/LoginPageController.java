@@ -88,18 +88,22 @@ public class LoginPageController {
 
     public void setStage(Stage stage) {
         this.stage = stage;
+        var w = stage.widthProperty().multiply(0.3);
+        phoneField.prefWidthProperty().bind(w);
+        passwordField.prefWidthProperty().bind(w);
     }
 
     @FXML
     private void signIn(ActionEvent event) {
-
+        
+        stage.setScene(dashScene);
+        /*
                 UserDTO user = new UserDTO();
         user.setPhone(phoneField.getText());
         user.setPassword(passwordField.getText());
         user = userDao.read(user);
         if(user != null)
         Platform.runLater(() -> stage.setScene(dashScene));
-        // stage.setScene(serverScene);
         else{
             Platform.runLater(() ->{
             invalid.setVisible(true);
@@ -108,6 +112,7 @@ public class LoginPageController {
             System.out.println("Wrong user/pass");
         });
         }
+        */
     }
 
     public void setDashScene(Scene s) {
@@ -148,6 +153,7 @@ public class LoginPageController {
         loginButton.sceneProperty().addListener((observable, oldScene, newScene)-> {
             if(newScene !=null) setSaveAccelerator(loginButton);
             });
+
 
 
 
