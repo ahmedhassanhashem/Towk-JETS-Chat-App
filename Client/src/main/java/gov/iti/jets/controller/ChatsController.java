@@ -65,15 +65,18 @@ public class ChatsController {
     @FXML
     private BorderPane borderPane;
     private UserDTO userDTO = new UserDTO();
-    private UserChatDAO userChatDAO= new UserChatDAO();
+    private UserChatDAO userChatDAO = new UserChatDAO();
+    private ContactDAO contactDAO = new ContactDAO();
 
     public void setStage(Stage s) {
         stage = s;
     }
+
     public void setUserDTO(UserDTO user) {
         userDTO = user;
 
     }
+
     @FXML
     private void addContact(ActionEvent event) {
         AnchorPane hold = null;
@@ -111,38 +114,36 @@ public class ChatsController {
     public void chatScene() {
         listView.setItems(contacts);
         // HBox hold = null;
-        // FXMLLoader addContactLoader = new FXMLLoader(getClass().getResource("/screens/ChatCad.fxml"));
+        // FXMLLoader addContactLoader = new
+        // FXMLLoader(getClass().getResource("/screens/ChatCad.fxml"));
 
         // try {
-        //     hold = addContactLoader.load();
+        // hold = addContactLoader.load();
         // } catch (IOException e) {
 
-        //     e.printStackTrace();
+        // e.printStackTrace();
         // }
 
         // contacts.add(hold);
 
         ObservableList<UserDTO> userDTOs = userChatDAO.findAll(userDTO.getUserID());
-        
-for (UserDTO user : userDTOs) {
-    try {
-        FXMLLoader addContactLoader = new FXMLLoader(getClass().getResource("/screens/ChatCad.fxml"));
-        HBox chatCard = addContactLoader.load();
 
-        
-        ChatCadController chatCardController = addContactLoader.getController();
+        for (UserDTO user : userDTOs) {
+            try {
+                FXMLLoader addContactLoader = new FXMLLoader(getClass().getResource("/screens/ChatCad.fxml"));
+                HBox chatCard = addContactLoader.load();
 
-        
-        chatCardController.setImage(user.getUserPicture());
-        chatCardController.setLabel(user.getName()); 
-        chatCardController.setText("last message");
+                ChatCadController chatCardController = addContactLoader.getController();
 
-        
-        contacts.add(chatCard);
-    } catch (IOException e) {
-        e.printStackTrace();
-    }
-}
+                chatCardController.setImage(user.getUserPicture());
+                chatCardController.setLabel(user.getName());
+                chatCardController.setText("last message");
+
+                contacts.add(chatCard);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
 
         listView.setCellFactory(new Callback<ListView<HBox>, ListCell<HBox>>() {
             @Override
@@ -176,28 +177,27 @@ for (UserDTO user : userDTOs) {
         });
     }
 
+    public void contactScene() {
+        listView.setItems(contacts);
 
-    public void contactScene(){
-        ObservableList<UserDTO> list = new ContactDAO().findAllContactsACCEPTED("010");
-        FXMLLoader addContactLoader = new FXMLLoader(getClass().getResource("/screens/CardContact.fxml"));
-        HBox hold = null;
-        try {
-            hold = addContactLoader.load();
-        } catch (IOException e) {
+        ObservableList<UserDTO> list = contactDAO.findAllContactsACCEPTED(userDTO.getPhone());
 
-            e.printStackTrace();
+        for (UserDTO user : list) {
+            try {
+                FXMLLoader addContactLoader = new FXMLLoader(getClass().getResource("/screens/CardContact.fxml"));
+                HBox chatCard = addContactLoader.load();
+
+                ContactCardController contactCardController = addContactLoader.getController();
+
+                contactCardController.setPicture(user.getUserPicture());
+                contactCardController.setName(user.getName());
+                contactCardController.setBio(user.getBio());
+
+                contacts.add(chatCard);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
-        // final BorderPane chat;
-        final FXMLLoader chatLoader = new FXMLLoader(getClass().getResource("/screens/messageChat.fxml"));
-
-        // try {
-        // chat = chatLoader.load();
-        // } catch (IOException e) {
-
-        // e.printStackTrace();
-        // }
-
-        contacts.add(hold);
 
         listView.setCellFactory(new Callback<ListView<HBox>, ListCell<HBox>>() {
             @Override
@@ -212,6 +212,8 @@ for (UserDTO user : userDTOs) {
                             setGraphic(item);
                             this.setOnMouseClicked((e) -> {
                                 try {
+                                    final FXMLLoader chatLoader = new FXMLLoader(
+                                            getClass().getResource("/screens/messageChat.fxml"));
                                     final BorderPane chat = chatLoader.load();
                                     // chat.setTop(new VBox());
                                     borderPane.setCenter(chat);

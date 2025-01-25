@@ -42,11 +42,11 @@ public class DatabaseConnectionManager {
             config.setJdbcUrl(props.getProperty("MYSQL_DB_URL"));
             config.setUsername(props.getProperty("MYSQL_DB_USERNAME"));
             config.setPassword(props.getProperty("MYSQL_DB_PASSWORD"));
-            config.setMaximumPoolSize(10);
+            config.setMaximumPoolSize(30);
             config.setMinimumIdle(2);
-            config.setIdleTimeout(30000);
+            config.setIdleTimeout(60000);
             config.setMaxLifetime(1800000);
-            config.setConnectionTimeout(30000);
+            config.setConnectionTimeout(60000);
         } catch (IOException e) {
             e.printStackTrace();
         }
