@@ -52,6 +52,8 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import gov.iti.jets.dto.UserDTO;
+
 public class ChatsController {
 
     private Stage stage;
@@ -60,11 +62,15 @@ public class ChatsController {
     private ListView<HBox> listView;
     @FXML
     private BorderPane borderPane;
+    private UserDTO userDTO = new UserDTO();
 
     public void setStage(Stage s) {
         stage = s;
     }
+    public void setUserDTO(UserDTO user) {
+        userDTO = user;
 
+    }
     @FXML
     private void addContact(ActionEvent event) {
         AnchorPane hold = null;
