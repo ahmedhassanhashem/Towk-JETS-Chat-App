@@ -4,19 +4,29 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
+
+import javax.sql.RowSet;
+import javax.sql.rowset.CachedRowSet;
+import javax.sql.rowset.FilteredRowSet;
+import javax.sql.rowset.Predicate;
+import javax.sql.rowset.RowSetProvider;
+
 import gov.iti.jets.dto.Gender;
 import gov.iti.jets.dto.UserDTO;
 import gov.iti.jets.dto.UserMode;
 import gov.iti.jets.dto.UserStatus;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.scene.chart.PieChart;
 
 public class UserDAO implements DAO<UserDTO>{
     DatabaseConnectionManager meh;
     Connection con;
     public UserDAO(){
         meh = DatabaseConnectionManager.getInstance();
-        con = meh.getConnection();
-        
+        con = meh.getConnection();        
     }
     @Override
     public UserDTO create(UserDTO user) {
@@ -61,9 +71,31 @@ public class UserDAO implements DAO<UserDTO>{
 
     @Override
     public List<UserDTO> findAll() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'findAll'");
+        return null;
     }
+
+    
+
+    public ObservableList<PieChart.Data> getUserStatistics(String columnName) {
+        ObservableList<PieChart.Data> data = FXCollections.observableArrayList();
+        String query = String.format("SELECT %s, COUNT(*) AS count FROM user GROUP BY %s", columnName, columnName);
+    
+        try (PreparedStatement ps = con.prepareStatement(query);
+             ResultSet rs = ps.executeQuery()) {
+    
+            while (rs.next()) {
+                String label = rs.getString(columnName); 
+                int count = rs.getInt("count"); 
+                data.add(new PieChart.Data(label, count));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    
+        return data;
+    }
+    
+
     private UserDTO convert(ResultSet re){
         UserDTO user = new UserDTO();
         try {
@@ -102,4 +134,13 @@ public class UserDAO implements DAO<UserDTO>{
         return null;
     }
 
+}
+
+
+class test{
+    public static void main(String[] args) {
+        UserDAO user = new UserDAO();
+        ObservableList<PieChart.Data> pieChartData = user.getUserStatistics("country");
+        System.out.println(pieChartData.size());
+    }
 }
