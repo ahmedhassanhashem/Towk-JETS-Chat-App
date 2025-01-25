@@ -31,6 +31,7 @@ public class App extends Application {
         entreeController dashController = dashLoader.getController();
 
         var dashScene = new Scene(dashBoard, width, height);
+        dashController.setMyScene(dashScene);
         dashController.setStage(stage);
         stage.setScene(dashScene);
         stage.show();

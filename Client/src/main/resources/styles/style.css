@@ -7,9 +7,6 @@
     -fx-border-color: white;
     -fx-border-width: 2;
     -fx-border-style: solid;
-
-
-
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 10, 0, 0, 5);
 
 }
@@ -158,7 +155,6 @@
     -fx-text-fill: #333333;
     -fx-cursor: text;
     -fx-control-inner-background: #f9f9f9;
-
     -fx-pref-width: 350px;
     -fx-pref-height: 100px;
 }
@@ -218,12 +214,10 @@
 }
 
 
-
 .messagechats {
     -fx-text-fill: white;
     -fx-background-radius: 10px;
 }
-
 
 
 .chat-list-view .list-cell {
@@ -258,15 +252,10 @@
 }
 
 
-
 .pagination .control-box {
     -fx-alignment: center;
     -fx-spacing: 10px;
 }
-
-
-
-
 
 
 .pagination .left-arrow,

@@ -22,7 +22,7 @@
                     <graphic>
                         <ImageView fx:id="exitButton" fitHeight="26.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
                             <image>
-                                <Image url="@ChatApp-JETS/Client/src/main/resources/images/close.png" />
+                                <Image url="@../images/close.png" />
                             </image>
                         </ImageView>
                     </graphic>
@@ -45,7 +45,7 @@
                 <Label text="Group Photo:" />
                 <ImageView fx:id="photoImageView" fitHeight="100" fitWidth="100" preserveRatio="true" style="-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 5, 0, 0, 2);">
                     <image>
-                        <Image url="@images/group1.png" />
+                        <Image url="@../images/group1.png" />
                     </image>
                 </ImageView>
                 <Button fx:id="choosePhotoButton" style="-fx-background-color: #80d0c7;" text="Choose Photo" textFill="WHITE" />
@@ -64,7 +64,7 @@
 
         <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0">
             <children>
-                <Button fx:id="createGroupButton" onMouseEntered="#handleMouseEntered" style="-fx-background-color: linear-gradient(to bottom, #13547a 0%, #80d0c7 100%); -fx-text-fill: white; -fx-font-size: 16px; -fx-padding: 10 20; -fx-background-radius: 5;" text="Create Group" />
+                <Button style="-fx-background-color: linear-gradient(to bottom, #13547a 0%, #80d0c7 100%); -fx-text-fill: white; -fx-font-size: 16px; -fx-padding: 10 20; -fx-background-radius: 5;" text="Create Group" />
             </children>
         </HBox>
     </children>
