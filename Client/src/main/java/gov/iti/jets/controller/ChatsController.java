@@ -38,6 +38,7 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
+import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -71,7 +72,7 @@ public class ChatsController {
         stage =s;
     }
     @FXML
-    private void addContact(MouseEvent event){
+    private void addContact(ActionEvent event){
         AnchorPane hold =null;
                 FXMLLoader addContactLoader = new FXMLLoader(getClass().getResource("/screens/AddNewContacts.fxml"));
         try {
@@ -86,6 +87,24 @@ public class ChatsController {
         info.setScene(addContactScene);
         info.show();
     }
+    
+
+@FXML
+private void addGroup(ActionEvent event){
+    VBox hold =null;
+            FXMLLoader addContactLoader = new FXMLLoader(getClass().getResource("/screens/CreateGroup.fxml"));
+    try {
+        hold = addContactLoader.load();
+    } catch (IOException e) {
+        e.printStackTrace();
+    }
+    var addContactScene = new Scene(hold, 700, 550);
+    Stage info = new Stage();
+    info.initOwner(stage);
+    info.initModality(Modality.APPLICATION_MODAL);
+    info.setScene(addContactScene);
+    info.show();
+}
     public void chatScene(){
         listView.setItems(contacts);
         HBox hold =null;
@@ -100,15 +119,21 @@ public class ChatsController {
         // final BorderPane chat;
         final FXMLLoader chatLoader = new FXMLLoader(getClass().getResource("/screens/messageChat.fxml"));
 
-        // try {
-        //     chat = chatLoader.load();
-        // } catch (IOException e) {
- 
-        //     e.printStackTrace();
-        // }
-
         contacts.add(hold);
 
+        // HBox hold =null;
+        FXMLLoader addContactLoader2 = new FXMLLoader(getClass().getResource("/screens/ChatCad.fxml"));
+
+        try {
+            hold = addContactLoader2.load();
+        } catch (IOException e) {
+ 
+            e.printStackTrace();
+        }
+        // final BorderPane chat;
+        
+
+        contacts.add(hold);
         listView.setCellFactory(new Callback<ListView<HBox>,ListCell<HBox>>() {
             @Override
             public ListCell<HBox> call(ListView<HBox> p){
@@ -122,6 +147,7 @@ public class ChatsController {
                             setGraphic(item);
                             this.setOnMouseClicked((e)->{
                                 try {
+                                    final FXMLLoader chatLoader = new FXMLLoader(getClass().getResource("/screens/messageChat.fxml"));
                                     final BorderPane chat = chatLoader.load();
                                     // chat.setTop(new VBox());
                                     borderPane.setCenter(chat);
@@ -179,7 +205,7 @@ public class ChatsController {
                                     borderPane.setCenter(chat);
                                 } catch (IOException e1) {
                                     // TODO Auto-generated catch block
-                                    e1.printStackTrace();
+                                    // e1.printStackTrace();
                                 }
                             });
                         }

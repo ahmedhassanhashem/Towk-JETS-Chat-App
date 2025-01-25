@@ -53,6 +53,8 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import gov.iti.jets.dao.UserDAO;
+
 public class ServerController {
 
     private Stage stage;
@@ -105,6 +107,7 @@ public class ServerController {
     AnchorPane.setRightAnchor(manage, 0.0);
     anchor.getChildren().add(manage);
     }
+
     @FXML
     private void announceButton(ActionEvent event){
         anchor.getChildren().clear();
@@ -130,17 +133,16 @@ public class ServerController {
 
         PieChart pie = (PieChart)chart.getCenter();
         pie.setTitle("Status");
-        ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList(
-            new PieChart.Data("Online", 150), 
-            new PieChart.Data("Offline", 180)); 
+        UserDAO user = new UserDAO();
+        ObservableList<PieChart.Data> pieChartData = user.getUserStatistics("userStatus");
         pie.setData(pieChartData);
         pie.setLegendSide(Side.BOTTOM);
         pie.setLabelLineLength(20);
         // pie.setAnimated(true);
         // pie.setClockwise(true); 
         // pie.setLabelLineLength(50); 
-        // pie.setLegendVisible(true);
-        // pie.setLabelsVisible(true);
+        pie.setLegendVisible(true);
+        pie.setLabelsVisible(true);
         // borderPane.setCenter(pie);
         AnchorPane.setTopAnchor(chart, 0.0);
         AnchorPane.setBottomAnchor(chart, 0.0);
@@ -159,9 +161,8 @@ public class ServerController {
 
         PieChart pie = (PieChart)chart.getCenter();
         pie.setTitle("Gender");
-        ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList(
-         new PieChart.Data("Male", 13), 
-         new PieChart.Data("Female", 25)); 
+       UserDAO user = new UserDAO();
+        ObservableList<PieChart.Data> pieChartData = user.getUserStatistics("gender");
         pie.setData(pieChartData);
         // pie.setAnimated(true);
         // pie.setClockwise(true); 
@@ -188,13 +189,8 @@ public class ServerController {
         PieChart pie = (PieChart)chart.getCenter();
         pie.setTitle("Country");
 
-        ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList(
-            new PieChart.Data("US", 13), 
-            new PieChart.Data("Egypt", 25),
-            new PieChart.Data("Japan", 46),
-            new PieChart.Data("Germany", 16)
-            
-            ); 
+        UserDAO user = new UserDAO();
+        ObservableList<PieChart.Data> pieChartData = user.getUserStatistics("country");
         pie.setData(pieChartData);
         // pie.setAnimated(true);
         // pie.setLegendVisible(true);
@@ -208,8 +204,6 @@ public class ServerController {
         anchor.getChildren().add(chart);
 
     }
-
-
 
 
 
@@ -229,3 +223,5 @@ public class ServerController {
         // anchor.maxWidthProperty().bind(stage.widthProperty().multiply(0.5));
     }
 }
+
+
