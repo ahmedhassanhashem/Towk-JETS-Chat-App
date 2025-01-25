@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import gov.iti.jets.dto.ContactDTO;
@@ -29,7 +30,9 @@ public interface DAO<T>{
     void delete(T t);
 
     
-    List<T> findAll();
+    public default List<T> findAll(){
+        return (List<T>) new ArrayList();
+    };
 
     public default int getUserIdByPhone(String phone) throws SQLException {
         String query = "SELECT userID FROM User WHERE phone = ?";

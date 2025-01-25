@@ -103,6 +103,7 @@ public class UserDAO implements DAO<UserDTO> {
             if (!re.next())
                 return null;
             // re.next();
+            user.setUserID(re.getInt("userID"));
             user.setPhone(re.getString("phone"));
             user.setName(re.getString("name"));
             user.setCountry(re.getString("country"));
@@ -128,7 +129,6 @@ public class UserDAO implements DAO<UserDTO> {
                 user.setUserPicture(null);
             }
 
-            user.setUserPicture(re.getBytes("userPicture"));
             return user;
         } catch (SQLException e) {
             e.printStackTrace();

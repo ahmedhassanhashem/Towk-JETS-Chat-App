@@ -52,6 +52,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import gov.iti.jets.dao.UserChatDAO;
 import gov.iti.jets.dto.UserDTO;
 
 public class ChatsController {
@@ -63,6 +64,7 @@ public class ChatsController {
     @FXML
     private BorderPane borderPane;
     private UserDTO userDTO = new UserDTO();
+    private UserChatDAO userChatDAO= new UserChatDAO();
 
     public void setStage(Stage s) {
         stage = s;
@@ -107,19 +109,39 @@ public class ChatsController {
 
     public void chatScene() {
         listView.setItems(contacts);
-        HBox hold = null;
+        // HBox hold = null;
+        // FXMLLoader addContactLoader = new FXMLLoader(getClass().getResource("/screens/ChatCad.fxml"));
+
+        // try {
+        //     hold = addContactLoader.load();
+        // } catch (IOException e) {
+
+        //     e.printStackTrace();
+        // }
+
+        // contacts.add(hold);
+
+        ObservableList<UserDTO> userDTOs = userChatDAO.findAll(userDTO.getUserID());
+        
+for (UserDTO user : userDTOs) {
+    try {
         FXMLLoader addContactLoader = new FXMLLoader(getClass().getResource("/screens/ChatCad.fxml"));
-
-        try {
-            hold = addContactLoader.load();
-        } catch (IOException e) {
-
-            e.printStackTrace();
-        }
-
-        contacts.add(hold);
+        HBox chatCard = addContactLoader.load();
 
         
+        ChatCadController chatCardController = addContactLoader.getController();
+
+        
+        chatCardController.setImage(user.getUserPicture());
+        chatCardController.setLabel(user.getName()); 
+        chatCardController.setText("last message");
+
+        
+        contacts.add(chatCard);
+    } catch (IOException e) {
+        e.printStackTrace();
+    }
+}
 
         listView.setCellFactory(new Callback<ListView<HBox>, ListCell<HBox>>() {
             @Override
@@ -261,6 +283,5 @@ public class ChatsController {
 
     @FXML
     private void initialize() {
-
     }
 }
