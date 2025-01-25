@@ -1,6 +1,9 @@
 package gov.iti.jets.controller;
 
 import java.io.IOException;
+
+import gov.iti.jets.dao.UserDAO;
+import gov.iti.jets.dto.UserDTO;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -17,6 +20,9 @@ public class DashboardController {
     private Scene LoginScene;
     private Scene settingsScene;
     private Scene userInfoScene;
+    private Scene dashScene;
+    private UserDTO userDTO = new UserDTO();
+
     @FXML
     private BorderPane borderPane;
 
@@ -32,6 +38,13 @@ public class DashboardController {
         userInfoScene = s;
     }
 
+    public void setUserDTO(UserDTO user){
+        userDTO = user;
+    }
+
+    public void setDashScene(Scene l){
+        dashScene =l;
+    }   
 
 
 
@@ -79,14 +92,38 @@ public class DashboardController {
         Stage info = new Stage();
         info.initOwner(stage);
         info.initModality(Modality.APPLICATION_MODAL);
-        info.setScene(userInfoScene);
-        info.show();
+        FXMLLoader userInfoLoader = new FXMLLoader(getClass().getResource("/screens/User_Info.fxml"));
+		BorderPane userInfo;
+        try {
+            userInfo = userInfoLoader.load();
+            UserInfoController userInfoController = userInfoLoader.getController();
+    
+            var userInfoScene = new Scene(userInfo, 500, 800);
+            info.setScene(userInfoScene);
+            info.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML
     private void settings(MouseEvent event){
         // System.out.println("aa");
-        stage.setScene(settingsScene);
+        FXMLLoader settingsLoader = new FXMLLoader(getClass().getResource("/screens/Settings.fxml"));
+		BorderPane settingsBoard;
+        try {
+            settingsBoard = settingsLoader.load();
+            SettingsController settingsController = settingsLoader.getController();
+            
+            var settingsScene = new Scene(settingsBoard, 640+200, 480+100);
+            
+            settingsController.setDashboardScene(dashScene);
+            settingsController.setStage(stage);
+            stage.setScene(settingsScene);
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
     }
     
     @FXML

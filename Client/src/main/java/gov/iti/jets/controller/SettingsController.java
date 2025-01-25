@@ -14,6 +14,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
@@ -35,6 +36,7 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
+import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -52,12 +54,16 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class SettingsController {
-
-
+    
+    
     private Stage stage;
     private Scene accountScene;
     private Scene dashboardScene;
+    private VBox profile =null;
+    private VBox account =null;
 
+    @FXML
+    private BorderPane borderPane;
 
     public void setAccountScene(Scene s){
         accountScene = s;
@@ -72,9 +78,17 @@ public class SettingsController {
     }
 
     @FXML
-    private void account(ActionEvent event){
+    private void accountButton(ActionEvent event){
         // System.out.println("aa");
-        stage.setScene(accountScene);
+        // stage.setScene(accountScene);
+        borderPane.setCenter(account);
+    }
+
+    @FXML
+    private void profileButton(ActionEvent event){
+        // System.out.println("aa");
+        // stage.setScene(accountScene);
+        borderPane.setCenter(profile);
     }
     
     @FXML
@@ -85,7 +99,7 @@ public class SettingsController {
 
     @FXML
     private void backButton(ActionEvent event){
-        System.out.println("aa");
+        // System.out.println("aa");
         stage.setScene(dashboardScene);
     }
 
@@ -93,6 +107,27 @@ public class SettingsController {
 
     @FXML
     private void initialize() {
+        FXMLLoader profileSettingsLoader = new FXMLLoader(getClass().getResource("/screens/ProfileSettings.fxml"));
+
+    try {
+        profile = profileSettingsLoader.load();
+    } catch (IOException e) {
+        // TODO Auto-generated catch block
+        e.printStackTrace();
+    }
+    ProfileSettingsController c = profileSettingsLoader.getController();
+
+    FXMLLoader accountSettingsLoader = new FXMLLoader(getClass().getResource("/screens/AccountSettings.fxml"));
+
+    try {
+        account = accountSettingsLoader.load();
+    } catch (IOException e) {
+        // TODO Auto-generated catch block
+        e.printStackTrace();
+    }
+    AccountSettingsController c2 = accountSettingsLoader.getController();
+
+    borderPane.setCenter(account);
 
     }
 }
