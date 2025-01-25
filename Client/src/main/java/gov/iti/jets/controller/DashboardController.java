@@ -67,6 +67,7 @@ public class DashboardController {
             e.printStackTrace();
         }
         ChatsController c = contactLoader.getController();
+        c.setUserDTO(userDTO);
         c.contactScene();
         borderPane.setCenter(hold);
     }
@@ -83,6 +84,7 @@ public class DashboardController {
             e.printStackTrace();
         }
         ChatsController c = chatLoader.getController();
+        c.setUserDTO(userDTO);
         c.chatScene();
         borderPane.setCenter(hold);
 
@@ -139,6 +141,7 @@ public class DashboardController {
             e.printStackTrace();
         }
         ChatsController c = chatLoader.getController();
+        c.setUserDTO(userDTO);
         c.groupScene();
         borderPane.setCenter(hold);
     }

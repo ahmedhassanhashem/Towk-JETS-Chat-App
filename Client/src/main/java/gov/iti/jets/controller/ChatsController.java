@@ -119,7 +119,7 @@ public class ChatsController {
 
         contacts.add(hold);
 
-
+        
 
         listView.setCellFactory(new Callback<ListView<HBox>, ListCell<HBox>>() {
             @Override
