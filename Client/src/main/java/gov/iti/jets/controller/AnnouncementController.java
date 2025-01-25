@@ -68,6 +68,7 @@ public class AnnouncementController {
     @FXML
     private void initialize() {
         listView.setItems(contacts);
+        
         HBox hold =null;
         FXMLLoader addContactLoader = new FXMLLoader(getClass().getResource("/screens/AnnouncementCard.fxml"));
 
