@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+<?import javafx.scene.text.TextFlow?>
+
+<HBox fx:id="fileMessageContainer" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" style="-fx-background-color: transparent;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+    <children>
+        <VBox fx:id="fileMessage" prefWidth="300.0" style="-fx-background-color: -fx-background-color-1; -fx-background-radius: 0 30 30 40; -fx-min-width: 250; -fx-max-width: 300; -fx-effect: dropshadow(one-pass-box, -fx-primary-color-teal, 4, 0.0, 0.0, 1.0); -fx-padding: 15 15 15 15;">
+            <children>
+            <VBox alignment="CENTER_LEFT" prefHeight="14.0" prefWidth="300.0" spacing="10.0">
+               <children>
+                  <Label text="Sender Name">
+                     <font>
+                        <Font name="System Bold" size="15.0" />
+                     </font>
+                  </Label>
+                  <HBox prefHeight="58.0" prefWidth="300.0">
+                     <children>
+                        <ImageView fitHeight="45.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@images/google-docs.png" />
+                           </image>
+                           <HBox.margin>
+                              <Insets bottom="5.0" right="5.0" />
+                           </HBox.margin>
+                        </ImageView>
+                        <VBox prefHeight="80.0" prefWidth="197.0">
+                           <children>
+                                  <TextFlow fx:id="fileMessageContent" maxWidth="170.0" prefWidth="170.0" style="-fx-fill: -fx-primary-color-teal; -fx-font-size: 13; -fx-font-weight: regular; -fx-padding: 4 0 4 0; -fx-text-alignment: LEFT; -fx-cursor: text;">
+                                      <children>
+                                          <Text fx:id="fileName" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-fill: -fx-primary-color-teal; -fx-font-size: 13; -fx-font-weight: regular;" text="file name.extension" />
+                                      </children>
+                                  </TextFlow>
+                              <TextFlow prefWidth="170.0" style="-fx-fill: -fx-primary-color-teal; -fx-font-size: 13; -fx-font-weight: regular; -fx-padding: 4 0 4 0; -fx-text-alignment: LEFT; -fx-cursor: text;">
+                                 <children>
+                                    <Text fx:id="fileSize" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-fill: -fx-primary-color-teal; -fx-font-size: 13; -fx-font-weight: regular;" text="fileSizeKB" />
+                                 </children>
+                              </TextFlow>
+                           </children>
+                        </VBox>
+                        <Button mnemonicParsing="false" style="-fx-background-color: transparent;">
+                           <graphic>
+                              <ImageView fx:id="FiledownloadButton" fitHeight="45.0" fitWidth="60.0" onMouseClicked="#downloadButtonHandler" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@images/download_5469774%20(1).png" />
+                                 </image>
+                                 <cursor>
+                                    <Cursor fx:constant="HAND" />
+                                 </cursor>
+                              </ImageView>
+                           </graphic>
+                           <padding>
+                              <Insets bottom="10.0" />
+                           </padding>
+                        </Button>
+                     </children>
+                  </HBox>
+               </children>
+            </VBox>
+            <Separator prefWidth="200.0" />
+            <TextFlow style="-fx-fill: -fx-primary-color-teal; -fx-font-size: 13; -fx-font-weight: regular; -fx-padding: 4 0 4 0; -fx-text-alignment: LEFT; -fx-cursor: text;">
+               <children>
+                  <Text fx:id="messageText" strokeType="OUTSIDE" strokeWidth="0.0" text="Messsage content" />
+               </children>
+               <VBox.margin>
+                  <Insets top="5.0" />
+               </VBox.margin>
+            </TextFlow>
+            <TextFlow style="-fx-fill: -fx-primary-color-teal; -fx-font-size: 13; -fx-font-weight: regular; -fx-padding: 4 0 4 0; -fx-text-alignment: Right; -fx-cursor: text;" textAlignment="RIGHT">
+               <children>
+                  <Text fx:id="dateTimeText" strokeType="OUTSIDE" strokeWidth="0.0" text="05:45 PM" textAlignment="RIGHT" />
+               </children>
+            </TextFlow>
+
+            </children>
+         <HBox.margin>
+            <Insets />
+         </HBox.margin>
+        </VBox>
+    </children>
+   <padding>
+      <Insets left="5.0" />
+   </padding>
+</HBox>
