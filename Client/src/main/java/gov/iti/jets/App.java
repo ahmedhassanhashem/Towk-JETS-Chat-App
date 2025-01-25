@@ -2,7 +2,6 @@ package gov.iti.jets;
 
 import java.io.IOException;
 
-import gov.iti.jets.controller.AccountController;
 import gov.iti.jets.controller.AddContactController;
 import gov.iti.jets.controller.ChatsController;
 import gov.iti.jets.controller.ContactController;
@@ -82,16 +81,16 @@ public class App extends Application {
         dashController.setSettingsScene(settingsScene);
 
 
-        FXMLLoader accountLoader = new FXMLLoader(getClass().getResource("/screens/Account.fxml"));
-		BorderPane accountBoard = accountLoader.load();
-        AccountController accountController = accountLoader.getController();
+        // FXMLLoader accountLoader = new FXMLLoader(getClass().getResource("/screens/AccountSettings.fxml"));
+		// BorderPane accountBoard = accountLoader.load();
+        // AccountController accountController = accountLoader.getController();
 
-        var accountScene = new Scene(accountBoard, width+200, height+100);
+        // var accountScene = new Scene(accountBoard, width+200, height+100);
 
-        settingsController.setAccountScene(accountScene);
-        accountController.setDashboardScene(dashScene);
-        accountController.setSettingsScene(settingsScene);
-        accountController.setStage(stage);
+        // settingsController.setAccountScene(accountScene);
+        // accountController.setDashboardScene(dashScene);
+        // accountController.setSettingsScene(settingsScene);
+        // accountController.setStage(stage);
 
         loginController.setDashScene(dashScene);
         registerController.setDashScene(dashScene);
