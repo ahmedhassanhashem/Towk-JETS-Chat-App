@@ -309,3 +309,48 @@ userModeComboBox .arrow-button {
     -fx-text-fill: #ffffff;
     -fx-transition: all 0.3s ease;
 }
+
+/*---------messageStyles--------*/
+.sender-message {
+    -fx-background-color: lightgreen;
+    -fx-padding: 10;
+    -fx-border-radius: 10;
+    -fx-background-radius: 10;
+    -fx-max-width: 300; 
+    -fx-alignment: CENTER_RIGHT; 
+    -fx-wrap-text: true; 
+}
+
+.receiver-message {
+    -fx-background-color: lightblue;
+    -fx-padding: 10;
+    -fx-border-radius: 10;
+    -fx-background-radius: 10;
+    -fx-max-width: 300; 
+    -fx-wrap-text: true; 
+}
+
+.message-textflow {
+    -fx-padding: 5;
+    -fx-background-radius: 10;
+    -fx-border-radius: 10;
+    -fx-wrap-text: true;
+    -fx-pref-width: -1; 
+    -fx-max-width: -1;
+}
+
+.message-name-label {
+    -fx-font-weight: bold;
+    -fx-font-size: 14px;
+}
+
+.message-time-label {
+    -fx-font-size: 10px;
+    -fx-text-fill: gray;
+}
+
+.message-container > .messageContainer {
+    -fx-pref-width: -1;
+    -fx-max-width: -1;
+}
+

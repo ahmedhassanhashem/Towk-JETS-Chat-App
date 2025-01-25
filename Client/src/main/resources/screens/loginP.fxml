@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.text.Font?>
+
+<VBox alignment="CENTER" prefHeight="700.0" prefWidth="900.0" style="-fx-background-color: linear-gradient(to bottom, #13547a 0%, #80d0c7 100%);" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.LoginController">
+   <children>
+       
+                         <StackPane>
+          <children>
+              <VBox alignment="CENTER" maxHeight="600" maxWidth="500" spacing="20.0" style="-fx-background-color: white;                     -fx-background-radius: 15px;                     -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 10, 0, 0, 0);">
+                  
+                                    <padding>
+                      <Insets bottom="20" left="20" right="20" top="20" />
+                  </padding>
+                 <children>
+                     
+                                       <Label alignment="CENTER" style="-fx-font-size: 24px; -fx-text-fill: #13547a;" text="Welcome Back!" />
+                     
+                                       <ImageView fx:id="userPhotoView" fitHeight="200.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                        <image>
+                            <Image url="@images/boy.png" />
+                        </image>
+                     </ImageView>
+                     
+                                       <TextField fx:id="phoneField" maxWidth="300.0" prefHeight="50.0" promptText="Enter Phone Number" />
+                     
+                                       <Label fx:id="errorLabel" text="Invalid Phone Number" textFill="red" visible="false">
+                         <font>
+                             <Font size="14.0" />
+                         </font>
+                     </Label>
+                     
+                                       <Button onAction="#loginWithPhone" style="-fx-background-color: #4b978f; -fx-text-fill: white;" text="Login">
+                         <font>
+                             <Font name="Arial Bold" size="18.0" />
+                         </font>
+                     </Button>
+                  <Label text="Login as new user" textFill="#3b63e4" underline="true" />
+                 </children>
+              </VBox>
+          </children>
+       </StackPane>
+   </children>
+</VBox>

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.text.*?>
+
+<HBox fx:id="messageContainerr" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="gov.iti.jets.controller.MessageCardController" stylesheets="@../styles/style.css">
+   <children>
+      <VBox fx:id="messageContainer" alignment="TOP_LEFT" spacing="5">
+         <children>
+            <Label fx:id="nameLabel" text="User Name" styleClass="message-name-label" />
+            <HBox fx:id="messageTextContainer" spacing="5">
+               <children>
+                  <TextFlow fx:id="messageTextFlow" maxWidth="300" styleClass="message-textflow">
+                     <children>
+                        <Text fx:id="messageText" text="Sample message text" />
+                     </children>
+                  </TextFlow>
+               </children>
+            </HBox>
+            <Label fx:id="timeLabel" text="12:34 PM" styleClass="message-time-label" />
+         </children>
+      </VBox>
+   </children>
+</HBox>
