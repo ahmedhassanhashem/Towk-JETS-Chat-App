@@ -46,12 +46,12 @@
                   <Font size="15.0" />
                </font>
             </Label>
-            <TextField fx:id="phoneField" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="231.0" promptText="Phone Number">
+            <TextField fx:id="phoneField" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="50.0" prefWidth="231.0" promptText="Phone Number">
                <VBox.margin>
                   <Insets />
                </VBox.margin>
             </TextField>
-            <PasswordField fx:id="passwordField" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="231.0" promptText="Password">
+            <PasswordField fx:id="passwordField" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="50.0" prefWidth="231.0" promptText="Password">
                <VBox.margin>
                   <Insets />
                </VBox.margin>

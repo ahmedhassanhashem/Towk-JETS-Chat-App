@@ -3,8 +3,6 @@ package gov.iti.jets;
 import java.io.IOException;
 
 import gov.iti.jets.controller.LoginController;
-import gov.iti.jets.controller.LoginPageController;
-import gov.iti.jets.controller.RegistrationPageController;
 import gov.iti.jets.controller.ServerController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;

@@ -58,7 +58,7 @@
      -fx-background-color: #dcf8c6;
     -fx-padding: 10px;
     -fx-background-radius: 10px;
-    -fx-border-radius: 10px;
+    -fx-border-radius: 30px;
 }
 .received-message{
     
@@ -198,7 +198,7 @@ userModeComboBox .arrow-button {
     -fx-background-radius: 4;
 }
 
-userModeComboBox .list-cell:hover {
+.userModeComboBox .list-cell:hover {
     -fx-background-color: #f5f5f5;
 }
 
@@ -222,10 +222,6 @@ userModeComboBox .list-cell:hover {
 }
 
 
-.chat-list-view {
-    -fx-background-color: #f0f0f0;
-    -fx-padding: 10;
-}
 
 .chat-list-view .list-cell {
     -fx-background-color: transparent;
@@ -315,4 +311,24 @@ userModeComboBox .list-cell:hover {
 
 .delete-account:pressed {
     -fx-background-color: #D11F1F; /* Change background color when pressed */
+}
+
+
+.hbox {
+    -fx-background-color: transparent;
+    -fx-cursor: hand;
+    -fx-effect: null;
+}
+
+.hbox:hover {
+    -fx-background-color: transparent;
+    -fx-effect: dropshadow(gaussian, rgba(50, 205, 50, 0.6), 15, 0.8, 0, 4);
+    -fx-text-fill: #32cd32; /* Brighter green for text hover */
+    -fx-scale-x: 1.1;
+    -fx-scale-y: 1.1;
+}
+
+.hbox .text {
+    -fx-text-fill: #ffffff;
+    -fx-transition: all 0.3s ease;
 }
