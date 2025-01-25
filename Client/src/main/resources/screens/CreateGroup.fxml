@@ -64,7 +64,7 @@
 
         <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0">
             <children>
-                <Button fx:id="createGroupButton" onMouseEntered="#handleMouseEntered" style="-fx-background-color: linear-gradient(to bottom, #13547a 0%, #80d0c7 100%); -fx-text-fill: white; -fx-font-size: 16px; -fx-padding: 10 20; -fx-background-radius: 5;" text="Create Group" />
+                <Button  style="-fx-background-color: linear-gradient(to bottom, #13547a 0%, #80d0c7 100%); -fx-text-fill: white; -fx-font-size: 16px; -fx-padding: 10 20; -fx-background-radius: 5;" text="Create Group" />
             </children>
         </HBox>
     </children>

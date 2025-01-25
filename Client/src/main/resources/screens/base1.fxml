@@ -34,7 +34,9 @@
                         <Insets left="5.0" right="5.0" />
                      </HBox.margin>
                   </TextField>
-                  <ImageView fitHeight="26.0" fitWidth="26.0" onMouseClicked="#addContact">
+                  <Button onAction="#addContact" mnemonicParsing="false" prefHeight="51.0" prefWidth="41.0" style="-fx-background-color: transparent; -fx-padding: 3;">
+                   <graphic>
+                  <ImageView fitHeight="26.0" fitWidth="26.0" >
                      <image>
                         <Image url="@../images/add-user.png" />
                      </image>
@@ -42,7 +44,9 @@
                         <Insets right="10.0" />
                      </HBox.margin>
                   </ImageView>
-                  <Button mnemonicParsing="false" prefHeight="51.0" prefWidth="41.0" style="-fx-background-color: transparent; -fx-padding: 3;">
+                   </graphic>
+                  </Button>
+                  <Button onAction="#addGroup" mnemonicParsing="false" prefHeight="51.0" prefWidth="41.0" style="-fx-background-color: transparent; -fx-padding: 3;">
                      <graphic>
                         <ImageView fitHeight="42.0" fitWidth="34.0" pickOnBounds="true" preserveRatio="true">
                            <image>

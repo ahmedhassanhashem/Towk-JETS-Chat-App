@@ -38,6 +38,7 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
+import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -71,7 +72,7 @@ public class ChatsController {
         stage =s;
     }
     @FXML
-    private void addContact(MouseEvent event){
+    private void addContact(ActionEvent event){
         AnchorPane hold =null;
                 FXMLLoader addContactLoader = new FXMLLoader(getClass().getResource("/screens/AddNewContacts.fxml"));
         try {
@@ -86,6 +87,24 @@ public class ChatsController {
         info.setScene(addContactScene);
         info.show();
     }
+    
+
+@FXML
+private void addGroup(ActionEvent event){
+    VBox hold =null;
+            FXMLLoader addContactLoader = new FXMLLoader(getClass().getResource("/screens/CreateGroup.fxml"));
+    try {
+        hold = addContactLoader.load();
+    } catch (IOException e) {
+        e.printStackTrace();
+    }
+    var addContactScene = new Scene(hold, 700, 550);
+    Stage info = new Stage();
+    info.initOwner(stage);
+    info.initModality(Modality.APPLICATION_MODAL);
+    info.setScene(addContactScene);
+    info.show();
+}
     public void chatScene(){
         listView.setItems(contacts);
         HBox hold =null;

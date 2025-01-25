@@ -7,6 +7,7 @@ module gov.iti.jets {
     requires mysql.connector.java;
     requires java.sql.rowset;
     requires java.naming;
+    requires java.desktop;
     opens gov.iti.jets to javafx.fxml;
     exports gov.iti.jets;
     opens gov.iti.jets.controller to javafx.fxml;
