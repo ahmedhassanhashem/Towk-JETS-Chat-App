@@ -53,6 +53,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import gov.iti.jets.dao.UserChatDAO;
+import gov.iti.jets.dao.ContactDAO;
 import gov.iti.jets.dto.UserDTO;
 
 public class ChatsController {
@@ -175,11 +176,11 @@ for (UserDTO user : userDTOs) {
         });
     }
 
-    public void contactScene() {
-        listView.setItems(contacts);
-        HBox hold = null;
-        FXMLLoader addContactLoader = new FXMLLoader(getClass().getResource("/screens/CardContact.fxml"));
 
+    public void contactScene(){
+        ObservableList<UserDTO> list = new ContactDAO().findAllContactsACCEPTED("010");
+        FXMLLoader addContactLoader = new FXMLLoader(getClass().getResource("/screens/CardContact.fxml"));
+        HBox hold = null;
         try {
             hold = addContactLoader.load();
         } catch (IOException e) {

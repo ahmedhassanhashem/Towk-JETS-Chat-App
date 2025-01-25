@@ -73,6 +73,9 @@ public class DashboardController {
         borderPane.setCenter(hold);
     }
 
+
+    
+
     @FXML
     private void chats(MouseEvent event) {
         BorderPane hold = null;
