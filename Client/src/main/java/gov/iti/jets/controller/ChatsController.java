@@ -4,9 +4,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 
-
-
-
 import java.io.*;
 
 import javafx.application.Platform;
@@ -60,24 +57,25 @@ import gov.iti.jets.dto.UserDTO;
 
 public class ChatsController {
 
-
-
     private Stage stage;
-    ObservableList<HBox> contacts =FXCollections.observableArrayList();
+    ObservableList<HBox> contacts = FXCollections.observableArrayList();
     @FXML
     private ListView<HBox> listView;
     @FXML
     private BorderPane borderPane;
+    private UserDTO userDTO = new UserDTO();
 
+    public void setStage(Stage s) {
+        stage = s;
+    }
+    public void setUserDTO(UserDTO user) {
+        userDTO = user;
 
-
-    public void setStage(Stage s){
-        stage =s;
     }
     @FXML
-    private void addContact(ActionEvent event){
-        AnchorPane hold =null;
-                FXMLLoader addContactLoader = new FXMLLoader(getClass().getResource("/screens/AddNewContacts.fxml"));
+    private void addContact(ActionEvent event) {
+        AnchorPane hold = null;
+        FXMLLoader addContactLoader = new FXMLLoader(getClass().getResource("/screens/AddNewContacts.fxml"));
         try {
             hold = addContactLoader.load();
         } catch (IOException e) {
@@ -90,69 +88,55 @@ public class ChatsController {
         info.setScene(addContactScene);
         info.show();
     }
-    
 
-@FXML
-private void addGroup(ActionEvent event){
-    VBox hold =null;
-            FXMLLoader addContactLoader = new FXMLLoader(getClass().getResource("/screens/CreateGroup.fxml"));
-    try {
-        hold = addContactLoader.load();
-    } catch (IOException e) {
-        e.printStackTrace();
+    @FXML
+    private void addGroup(ActionEvent event) {
+        VBox hold = null;
+        FXMLLoader addContactLoader = new FXMLLoader(getClass().getResource("/screens/CreateGroup.fxml"));
+        try {
+            hold = addContactLoader.load();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        var addContactScene = new Scene(hold, 700, 550);
+        Stage info = new Stage();
+        info.initOwner(stage);
+        info.initModality(Modality.APPLICATION_MODAL);
+        info.setScene(addContactScene);
+        info.show();
     }
-    var addContactScene = new Scene(hold, 700, 550);
-    Stage info = new Stage();
-    info.initOwner(stage);
-    info.initModality(Modality.APPLICATION_MODAL);
-    info.setScene(addContactScene);
-    info.show();
-}
-    public void chatScene(){
+
+    public void chatScene() {
         listView.setItems(contacts);
-        HBox hold =null;
+        HBox hold = null;
         FXMLLoader addContactLoader = new FXMLLoader(getClass().getResource("/screens/ChatCad.fxml"));
 
         try {
             hold = addContactLoader.load();
         } catch (IOException e) {
- 
+
             e.printStackTrace();
         }
-        // final BorderPane chat;
-        final FXMLLoader chatLoader = new FXMLLoader(getClass().getResource("/screens/messageChat.fxml"));
 
         contacts.add(hold);
 
-        // HBox hold =null;
-        FXMLLoader addContactLoader2 = new FXMLLoader(getClass().getResource("/screens/ChatCad.fxml"));
-
-        try {
-            hold = addContactLoader2.load();
-        } catch (IOException e) {
- 
-            e.printStackTrace();
-        }
-        // final BorderPane chat;
         
 
-
-
-        contacts.add(hold);
-        listView.setCellFactory(new Callback<ListView<HBox>,ListCell<HBox>>() {
+        listView.setCellFactory(new Callback<ListView<HBox>, ListCell<HBox>>() {
             @Override
-            public ListCell<HBox> call(ListView<HBox> p){
-                return new ListCell<HBox>(){
-                    protected void updateItem(HBox item,boolean empty){
+            public ListCell<HBox> call(ListView<HBox> p) {
+                return new ListCell<HBox>() {
+                    protected void updateItem(HBox item, boolean empty) {
                         super.updateItem(item, empty);
                         if (item == null || empty) {
                             setText(null);
                             setGraphic(null);
                         } else {
                             setGraphic(item);
-                            this.setOnMouseClicked((e)->{
+                            this.setOnMouseClicked((e) -> {
                                 try {
-                                    final FXMLLoader chatLoader = new FXMLLoader(getClass().getResource("/screens/messageChat.fxml"));
+                                    final FXMLLoader chatLoader = new FXMLLoader(
+                                            getClass().getResource("/screens/messageChat.fxml"));
                                     final BorderPane chat = chatLoader.load();
                                     // chat.setTop(new VBox());
                                     borderPane.setCenter(chat);
@@ -169,43 +153,42 @@ private void addGroup(ActionEvent event){
             }
         });
     }
+
+
     public void contactScene(){
         ObservableList<UserDTO> list = new ContactDAO().findAllContactsACCEPTED("010");
-        listView.setItems(contacts);
-        HBox hold =null;
         FXMLLoader addContactLoader = new FXMLLoader(getClass().getResource("/screens/CardContact.fxml"));
-        listView.setCellFactory(null);
+        HBox hold = null;
+        try {
+            hold = addContactLoader.load();
+        } catch (IOException e) {
 
-        // try {
-        //     hold = addContactLoader.load();
-        // } catch (IOException e) {
- 
-        //     e.printStackTrace();
-        // }
+            e.printStackTrace();
+        }
         // final BorderPane chat;
         final FXMLLoader chatLoader = new FXMLLoader(getClass().getResource("/screens/messageChat.fxml"));
 
         // try {
-        //     chat = chatLoader.load();
+        // chat = chatLoader.load();
         // } catch (IOException e) {
- 
-        //     e.printStackTrace();
+
+        // e.printStackTrace();
         // }
 
         contacts.add(hold);
 
-        listView.setCellFactory(new Callback<ListView<HBox>,ListCell<HBox>>() {
+        listView.setCellFactory(new Callback<ListView<HBox>, ListCell<HBox>>() {
             @Override
-            public ListCell<HBox> call(ListView<HBox> p){
-                return new ListCell<HBox>(){
-                    protected void updateItem(HBox item,boolean empty){
+            public ListCell<HBox> call(ListView<HBox> p) {
+                return new ListCell<HBox>() {
+                    protected void updateItem(HBox item, boolean empty) {
                         super.updateItem(item, empty);
                         if (item == null || empty) {
                             setText(null);
                             setGraphic(null);
                         } else {
                             setGraphic(item);
-                            this.setOnMouseClicked((e)->{
+                            this.setOnMouseClicked((e) -> {
                                 try {
                                     final BorderPane chat = chatLoader.load();
                                     // chat.setTop(new VBox());
@@ -224,41 +207,41 @@ private void addGroup(ActionEvent event){
         });
     }
 
-    public void groupScene(){
+    public void groupScene() {
         listView.setItems(contacts);
-        HBox hold =null;
+        HBox hold = null;
         FXMLLoader addContactLoader = new FXMLLoader(getClass().getResource("/screens/CardContact.fxml"));
 
         try {
             hold = addContactLoader.load();
         } catch (IOException e) {
- 
+
             e.printStackTrace();
         }
         // final BorderPane chat;
         final FXMLLoader chatLoader = new FXMLLoader(getClass().getResource("/screens/messageChat.fxml"));
 
         // try {
-        //     chat = chatLoader.load();
+        // chat = chatLoader.load();
         // } catch (IOException e) {
- 
-        //     e.printStackTrace();
+
+        // e.printStackTrace();
         // }
 
         contacts.add(hold);
 
-        listView.setCellFactory(new Callback<ListView<HBox>,ListCell<HBox>>() {
+        listView.setCellFactory(new Callback<ListView<HBox>, ListCell<HBox>>() {
             @Override
-            public ListCell<HBox> call(ListView<HBox> p){
-                return new ListCell<HBox>(){
-                    protected void updateItem(HBox item,boolean empty){
+            public ListCell<HBox> call(ListView<HBox> p) {
+                return new ListCell<HBox>() {
+                    protected void updateItem(HBox item, boolean empty) {
                         super.updateItem(item, empty);
                         if (item == null || empty) {
                             setText(null);
                             setGraphic(null);
                         } else {
                             setGraphic(item);
-                            this.setOnMouseClicked((e)->{
+                            this.setOnMouseClicked((e) -> {
                                 try {
                                     final BorderPane chat = chatLoader.load();
                                     // chat.setTop(new VBox());
@@ -276,8 +259,9 @@ private void addGroup(ActionEvent event){
             }
         });
     }
+
     @FXML
     private void initialize() {
- 
+
     }
 }
