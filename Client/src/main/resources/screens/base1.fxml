@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.TextField?>
@@ -10,7 +15,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gov.iti.jets.controller.ChatsController">
+<BorderPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gov.iti.jets.controller.ChatsController">
    <left>
       <VBox maxWidth="300.0" minHeight="100.0" minWidth="230.0" style="-fx-background-color: #f5fafc;" BorderPane.alignment="CENTER">
          <children>
@@ -29,7 +34,9 @@
                         <Insets left="5.0" right="5.0" />
                      </HBox.margin>
                   </TextField>
-                  <ImageView fitHeight="20.0" fitWidth="20.0" onMouseClicked="#addContact">
+                  <Button onAction="#addContact" mnemonicParsing="false" prefHeight="51.0" prefWidth="41.0" style="-fx-background-color: transparent; -fx-padding: 3;">
+                   <graphic>
+                  <ImageView fitHeight="26.0" fitWidth="26.0" >
                      <image>
                         <Image url="@../images/add-user.png" />
                      </image>
@@ -37,6 +44,17 @@
                         <Insets right="10.0" />
                      </HBox.margin>
                   </ImageView>
+                   </graphic>
+                  </Button>
+                  <Button onAction="#addGroup" mnemonicParsing="false" prefHeight="51.0" prefWidth="41.0" style="-fx-background-color: transparent; -fx-padding: 3;">
+                     <graphic>
+                        <ImageView fitHeight="42.0" fitWidth="34.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../images/join_12366452.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
                </children>
             </HBox>
             <ListView fx:id="listView" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />

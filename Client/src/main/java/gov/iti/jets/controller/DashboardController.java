@@ -22,7 +22,7 @@ public class DashboardController {
     private Scene userInfoScene;
     private Scene dashScene;
     private UserDTO userDTO = new UserDTO();
-
+    
     @FXML
     private BorderPane borderPane;
 
@@ -40,6 +40,7 @@ public class DashboardController {
 
     public void setUserDTO(UserDTO user){
         userDTO = user;
+
     }
 
     public void setDashScene(Scene l){

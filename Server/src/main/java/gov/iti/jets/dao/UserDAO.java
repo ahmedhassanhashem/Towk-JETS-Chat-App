@@ -78,7 +78,7 @@ public class UserDAO implements DAO<UserDTO>{
 
     public ObservableList<PieChart.Data> getUserStatistics(String columnName) {
         ObservableList<PieChart.Data> data = FXCollections.observableArrayList();
-        String query = String.format("SELECT %s, COUNT(*) AS count FROM user GROUP BY %s", columnName, columnName);
+        String query = String.format("SELECT %s, COUNT(*) AS count FROM User GROUP BY %s", columnName, columnName);
     
         try (PreparedStatement ps = con.prepareStatement(query);
              ResultSet rs = ps.executeQuery()) {
