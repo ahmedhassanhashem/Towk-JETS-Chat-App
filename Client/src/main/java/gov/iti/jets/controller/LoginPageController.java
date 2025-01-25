@@ -35,10 +35,8 @@ import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
-
 import gov.iti.jets.dao.UserDAO;
 import gov.iti.jets.dto.UserDTO;
-
 
 public class LoginPageController {
 
@@ -52,7 +50,6 @@ public class LoginPageController {
     @FXML
     private Button loginButton;
 
-
     @FXML
     private Label invalid;
 
@@ -62,45 +59,57 @@ public class LoginPageController {
     @FXML
     private PasswordField passwordField;
 
-    public void setLoginsScene(Scene l){
-        loginScene =l;
-    }   
+    public void setLoginsScene(Scene l) {
+        loginScene = l;
+    }
+
     public void setStage(Stage stage) {
         this.stage = stage;
         var w = stage.widthProperty().multiply(0.3);
         phoneField.prefWidthProperty().bind(w);
         passwordField.prefWidthProperty().bind(w);
-        dashController.setStage(stage);
-        dashController.setLoginsScene(loginScene);
+
         // System.out.println(stage);
     }
 
     @FXML
     private void signIn(ActionEvent event) {
-        
-                UserDTO user = new UserDTO();
+
+        UserDTO user = new UserDTO();
         user.setPhone(phoneField.getText());
         user.setPassword(passwordField.getText());
         user = userDao.read(user);
-        if(user != null){
+        if (user != null) {
 
+            FXMLLoader dashLoader = new FXMLLoader(getClass().getResource("/screens/base.fxml"));
+            BorderPane dashBoard = null;
+            try {
+                dashBoard = dashLoader.load();
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+            dashController = dashLoader.getController();
+            dashController.setStage(stage);
+            dashController.setLoginsScene(loginScene);
+            dashScene = new Scene(dashBoard, 600 + 200, 480 + 100);
             // System.out.println(dashScene);
             dashController.setUserDTO(user);
             dashController.setDashScene(dashScene);
             stage.setScene(dashScene);
-        }   
-        else{
-            Platform.runLater(() ->{
-            invalid.setVisible(true);
-            phoneField.setBorder(new Border(new BorderStroke(Color.RED, BorderStrokeStyle.SOLID, new CornerRadii(3), new BorderWidths(2), new Insets(-2))));
-            passwordField.setBorder(new Border(new BorderStroke(Color.RED, BorderStrokeStyle.SOLID, new CornerRadii(3), new BorderWidths(2), new Insets(-2))));
-            System.out.println("Wrong user/pass");
-        });
+
+        } else {
+            Platform.runLater(() -> {
+                invalid.setVisible(true);
+                phoneField.setBorder(new Border(new BorderStroke(Color.RED, BorderStrokeStyle.SOLID, new CornerRadii(3),
+                        new BorderWidths(2), new Insets(-2))));
+                passwordField.setBorder(new Border(new BorderStroke(Color.RED, BorderStrokeStyle.SOLID,
+                        new CornerRadii(3), new BorderWidths(2), new Insets(-2))));
+                System.out.println("Wrong user/pass");
+            });
         }
 
     }
-
-
 
     // @FXML
     // private ListView<FlowPane> list;
@@ -116,55 +125,45 @@ public class LoginPageController {
 
     @FXML
     private void initialize() {
-        phoneField.setOnKeyPressed((e)-> {
-            
+        phoneField.setOnKeyPressed((e) -> {
+
             invalid.setVisible(false);
-            phoneField.setBorder(null);   
-            passwordField.setBorder(null);   
+            phoneField.setBorder(null);
+            passwordField.setBorder(null);
         });
-        passwordField.setOnKeyPressed((e)-> {
+        passwordField.setOnKeyPressed((e) -> {
             invalid.setVisible(false);
-            phoneField.setBorder(null);   
-            passwordField.setBorder(null); 
+            phoneField.setBorder(null);
+            passwordField.setBorder(null);
         });
-        
-        loginButton.sceneProperty().addListener((observable, oldScene, newScene)-> {
-            if(newScene !=null) setSaveAccelerator(loginButton);
-            });
 
-        FXMLLoader dashLoader = new FXMLLoader(getClass().getResource("/screens/base.fxml"));
-		BorderPane dashBoard = null;
-        try {
-            dashBoard = dashLoader.load();
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        dashController = dashLoader.getController();
+        loginButton.sceneProperty().addListener((observable, oldScene, newScene) -> {
+            if (newScene != null)
+                setSaveAccelerator(loginButton);
+        });
 
-         dashScene = new Scene(dashBoard, 600+200, 480+100);
-        //  System.out.println(dashScene);
+        // System.out.println(dashScene);
 
+    }
 
-
-}
     private void setSaveAccelerator(Button button) {
-        if(button==null) {
-            System.out.println("Button is null! "); 
+        if (button == null) {
+            System.out.println("Button is null! ");
         }
         Scene scene = button.getScene();
         if (scene == null) {
-            throw new IllegalArgumentException("setSaveAccelerator must be called when a button is attached to a scene");
+            throw new IllegalArgumentException(
+                    "setSaveAccelerator must be called when a button is attached to a scene");
         }
 
-       scene.getAccelerators().put(
-            new KeyCodeCombination(KeyCode.ENTER),
-            new Runnable() {
-                @FXML public void run() {
+        scene.getAccelerators().put(
+                new KeyCodeCombination(KeyCode.ENTER),
+                new Runnable() {
+                    @FXML
+                    public void run() {
 
-                    button.fire();
-                }
-            }
-       );
-   }
+                        button.fire();
+                    }
+                });
+    }
 }

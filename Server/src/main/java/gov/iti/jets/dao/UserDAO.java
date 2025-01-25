@@ -96,11 +96,13 @@ public class UserDAO implements DAO<UserDTO>{
     }
     
 
-    private UserDTO convert(ResultSet re){
+    private UserDTO convert(ResultSet re) {
         UserDTO user = new UserDTO();
         try {
-            if(!re.next())return null;
+            if (!re.next())
+                return null;
             // re.next();
+            user.setUserID(re.getInt("userID"));
             user.setPhone(re.getString("phone"));
             user.setName(re.getString("name"));
             user.setCountry(re.getString("country"));
@@ -113,20 +115,19 @@ public class UserDAO implements DAO<UserDTO>{
             try {
                 user.setUserMode(UserMode.valueOf(re.getString("userMode")));
             } catch (IllegalArgumentException | NullPointerException e) {
-                user.setUserMode(null); 
+                user.setUserMode(null);
             }
             try {
                 user.setBio(re.getString("bio"));
             } catch (IllegalArgumentException | NullPointerException e) {
-                user.setBio(null); 
+                user.setBio(null);
             }
             try {
                 user.setUserPicture(re.getBytes("userPicture"));
             } catch (IllegalArgumentException | NullPointerException e) {
-                user.setUserPicture(null); 
+                user.setUserPicture(null);
             }
-            
-            user.setUserPicture(re.getBytes("userPicture"));
+
             return user;
         } catch (SQLException e) {
             e.printStackTrace();

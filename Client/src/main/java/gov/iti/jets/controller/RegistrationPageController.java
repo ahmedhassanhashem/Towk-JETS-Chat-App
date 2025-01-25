@@ -1,6 +1,5 @@
 package gov.iti.jets.controller;
 
-
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
@@ -32,7 +31,7 @@ import gov.iti.jets.dto.Gender;
 import gov.iti.jets.dto.UserDTO;
 
 public class RegistrationPageController {
-    
+
     private Stage stage;
     private Scene signin;
     private Scene dashScene;
@@ -63,78 +62,69 @@ public class RegistrationPageController {
     @FXML
     private Label invalid;
 
-
-
-
-    public void setLoginsScene(Scene l){
-        loginScene =l;
-    }   
-    
-    public void setStage(Stage stage){
-        this.stage = stage;
-        dashController.setStage(stage);
-        dashController.setDashScene(dashScene);
-        dashController.setLoginsScene(loginScene);
+    public void setLoginsScene(Scene l) {
+        loginScene = l;
     }
 
+    public void setStage(Stage stage) {
+        this.stage = stage;
+
+    }
 
     @FXML
-    private void next(){
+    private void next() {
         UserDTO user = new UserDTO();
         user.setPhone(phoneField.getText());
         user.setName(nameField.getText());
-        user.setCountry( countryField.getValue());
-        if(gender.getSelectedToggle() ==null){
+        user.setCountry(countryField.getValue());
+        if (gender.getSelectedToggle() == null) {
             System.out.println("select gender");
             return;
         }
-        user.setGender((Gender)gender.getSelectedToggle().getUserData());
+        user.setGender((Gender) gender.getSelectedToggle().getUserData());
         System.out.println(gender.getSelectedToggle().getUserData());
 
         user.setEmail(emailField.getText());
-        user.setBirthdate( java.sql.Date.valueOf(dateField.getValue().toString()));
-        user.setPassword( passwordField.getText());
+        user.setBirthdate(java.sql.Date.valueOf(dateField.getValue().toString()));
+        user.setPassword(passwordField.getText());
         userDao.read(user);
-        if(userDao.read(user) !=null){
+        if (userDao.read(user) != null) {
             invalid.setVisible(true);
-            phoneField.setBorder(new Border(new BorderStroke(Color.RED, BorderStrokeStyle.SOLID, new CornerRadii(3), new BorderWidths(2), new Insets(-2))));
-           return;
+            phoneField.setBorder(new Border(new BorderStroke(Color.RED, BorderStrokeStyle.SOLID, new CornerRadii(3),
+                    new BorderWidths(2), new Insets(-2))));
+            return;
         }
         user = userDao.create(user);
-        if(user ==null){
+        if (user == null) {
             System.out.println("err");
-        }else{
+        } else {
+            FXMLLoader dashLoader = new FXMLLoader(getClass().getResource("/screens/base.fxml"));
+            BorderPane dashBoard = null;
+            try {
+                dashBoard = dashLoader.load();
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+            dashController = dashLoader.getController();
+
+            dashScene = new Scene(dashBoard, 600 + 200, 480 + 100);
+            dashController.setStage(stage);
+            dashController.setDashScene(dashScene);
+            dashController.setLoginsScene(loginScene);
             dashController.setUserDTO(user);
-            stage.setScene(dashScene);
             
+            stage.setScene(dashScene);
+
         }
 
-
     }
-    
-
-
-
-
-
 
     @FXML
     private void initialize() {
         male.setUserData(Gender.MALE);
         female.setUserData(Gender.FEMALE);
 
-        FXMLLoader dashLoader = new FXMLLoader(getClass().getResource("/screens/base.fxml"));
-		BorderPane dashBoard = null;
-        try {
-            dashBoard = dashLoader.load();
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        dashController = dashLoader.getController();
-
-         dashScene = new Scene(dashBoard, 600+200, 480+100);
     }
-
 
 }
