@@ -1,33 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import javafx.collections.*?>
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.image.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.shape.*?>
-<?import javafx.scene.text.*?>
-<?import java.lang.String?>
 <?import java.net.URL?>
-<?import javafx.collections.FXCollections?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TextArea?>
-<?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.shape.Circle?>
-<?import javafx.scene.text.Font?>
-<?import javafx.scene.text.Text?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" stylesheets="@../styles/style.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gov.iti.jets.controller.SettingsController">
+<BorderPane fx:id="borderPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" stylesheets="@../styles/style.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gov.iti.jets.controller.SettingsController">
    <left>
       <VBox spacing="10" style="-fx-background-color: #f0f0f0; -fx-min-width: 200;" styleClass="sidebar" stylesheets="@../styles/style.css">
            <padding>
@@ -36,7 +19,7 @@
          <children>
             <HBox alignment="CENTER" spacing="10">
                <children>
-                  <Button onAction="#backButton" mnemonicParsing="false" style="-fx-background-color: #f0f0f0;">
+                  <Button mnemonicParsing="false" onAction="#backButton" style="-fx-background-color: #f0f0f0;">
                      <graphic>
                         <ImageView fitHeight="45.0" fitWidth="49.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -48,112 +31,14 @@
                   <Label style="-fx-font-size: 30; -fx-font-weight: bold;" text="Settings" textFill="#13547a" />
                </children>
             </HBox>
-            <Button fx:id="profileBtn" maxWidth="Infinity" style="-fx-background-color: linear-gradient(to bottom, #13547a 0%, #80d0c7 100%);" styleClass="sidebar-button" stylesheets="@../styles/style.css" text="Profile">
+            <Button fx:id="profileBtn" onAction="#profileButton" maxWidth="Infinity" style="-fx-background-color: linear-gradient(to bottom, #13547a 0%, #80d0c7 100%);" styleClass="sidebar-button" stylesheets="@../styles/style.css" text="Profile">
                <VBox.margin>
                   <Insets top="100.0" />
                </VBox.margin></Button>
-            <Button fx:id="accountBtn" maxWidth="Infinity" onAction="#account" style="-fx-background-color: linear-gradient(to bottom, #13547a 0%, #80d0c7 100%);" styleClass="sidebar-button" stylesheets="@../styles/style.css" text="Account" />
+            <Button fx:id="accountBtn" maxWidth="Infinity" onAction="#accountButton" style="-fx-background-color: linear-gradient(to bottom, #13547a 0%, #80d0c7 100%);" styleClass="sidebar-button" stylesheets="@../styles/style.css" text="Account" />
          </children>
       </VBox>
    </left>
-   <center>
-      <StackPane prefHeight="150.0" prefWidth="200.0" stylesheets="@../styles/style.css" BorderPane.alignment="CENTER">
-         <children>
-            <VBox fx:id="profilePane" spacing="20" style="-fx-background-color: #f5f5f5;;" stylesheets="@../styles/style.css" visible="true">
-                <padding>
-                    <Insets bottom="20" left="20" right="20" top="20" />
-                </padding>
-               <children>
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Profile Setting">
-                     <font>
-                        <Font name="System Bold" size="18.0" />
-                     </font>
-                  </Text>
-                  <HBox alignment="CENTER_LEFT" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="44.0" prefWidth="560.0">
-                     <children>
-                        <ImageView fx:id="largeProfileImage" fitHeight="50.0" fitWidth="50.0">
-                           <image>
-                              <Image url="@../images/user%20(2).png" />
-                           </image>
-                           <HBox.margin>
-                              <Insets bottom="20.0" />
-                           </HBox.margin></ImageView>
-                        <Button mnemonicParsing="false" styleClass="action-button" text="Change Photo">
-                           <HBox.margin>
-                              <Insets bottom="20.0" left="10.0" />
-                           </HBox.margin>
-                        </Button>
-                     </children>
-                     <VBox.margin>
-                        <Insets bottom="20.0" />
-                     </VBox.margin>
-                  </HBox>
-                  <Label text="Name">
-                     <font>
-                        <Font name="System Bold" size="14.0" />
-                     </font>
-                     <VBox.margin>
-                        <Insets />
-                     </VBox.margin>
-                  </Label>
-                  <TextField promptText="Write your name" styleClass="namefield" />
-                  <Label text="Bio">
-                     <font>
-                        <Font name="System Bold" size="14.0" />
-                     </font>
-                     <VBox.margin>
-                        <Insets />
-                     </VBox.margin>
-                  </Label>
-                  <TextArea promptText="Write something about your self" styleClass="bioarea">
-                     <VBox.margin>
-                        <Insets />
-                     </VBox.margin></TextArea>
-                  <VBox maxHeight="-Infinity" minHeight="-Infinity" prefHeight="70.0" VBox.vgrow="ALWAYS">
-                     <children>
-                        <Label text="User Mode">
-                           <font>
-                              <Font name="System Bold" size="14.0" />
-                           </font>
-                           <VBox.margin>
-                              <Insets top="20.0" />
-                           </VBox.margin></Label>
-                        <ComboBox fx:id="userModeComboBox" minHeight="-Infinity" styleClass="userModeComboBox" VBox.vgrow="ALWAYS">
-                            <items>
-                              <FXCollections fx:factory="observableArrayList">
-                <String fx:value="Available" />
-                <String fx:value="Busy" />
-                <String fx:value="Away" />
-            </FXCollections>
-            </items>
-                           <VBox.margin>
-                              <Insets />
-                           </VBox.margin>
-                        </ComboBox>
-                     </children>
-                  </VBox>
-                  <HBox alignment="CENTER_LEFT" spacing="5">
-                     <children>
-                        <Circle fx:id="statusIndicator" fill="DODGERBLUE" radius="5.0" stroke="BLACK" strokeType="INSIDE" styleClass="statusIndicator">
-                           <HBox.margin>
-                              <Insets bottom="20.0" />
-                           </HBox.margin></Circle>
-                        <Label fx:id="statusLabel" styleClass="statusLabel" text="Current Status: Available">
-                           <HBox.margin>
-                              <Insets bottom="20.0" />
-                           </HBox.margin></Label>
-                     </children>
-                  </HBox>
-                  <HBox alignment="TOP_RIGHT" prefHeight="66.0" prefWidth="550.0" spacing="30.0">
-                     <children>
-                        <Button layoutX="10.0" layoutY="10.0" maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#dashboard" prefWidth="80.0" style="-fx-background-color: linear-gradient(to bottom, #13547a 0%, #80d0c7 100%);" styleClass="action-button" text="Save" textFill="WHITE" />
-                     </children>
-                  </HBox>
-               </children>
-            </VBox>
-         </children>
-      </StackPane>
-   </center>
    <stylesheets>
       <URL value="@../styles/style.css" />
       <URL value="@../styles/style.css" />

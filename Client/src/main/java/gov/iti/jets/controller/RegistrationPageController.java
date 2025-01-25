@@ -2,6 +2,7 @@ package gov.iti.jets.controller;
 
 
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 
@@ -23,6 +24,9 @@ import javafx.scene.layout.CornerRadii;
 import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+
+import java.io.IOException;
+
 import gov.iti.jets.dao.UserDAO;
 import gov.iti.jets.dto.Gender;
 import gov.iti.jets.dto.UserDTO;
@@ -33,6 +37,8 @@ public class RegistrationPageController {
     private Scene signin;
     private Scene dashScene;
     private UserDAO userDao = new UserDAO();
+    private DashboardController dashController;
+    private Scene loginScene;
 
     @FXML
     private TextField nameField;
@@ -60,19 +66,17 @@ public class RegistrationPageController {
 
 
 
-
+    public void setLoginsScene(Scene l){
+        loginScene =l;
+    }   
     
     public void setStage(Stage stage){
         this.stage = stage;
+        dashController.setStage(stage);
+        dashController.setDashScene(dashScene);
+        dashController.setLoginsScene(loginScene);
     }
 
-    public void setSignIn(Scene s){
-        signin = s;
-    }
-
-    public void setDashScene(Scene s){
-        dashScene = s;
-    }
 
     @FXML
     private void next(){
@@ -100,7 +104,7 @@ public class RegistrationPageController {
         if(user ==null){
             System.out.println("err");
         }else{
-
+            dashController.setUserDTO(user);
             stage.setScene(dashScene);
             
         }
@@ -108,10 +112,6 @@ public class RegistrationPageController {
 
     }
     
-    @FXML
-    private void gotoSingin(){
-        stage.setScene(signin);
-    }
 
 
 
@@ -123,7 +123,17 @@ public class RegistrationPageController {
         male.setUserData(Gender.MALE);
         female.setUserData(Gender.FEMALE);
 
+        FXMLLoader dashLoader = new FXMLLoader(getClass().getResource("/screens/base.fxml"));
+		BorderPane dashBoard = null;
+        try {
+            dashBoard = dashLoader.load();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        dashController = dashLoader.getController();
 
+         dashScene = new Scene(dashBoard, 600+200, 480+100);
     }
 
 

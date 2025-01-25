@@ -6,7 +6,17 @@ public class ContactDTO {
         private int receiverID;
         private RequestStatus requestStatus;
 
-         /**
+
+        public ContactDTO(){}
+
+
+         public ContactDTO(int senderID, int receiverID, RequestStatus requestStatus) {
+            this.senderID = senderID;
+            this.receiverID = receiverID;
+            this.requestStatus = requestStatus;
+        }
+
+        /**
      * @return int return the id
      */
     public int getId() {

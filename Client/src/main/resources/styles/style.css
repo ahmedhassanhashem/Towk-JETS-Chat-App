@@ -291,6 +291,29 @@ userModeComboBox .arrow-button {
     -fx-background-color: #2d9195;
 }
 
+
+.delete-account {
+    -fx-padding: 10 20; /* Adds padding inside the HBox */
+    
+    -fx-background-radius: 5; /* Rounded corners */
+    -fx-text-fill: white; /* Text color */
+    -fx-font-weight: bold; /* Make text bold */
+    -fx-cursor: hand; /* Change the cursor to a hand to indicate it's clickable */
+    -fx-border-color: transparent; /* Remove border if needed */
+    -fx-border-radius: 5; /* Optional rounded border */
+    -fx-alignment: center; /* Align content in the center */
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 3, 0.5, 0, 3); /* Add shadow for better visual effect */
+}
+
+.delete-account:hover {
+    -fx-background-color: #FF2B2B; /* Change background color when hovered */
+}
+
+.delete-account:pressed {
+    -fx-background-color: #D11F1F; /* Change background color when pressed */
+}
+
+
 .hbox {
     -fx-background-color: transparent;
     -fx-cursor: hand;
