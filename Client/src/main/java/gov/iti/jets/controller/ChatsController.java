@@ -55,6 +55,9 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import gov.iti.jets.dao.ContactDAO;
+import gov.iti.jets.dto.UserDTO;
+
 public class ChatsController {
 
 
@@ -133,6 +136,8 @@ private void addGroup(ActionEvent event){
         // final BorderPane chat;
         
 
+
+
         contacts.add(hold);
         listView.setCellFactory(new Callback<ListView<HBox>,ListCell<HBox>>() {
             @Override
@@ -165,16 +170,18 @@ private void addGroup(ActionEvent event){
         });
     }
     public void contactScene(){
+        ObservableList<UserDTO> list = new ContactDAO().findAllContactsACCEPTED("010");
         listView.setItems(contacts);
         HBox hold =null;
         FXMLLoader addContactLoader = new FXMLLoader(getClass().getResource("/screens/CardContact.fxml"));
+        listView.setCellFactory(null);
 
-        try {
-            hold = addContactLoader.load();
-        } catch (IOException e) {
+        // try {
+        //     hold = addContactLoader.load();
+        // } catch (IOException e) {
  
-            e.printStackTrace();
-        }
+        //     e.printStackTrace();
+        // }
         // final BorderPane chat;
         final FXMLLoader chatLoader = new FXMLLoader(getClass().getResource("/screens/messageChat.fxml"));
 

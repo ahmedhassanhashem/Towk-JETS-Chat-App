@@ -7,27 +7,27 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Circle?>
-<?import javafx.scene.text.Text?>
 
-<HBox alignment="CENTER_LEFT" minHeight="70.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1">
+
+<HBox alignment="CENTER_LEFT" minHeight="70.0" prefHeight="70.0" prefWidth="200.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gov.iti.jets.controller.ContactCardController">
    <children>
-      <ImageView fitHeight="40.0" fitWidth="40.0">
+      <ImageView fx:id="picture" fitHeight="40.0" fitWidth="40.0" preserveRatio="true">
          <image>
             <Image url="@../images/boy.png" />
          </image>
          <HBox.margin>
-            <Insets left="20.0" />
+            <Insets left="5.0" right="10.0" />
          </HBox.margin>
       </ImageView>
       <VBox alignment="CENTER_LEFT" prefWidth="100.0" style="-fx-background-color: white;" HBox.hgrow="ALWAYS">
          <children>
-            <Label alignment="CENTER" text="ContactName" VBox.vgrow="ALWAYS" />
+            <Label fx:id="name" alignment="TOP_LEFT" prefHeight="18.0" prefWidth="154.0" text="ContactName" VBox.vgrow="ALWAYS" />
             <HBox alignment="CENTER_LEFT" maxHeight="-Infinity" prefHeight="20.0" VBox.vgrow="ALWAYS">
                <children>
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="bio" />
-                  <Circle fill="DODGERBLUE" radius="4.0" stroke="BLACK" strokeType="INSIDE" style="-fx-fill: green;">
+                  <Label prefHeight="18.0" prefWidth="122.0" text="bio" />
+                  <Circle fx:id="status" fill="DODGERBLUE" radius="4.0" stroke="BLACK" strokeType="INSIDE" style="-fx-fill: green;">
                      <HBox.margin>
-                        <Insets left="60.0" />
+                        <Insets />
                      </HBox.margin>
                   </Circle>
                </children>

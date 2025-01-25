@@ -69,7 +69,16 @@ public class DashboardController {
     ChatsController c = contactLoader.getController();
     c.contactScene();
     borderPane.setCenter(hold);
+
+
+
+
+
+
     }
+
+
+    
 
     @FXML
     private void chats(MouseEvent event){
