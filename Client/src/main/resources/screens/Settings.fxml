@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" stylesheets="@../styles/style.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gov.iti.jets.controller.SettingsController">
+<BorderPane fx:id="borderPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" stylesheets="@../styles/style.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gov.iti.jets.controller.SettingsController">
    <left>
       <VBox spacing="10" style="-fx-background-color: #f0f0f0; -fx-min-width: 200;" styleClass="sidebar" stylesheets="@../styles/style.css">
            <padding>
@@ -31,11 +31,11 @@
                   <Label style="-fx-font-size: 30; -fx-font-weight: bold;" text="Settings" textFill="#13547a" />
                </children>
             </HBox>
-            <Button fx:id="profileBtn" maxWidth="Infinity" style="-fx-background-color: linear-gradient(to bottom, #13547a 0%, #80d0c7 100%);" styleClass="sidebar-button" stylesheets="@../styles/style.css" text="Profile">
+            <Button fx:id="profileBtn" onAction="#profileButton" maxWidth="Infinity" style="-fx-background-color: linear-gradient(to bottom, #13547a 0%, #80d0c7 100%);" styleClass="sidebar-button" stylesheets="@../styles/style.css" text="Profile">
                <VBox.margin>
                   <Insets top="100.0" />
                </VBox.margin></Button>
-            <Button fx:id="accountBtn" maxWidth="Infinity" onAction="#account" style="-fx-background-color: linear-gradient(to bottom, #13547a 0%, #80d0c7 100%);" styleClass="sidebar-button" stylesheets="@../styles/style.css" text="Account" />
+            <Button fx:id="accountBtn" maxWidth="Infinity" onAction="#accountButton" style="-fx-background-color: linear-gradient(to bottom, #13547a 0%, #80d0c7 100%);" styleClass="sidebar-button" stylesheets="@../styles/style.css" text="Account" />
          </children>
       </VBox>
    </left>

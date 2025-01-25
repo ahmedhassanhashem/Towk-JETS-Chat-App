@@ -11,6 +11,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -45,6 +46,8 @@ public class LoginPageController {
     private Scene signup;
     private Scene dashScene;
     private UserDAO userDao = new UserDAO();
+    private DashboardController dashController;
+    private Scene loginScene;
 
     @FXML
     private Button loginButton;
@@ -59,16 +62,17 @@ public class LoginPageController {
     @FXML
     private PasswordField passwordField;
 
-    @FXML
-    private void gotoSignup() {
-        stage.setScene(signup);
-    }
-
+    public void setLoginsScene(Scene l){
+        loginScene =l;
+    }   
     public void setStage(Stage stage) {
         this.stage = stage;
         var w = stage.widthProperty().multiply(0.3);
         phoneField.prefWidthProperty().bind(w);
         passwordField.prefWidthProperty().bind(w);
+        dashController.setStage(stage);
+        dashController.setLoginsScene(loginScene);
+        // System.out.println(stage);
     }
 
     @FXML
@@ -78,8 +82,13 @@ public class LoginPageController {
         user.setPhone(phoneField.getText());
         user.setPassword(passwordField.getText());
         user = userDao.read(user);
-        if(user != null)
-        Platform.runLater(() -> stage.setScene(dashScene));
+        if(user != null){
+
+            // System.out.println(dashScene);
+            dashController.setUserDTO(user);
+            dashController.setDashScene(dashScene);
+            stage.setScene(dashScene);
+        }   
         else{
             Platform.runLater(() ->{
             invalid.setVisible(true);
@@ -91,14 +100,7 @@ public class LoginPageController {
 
     }
 
-    public void setDashScene(Scene s) {
-        
-        dashScene = s;
-    }
 
-    public void setSignUp(Scene s) {
-        signup = s;
-    }
 
     // @FXML
     // private ListView<FlowPane> list;
@@ -130,6 +132,18 @@ public class LoginPageController {
             if(newScene !=null) setSaveAccelerator(loginButton);
             });
 
+        FXMLLoader dashLoader = new FXMLLoader(getClass().getResource("/screens/base.fxml"));
+		BorderPane dashBoard = null;
+        try {
+            dashBoard = dashLoader.load();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        dashController = dashLoader.getController();
+
+         dashScene = new Scene(dashBoard, 600+200, 480+100);
+        //  System.out.println(dashScene);
 
 
 
