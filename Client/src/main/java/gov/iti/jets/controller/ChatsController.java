@@ -149,6 +149,10 @@ public class ChatsController {
                                     final FXMLLoader chatLoader = new FXMLLoader(
                                             getClass().getResource("/screens/messageChat.fxml"));
                                     final BorderPane chat = chatLoader.load();
+                                    MessageChatController messageController = chatLoader.getController();
+                                    messageController.setImage(user.getUserPicture());
+                                    messageController.setName(user.getName());
+                                    messageController.setStatus(user.getUserStatus().toString());
                                     // chat.setTop(new VBox());
                                     borderPane.setCenter(chat);
                                 } catch (IOException e1) {
@@ -203,7 +207,11 @@ public class ChatsController {
                                     final FXMLLoader chatLoader = new FXMLLoader(
                                             getClass().getResource("/screens/messageChat.fxml"));
                                     final BorderPane chat = chatLoader.load();
-                                    // chat.setTop(new VBox());
+                                    MessageChatController messageController = chatLoader.getController();
+                                    messageController.setImage(user.getUserPicture());
+                                    messageController.setName(user.getName());
+                                    messageController.setStatus(user.getUserStatus().toString());
+                                    
                                     borderPane.setCenter(chat);
                                 } catch (IOException e1) {
                                     // TODO Auto-generated catch block
