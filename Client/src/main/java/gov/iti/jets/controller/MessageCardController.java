@@ -39,7 +39,7 @@ public class MessageCardController {
     }
 
     messageText.setText(messageContent);
-
+    timeLabel.setText(timestamp);
     messageText.wrappingWidthProperty().bind(messageTextFlow.widthProperty());
 
     messageContainer.setPrefWidth(Region.USE_COMPUTED_SIZE);

@@ -10,24 +10,16 @@ import gov.iti.jets.dto.MessageDTO;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
-public class MessageDAO implements DAO<MessageDTO>{
+public class MessageDAO{
 
     DatabaseConnectionManager dm;
-    Connection con;
-    WebRowSet rs = null;
 
     public MessageDAO() {
         dm = DatabaseConnectionManager.getInstance();
-        con = dm.getConnection();
-        try {
-            rs = RowSetProvider.newFactory().createWebRowSet();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
 
     }
 
-    @Override
+ 
     public MessageDTO create(MessageDTO msg) {
         String msgContent = msg.getMessageContent();
         int chatID = msg.getChatID();
@@ -39,7 +31,8 @@ public class MessageDAO implements DAO<MessageDTO>{
             return null;
 
         String query = "INSERT INTO message (messageContent, chatID, userID, messageDate, attachmentID) VALUES (?, ?, ?, ?, ?)";
-        try(PreparedStatement ps = con.prepareStatement(query);){
+        try(Connection con = dm.getConnection();
+            PreparedStatement ps = con.prepareStatement(query);){
             ps.setString(1, msgContent);
             ps.setInt(2, chatID);
             ps.setInt(3, userID);
@@ -53,34 +46,14 @@ public class MessageDAO implements DAO<MessageDTO>{
         return msg;
     }
 
-    @Override
-    public MessageDTO read(MessageDTO t) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'read'");
-    }
 
-    @Override
-    public MessageDTO update(MessageDTO t) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'update'");
-    }
-
-    @Override
-    public void delete(MessageDTO t) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'delete'");
-    }
-
-    @Override
-    public List<MessageDTO> findAll() {throw new UnsupportedOperationException("");}
-
-    @Override
     public ObservableList<MessageDTO> findAllMessages(int chatID) {
         ObservableList<MessageDTO> msgList = FXCollections.observableArrayList();
 
-        String query = "SELECT * FROM message WHERE chatID = ?;";
+        String query = "SELECT * FROM Message WHERE chatID = ?;";
 
-        try{
+        try(Connection con = dm.getConnection();
+        WebRowSet rs  = RowSetProvider.newFactory().createWebRowSet();){
             rs.setCommand(query);
             rs.setInt(1, chatID);
             rs.execute(con);

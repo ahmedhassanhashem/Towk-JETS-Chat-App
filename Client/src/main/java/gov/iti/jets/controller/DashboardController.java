@@ -21,7 +21,7 @@ public class DashboardController {
     private Scene userInfoScene;
     private Scene dashScene;
     private UserDTO userDTO = new UserDTO();
-
+    ChatsController chat;
     @FXML
     private Label nameLabel;
 
@@ -43,7 +43,8 @@ public class DashboardController {
     public void setUserDTO(UserDTO user) {
         userDTO = user;
         nameLabel.setText(user.getName());
-
+        chat.setUserDTO(userDTO);
+        chat.chatScene();
     }
 
     public void setDashScene(Scene l) {
@@ -71,6 +72,9 @@ public class DashboardController {
         c.contactScene();
         borderPane.setCenter(hold);
     }
+
+
+    
 
     @FXML
     private void chats(MouseEvent event) {
@@ -193,7 +197,8 @@ public class DashboardController {
             e.printStackTrace();
         }
         borderPane.setCenter(hold);
-        ChatsController c = chatLoader.getController();
-        c.chatScene();
+        chat = chatLoader.getController();
+        
+        
     }
 }

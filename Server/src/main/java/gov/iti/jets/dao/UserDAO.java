@@ -21,20 +21,14 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.chart.PieChart;
 
-public class UserDAO implements DAO<UserDTO>{
+public class UserDAO{
     DatabaseConnectionManager meh;
     Connection con;
     public UserDAO(){
         meh = DatabaseConnectionManager.getInstance();
         con = meh.getConnection();        
     }
-    @Override
-    public UserDTO create(UserDTO user) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'create'");
-    }
-
-    @Override
+    
     public UserDTO read(UserDTO user) { // u can make it take String and String (phone and password)
         // return null; // change the logic to return user and make condition in the controller
                     // or u can create default method in DAO or create it in the userDAO 
@@ -55,23 +49,6 @@ public class UserDAO implements DAO<UserDTO>{
             }
             return null;
 
-    }
-
-    @Override
-    public UserDTO update(UserDTO user) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'update'");
-    }
-
-    @Override
-    public void delete(UserDTO user) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'delete'");
-    }
-
-    @Override
-    public List<UserDTO> findAll() {
-        return null;
     }
 
     
@@ -96,11 +73,13 @@ public class UserDAO implements DAO<UserDTO>{
     }
     
 
-    private UserDTO convert(ResultSet re){
+    private UserDTO convert(ResultSet re) {
         UserDTO user = new UserDTO();
         try {
-            if(!re.next())return null;
+            if (!re.next())
+                return null;
             // re.next();
+            user.setUserID(re.getInt("userID"));
             user.setPhone(re.getString("phone"));
             user.setName(re.getString("name"));
             user.setCountry(re.getString("country"));
@@ -113,20 +92,19 @@ public class UserDAO implements DAO<UserDTO>{
             try {
                 user.setUserMode(UserMode.valueOf(re.getString("userMode")));
             } catch (IllegalArgumentException | NullPointerException e) {
-                user.setUserMode(null); 
+                user.setUserMode(null);
             }
             try {
                 user.setBio(re.getString("bio"));
             } catch (IllegalArgumentException | NullPointerException e) {
-                user.setBio(null); 
+                user.setBio(null);
             }
             try {
                 user.setUserPicture(re.getBytes("userPicture"));
             } catch (IllegalArgumentException | NullPointerException e) {
-                user.setUserPicture(null); 
+                user.setUserPicture(null);
             }
-            
-            user.setUserPicture(re.getBytes("userPicture"));
+
             return user;
         } catch (SQLException e) {
             e.printStackTrace();
