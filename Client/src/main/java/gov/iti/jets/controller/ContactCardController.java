@@ -19,6 +19,14 @@ public class ContactCardController {
     @FXML
     Circle status;
 
+    public Circle getStatus() {
+        return status;
+    }
+
+    public void setStatus(Circle status) {
+        this.status = status;
+    }
+
     public void setPicture(byte[] i) {
         if (i != null) {
 

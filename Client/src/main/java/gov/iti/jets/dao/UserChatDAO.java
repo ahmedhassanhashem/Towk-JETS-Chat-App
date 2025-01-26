@@ -14,44 +14,18 @@ import gov.iti.jets.dto.UserStatus;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
-public class UserChatDAO implements DAO<UserChatDTO> {
+public class UserChatDAO{
 
     DatabaseConnectionManager dm;
-    Connection con;
 
     public UserChatDAO() {
         dm = DatabaseConnectionManager.getInstance();
-        con = dm.getConnection();
 
     }
 
-    @Override
-    public UserChatDTO create(UserChatDTO t) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'create'");
-    }
 
-    @Override
-    public UserChatDTO read(UserChatDTO t) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'read'");
-    }
 
-    @Override
-    public UserChatDTO update(UserChatDTO t) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'update'");
-    }
-
-    @Override
-    public void delete(UserChatDTO t) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'delete'");
-    }
-
-    // @Override
     public ObservableList<UserDTO> findAll(int userId) {
-
         ObservableList<UserDTO> allChatUsers = FXCollections.observableArrayList();
 
         String query = " SELECT distinct *\n" + //

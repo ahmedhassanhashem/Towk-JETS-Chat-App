@@ -24,8 +24,8 @@
             <Label fx:id="name" alignment="TOP_LEFT" prefHeight="18.0" prefWidth="154.0" text="ContactName" VBox.vgrow="ALWAYS" />
             <HBox alignment="CENTER_LEFT" maxHeight="-Infinity" prefHeight="20.0" VBox.vgrow="ALWAYS">
                <children>
-                  <Label prefHeight="18.0" prefWidth="122.0" text="bio" />
-                  <Circle fx:id="status" fill="DODGERBLUE" radius="4.0" stroke="BLACK" strokeType="INSIDE" style="-fx-fill: green;">
+                  <Label fx:id="bio" prefHeight="18.0" prefWidth="122.0" text="bio" />
+                  <Circle fx:id="status" fill="DODGERBLUE" radius="4.0" stroke="BLACK" strokeType="INSIDE" >
                      <HBox.margin>
                         <Insets />
                      </HBox.margin>

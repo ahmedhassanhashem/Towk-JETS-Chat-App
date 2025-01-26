@@ -36,6 +36,8 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -55,6 +57,7 @@ import java.util.stream.Stream;
 import gov.iti.jets.dao.UserChatDAO;
 import gov.iti.jets.dao.ContactDAO;
 import gov.iti.jets.dto.UserDTO;
+import gov.iti.jets.dto.UserStatus;
 
 public class ChatsController {
 
@@ -201,6 +204,11 @@ public class ChatsController {
                             contactCardController.setPicture(user.getUserPicture());
                             contactCardController.setName(user.getName());
                             contactCardController.setBio(user.getBio());
+                            if(user.getUserStatus() == UserStatus.OFFLINE) {
+                                contactCardController.getStatus().setFill(Color.GRAY);
+                            } else {
+                                contactCardController.getStatus().setFill(Color.GREEN); 
+                            }
                             setGraphic(contactCard);
                             contactCard.setOnMouseClicked((e) -> {
                                 try {
