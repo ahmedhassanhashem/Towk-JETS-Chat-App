@@ -48,6 +48,7 @@ import java.net.UnknownHostException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -55,6 +56,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import gov.iti.jets.dao.UserChatDAO;
+import gov.iti.jets.dao.ChatDAO;
 import gov.iti.jets.dao.ContactDAO;
 import gov.iti.jets.dto.UserDTO;
 import gov.iti.jets.dto.UserStatus;
@@ -70,6 +72,7 @@ public class ChatsController {
     private UserDTO userDTO = new UserDTO();
     private UserChatDAO userChatDAO = new UserChatDAO();
     private ContactDAO contactDAO = new ContactDAO();
+    private ChatDAO chatDao = new ChatDAO();
 
     public void setStage(Stage s) {
         stage = s;
@@ -156,7 +159,11 @@ public class ChatsController {
                                     messageController.setImage(user.getUserPicture());
                                     messageController.setName(user.getName());
                                     messageController.setStatus(user.getUserStatus().toString());
-                                    // messageController.setUserDTO(userDTO);
+                                    try {
+                                        messageController.setUserDTO(userDTO,chatDao.findExistingSingleChat(userDTO.getUserID(),user.getUserID()));
+                                    } catch (SQLException e1) {
+                                        e1.printStackTrace();
+                                    }
                                     // chat.setTop(new VBox());
                                     borderPane.setCenter(chat);
                                 } catch (IOException e1) {
@@ -220,6 +227,21 @@ public class ChatsController {
                                     messageController.setImage(user.getUserPicture());
                                     messageController.setName(user.getName());
                                     messageController.setStatus(user.getUserStatus().toString());
+                                    try {
+                                        int chatID = chatDao.findExistingSingleChat(userDTO.getUserID(),user.getUserID());
+                                        if(chatID != 0)
+                                        messageController.setUserDTO(userDTO,chatID);
+                                        else
+                                        {
+                                             chatID = chatDao.createSingle(userDTO.getPhone(),user.getPhone());
+
+                                            messageController.setUserDTO(userDTO,chatID);
+                                        }
+
+
+                                    } catch (SQLException e1) {
+                                        e1.printStackTrace();
+                                    }
 
                                     borderPane.setCenter(chat);
                                 } catch (IOException e1) {

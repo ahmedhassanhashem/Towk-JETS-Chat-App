@@ -25,13 +25,13 @@ public class ChatDAO{
     }
 
 
-    public String createSingle(String currentUserPhone, String otherUserPhone) {
+    public Integer createSingle(String currentUserPhone, String otherUserPhone) {
         Connection con = dm.getConnection();
         try {
             
             if (currentUserPhone == null || otherUserPhone == null 
                 || currentUserPhone.length() != 11 || otherUserPhone.length() != 11) {
-                return "Invalid phone numbers";
+                return 0;
             }
 
             // Get user IDs
@@ -39,13 +39,13 @@ public class ChatDAO{
             int otherUserId = getUserIdByPhone(otherUserPhone);
             
             if (currentUserId == -1 || otherUserId == -1) {
-                return "User not found";
+                return 0;
             }
 
             // Check for existing chat
             Integer existingChatId = findExistingSingleChat(currentUserId, otherUserId);
             if (existingChatId != null) {
-                return "Chat already exists with ID: " + existingChatId;
+                return 0;
             }
 
             // Create new chat
@@ -54,7 +54,7 @@ public class ChatDAO{
             linkUsersToChat(chatId, Arrays.asList(currentUserId, otherUserId));
             con.commit();
 
-            return "Chat created successfully with ID: " + chatId;
+            return chatId;
             
         } catch (SQLException e) {
             try {
@@ -62,7 +62,7 @@ public class ChatDAO{
             } catch (SQLException ex) {
                 ex.printStackTrace();
             }
-            return "Error creating chat: " + e.getMessage();
+            return 0;
         }finally{
             try {
                 con.close();
@@ -105,7 +105,7 @@ public class ChatDAO{
         return groupName;
 }
 
-    private Integer findExistingSingleChat(int user1, int user2) throws SQLException {
+    public Integer findExistingSingleChat(int user1, int user2) throws SQLException {
         String query ="SELECT c.chatID \r\n" + //
                         "            FROM Chat c\r\n" + //
                         "            JOIN UserChat uc1 ON c.chatID = uc1.chatID\r\n" + //
@@ -119,7 +119,7 @@ public class ChatDAO{
             ps.setInt(1, user1);
             ps.setInt(2, user2);
             ResultSet rs = ps.executeQuery();
-            return rs.next() ? rs.getInt("chatID") : null;
+            return rs.next() ? rs.getInt("chatID") : 0;
         }
     }
 

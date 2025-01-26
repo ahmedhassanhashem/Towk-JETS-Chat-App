@@ -50,7 +50,7 @@ public class MessageDAO{
     public ObservableList<MessageDTO> findAllMessages(int chatID) {
         ObservableList<MessageDTO> msgList = FXCollections.observableArrayList();
 
-        String query = "SELECT * FROM message WHERE chatID = ?;";
+        String query = "SELECT * FROM Message WHERE chatID = ?;";
 
         try(Connection con = dm.getConnection();
         WebRowSet rs  = RowSetProvider.newFactory().createWebRowSet();){
