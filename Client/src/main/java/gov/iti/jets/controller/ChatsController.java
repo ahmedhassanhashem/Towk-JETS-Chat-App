@@ -137,8 +137,8 @@ public class ChatsController {
                         ChatCadController chatCardController = addContactLoader.getController();
 
                         if (user == null || empty) {
-                            // setText(null);
-                            // setGraphic(null);
+                            setText(null);
+                            setGraphic(null);
                         } else {
                             chatCardController.setImage(user.getUserPicture());
                             chatCardController.setLabel(user.getName());
