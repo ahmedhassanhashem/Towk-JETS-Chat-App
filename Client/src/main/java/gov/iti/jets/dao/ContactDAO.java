@@ -15,23 +15,16 @@ import gov.iti.jets.dto.UserStatus;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
-public class ContactDAO implements DAO<ContactDTO> {
+public class ContactDAO{
 
     DatabaseConnectionManager dm;
-    Connection con;
 
     public ContactDAO() {
         dm = DatabaseConnectionManager.getInstance();
-        con = dm.getConnection();
-
     }
 
-    // create meant to send request for a user so you will check if he exist first and then add
-    // him with pending status
-    @Override
-    public ContactDTO create(ContactDTO contact) {throw new UnsupportedOperationException("Unimplemented method 'read'");}
+    
 
-   @Override
 public String create(String senderPhone, String receiverPhone) {
     if (senderPhone.length() != 11 || receiverPhone.length() != 11) {
         return "Invalid phone number format";
@@ -44,7 +37,8 @@ public String create(String senderPhone, String receiverPhone) {
                    "    'PENDING'" +
                    ")";
 
-    try (PreparedStatement ps = con.prepareStatement(query)) {
+    try (Connection con = dm.getConnection();
+        PreparedStatement ps = con.prepareStatement(query)) {
 
         if (!userExists(senderPhone)) {
             System.out.println("Sender account not found");
@@ -74,37 +68,15 @@ public String create(String senderPhone, String receiverPhone) {
 
 private boolean userExists(String phone) throws SQLException {
     String query = "SELECT 1 FROM User WHERE phone = ?";
-    try (PreparedStatement ps = con.prepareStatement(query)) {
+    try (Connection con = dm.getConnection();
+        PreparedStatement ps = con.prepareStatement(query)) {
         ps.setString(1, phone);
         try (ResultSet rs = ps.executeQuery()) {
             return rs.next();
         }
     }
 }
-    @Override
-    public ContactDTO read(ContactDTO contact) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'read'");
-    }
-
-    @Override
-    public ContactDTO update(ContactDTO contact) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'update'");
-    }
-
-    @Override
-    public void delete(ContactDTO contact) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'delete'");
-    }
-
-    @Override
-    public List<ContactDTO> findAll() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'findAll'");
-    }
-
+    
 
 
     // to get all the contacts to show in the contacts list
@@ -118,7 +90,8 @@ private boolean userExists(String phone) throws SQLException {
         "(SELECT u.* FROM UserContact uc JOIN User u ON uc.senderID = u.userID " +
         "WHERE uc.receiverID = ? AND uc.requestStatus = 'ACCEPT')";
 
-    try (PreparedStatement psGetUserID = con.prepareStatement(getUserIDQuery)) {
+    try (Connection con = dm.getConnection();
+        PreparedStatement psGetUserID = con.prepareStatement(getUserIDQuery)) {
 
         psGetUserID.setString(1, userPhone);
         ResultSet rsUser = psGetUserID.executeQuery();
@@ -142,11 +115,31 @@ private boolean userExists(String phone) throws SQLException {
                 // user.setPassword(re.getString("password"));
                 // user.setFirstLogin(re.getBoolean("firstLogin"));
                 user.setUserStatus(UserStatus.valueOf(re.getString("userStatus")));
-                user.setUserMode(UserMode.valueOf(re.getString("userMode")));
+
+                String mode = re.getString("userMode");
+                if(mode == null)
+                    user.setUserMode(UserMode.AVAILABLE);
+                else
+                    user.setUserMode(UserMode.valueOf(re.getString("userMode")));
+
+                String bio = re.getString("bio");
+                if(bio != null)
+                    user.setBio(bio);
+                else
+                    user.setBio("Hi im using towk!");
+
+                    // need modification 
+                byte[] pic = re.getBytes("userPicture");
+                if(bio == null)
+                        /// default pic will set here 
+                    user.setUserPicture(pic);
+                else
+                    user.setUserPicture(pic);
+
                 contacts.add(user);
 
-                return contacts;
             }
+            return contacts;
         }
     } catch (SQLException e) {
         e.printStackTrace();
@@ -165,7 +158,8 @@ private boolean userExists(String phone) throws SQLException {
                         "        WHERE uc.senderID = ? " + //
                         "        AND uc.requestStatus = 'REJECT'";
     
-        try (PreparedStatement ps = con.prepareStatement("SELECT userID FROM User WHERE phone = ?")) {
+        try (Connection con = dm.getConnection();
+            PreparedStatement ps = con.prepareStatement("SELECT userID FROM User WHERE phone = ?")) {
             
             ps.setString(1, userPhone);
             ResultSet rs = ps.executeQuery();
@@ -212,7 +206,8 @@ private boolean userExists(String phone) throws SQLException {
                 "        AND uc.requestStatus = 'PENDING'"+
                 "        ORDER BY u.name ASC";
 
-    try (PreparedStatement psGetUser = con.prepareStatement("SELECT userID FROM User WHERE phone = ?")) {
+    try (Connection con = dm.getConnection();
+        PreparedStatement psGetUser = con.prepareStatement("SELECT userID FROM User WHERE phone = ?")) {
         
         // Get current user's ID (the receiver)
         psGetUser.setString(1, userPhone);

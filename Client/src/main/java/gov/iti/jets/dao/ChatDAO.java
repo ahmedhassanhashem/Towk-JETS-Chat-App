@@ -13,56 +13,22 @@ import gov.iti.jets.dto.ChatType;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
-public class ChatDAO implements DAO<ChatDAO>{
+public class ChatDAO{
 
     DatabaseConnectionManager dm;
-    Connection con;
     UserChatDAO userChatDAO = new UserChatDAO();
     MessageDAO messageDAO = new MessageDAO();
 
 
     public ChatDAO() {
         dm = DatabaseConnectionManager.getInstance();
-        con = dm.getConnection();
-    }
-
-    @Override
-    public ChatDAO create(ChatDAO chat) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'create'");
-    }
-
-    @Override
-    public ChatDAO read(ChatDAO chat) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'read'");
-    }
-
-    @Override
-    public ChatDAO update(ChatDAO chat) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'update'");
-    }
-
-    @Override
-    public void delete(ChatDAO chat) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'delete'");
-    }
-
-    @Override
-    public List<ChatDAO> findAll() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'findAll'");
     }
 
 
-
-
-    @Override
     public String createSingle(String currentUserPhone, String otherUserPhone) {
+        Connection con = dm.getConnection();
         try {
-            // Validate phone numbers
+            
             if (currentUserPhone == null || otherUserPhone == null 
                 || currentUserPhone.length() != 11 || otherUserPhone.length() != 11) {
                 return "Invalid phone numbers";
@@ -97,14 +63,20 @@ public class ChatDAO implements DAO<ChatDAO>{
                 ex.printStackTrace();
             }
             return "Error creating chat: " + e.getMessage();
+        }finally{
+            try {
+                con.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
     }
 
     
 
-    @Override
+ 
     public String createGroup(String creatorPhone, List<String> participantPhones, String groupName) {
-    try {
+    try (Connection con = dm.getConnection();){
         List<Integer> userIds = new ArrayList<>();
         
         // Get creator ID
@@ -142,7 +114,8 @@ public class ChatDAO implements DAO<ChatDAO>{
                         "              AND uc1.userID = ?\r\n" + //
                         "              AND uc2.userID = ?";
         
-        try (PreparedStatement ps = con.prepareStatement(query)) {
+        try (Connection con = dm.getConnection();
+            PreparedStatement ps = con.prepareStatement(query)) {
             ps.setInt(1, user1);
             ps.setInt(2, user2);
             ResultSet rs = ps.executeQuery();
@@ -152,7 +125,8 @@ public class ChatDAO implements DAO<ChatDAO>{
 
     private int createNewChat(String chatType, String chatName) throws SQLException {
         String query = "INSERT INTO Chat (chatType, chatName) VALUES (?, ?)";
-        try (PreparedStatement ps = con.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS)) {
+        try (Connection con = dm.getConnection();
+            PreparedStatement ps = con.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS)) {
             ps.setString(1, chatType);
             ps.setString(2, chatName);
             ps.executeUpdate();
@@ -165,7 +139,8 @@ public class ChatDAO implements DAO<ChatDAO>{
 
     private void linkUsersToChat(int chatId, List<Integer> userIds) throws SQLException {
         String query = "INSERT INTO UserChat (chatID, userID) VALUES (?, ?)";
-        try (PreparedStatement ps = con.prepareStatement(query)) {
+        try (Connection con = dm.getConnection();
+            PreparedStatement ps = con.prepareStatement(query)) {
             for (int userId : userIds) {
                 ps.setInt(1, chatId);
                 ps.setInt(2, userId);
@@ -177,16 +152,14 @@ public class ChatDAO implements DAO<ChatDAO>{
 
 
 
-
-
-    
-
-
-
-    public  int read(String userPhone){
-
-
-        return 0;
+    public int getUserIdByPhone(String phone) throws SQLException {
+        String query = "SELECT userID FROM User WHERE phone = ?";
+        try (Connection con = dm.getConnection();
+            PreparedStatement ps = con.prepareStatement(query)) {
+            ps.setString(1, phone);
+            ResultSet rs = ps.executeQuery();
+            return rs.next() ? rs.getInt("userID") : -1;
+        }
     }
 
 }

@@ -21,20 +21,14 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.chart.PieChart;
 
-public class UserDAO implements DAO<UserDTO>{
+public class UserDAO{
     DatabaseConnectionManager meh;
     Connection con;
     public UserDAO(){
         meh = DatabaseConnectionManager.getInstance();
         con = meh.getConnection();        
     }
-    @Override
-    public UserDTO create(UserDTO user) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'create'");
-    }
-
-    @Override
+    
     public UserDTO read(UserDTO user) { // u can make it take String and String (phone and password)
         // return null; // change the logic to return user and make condition in the controller
                     // or u can create default method in DAO or create it in the userDAO 
@@ -55,23 +49,6 @@ public class UserDAO implements DAO<UserDTO>{
             }
             return null;
 
-    }
-
-    @Override
-    public UserDTO update(UserDTO user) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'update'");
-    }
-
-    @Override
-    public void delete(UserDTO user) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'delete'");
-    }
-
-    @Override
-    public List<UserDTO> findAll() {
-        return null;
     }
 
     
