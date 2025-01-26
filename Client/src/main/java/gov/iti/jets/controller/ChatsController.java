@@ -153,6 +153,7 @@ public class ChatsController {
                                     messageController.setImage(user.getUserPicture());
                                     messageController.setName(user.getName());
                                     messageController.setStatus(user.getUserStatus().toString());
+                                    // messageController.setUserDTO(userDTO);
                                     // chat.setTop(new VBox());
                                     borderPane.setCenter(chat);
                                 } catch (IOException e1) {
@@ -211,7 +212,7 @@ public class ChatsController {
                                     messageController.setImage(user.getUserPicture());
                                     messageController.setName(user.getName());
                                     messageController.setStatus(user.getUserStatus().toString());
-                                    
+
                                     borderPane.setCenter(chat);
                                 } catch (IOException e1) {
                                     // TODO Auto-generated catch block
