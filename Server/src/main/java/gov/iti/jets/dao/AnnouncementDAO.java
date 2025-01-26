@@ -4,11 +4,10 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-
+import java.util.ArrayList;
+import java.util.List;
 
 import gov.iti.jets.dto.AnnouncementDTO;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 
 public class AnnouncementDAO {
 
@@ -107,8 +106,8 @@ public class AnnouncementDAO {
     }
 
     
-    public ObservableList<AnnouncementDTO> findAll() {
-        ObservableList<AnnouncementDTO> announcementList = FXCollections.observableArrayList();
+    public List<AnnouncementDTO> findAll() {
+        List<AnnouncementDTO> announcementList = new ArrayList<>();
         String query = "SELECT * FROM Announcement";
         try (Connection con = DatabaseConnectionManager.getInstance().getConnection();
              PreparedStatement preparedStatement = con.prepareStatement(query);
