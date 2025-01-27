@@ -160,6 +160,7 @@ public class ChatsController {
                                     messageController.setName(user.getName());
                                     messageController.setStatus(user.getUserStatus().toString());
                                     try {
+                                        
                                         messageController.setUserDTO(userDTO,chatDao.findExistingSingleChat(userDTO.getUserID(),user.getUserID()));
                                     } catch (SQLException e1) {
                                         e1.printStackTrace();
@@ -233,7 +234,8 @@ public class ChatsController {
                                         messageController.setUserDTO(userDTO,chatID);
                                         else
                                         {
-                                             chatID = chatDao.createSingle(userDTO.getPhone(),user.getPhone());
+                                            chatID = chatDao.createSingle(userDTO.getPhone(),user.getPhone());
+                                            // System.out.println(chatID);
 
                                             messageController.setUserDTO(userDTO,chatID);
                                         }

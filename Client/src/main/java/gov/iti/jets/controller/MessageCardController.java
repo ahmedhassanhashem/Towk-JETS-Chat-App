@@ -29,14 +29,14 @@ public class MessageCardController {
 
     public void setMessageData(String userName, String messageContent, String timestamp, boolean isSender) {
     if (isSender) {
-        nameLabel.setVisible(false); 
+        // nameLabel.setVisible(false); 
         messageContainer.getStyleClass().add("sender-message"); 
         messageContainerr.setAlignment(javafx.geometry.Pos.CENTER_RIGHT); 
     } else {
-        nameLabel.setText(userName);
         messageContainer.getStyleClass().add("receiver-message"); 
         messageContainerr.setAlignment(javafx.geometry.Pos.CENTER_LEFT); 
     }
+    nameLabel.setText(userName);
 
     messageText.setText(messageContent);
     timeLabel.setText(timestamp);

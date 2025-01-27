@@ -5,14 +5,12 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gov.iti.jets.controller.AnnouncementController">
    <top>
       <Label alignment="CENTER" text="Announce" textAlignment="JUSTIFY" BorderPane.alignment="CENTER">
          <font>
@@ -26,8 +24,8 @@
    <center>
       <VBox alignment="CENTER" spacing="20.0" BorderPane.alignment="CENTER">
          <children>
-            <TextField prefWidth="200" promptText="Announcment title" />
-            <TextArea prefWidth="200" promptText="Announcment body" />
+            <TextField fx:id="announcementTitle" prefWidth="200" promptText="Announcment title" />
+            <TextArea fx:id="announcementContent" prefWidth="200" promptText="Announcment body" />
          </children>
       </VBox>
    </center>
@@ -37,7 +35,7 @@
    <right>
       <!-- <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER"> -->
          <!-- <children> -->
-            <Button alignment="CENTER" BorderPane.alignment="CENTER" mnemonicParsing="false" prefHeight="42.0" prefWidth="95.0" text="Send" textAlignment="CENTER">
+            <Button alignment="CENTER" mnemonicParsing="false" onAction="#handleSendAnnouncement" prefHeight="42.0" prefWidth="95.0" text="Send" textAlignment="CENTER" BorderPane.alignment="CENTER">
                <font>
                   <Font size="24.0" />
                </font>

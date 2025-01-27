@@ -1,102 +1,91 @@
 package gov.iti.jets.controller;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-
-
-
-
-import java.io.*;
-
-import javafx.application.Platform;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
+import javafx.util.Callback;
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Pos;
-import javafx.scene.Node;
-import javafx.scene.Scene;
-import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
-import javafx.scene.control.TextField;
-import javafx.scene.control.TreeCell;
-import javafx.scene.control.TreeItem;
-import javafx.scene.control.TreeView;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.image.WritableImage;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.FlowPane;
-import javafx.scene.layout.GridPane;
+import javafx.scene.control.SelectionMode;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Region;
-import javafx.stage.FileChooser;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
-import javafx.util.Callback;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import gov.iti.jets.dao.AnnouncementDAO;
+import gov.iti.jets.dto.AnnouncementDTO;
 
-import java.net.InetAddress;
-import java.net.UnknownHostException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
+
+import javafx.application.Platform;
+import java.io.IOException;
 
 public class AnnouncementController {
 
+    private final AnnouncementDAO announcementDAO = new AnnouncementDAO();
+    ObservableList<AnnouncementDTO> contacts = FXCollections.observableArrayList();
 
-    ObservableList<HBox> contacts =FXCollections.observableArrayList();
     @FXML
-    private ListView<HBox> listView;
-
-
-
-
-
+    private ListView<AnnouncementDTO> listView;
 
     @FXML
     private void initialize() {
+        loadAnnouncements();
         listView.setItems(contacts);
-        
-        HBox hold =null;
-        FXMLLoader addContactLoader = new FXMLLoader(getClass().getResource("/screens/AnnouncementCard.fxml"));
 
-        try {
-            hold = addContactLoader.load();
-        } catch (IOException e) {
- 
-            e.printStackTrace();
-        }
-        contacts.add(hold);
-        addContactLoader = new FXMLLoader(getClass().getResource("/screens/AnnouncementCard.fxml"));
+        // Disable selection effects in ListView (optional)
+        listView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+        listView.setFocusTraversable(false);
+    }
 
-        try {
-            hold = addContactLoader.load();
-        } catch (IOException e) {
- 
-            e.printStackTrace();
-        }
-        contacts.add(hold);
-        addContactLoader = new FXMLLoader(getClass().getResource("/screens/AnnouncementCard.fxml"));
+    private void loadAnnouncements() {
+        ObservableList<AnnouncementDTO> announcementDTO = announcementDAO.findAll();
 
-        try {
-            hold = addContactLoader.load();
-        } catch (IOException e) {
- 
-            e.printStackTrace();
-        }
-        contacts.add(hold);
+        listView.setCellFactory(new Callback<ListView<AnnouncementDTO>, ListCell<AnnouncementDTO>>() {
+            @Override
+            public ListCell<AnnouncementDTO> call(ListView<AnnouncementDTO> p) {
+                return new ListCell<AnnouncementDTO>() {
+                    @Override
+                    protected void updateItem(AnnouncementDTO announcement, boolean empty) {
+                        super.updateItem(announcement, empty);
 
+                        if (empty || announcement == null) {
+                            setText(null); 
+                            setGraphic(null); 
+                        } else {
+                            // Load the announcement card in the background
+                            Task<HBox> loadTask = new Task<HBox>() {
+                                @Override
+                                protected HBox call() throws Exception {
+                                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/screens/AnnouncementCard.fxml"));
+                                    HBox announcementCard = null;
+
+                                    try {
+                                        announcementCard = loader.load();
+                                    } catch (IOException e) {
+                                        e.printStackTrace();
+                                    }
+
+                                    AnnouncementCardController controller = loader.getController();
+                                    if (controller != null) {
+                                        controller.setAnnouncementData(announcement);
+                                    }
+
+                                    return announcementCard;
+                                }
+                            };
+
+                            // Update the cell's graphic when the task is finished
+                            loadTask.setOnSucceeded(event -> {
+                                HBox announcementCard = loadTask.getValue();
+                                setGraphic(announcementCard);
+                            });
+
+                            // Run the task in a new thread
+                            new Thread(loadTask).start();
+                        }
+                    }
+                };
+            }
+        });
+
+        contacts.addAll(announcementDTO);
     }
 }
