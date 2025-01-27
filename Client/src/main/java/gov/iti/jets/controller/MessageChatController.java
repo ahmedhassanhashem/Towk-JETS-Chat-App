@@ -3,16 +3,29 @@ package gov.iti.jets.controller;
 import javafx.scene.layout.Region;
 
 import java.io.ByteArrayInputStream;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.Socket;
+import java.net.URLEncoder;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.sql.Date;
 import java.time.LocalDate;
 
 import gov.iti.jets.dao.AttachementDAO;
 import gov.iti.jets.dao.MessageDAO;
 import gov.iti.jets.dao.UserDAO;
+import gov.iti.jets.dto.AttachementDTO;
 import gov.iti.jets.dto.ChatDTO;
 import gov.iti.jets.dto.MessageDTO;
 import gov.iti.jets.dto.UserDTO;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -31,6 +44,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 
@@ -40,11 +54,15 @@ public class MessageChatController {
     ObservableList<MessageDTO> chats = FXCollections.observableArrayList();
     private UserDTO userDTO = new UserDTO();
     private ChatDTO chatDTO = new ChatDTO();
+    private AttachementDTO attachement = null;
     private UserDAO userDAO = new UserDAO();
     private AttachementDAO attachementDAO = new AttachementDAO();
     private MessageDAO messageDAO = new MessageDAO();
     private int chatID;
     private Stage stage;
+    // private int attachId = 0;
+    // private String fileName;
+    private byte[] upload;
     public void setStage(Stage s) {
         stage = s;
     }
@@ -85,37 +103,107 @@ public class MessageChatController {
     @FXML
     private void send(ActionEvent event){
         String msgContent = text.getText();
-        if(msgContent.length()==0)return;
+        // if(msgContent.length()==0 && attachement==null)return;
         MessageDTO msg = new MessageDTO();
         msg.setMessageContent(msgContent);
         msg.setChatID(chatID);
         msg.setUserID(userDTO.getUserID());
         msg.setMessageDate( Date.valueOf(LocalDate.now()));
- 
+        if(attachement !=null){
+            msg.setAttachmentID(attachement.getAttachmentID());
+            sendFile();
+        }
         // int attachID = msg.getAttachmentID();
 
-        messageDAO.create(msg);
-        chats.add(msg);
+        
+        chats.add(messageDAO.create(msg));
+        // Platform.runLater(() -> {
+        //     listView.layout();   
+        //     listView.scrollTo(listView.getItems().size() - 1);
+        // });
+
+        attachement=null;
+        text.setText("");
     }
 
     @FXML
     private void attach(ActionEvent event){
-        
+        FileChooser fil_chooser = new FileChooser();
+			File file = fil_chooser.showOpenDialog(stage);
+            if(file !=null){
+                try (FileInputStream fIn = new FileInputStream(file)) {
+                    upload= fIn.readAllBytes();
+                    String fileName = file.getName();
+                    AttachementDTO attachementDTOCreated = new AttachementDTO();
+                    attachementDTOCreated.setAttachmentTitle(fileName); //TODO hashed
+                    attachementDTOCreated.setAttachmentSize(file.length());
+                    String type = Files.probeContentType(Paths.get(URLEncoder.encode(file.toURI().toString(), "UTF-8")));
+                    attachementDTOCreated.setAttachmentType(type);
+                    attachement = attachementDAO.createAttachment(attachementDTOCreated);
+                    
+                } catch (IOException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+            }
+    }
+
+    private void sendFile(){
+                    Socket s;
+            InputStream sIn;
+            OutputStream sOut;
+            try {
+                s = new Socket("", 3000);
+                sIn = s.getInputStream();
+                sOut = s.getOutputStream();
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+                return;
+            }
+            DataOutputStream out = new DataOutputStream(sOut);
+            DataInputStream in = new DataInputStream(sIn);
+
+                try {
+                    out.writeUTF("upload");
+                    out.writeUTF(attachement.getAttachmentTitle());
+                    out.write(upload);
+                } catch (IOException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+
+            try {
+                s.close();
+            } catch (IOException e) {
+               
+                e.printStackTrace();
+            }
     }
     @FXML
     private void textEnter(ActionEvent event){
         String msgContent = text.getText();
-        if(msgContent.length()==0)return;
+        // if(msgContent.length()==0 && attachement==null)return;
         MessageDTO msg = new MessageDTO();
         msg.setMessageContent(msgContent);
         msg.setChatID(chatID);
         msg.setUserID(userDTO.getUserID());
         msg.setMessageDate( Date.valueOf(LocalDate.now()));
- 
+        if(attachement !=null){
+            msg.setAttachmentID(attachement.getAttachmentID());
+            sendFile();
+        }
         // int attachID = msg.getAttachmentID();
 
-        messageDAO.create(msg);
-        chats.add(msg);
+        
+        chats.add(messageDAO.create(msg));
+        // Platform.runLater(() -> {
+        //     listView.layout();   
+        //     listView.scrollTo(listView.getItems().size() - 1);
+        // });
+
+        attachement=null;
+        text.setText("");
     }
 
     public void setUserDTO(UserDTO user,int chatID) {

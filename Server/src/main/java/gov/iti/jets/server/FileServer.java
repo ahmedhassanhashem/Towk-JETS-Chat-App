@@ -7,7 +7,7 @@ import java.net.Socket;
 public class FileServer {
 
     public static void Start() {
-        System.out.println(FileServer.class.getResource("/screens"));
+        // System.out.println(FileServer.class.getResource("/screens"));
         try (ServerSocket s = new ServerSocket(3000)) {
             int i = 1;
             while (true) {
