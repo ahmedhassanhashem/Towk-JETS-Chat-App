@@ -50,7 +50,7 @@
    </top>
    <bottom>
       <HBox prefHeight="70.0" style="-fx-background-color: white;" BorderPane.alignment="CENTER">
-         <Button mnemonicParsing="false" style="-fx-background-color: white;">
+         <Button onAction="#attach" mnemonicParsing="false" style="-fx-background-color: white;">
             <graphic>
                <ImageView fitHeight="20" fitWidth="20">
                   <image>

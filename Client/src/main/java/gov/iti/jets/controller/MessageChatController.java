@@ -78,9 +78,24 @@ public class MessageChatController {
 
     @FXML
     private void send(ActionEvent event){
+        String msgContent = text.getText();
+        if(msgContent.length()==0)return;
+        MessageDTO msg = new MessageDTO();
+        msg.setMessageContent(msgContent);
+        msg.setChatID(chatID);
+        msg.setUserID(userDTO.getUserID());
+        msg.setMessageDate( Date.valueOf(LocalDate.now()));
+ 
+        // int attachID = msg.getAttachmentID();
 
+        messageDAO.create(msg);
+        chats.add(msg);
     }
 
+    @FXML
+    private void attach(ActionEvent event){
+        
+    }
     @FXML
     private void textEnter(ActionEvent event){
         String msgContent = text.getText();
