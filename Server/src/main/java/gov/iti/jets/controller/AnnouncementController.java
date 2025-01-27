@@ -35,8 +35,8 @@ public class AnnouncementController {
             Alert alert = new Alert(AlertType.INFORMATION);
             alert.setContentText("Announcement created successfully.");
             alert.setHeaderText("Announced");
-            alert.showAndWait();
             alert.initModality(Modality.APPLICATION_MODAL);
+            alert.showAndWait();
         } else 
             System.out.println("Error: Announcement creation failed.");
             
@@ -47,8 +47,8 @@ public class AnnouncementController {
             Alert alert = new Alert(AlertType.ERROR);
             alert.setContentText("Empty Fields");
             alert.setHeaderText("ERROR!!");
-            alert.showAndWait();
             alert.initModality(Modality.APPLICATION_MODAL);
+            alert.showAndWait();
         }
         
 

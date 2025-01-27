@@ -76,7 +76,24 @@ public class UserDAO {
 
     }
 
-  
+    public String read(int id) { 
+
+        String sql2 = "Select name From User where userId = ?";
+        ResultSet re;
+        try (Connection con = meh.getConnection();
+            PreparedStatement preparedStatement = con.prepareStatement(sql2);){
+            
+            preparedStatement.setInt(1, id);
+            re = preparedStatement.executeQuery();
+            re.next();
+            return re.getString(1);
+        } catch (SQLException e) {
+
+            e.printStackTrace();
+        }
+        return null;
+
+    }
 
     private UserDTO convert(ResultSet re) {
         UserDTO user = new UserDTO();
