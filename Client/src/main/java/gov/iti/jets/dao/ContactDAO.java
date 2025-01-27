@@ -106,6 +106,7 @@ private boolean userExists(String phone) throws SQLException {
 
             while (re.next()) {
                 UserDTO user = new UserDTO();
+                user.setUserID(re.getInt("userID"));
                 user.setPhone(re.getString("phone"));
                 user.setName(re.getString("name"));
                 user.setCountry(re.getString("country"));
@@ -173,6 +174,7 @@ private boolean userExists(String phone) throws SQLException {
                 ResultSet re = psRejected.executeQuery();
                 while (re.next()) {
                     UserDTO user = new UserDTO();
+                    user.setUserID(re.getInt("userID"));
                     user.setPhone(re.getString("phone"));
                     user.setName(re.getString("name"));
                     user.setCountry(re.getString("country"));
@@ -223,6 +225,7 @@ private boolean userExists(String phone) throws SQLException {
             ResultSet re = psPending.executeQuery();
             while (re.next()) {
                 UserDTO user = new UserDTO();
+                    user.setUserID(re.getInt("userID"));
                     user.setPhone(re.getString("phone"));
                     user.setName(re.getString("name"));
                     user.setCountry(re.getString("country"));
