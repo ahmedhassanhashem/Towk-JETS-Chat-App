@@ -67,11 +67,12 @@ public class MessageCardController {
         hyperlink.setOnMouseClicked(event -> {
             FileChooser fil_chooser = new FileChooser();
 			File file = fil_chooser.showSaveDialog(stage);
+            if(file !=null)
             try (FileOutputStream fOut = new FileOutputStream(file)) {
-                
+
             } catch (IOException e) {
                 
-                e.printStackTrace();
+                // e.printStackTrace();
             }
 
             System.out.println("Text clicked!");

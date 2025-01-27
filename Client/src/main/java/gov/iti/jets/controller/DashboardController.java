@@ -71,6 +71,7 @@ public class DashboardController {
         ChatsController c = contactLoader.getController();
         c.setUserDTO(userDTO);
         c.contactScene();
+        c.setStage(stage);
         borderPane.setCenter(hold);
     }
 
