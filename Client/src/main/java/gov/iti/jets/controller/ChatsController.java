@@ -230,6 +230,7 @@ public class ChatsController {
                                     messageController.setImage(user.getUserPicture());
                                     messageController.setName(user.getName());
                                     messageController.setStatus(user.getUserStatus().toString());
+                                    messageController.setStage(stage);
                                     try {
                                         int chatID = chatDao.findExistingSingleChat(userDTO.getUserID(),user.getUserID());
                                         if(chatID != 0)
