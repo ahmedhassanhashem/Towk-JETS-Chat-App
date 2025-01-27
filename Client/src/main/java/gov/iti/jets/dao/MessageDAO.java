@@ -27,16 +27,19 @@ public class MessageDAO{
         java.sql.Date msgDate = msg.getMessageDate();  
         int attachID = msg.getAttachmentID();
 
-        if(msgContent.isBlank() && attachID < 1)
+        if(msgContent.isBlank())
             return null;
 
-        String query = "INSERT INTO message (messageContent, chatID, userID, messageDate, attachmentID) VALUES (?, ?, ?, ?, ?)";
+        String query = "INSERT INTO Message (messageContent, chatID, userID, messageDate, attachmentID) VALUES (?, ?, ?, ?, ?)";
         try(Connection con = dm.getConnection();
             PreparedStatement ps = con.prepareStatement(query);){
             ps.setString(1, msgContent);
             ps.setInt(2, chatID);
             ps.setInt(3, userID);
             ps.setDate(4, msgDate);
+            if(attachID <=0)
+            ps.setNull(5, java.sql.Types.INTEGER);
+            else
             ps.setInt(5, attachID);
             ps.executeUpdate();
             System.out.println("Message inserted successfully.");
