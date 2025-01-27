@@ -153,12 +153,14 @@ public class ChatsController {
                             chatCard.setOnMouseClicked((e) -> {
                                 try {
                                     final FXMLLoader chatLoader = new FXMLLoader(
-                                            getClass().getResource("/screens/messageChat.fxml"));
+                                    getClass().getResource("/screens/messageChat.fxml"));
                                     final BorderPane chat = chatLoader.load();
                                     MessageChatController messageController = chatLoader.getController();
                                     messageController.setImage(user.getUserPicture());
                                     messageController.setName(user.getName());
                                     messageController.setStatus(user.getUserStatus().toString());
+                                    messageController.setStage(stage);
+
                                     try {
                                         
                                         messageController.setUserDTO(userDTO,chatDao.findExistingSingleChat(userDTO.getUserID(),user.getUserID()));
