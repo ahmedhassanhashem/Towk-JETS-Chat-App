@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.sql.Date;
 import java.time.LocalDate;
 
+import gov.iti.jets.dao.AttachementDAO;
 import gov.iti.jets.dao.MessageDAO;
 import gov.iti.jets.dao.UserDAO;
 import gov.iti.jets.dto.ChatDTO;
@@ -30,6 +31,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
+import javafx.stage.Stage;
 import javafx.util.Callback;
 
 public class MessageChatController {
@@ -39,9 +41,13 @@ public class MessageChatController {
     private UserDTO userDTO = new UserDTO();
     private ChatDTO chatDTO = new ChatDTO();
     private UserDAO userDAO = new UserDAO();
+    private AttachementDAO attachementDAO = new AttachementDAO();
     private MessageDAO messageDAO = new MessageDAO();
     private int chatID;
-
+    private Stage stage;
+    public void setStage(Stage s) {
+        stage = s;
+    }
     @FXML
     private ListView<MessageDTO> listView;
     @FXML
@@ -134,13 +140,14 @@ public class MessageChatController {
                         }
         
                         MessageCardController messageCardController = messageChattLoader.getController();
-
+                        messageCardController.setStage(stage);
+                        // System.out.println(stage);
                         if (chat == null || empty) {
                             setText(null);
                             setGraphic(null);
                         } else {
 
-                            messageCardController.setMessageData(userDAO.read(chat.getUserID()), chat.getMessageContent(), chat.getMessageDate().toString(), chat.getUserID() !=user.getUserID() );
+                            messageCardController.setMessageData(userDAO.read(chat.getUserID()), chat.getMessageContent(),attachementDAO.getAttachmentTitle(chat.getAttachmentID()), chat.getMessageDate().toString(), chat.getUserID() !=user.getUserID(),chat.getAttachmentID()!=0 );
                             setGraphic(messageCard);
 
                         }
