@@ -34,7 +34,7 @@
 .chat-list-view {
     -fx-background-image: url('../images/whats3.jpg');
     -fx-background-size: cover;
-    -fx-background-repeat: no-repeat;
+    -fx-background-repeat: repeat;
     -fx-background-position: center;
     -fx-background-color: transparent;
 }

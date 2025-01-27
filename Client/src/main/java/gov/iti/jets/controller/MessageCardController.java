@@ -2,9 +2,14 @@ package gov.iti.jets.controller;
 
 import javafx.scene.layout.Region;
 
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.Socket;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Hyperlink;
@@ -65,16 +70,47 @@ public class MessageCardController {
         });
 
         hyperlink.setOnMouseClicked(event -> {
+            Socket s;
+            InputStream sIn;
+            OutputStream sOut;
+            try {
+                s = new Socket("", 3000);
+                sIn = s.getInputStream();
+                sOut = s.getOutputStream();
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+                return;
+            }
+            DataOutputStream out = new DataOutputStream(sOut);
+            DataInputStream in = new DataInputStream(sIn);
+
+            try {
+                out.writeUTF("download");
+                out.writeUTF(fileName);
+
             FileChooser fil_chooser = new FileChooser();
 			File file = fil_chooser.showSaveDialog(stage);
-            if(file !=null)
-            try (FileOutputStream fOut = new FileOutputStream(file)) {
+            if(file !=null){
 
+                FileOutputStream fOut = new FileOutputStream(file);
+                byte[] download ;
+                download = in.readAllBytes();
+                fOut.write(download);
+                fOut.close();
+            }
+            
             } catch (IOException e) {
                 
-                // e.printStackTrace();
+                e.printStackTrace();
             }
 
+            try {
+                s.close();
+            } catch (IOException e) {
+               
+                e.printStackTrace();
+            }
             System.out.println("Text clicked!");
             
             // getHostServices().showDocument("http://www.example.com");
