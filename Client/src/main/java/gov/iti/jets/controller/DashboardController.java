@@ -53,6 +53,7 @@ public class DashboardController {
 
     public void setStage(Stage s) {
         stage = s;
+        chat.setStage(s);
     }
 
     @FXML
@@ -70,6 +71,7 @@ public class DashboardController {
         ChatsController c = contactLoader.getController();
         c.setUserDTO(userDTO);
         c.contactScene();
+        c.setStage(stage);
         borderPane.setCenter(hold);
     }
 
@@ -90,6 +92,7 @@ public class DashboardController {
         ChatsController c = chatLoader.getController();
         c.setUserDTO(userDTO);
         c.chatScene();
+        c.setStage(stage);
         borderPane.setCenter(hold);
 
     }

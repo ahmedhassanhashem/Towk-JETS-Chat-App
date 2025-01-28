@@ -58,6 +58,7 @@ import java.util.stream.Stream;
 import gov.iti.jets.dao.UserChatDAO;
 import gov.iti.jets.dao.ChatDAO;
 import gov.iti.jets.dao.ContactDAO;
+import gov.iti.jets.dao.MessageDAO;
 import gov.iti.jets.dto.UserDTO;
 import gov.iti.jets.dto.UserStatus;
 
@@ -72,6 +73,7 @@ public class ChatsController {
     private UserDTO userDTO = new UserDTO();
     private UserChatDAO userChatDAO = new UserChatDAO();
     private ContactDAO contactDAO = new ContactDAO();
+    private MessageDAO messageDAO = new MessageDAO();
     private ChatDAO chatDao = new ChatDAO();
 
     public void setStage(Stage s) {
@@ -148,17 +150,19 @@ public class ChatsController {
                         } else {
                             chatCardController.setImage(user.getUserPicture());
                             chatCardController.setLabel(user.getName());
-                            chatCardController.setText("last message");
+                            chatCardController.setText(messageDAO.findLastMessage(userDTO.getUserID(),user.getUserID()));
                             setGraphic(chatCard);
                             chatCard.setOnMouseClicked((e) -> {
                                 try {
                                     final FXMLLoader chatLoader = new FXMLLoader(
-                                            getClass().getResource("/screens/messageChat.fxml"));
+                                    getClass().getResource("/screens/messageChat.fxml"));
                                     final BorderPane chat = chatLoader.load();
                                     MessageChatController messageController = chatLoader.getController();
                                     messageController.setImage(user.getUserPicture());
                                     messageController.setName(user.getName());
                                     messageController.setStatus(user.getUserStatus().toString());
+                                    messageController.setStage(stage);
+
                                     try {
                                         
                                         messageController.setUserDTO(userDTO,chatDao.findExistingSingleChat(userDTO.getUserID(),user.getUserID()));
@@ -228,6 +232,7 @@ public class ChatsController {
                                     messageController.setImage(user.getUserPicture());
                                     messageController.setName(user.getName());
                                     messageController.setStatus(user.getUserStatus().toString());
+                                    messageController.setStage(stage);
                                     try {
                                         int chatID = chatDao.findExistingSingleChat(userDTO.getUserID(),user.getUserID());
                                         if(chatID != 0)

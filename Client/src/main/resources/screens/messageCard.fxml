@@ -1,25 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.text.*?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Text?>
+<?import javafx.scene.text.TextFlow?>
 
-<HBox fx:id="messageContainerr" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="gov.iti.jets.controller.MessageCardController" stylesheets="@../styles/style.css">
+<HBox fx:id="messageContainerr" stylesheets="@../styles/style.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gov.iti.jets.controller.MessageCardController">
    <children>
       <VBox fx:id="messageContainer" alignment="TOP_LEFT" spacing="5">
          <children>
-            <Label fx:id="nameLabel" text="User Name" styleClass="message-name-label" />
-            <HBox fx:id="messageTextContainer" spacing="5">
+            <Label fx:id="nameLabel" styleClass="message-name-label" text="User Name" />
+            <VBox fx:id="messageTextContainerV" alignment="CENTER_LEFT" spacing="5">
                <children>
-                  <TextFlow fx:id="messageTextFlow" maxWidth="300" styleClass="message-textflow">
-                     <children>
-                        <Text fx:id="messageText" text="Sample message text" />
-                     </children>
-                  </TextFlow>
+                        <HBox fx:id="messageTextContainer" spacing="5">
+                           <children>
+                              <TextFlow fx:id="messageTextFlow" maxWidth="300" styleClass="message-textflow">
+                                 <children>
+                                    <Text fx:id="messageText" text="Sample message text" />
+                                 </children>
+                              </TextFlow>
+                           </children>
+                        </HBox>
                </children>
-            </HBox>
-            <Label fx:id="timeLabel" text="12:34 PM" styleClass="message-time-label" />
+            </VBox>
+            <Label fx:id="timeLabel" styleClass="message-time-label" text="12:34 PM" />
          </children>
       </VBox>
    </children>
