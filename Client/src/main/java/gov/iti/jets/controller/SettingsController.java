@@ -53,14 +53,35 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import gov.iti.jets.dto.UserDTO;
+
 public class SettingsController {
+
+    private UserDTO userDTO = new UserDTO();
     
     
     private Stage stage;
     private Scene accountScene;
+    private Scene LoginScene;
     private Scene dashboardScene;
     private VBox profile =null;
     private VBox account =null;
+    private ProfileSettingsController controllerProfile;
+    private AccountSettingsController controllerAccount;
+
+    public void setUserDTO(UserDTO user) {
+        userDTO = user;
+        if (controllerProfile != null) {
+            controllerProfile.setUserDTO(user);
+        }
+        if (controllerAccount != null) {
+            controllerAccount.setUserDTO(user);
+        }
+    }
+
+    public void setLoginsScene(Scene s) {
+        LoginScene = s;
+    }
 
     @FXML
     private BorderPane borderPane;
@@ -129,5 +150,21 @@ public class SettingsController {
 
     borderPane.setCenter(account);
 
+    controllerProfile = profileSettingsLoader.getController();
+    controllerAccount = accountSettingsLoader.getController();
+    
+    if (userDTO != null) {
+        controllerProfile.setUserDTO(userDTO);
+        controllerAccount.setUserDTO(userDTO);
+        controllerProfile.setStage(stage);
+        controllerAccount.setStage(stage);
+        
+
     }
+    if(userDTO.getUserPicture() != null)
+            controllerProfile.image.setImage(new Image(new ByteArrayInputStream(userDTO.getUserPicture())));
+
+    }
+
 }
+
