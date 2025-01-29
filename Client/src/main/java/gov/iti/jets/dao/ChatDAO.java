@@ -8,8 +8,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import gov.iti.jets.dto.ChatDTO;
-import gov.iti.jets.dto.ChatType;
+import gov.iti.jets.dto.UserDTO;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -160,6 +159,34 @@ public class ChatDAO{
             ResultSet rs = ps.executeQuery();
             return rs.next() ? rs.getInt("userID") : -1;
         }
+    }
+
+        public ObservableList<UserDTO> findAllGroups(int userId) {
+        ObservableList<UserDTO> allGroups = FXCollections.observableArrayList();
+
+        String query = "select c.chatID , chatName,chatPicture from Chat c join UserChat u on c.chatID = u.chatID where userID = ? and chatType = \"GROUP\"";
+        try (Connection con = dm.getConnection();
+                PreparedStatement ps = con.prepareStatement(query)) {
+
+            ps.setInt(1, userId);
+            ResultSet rs = ps.executeQuery();
+            UserDTO group = new UserDTO();
+            
+            while (true) {
+                if(!rs.next())break;
+                group.setUserID(rs.getInt("chatID"));
+                group.setName(rs.getString("chatName"));
+                // group.setUserPicture(rs.getString("chatPicture"));
+                // user = convert(rs);
+                // if(user == null)break;
+                allGroups.add(group);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return allGroups;
+        // TODO Auto-generated method stub
+        
     }
 
 }

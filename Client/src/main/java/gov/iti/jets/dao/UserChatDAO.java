@@ -4,10 +4,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.List;
 
 import gov.iti.jets.dto.Gender;
-import gov.iti.jets.dto.UserChatDTO;
 import gov.iti.jets.dto.UserDTO;
 import gov.iti.jets.dto.UserMode;
 import gov.iti.jets.dto.UserStatus;
@@ -63,6 +61,8 @@ public class UserChatDAO{
         
     }
 
+
+
     public ObservableList<Integer> getChatParticipants(int chatId) {
         ObservableList<Integer> participants = FXCollections.observableArrayList();
         String query = "SELECT userID FROM UserChat WHERE chatID = ?";
@@ -81,6 +81,9 @@ public class UserChatDAO{
         }
         return participants;
     }
+
+
+    
 
     public ObservableList<Integer> getUserChats(int userId) {
         ObservableList<Integer> chats = FXCollections.observableArrayList();
