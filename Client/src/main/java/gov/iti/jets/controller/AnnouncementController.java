@@ -30,7 +30,6 @@ public class AnnouncementController {
         loadAnnouncements();
         listView.setItems(contacts);
 
-        // Disable selection effects in ListView (optional)
         listView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
         listView.setFocusTraversable(false);
     }

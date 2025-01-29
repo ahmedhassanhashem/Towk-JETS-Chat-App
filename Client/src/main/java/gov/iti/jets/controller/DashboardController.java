@@ -130,6 +130,8 @@ public class DashboardController {
             settingsController.setDashboardScene(dashScene);
             settingsController.setStage(stage);
             stage.setScene(settingsScene);
+            settingsController.setUserDTO(userDTO);
+            settingsController.setLoginsScene(LoginScene);
         } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();

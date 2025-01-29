@@ -5,6 +5,7 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Types;
 import java.util.List;
 
 import gov.iti.jets.dto.Gender;
@@ -133,5 +134,88 @@ public class UserDAO {
         }
         return null;
     }
+
+
+    public int updatePicture(int userID, byte[] userPicture) {
+        String query = "Update User \r\n" +
+                        "SET userPicture = ?\r\n" +
+                        "WHERE userID = ? \r\n";
+        try (Connection con = meh.getConnection();
+            PreparedStatement stmnt = con.prepareStatement(query);){
+
+                if (userPicture != null) 
+                    stmnt.setBytes(1, userPicture); 
+                else
+                stmnt.setNull(1, Types.BLOB);
+
+
+                stmnt.setInt(2, userID); 
+
+                int rowsUpdated = stmnt.executeUpdate();
+                if(rowsUpdated > 0)
+                    return rowsUpdated;
+
+            }catch(SQLException e){e.printStackTrace();}
+        return 0; 
+    }
+
+
+    public int update(int userID, String name, String bio, UserMode userMode) {
+        String query = "Update User \r\n" +
+                        "SET name = ?, bio = ?, userMode = ?\r\n" +
+                        "WHERE userID = ? \r\n";
+        try (Connection con = meh.getConnection();
+            PreparedStatement stmnt = con.prepareStatement(query);){
+                stmnt.setString(1, name);
+                stmnt.setString(2, bio); 
+
+                if (userMode != null) 
+                    stmnt.setString(3, userMode.name()); 
+
+                stmnt.setInt(4, userID); 
+
+                int rowsUpdated = stmnt.executeUpdate();
+                if(rowsUpdated > 0)
+                    return rowsUpdated;
+
+            }catch(SQLException e){e.printStackTrace();}
+        return 0; 
+    }
+
+    public int updatePassword(int userID ,String password) {
+        String query = "Update User \r\n" +
+                        "SET password = ?\r\n" +
+                        "WHERE userID = ? \r\n";
+        try (Connection con = meh.getConnection();
+            PreparedStatement stmnt = con.prepareStatement(query);){
+                stmnt.setString(1, password);
+                stmnt.setInt(2, userID); 
+
+            int rowsUpdated = stmnt.executeUpdate();
+            if (rowsUpdated > 0)
+                return rowsUpdated;
+            
+            }catch(SQLException e){e.printStackTrace();}
+            return 0;
+    }
+
+
+    public void delete(int userID) {
+        String query = "DELETE FROM User \r\n" +
+                        "WHERE userID = ? \r\n";
+        try (Connection con = meh.getConnection();
+            PreparedStatement stmnt = con.prepareStatement(query);){
+                stmnt.setInt(1, userID); 
+                int rowsDeleted = stmnt.executeUpdate();
+
+                if (rowsDeleted > 0) 
+                    System.out.println("User deleted successfully!");
+                else 
+                    System.out.println("User not found!");
+                
+        
+            }catch(SQLException e){e.printStackTrace();}
+    }
+
 
 }
