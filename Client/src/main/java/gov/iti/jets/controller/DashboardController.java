@@ -12,6 +12,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -48,7 +49,7 @@ public class DashboardController {
     public void setUserDTO(UserDTO user) {
         userDTO = user;
         nameLabel.setText(user.getName());
-        if(user.getUserPicture() != null){
+        if (user.getUserPicture() != null) {
 
             ByteArrayInputStream bis = new ByteArrayInputStream(user.getUserPicture());
             Image image = new Image(bis);
@@ -85,9 +86,6 @@ public class DashboardController {
         c.setStage(stage);
         borderPane.setCenter(hold);
     }
-
-
-    
 
     @FXML
     private void chats(MouseEvent event) {
@@ -142,7 +140,6 @@ public class DashboardController {
             settingsController.setStage(stage);
             stage.setScene(settingsScene);
             settingsController.setUserDTO(userDTO);
-            settingsController.setLoginsScene(LoginScene);
         } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -198,7 +195,23 @@ public class DashboardController {
 
     @FXML
     private void signOut(MouseEvent event) {
-        stage.setScene(LoginScene);
+        int width = 640, height = 480;
+        FXMLLoader dashLoader = new FXMLLoader(getClass().getResource("/screens/loginP.fxml"));
+        VBox dashBoard = null;
+        try {
+            dashBoard = dashLoader.load();
+        } catch (IOException ex) {
+        }
+        LoginPController dashController = dashLoader.getController();
+
+        var dashScene = new Scene(dashBoard, width, height);
+        dashController.setStage(stage);
+        dashController.setNameField(userDTO.getName());
+        dashController.setProfileImage(userDTO.getUserPicture());
+        userDTO.setPassword(null);
+        dashController.setUdto(userDTO);
+        
+        stage.setScene(dashScene);
     }
 
     @FXML
@@ -214,7 +227,6 @@ public class DashboardController {
         }
         borderPane.setCenter(hold);
         chat = chatLoader.getController();
-        
-        
+
     }
 }

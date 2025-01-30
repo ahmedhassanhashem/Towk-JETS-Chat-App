@@ -19,7 +19,6 @@ public class SettingsController {
 
     private Stage stage;
     private Scene accountScene;
-    private Scene LoginScene;
     private Scene dashboardScene;
     private VBox profile = null;
     private VBox account = null;
@@ -36,9 +35,6 @@ public class SettingsController {
         }
     }
 
-    public void setLoginsScene(Scene s) {
-        LoginScene = s;
-    }
 
     @FXML
     private BorderPane borderPane;
