@@ -29,6 +29,8 @@ import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
+import java.rmi.RemoteException;
+
 import gov.iti.jets.dao.UserDAO;
 import gov.iti.jets.dto.UserDTO;
 
@@ -36,7 +38,7 @@ public class LoginController {
 
     private Stage stage;
     private Scene serverScene;
-    private UserDAO userDao = new UserDAO();
+    private UserDAO userDao;
 
     @FXML
     private Button loginButton;
@@ -67,7 +69,12 @@ public class LoginController {
         UserDTO user = new UserDTO();
         user.setPhone(phoneField.getText());
         user.setPassword(passwordField.getText());
-        user = userDao.read(user);
+        try {
+            user = userDao.read(user);
+        } catch (RemoteException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
         if(user != null)
         Platform.runLater(() -> stage.setScene(serverScene));
         // stage.setScene(serverScene);
@@ -90,6 +97,12 @@ public class LoginController {
 
     @FXML
     private void initialize() {
+        try {
+            userDao = new UserDAO();
+        } catch (RemoteException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
         // phoneField.onKeyTypedProperty(()-> invalid.setVisible(false));
         phoneField.setOnKeyPressed((e)-> {
             

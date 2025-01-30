@@ -1,6 +1,8 @@
 package gov.iti.jets.dto;
 
-public class AnnouncementDTO {
+import java.io.Serializable;
+
+public class AnnouncementDTO implements Serializable {
     
     private int announcementID;
     private String announcementTitle;

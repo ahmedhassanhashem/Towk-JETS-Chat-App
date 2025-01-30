@@ -8,6 +8,7 @@ module gov.iti.jets {
     requires java.sql.rowset;
     requires java.naming;
     requires com.zaxxer.hikari;
+    requires java.rmi;
     requires java.desktop;
     opens gov.iti.jets to javafx.fxml;
     exports gov.iti.jets;

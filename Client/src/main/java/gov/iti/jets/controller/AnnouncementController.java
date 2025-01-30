@@ -1,6 +1,17 @@
 package gov.iti.jets.controller;
 
-import javafx.util.Callback;
+import java.io.IOException;
+import java.io.InputStream;
+import java.rmi.NotBoundException;
+import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
+import java.util.Properties;
+
+import gov.iti.jets.dao.AnnouncementDAOInterface;
+import gov.iti.jets.dto.AnnouncementDTO;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -8,18 +19,11 @@ import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.layout.HBox;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import gov.iti.jets.dao.AnnouncementDAO;
-import gov.iti.jets.dto.AnnouncementDTO;
-
-
-import javafx.application.Platform;
-import java.io.IOException;
+import javafx.util.Callback;
 
 public class AnnouncementController {
 
-    private final AnnouncementDAO announcementDAO = new AnnouncementDAO();
+    private AnnouncementDAOInterface announcementDAO;
     ObservableList<AnnouncementDTO> contacts = FXCollections.observableArrayList();
 
     @FXML
@@ -27,6 +31,33 @@ public class AnnouncementController {
 
     @FXML
     private void initialize() {
+          Properties props = new Properties();
+        
+        try (InputStream input = getClass().getResourceAsStream("/rmi.properties")) {
+            if (input == null) {
+                throw new IOException("Properties file not found");
+            }
+            props.load(input);
+        } catch (IOException ex) {
+        }
+
+
+        String ip = props.getProperty("rmi_ip");
+        int port = Integer.parseInt(props.getProperty("rmi_port"));
+        
+        Registry reg;
+
+                try {
+            reg = LocateRegistry.getRegistry(ip, port);
+            announcementDAO = (AnnouncementDAOInterface) reg.lookup("announcementDAO");
+
+        } catch (RemoteException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (NotBoundException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
         loadAnnouncements();
         listView.setItems(contacts);
 
@@ -35,7 +66,13 @@ public class AnnouncementController {
     }
 
     private void loadAnnouncements() {
-        ObservableList<AnnouncementDTO> announcementDTO = announcementDAO.findAll();
+        ObservableList<AnnouncementDTO> announcementDTO = FXCollections.observableArrayList();;
+        try {
+            announcementDTO = FXCollections.observableArrayList(announcementDAO.findAll());
+        } catch (RemoteException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
 
         listView.setCellFactory(new Callback<ListView<AnnouncementDTO>, ListCell<AnnouncementDTO>>() {
             @Override

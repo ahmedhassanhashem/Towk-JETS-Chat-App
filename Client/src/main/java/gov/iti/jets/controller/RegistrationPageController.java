@@ -1,14 +1,23 @@
 package gov.iti.jets.controller;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.rmi.NotBoundException;
+import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
+import java.util.Properties;
+
+import gov.iti.jets.dao.UserDAOInterface;
+import gov.iti.jets.dto.Gender;
+import gov.iti.jets.dto.UserDTO;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
-
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
@@ -19,23 +28,17 @@ import javafx.scene.layout.BorderStroke;
 import javafx.scene.layout.BorderStrokeStyle;
 import javafx.scene.layout.BorderWidths;
 import javafx.scene.layout.CornerRadii;
-
 import javafx.scene.paint.Color;
-import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-
-import java.io.IOException;
-
-import gov.iti.jets.dao.UserDAO;
-import gov.iti.jets.dto.Gender;
-import gov.iti.jets.dto.UserDTO;
 
 public class RegistrationPageController {
 
     private Stage stage;
     private Scene signin;
     private Scene dashScene;
-    private UserDAO userDao = new UserDAO();
+    // private UserDAO userDao = new UserDAO();
+        private UserDAOInterface userDAO;
+
     private DashboardController dashController;
     private Scene loginScene;
 
@@ -87,14 +90,25 @@ public class RegistrationPageController {
         user.setEmail(emailField.getText());
         user.setBirthdate(java.sql.Date.valueOf(dateField.getValue().toString()));
         user.setPassword(passwordField.getText());
-        userDao.read(user);
-        if (userDao.read(user) != null) {
+        UserDTO ret = null;
+        try {
+            ret = userDAO.read(user);
+        } catch (RemoteException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        if (ret != null) {
             invalid.setVisible(true);
             phoneField.setBorder(new Border(new BorderStroke(Color.RED, BorderStrokeStyle.SOLID, new CornerRadii(3),
                     new BorderWidths(2), new Insets(-2))));
             return;
         }
-        user = userDao.create(user);
+        try {
+            user = userDAO.create(user);
+        } catch (RemoteException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
         if (user == null) {
             System.out.println("err");
         } else {
@@ -122,6 +136,31 @@ public class RegistrationPageController {
 
     @FXML
     private void initialize() {
+                Properties props = new Properties();
+        
+        try (InputStream input = getClass().getResourceAsStream("/rmi.properties")) {
+            if (input == null) {
+                throw new IOException("Properties file not found");
+            }
+            props.load(input);
+        } catch (IOException ex) {
+        }
+
+
+        String ip = props.getProperty("rmi_ip");
+        int port = Integer.parseInt(props.getProperty("rmi_port"));
+                Registry reg;
+        try {
+            reg = LocateRegistry.getRegistry(ip,port);
+            userDAO = (UserDAOInterface) reg.lookup("userDAO");
+
+        } catch (RemoteException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (NotBoundException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
         male.setUserData(Gender.MALE);
         female.setUserData(Gender.FEMALE);
 

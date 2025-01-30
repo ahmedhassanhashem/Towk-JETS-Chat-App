@@ -207,6 +207,7 @@ public class DashboardController {
         var dashScene = new Scene(dashBoard, width, height);
         dashController.setStage(stage);
         dashController.setNameField(userDTO.getName());
+        if(userDTO.getUserPicture() !=null)
         dashController.setProfileImage(userDTO.getUserPicture());
         userDTO.setPassword(null);
         dashController.setUdto(userDTO);

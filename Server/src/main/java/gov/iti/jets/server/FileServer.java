@@ -3,22 +3,28 @@ package gov.iti.jets.server;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class FileServer {
+    public static volatile boolean running = true;
 
     public static void Start() {
+            ExecutorService executorService =
+    Executors. newFixedThreadPool(20);
         // System.out.println(FileServer.class.getResource("/screens"));
-        try (ServerSocket s = new ServerSocket(3000)) {
+        try (ServerSocket s = new ServerSocket(3331)) {
             int i = 1;
-            while (true) {
+            while (running) {
                 Socket incoming = s.accept();
                 // ThreadedFile.arr.add(incoming);
                 // s.accept();
                 System.out.println("Spawning " + i);
                 Runnable r = new ThreadedFile(incoming);
-                Thread t = new Thread(r);
-                t.setDaemon(true);
-                t.start();
+                executorService.submit(r);
+                // Thread t = new Thread(r);
+                // t.setDaemon(true);
+                // t.start();
                 i++;
             }
         } catch (IOException e) {

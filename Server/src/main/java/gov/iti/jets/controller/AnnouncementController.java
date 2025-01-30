@@ -1,16 +1,18 @@
 package gov.iti.jets.controller;
 
+import java.rmi.RemoteException;
+
 import gov.iti.jets.dao.AnnouncementDAO;
 import gov.iti.jets.dto.AnnouncementDTO;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Modality;
 
 public class AnnouncementController {
-
+private  AnnouncementDAO announcementDAO;
    @FXML
     private TextArea announcementContent;
     @FXML
@@ -22,11 +24,17 @@ public class AnnouncementController {
         String content = announcementContent.getText();
         if(!title.isBlank() && !content.isBlank()){
 
-            AnnouncementDAO announcementDAO = new AnnouncementDAO();
+            // AnnouncementDAO c;
         AnnouncementDTO announcement = new AnnouncementDTO();
         announcement.setAnnouncementTitle(title);
         announcement.setAnnouncementContent(content);
-        AnnouncementDTO createdAnnouncement = announcementDAO.create(announcement);
+        AnnouncementDTO createdAnnouncement = null;
+        try {
+            createdAnnouncement = announcementDAO.create(announcement);
+        } catch (RemoteException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
          
         if (createdAnnouncement != null) {
             System.out.println("Announcement created successfully.");
@@ -52,5 +60,15 @@ public class AnnouncementController {
         }
         
 
+    }
+
+    @FXML
+    private void initialize() {
+        try {
+            announcementDAO = new AnnouncementDAO();
+        } catch (RemoteException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
     }
 }
