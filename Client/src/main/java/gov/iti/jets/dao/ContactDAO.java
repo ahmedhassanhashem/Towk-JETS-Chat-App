@@ -5,9 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
-import java.util.List;
 
-import gov.iti.jets.dto.ContactDTO;
 import gov.iti.jets.dto.Gender;
 import gov.iti.jets.dto.UserDTO;
 import gov.iti.jets.dto.UserMode;
@@ -26,10 +24,16 @@ public class ContactDAO{
     
 
 public String create(String senderPhone, String receiverPhone) {
+    if(receiverPhone ==null)return "Empty phone number";
     if (senderPhone.length() != 11 || receiverPhone.length() != 11) {
         return "Invalid phone number format";
     }
 
+    if(checkSent(senderPhone, receiverPhone)){
+        return "Request already Sent!";
+    }
+    if(senderPhone.equals(receiverPhone))return "Can't send to myself!";
+    
     String query = "INSERT INTO UserContact (senderID, receiverID, requestStatus) " + 
                    "VALUES (" +
                    "    (SELECT userID FROM User WHERE phone = ?), " +
@@ -66,6 +70,28 @@ public String create(String senderPhone, String receiverPhone) {
     }
 }
 
+public boolean checkSent(String senderPhone, String receiverPhone) {
+
+
+    String query = "select * from UserContact where senderID =(select userID from User where phone = ?) and receiverID = (select userID from User where phone = ?);";
+
+
+
+    try (Connection con = dm.getConnection();
+        PreparedStatement ps = con.prepareStatement(query)) {
+
+      
+        ps.setString(1, senderPhone);
+        ps.setString(2, receiverPhone);
+        ResultSet re = ps.executeQuery();
+        return re.isBeforeFirst();
+
+    }  catch (SQLException e) {
+        e.printStackTrace();
+        return true;
+    }
+}
+
 private boolean userExists(String phone) throws SQLException {
     String query = "SELECT 1 FROM User WHERE phone = ?";
     try (Connection con = dm.getConnection();
@@ -76,7 +102,8 @@ private boolean userExists(String phone) throws SQLException {
         }
     }
 }
-    
+
+
 
 
     // to get all the contacts to show in the contacts list

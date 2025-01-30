@@ -59,12 +59,17 @@ public class ChatsController {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        AddContactController addContactController = addContactLoader.getController();
         var addContactScene = new Scene(hold, 500, 400);
         Stage info = new Stage();
         info.initOwner(stage);
         info.initModality(Modality.APPLICATION_MODAL);
         info.setScene(addContactScene);
         info.show();
+        addContactController.setStage(info);
+        addContactController.setAddContactController(addContactController);
+        addContactController.setUserDTO(userDTO);
     }
 
     @FXML
