@@ -9,6 +9,16 @@ import java.util.Properties;
 
 import gov.iti.jets.dao.AnnouncementDAO;
 import gov.iti.jets.dao.AnnouncementDAOInterface;
+import gov.iti.jets.dao.AttachementDAO;
+import gov.iti.jets.dao.AttachementDAOInterface;
+import gov.iti.jets.dao.ChatDAO;
+import gov.iti.jets.dao.ChatDAOInterface;
+import gov.iti.jets.dao.ContactDAO;
+import gov.iti.jets.dao.ContactDAOInterface;
+import gov.iti.jets.dao.MessageDAO;
+import gov.iti.jets.dao.MessageDAOInterface;
+import gov.iti.jets.dao.UserChatDAO;
+import gov.iti.jets.dao.UserChatDAOInterface;
 import gov.iti.jets.dao.UserDAO;
 import gov.iti.jets.dao.UserDAOInterface;
 import gov.iti.jets.server.FileServer;
@@ -208,11 +218,28 @@ public class ServerController {
         String ip = props.getProperty("rmi_ip");
         int port = Integer.parseInt(props.getProperty("rmi_port"));
         Registry reg = LocateRegistry.createRegistry(port);
-        UserDAOInterface userDAO = new UserDAO();
 
+        UserDAOInterface userDAO = new UserDAO();
         reg.rebind("userDAO", userDAO);
+
         AnnouncementDAOInterface announcementDAO = new AnnouncementDAO();
         reg.rebind("announcementDAO", announcementDAO);
+
+        AttachementDAOInterface attachementDAO = new AttachementDAO();
+        reg.rebind("attachementDAO", attachementDAO);
+
+        ChatDAOInterface chatDAO = new ChatDAO();
+        reg.rebind("chatDAO", chatDAO);
+
+        MessageDAOInterface messageDAO = new MessageDAO();
+        reg.rebind("messageDAO", messageDAO);
+
+        UserChatDAOInterface userChatDAO = new UserChatDAO();
+        reg.rebind("userChatDAO", userChatDAO);
+
+        ContactDAOInterface contactDAO = new ContactDAO();
+        reg.rebind("contactDAO", contactDAO);
+
     Thread fileserver = new Thread(() -> FileServer.Start());
         fileserver.setDaemon(true);
         fileserver.start();

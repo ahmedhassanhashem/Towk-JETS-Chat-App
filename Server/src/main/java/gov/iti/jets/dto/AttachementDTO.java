@@ -1,6 +1,8 @@
 package gov.iti.jets.dto;
 
-public class AttachementDTO {
+import java.io.Serializable;
+
+public class AttachementDTO implements Serializable{
 
     private int attachmentID;
     private String attachmentTitle;

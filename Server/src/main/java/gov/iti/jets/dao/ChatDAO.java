@@ -1,5 +1,7 @@
 package gov.iti.jets.dao;
 
+import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -8,24 +10,23 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import gov.iti.jets.client.Images;
 import gov.iti.jets.dto.UserDTO;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
+import gov.iti.jets.server.Images;
 
-public class ChatDAO{
+public class ChatDAO extends UnicastRemoteObject implements ChatDAOInterface{
 
     DatabaseConnectionManager dm;
     UserChatDAO userChatDAO = new UserChatDAO();
     MessageDAO messageDAO = new MessageDAO();
 Images images = new Images();
 
-    public ChatDAO() {
+    public ChatDAO() throws RemoteException{
+        super();
         dm = DatabaseConnectionManager.getInstance();
     }
 
 
-    public Integer createSingle(String currentUserPhone, String otherUserPhone) {
+    public Integer createSingle(String currentUserPhone, String otherUserPhone) throws RemoteException {
         Connection con = dm.getConnection();
         try {
             
@@ -75,7 +76,7 @@ Images images = new Images();
     
 
  
-    public String createGroup(String creatorPhone, List<String> participantPhones, String groupName) {
+    public String createGroup(String creatorPhone, List<String> participantPhones, String groupName) throws RemoteException {
     try (Connection con = dm.getConnection();){
         List<Integer> userIds = new ArrayList<>();
         
@@ -105,7 +106,7 @@ Images images = new Images();
         return groupName;
 }
 
-    public Integer findExistingSingleChat(int user1, int user2) throws SQLException {
+    public Integer findExistingSingleChat(int user1, int user2) throws SQLException,RemoteException {
         String query ="SELECT c.chatID \r\n" + //
                         "            FROM Chat c\r\n" + //
                         "            JOIN UserChat uc1 ON c.chatID = uc1.chatID\r\n" + //
@@ -152,7 +153,7 @@ Images images = new Images();
 
 
 
-    public int getUserIdByPhone(String phone) throws SQLException {
+    public int getUserIdByPhone(String phone) throws SQLException,RemoteException {
         String query = "SELECT userID FROM User WHERE phone = ?";
         try (Connection con = dm.getConnection();
             PreparedStatement ps = con.prepareStatement(query)) {
@@ -162,9 +163,9 @@ Images images = new Images();
         }
     }
 
-        public ObservableList<UserDTO> findAllGroups(int userId) {
-        ObservableList<UserDTO> allGroups = FXCollections.observableArrayList();
-
+        public List<UserDTO> findAllGroups(int userId) throws RemoteException {
+        // ObservableList<UserDTO> allGroups = FXCollections.observableArrayList();
+ List<UserDTO> allGroups = new ArrayList<>();
         String query = "select c.chatID , chatName,chatPicture from Chat c join UserChat u on c.chatID = u.chatID where userID = ? and chatType = \"GROUP\"";
         try (Connection con = dm.getConnection();
                 PreparedStatement ps = con.prepareStatement(query)) {

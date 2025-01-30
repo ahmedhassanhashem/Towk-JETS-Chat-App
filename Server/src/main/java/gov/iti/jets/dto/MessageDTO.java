@@ -1,17 +1,34 @@
 package gov.iti.jets.dto;
 
-import java.sql.Date;
+import java.io.Serializable;
 
-public class MessageDTO {
+public class MessageDTO implements Serializable{
 
     private int messsageID;
     private String messageContent;
     private int chatID;
     private int userID;
-    private Date messageDate;  // sql date not util date
+    private java.sql.Date messageDate;  // sql date not util date
     private int attachmentID;
 
+    
+    public MessageDTO(){}
 
+    public MessageDTO(String messageContent, int chatID, int userID, java.sql.Date messageDate) {
+        this.messageContent = messageContent;
+        this.chatID = chatID;
+        this.userID = userID;
+        this.messageDate = messageDate;
+        this.attachmentID = 0;
+    }
+
+    public MessageDTO(String messageContent, int chatID, int userID, java.sql.Date messageDate, int attachmentID) {
+        this.messageContent = messageContent;
+        this.chatID = chatID;
+        this.userID = userID;
+        this.messageDate = messageDate;
+        this.attachmentID = attachmentID;
+    }
 
     /**
      * @return int return the messsageID
@@ -83,12 +100,22 @@ public class MessageDTO {
         this.attachmentID = attachmentID;
     }
 
-    public Date getMessageDate(){
+    public java.sql.Date getMessageDate(){
         return messageDate;
     }
 
-    public void setMesssageDate(Date date){
+    public void setMessageDate(java.sql.Date date){
         this.messageDate = date;
     }
+
+    @Override
+    public String toString() {
+        return "MessageDTO [messsageID=" + messsageID + ", messageContent=" + messageContent + ", chatID=" + chatID
+                + ", userID=" + userID + ", messageDate=" + messageDate + ", attachmentID=" + attachmentID + "]";
+    }
+
+
+
+    
 
 }

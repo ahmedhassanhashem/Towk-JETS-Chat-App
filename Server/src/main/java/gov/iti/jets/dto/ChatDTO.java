@@ -1,6 +1,8 @@
 package gov.iti.jets.dto;
 
-public class ChatDTO {
+import java.io.Serializable;
+
+public class ChatDTO implements Serializable{
 
     private int chatID;
     private ChatType chatType;

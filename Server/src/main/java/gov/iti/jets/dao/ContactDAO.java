@@ -1,29 +1,32 @@
 package gov.iti.jets.dao;
 
+import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
+import java.util.ArrayList;
+import java.util.List;
 
-import gov.iti.jets.client.Images;
 import gov.iti.jets.dto.Gender;
 import gov.iti.jets.dto.UserDTO;
 import gov.iti.jets.dto.UserMode;
 import gov.iti.jets.dto.UserStatus;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
+import gov.iti.jets.server.Images;
 
-public class ContactDAO {
+public class ContactDAO extends UnicastRemoteObject implements ContactDAOInterface{
 
     DatabaseConnectionManager dm;
     Images images = new Images();
 
-    public ContactDAO() {
+    public ContactDAO() throws RemoteException {
+        super();
         dm = DatabaseConnectionManager.getInstance();
     }
 
-    public String create(String senderPhone, String receiverPhone) {
+    public String create(String senderPhone, String receiverPhone) throws RemoteException {
         if (receiverPhone == null) {
             return "Empty phone number";
         }
@@ -73,7 +76,7 @@ public class ContactDAO {
         }
     }
 
-    public boolean checkSent(String senderPhone, String receiverPhone) {
+    public boolean checkSent(String senderPhone, String receiverPhone) throws RemoteException {
 
         String query = "select * from UserContact where senderID =(select userID from User where phone = ?) and receiverID = (select userID from User where phone = ?);";
 
@@ -90,7 +93,7 @@ public class ContactDAO {
         }
     }
 
-    private boolean userExists(String phone) throws SQLException {
+    private boolean userExists(String phone) throws SQLException,RemoteException {
         String query = "SELECT 1 FROM User WHERE phone = ?";
         try (Connection con = dm.getConnection(); PreparedStatement ps = con.prepareStatement(query)) {
             ps.setString(1, phone);
@@ -101,8 +104,10 @@ public class ContactDAO {
     }
 
     // to get all the contacts to show in the contacts list
-    public ObservableList<UserDTO> findAllContactsACCEPTED(String userPhone) {
-        ObservableList<UserDTO> contacts = FXCollections.observableArrayList();
+    public List<UserDTO> findAllContactsACCEPTED(String userPhone) throws RemoteException {
+        // ObservableList<UserDTO> contacts = FXCollections.observableArrayList();
+                 List<UserDTO> contacts = new ArrayList<>();
+
         String getUserIDQuery = "SELECT userID FROM User WHERE phone = ?";
         String getContactsQuery
                 = "(SELECT u.* FROM UserContact uc JOIN User u ON uc.receiverID = u.userID "
@@ -176,8 +181,9 @@ public class ContactDAO {
     }
 
     // to get all the rejected to show in the notfication that you are rejected
-    public ObservableList<UserDTO> findAllContactsREJECTED(String userPhone) {
-        ObservableList<UserDTO> rejectedContacts = FXCollections.observableArrayList();
+    public List<UserDTO> findAllContactsREJECTED(String userPhone) throws RemoteException {
+        // ObservableList<UserDTO> rejectedContacts = FXCollections.observableArrayList();
+        List<UserDTO> rejectedContacts = new ArrayList<>();
 
         String query = " SELECT u.userID, u.phone, u.name, u.country, u.userStatus "
                 + "        FROM UserContact uc"
@@ -224,8 +230,9 @@ public class ContactDAO {
     }
 
     // to get all the pending request so you can list in the notfication to accept or reject
-    public ObservableList<UserDTO> findAllContactsPENDING(String userPhone) {
-        ObservableList<UserDTO> pendingReceived = FXCollections.observableArrayList();
+    public List<UserDTO> findAllContactsPENDING(String userPhone) throws RemoteException{
+        // ObservableList<UserDTO> pendingReceived = FXCollections.observableArrayList();
+        List<UserDTO> pendingReceived = new ArrayList<>();
 
         String query = "SELECT u.* "
                 + "        FROM UserContact uc"
@@ -273,72 +280,4 @@ public class ContactDAO {
 
     }
 
-}
-
-class Test {
-
-    public static void main(String[] args) {
-        ContactDAO contactDAO = new ContactDAO();
-
-        // Test phone numbers from your initial INSERT statements
-        String johnPhone = "01012345678";
-        String janePhone = "01098765432";
-        String invalidPhone = "00000000000";
-
-        System.out.println("=== Running ContactDAO Tests ===");
-
-        // Test 1: Create Contact Request
-        testCreateRequest(contactDAO, johnPhone, janePhone);      // Valid request
-        testCreateRequest(contactDAO, johnPhone, invalidPhone);   // Invalid receiver
-        testCreateRequest(contactDAO, invalidPhone, janePhone);   // Invalid sender
-
-        // Test 2: Accepted Contacts
-        testAcceptedContacts(contactDAO, johnPhone);
-        testAcceptedContacts(contactDAO, janePhone);
-
-        // Test 3: Rejected Contacts
-        testRejectedContacts(contactDAO, johnPhone);
-
-        // Test 4: Pending Requests
-        testPendingRequests(contactDAO, janePhone);
-    }
-
-    private static void testCreateRequest(ContactDAO dao, String sender, String receiver) {
-        System.out.println("\n[Test] Sending request from " + sender + " to " + receiver);
-        String result = dao.create(sender, receiver);
-        System.out.println("Result: " + (result != null ? "Success" : "Failed"));
-    }
-
-    private static void testAcceptedContacts(ContactDAO dao, String userPhone) {
-        System.out.println("\n[Test] Accepted Contacts for " + userPhone);
-        try {
-            ObservableList<UserDTO> contacts = dao.findAllContactsACCEPTED(userPhone);
-            System.out.println("Found " + contacts.size() + " accepted contacts:");
-            contacts.forEach(c -> System.out.println(" - " + c.getName() + " (" + c.getPhone() + ")"));
-        } catch (Exception e) {
-            System.out.println("Error: " + e.getMessage());
-        }
-    }
-
-    private static void testRejectedContacts(ContactDAO dao, String userPhone) {
-        System.out.println("\n[Test] Rejected Contacts for " + userPhone);
-        try {
-            ObservableList<UserDTO> contacts = dao.findAllContactsREJECTED(userPhone);
-            System.out.println("Found " + contacts.size() + " rejected contacts:");
-            contacts.forEach(c -> System.out.println(" - " + c.getName() + " (" + c.getPhone() + ")"));
-        } catch (Exception e) {
-            System.out.println("Error: " + e.getMessage());
-        }
-    }
-
-    private static void testPendingRequests(ContactDAO dao, String userPhone) {
-        System.out.println("\n[Test] Pending Requests for " + userPhone);
-        try {
-            ObservableList<UserDTO> contacts = dao.findAllContactsPENDING(userPhone);
-            System.out.println("Found " + contacts.size() + " pending requests:");
-            contacts.forEach(c -> System.out.println(" - " + c.getName() + " (" + c.getPhone() + ")"));
-        } catch (Exception e) {
-            System.out.println("Error: " + e.getMessage());
-        }
-    }
 }
