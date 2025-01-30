@@ -7,6 +7,8 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.util.Properties;
 
+import gov.iti.jets.dao.AnnouncementDAO;
+import gov.iti.jets.dao.AnnouncementDAOInterface;
 import gov.iti.jets.dao.UserDAO;
 import gov.iti.jets.dao.UserDAOInterface;
 import gov.iti.jets.server.FileServer;
@@ -209,7 +211,8 @@ public class ServerController {
         UserDAOInterface userDAO = new UserDAO();
 
         reg.rebind("userDAO", userDAO);
-
+        AnnouncementDAOInterface announcementDAO = new AnnouncementDAO();
+        reg.rebind("announcementDAO", announcementDAO);
     Thread fileserver = new Thread(() -> FileServer.Start());
         fileserver.setDaemon(true);
         fileserver.start();

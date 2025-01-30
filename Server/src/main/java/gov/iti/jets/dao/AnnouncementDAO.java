@@ -1,5 +1,7 @@
 package gov.iti.jets.dao;
 
+import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -8,11 +10,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 import gov.iti.jets.dto.AnnouncementDTO;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
-public class AnnouncementDAO {
+public class AnnouncementDAO extends UnicastRemoteObject implements AnnouncementDAOInterface {
 
     
-    public AnnouncementDTO create(AnnouncementDTO announcement) {
+    public AnnouncementDAO() throws RemoteException {
+        super();
+        //TODO Auto-generated constructor stub
+    }
+
+    @Override
+    public AnnouncementDTO create(AnnouncementDTO announcement) throws RemoteException {
         String insertQuery = "INSERT INTO Announcement (announcementTitle, announcementContent) VALUES (?, ?)";
 
         try (Connection con = DatabaseConnectionManager.getInstance().getConnection();
@@ -40,8 +50,8 @@ public class AnnouncementDAO {
         }
     }
 
-
-    public AnnouncementDTO read(AnnouncementDTO announcement) {
+    @Override
+    public AnnouncementDTO read(AnnouncementDTO announcement) throws RemoteException {
         String query = "SELECT * FROM Announcement WHERE announcementID = ?";
         try (Connection con = DatabaseConnectionManager.getInstance().getConnection();
              PreparedStatement preparedStatement = con.prepareStatement(query)) {
@@ -62,7 +72,8 @@ public class AnnouncementDAO {
         return null;
     }
 
-    public AnnouncementDTO update(AnnouncementDTO announcement) {
+    @Override
+    public AnnouncementDTO update(AnnouncementDTO announcement) throws RemoteException {
         String query = "UPDATE Announcement SET announcementTitle = ?, announcementContent = ? WHERE announcementID = ?";
         try (Connection con = DatabaseConnectionManager.getInstance().getConnection();
              PreparedStatement preparedStatement = con.prepareStatement(query)) {
@@ -84,8 +95,8 @@ public class AnnouncementDAO {
         return null;
     }
 
-
-    public void delete(AnnouncementDTO announcement) {
+    @Override
+    public void delete(AnnouncementDTO announcement) throws RemoteException {
         String query = "DELETE FROM Announcement WHERE announcementID = ?";
         try (Connection con = DatabaseConnectionManager.getInstance().getConnection();
              PreparedStatement preparedStatement = con.prepareStatement(query)) {
@@ -105,8 +116,9 @@ public class AnnouncementDAO {
         }
     }
 
-    
+    @Override
     public List<AnnouncementDTO> findAll() {
+        // ObservableList<AnnouncementDTO> announcementList = FXCollections.observableArrayList();
         List<AnnouncementDTO> announcementList = new ArrayList<>();
         String query = "SELECT * FROM Announcement";
         try (Connection con = DatabaseConnectionManager.getInstance().getConnection();
