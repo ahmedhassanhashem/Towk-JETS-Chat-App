@@ -6,8 +6,14 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
+import java.rmi.NotBoundException;
+import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
+import java.util.Properties;
 
-import gov.iti.jets.dao.UserDAO;
+import gov.iti.jets.dao.UserDAOInterface;
 import gov.iti.jets.dto.UserDTO;
 import gov.iti.jets.dto.UserMode;
 import javafx.fxml.FXML;
@@ -24,7 +30,9 @@ import javafx.stage.Stage;
 public class ProfileSettingsController {
 
     private UserDTO userDTO = new UserDTO();
-    private UserDAO userDAO = new UserDAO();
+    // private UserDAO userDAO = new UserDAO();
+        private UserDAOInterface userDAO;
+
     private Stage stage;
 
     @FXML
@@ -60,7 +68,13 @@ public class ProfileSettingsController {
         String bioField = (!bio.getText().isBlank()) ? bio.getText() : "Hi im using towk!";
         UserMode userModeList = (userMode.getValue() != null) ? UserMode.valueOf(userMode.getValue()) : UserMode.AVAILABLE;
         
-        int rowsUpdated = userDAO.update(userDTO.getUserID(), name.getText(), bioField, userModeList);
+        int rowsUpdated=0;
+        try {
+            rowsUpdated = userDAO.update(userDTO.getUserID(), name.getText(), bioField, userModeList);
+        } catch (RemoteException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
 
         if (rowsUpdated > 0) {
             System.out.println("Success Profile updated successfully!");
@@ -107,6 +121,30 @@ public class ProfileSettingsController {
  
     @FXML
     private void initialize(){
+                Properties props = new Properties();
         
+        try (InputStream input = getClass().getResourceAsStream("/rmi.properties")) {
+            if (input == null) {
+                throw new IOException("Properties file not found");
+            }
+            props.load(input);
+        } catch (IOException ex) {
+        }
+
+
+        String ip = props.getProperty("rmi_ip");
+        int port = Integer.parseInt(props.getProperty("rmi_port"));
+                Registry reg;
+        try {
+            reg = LocateRegistry.getRegistry(ip,port);
+            userDAO = (UserDAOInterface) reg.lookup("userDAO");
+
+        } catch (RemoteException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (NotBoundException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
     }
 }

@@ -1,22 +1,25 @@
 package gov.iti.jets.controller;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
+import java.util.Properties;
 
+import gov.iti.jets.dao.UserDAO;
+import gov.iti.jets.dao.UserDAOInterface;
+import gov.iti.jets.server.FileServer;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Pos;
 import javafx.geometry.Side;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.chart.PieChart;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
-
-import gov.iti.jets.dao.UserDAO;
-import gov.iti.jets.server.FileServer;
 
 public class ServerController {
 
@@ -25,15 +28,16 @@ public class ServerController {
     private BorderPane announce;
     private BorderPane chart;
     private Scene login;
+    private UserDAO userDao;
     // private Scene signup;
-    
+
     @FXML
     private AnchorPane anchor;
     @FXML
     private BorderPane borderPane;
 
     @FXML
-    private void signOut(ActionEvent event){
+    private void signOut(ActionEvent event) {
         stage.setScene(login);
     }
     // @FXML
@@ -41,11 +45,15 @@ public class ServerController {
     //     stage.setScene(signup);
     // }
 
-    public void setStage(Stage stage){
+    public void setStage(Stage stage) {
         this.stage = stage;
+        stage.setOnCloseRequest((e)->{
+            FileServer.running = false;
+        });
+
     }
 
-    public void setLogin(Scene login){
+    public void setLogin(Scene login) {
         this.login = login;
     }
     // public void setSignUp(Scene s){
@@ -54,25 +62,23 @@ public class ServerController {
 
     // @FXML
     // private ListView<FlowPane> list;
-
     // @FXML
     // private TextField txtF;
-
     // private TreeItem<FlowPane> allroot;
     @FXML
-    private void manageButton(ActionEvent event){
-    //    borderPane.setCenter(manage.getCenter());
-    //    borderPane.setTop(manage.getTop());
-    anchor.getChildren().clear();
-    AnchorPane.setTopAnchor(manage, 0.0);
-    AnchorPane.setBottomAnchor(manage, 0.0);
-    AnchorPane.setLeftAnchor(manage, 0.0);
-    AnchorPane.setRightAnchor(manage, 0.0);
-    anchor.getChildren().add(manage);
+    private void manageButton(ActionEvent event) {
+        //    borderPane.setCenter(manage.getCenter());
+        //    borderPane.setTop(manage.getTop());
+        anchor.getChildren().clear();
+        AnchorPane.setTopAnchor(manage, 0.0);
+        AnchorPane.setBottomAnchor(manage, 0.0);
+        AnchorPane.setLeftAnchor(manage, 0.0);
+        AnchorPane.setRightAnchor(manage, 0.0);
+        anchor.getChildren().add(manage);
     }
 
     @FXML
-    private void announceButton(ActionEvent event){
+    private void announceButton(ActionEvent event) {
         anchor.getChildren().clear();
         AnchorPane.setTopAnchor(announce, 0.0);
         AnchorPane.setBottomAnchor(announce, 0.0);
@@ -86,18 +92,22 @@ public class ServerController {
     }
 
     @FXML
-    private void status(ActionEvent event){
-    anchor.getChildren().clear();
+    private void status(ActionEvent event) {
+        anchor.getChildren().clear();
 
         // borderPane.setCenter(null);
-
         // Label lbl = (Label)borderPane.getTop();
         // lbl.setText("Status Statistics");
-
-        PieChart pie = (PieChart)chart.getCenter();
+        PieChart pie = (PieChart) chart.getCenter();
         pie.setTitle("Status");
-        UserDAO user = new UserDAO();
-        ObservableList<PieChart.Data> pieChartData = user.getUserStatistics("userStatus");
+        // UserDAO user = new UserDAO();
+        ObservableList<PieChart.Data> pieChartData = null;
+        try {
+            pieChartData = userDao.getUserStatistics("userStatus");
+        } catch (RemoteException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
         pie.setData(pieChartData);
         pie.setLegendSide(Side.BOTTOM);
         pie.setLabelLineLength(20);
@@ -113,19 +123,25 @@ public class ServerController {
         AnchorPane.setRightAnchor(chart, 0.0);
         anchor.getChildren().add(chart);
     }
+
     @FXML
-    private void gender(ActionEvent event){
-    anchor.getChildren().clear();
+    private void gender(ActionEvent event) {
+        anchor.getChildren().clear();
 
         // borderPane.setCenter(null);
         // borderPane.setTop(null);
         // Label lbl = (Label)borderPane.getTop();
         // lbl.setText("Gender Statistics");
-
-        PieChart pie = (PieChart)chart.getCenter();
+        PieChart pie = (PieChart) chart.getCenter();
         pie.setTitle("Gender");
-       UserDAO user = new UserDAO();
-        ObservableList<PieChart.Data> pieChartData = user.getUserStatistics("gender");
+        //    UserDAO user = new UserDAO();
+        ObservableList<PieChart.Data> pieChartData = null;
+        try {
+            pieChartData = userDao.getUserStatistics("gender");
+        } catch (RemoteException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
         pie.setData(pieChartData);
         // pie.setAnimated(true);
         // pie.setClockwise(true); 
@@ -140,20 +156,25 @@ public class ServerController {
         anchor.getChildren().add(chart);
 
     }
+
     @FXML
-    private void country(ActionEvent event){
-    anchor.getChildren().clear();
+    private void country(ActionEvent event) {
+        anchor.getChildren().clear();
 
         // borderPane.setCenter(null);
-
         // Label lbl = (Label)borderPane.getTop();
         // lbl.setText("Country Statistics");
-
-        PieChart pie = (PieChart)chart.getCenter();
+        PieChart pie = (PieChart) chart.getCenter();
         pie.setTitle("Country");
 
-        UserDAO user = new UserDAO();
-        ObservableList<PieChart.Data> pieChartData = user.getUserStatistics("country");
+        // UserDAO user = new UserDAO();
+        ObservableList<PieChart.Data> pieChartData = null;
+        try {
+            pieChartData = userDao.getUserStatistics("country");
+        } catch (RemoteException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
         pie.setData(pieChartData);
         // pie.setAnimated(true);
         // pie.setLegendVisible(true);
@@ -168,28 +189,49 @@ public class ServerController {
 
     }
 
-
-
     @FXML
     private void initialize() throws IOException {
+                Properties props = new Properties();
+        
+        try (InputStream input = getClass().getResourceAsStream("/rmi.properties")) {
+            if (input == null) {
+                throw new IOException("Properties file not found");
+            }
+            // System.out.println(new String(input.readAllBytes()));
+            props.load(input);
+        } catch (IOException ex) {
+            System.out.println(ex);
+        }
+        // System.out.println(props.getProperty("rmi_port"));
+        String ip = props.getProperty("rmi_ip");
+        int port = Integer.parseInt(props.getProperty("rmi_port"));
+        Registry reg = LocateRegistry.createRegistry(port);
+        UserDAOInterface userDAO = new UserDAO();
 
-        Thread fileserver = new Thread(() ->FileServer.Start());
+        reg.rebind("userDAO", userDAO);
+
+    Thread fileserver = new Thread(() -> FileServer.Start());
         fileserver.setDaemon(true);
         fileserver.start();
 
-        FXMLLoader manageLoader= new FXMLLoader(getClass().getResource("/screens/manage.fxml"));
+
+
+        try {
+            userDao = new UserDAO();
+        } catch (RemoteException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        FXMLLoader manageLoader = new FXMLLoader(getClass().getResource("/screens/manage.fxml"));
         manage = manageLoader.load();
-        FXMLLoader announceLoader= new FXMLLoader(getClass().getResource("/screens/announce.fxml"));
+        FXMLLoader announceLoader = new FXMLLoader(getClass().getResource("/screens/announce.fxml"));
         announce = announceLoader.load();
-        FXMLLoader chartLoader= new FXMLLoader(getClass().getResource("/screens/chart.fxml"));
+        FXMLLoader chartLoader = new FXMLLoader(getClass().getResource("/screens/chart.fxml"));
         chart = chartLoader.load();
 
         // announce.maxHeightProperty().bind(anchor.heightProperty());
         // announce.maxWidthProperty().bind(anchor.widthProperty());
-        
         // anchor.maxHeightProperty().bind(stage.heightProperty().multiply(0.5));
         // anchor.maxWidthProperty().bind(stage.widthProperty().multiply(0.5));
     }
 }
-
-

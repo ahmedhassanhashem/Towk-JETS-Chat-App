@@ -1,24 +1,25 @@
 package gov.iti.jets.controller;
 
 import java.io.ByteArrayInputStream;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
-import java.net.Socket;
 import java.net.URLEncoder;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.rmi.NotBoundException;
+import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
 import java.sql.Date;
 import java.time.LocalDate;
+import java.util.Properties;
 
 import gov.iti.jets.client.Images;
 import gov.iti.jets.dao.AttachementDAO;
 import gov.iti.jets.dao.MessageDAO;
-import gov.iti.jets.dao.UserDAO;
+import gov.iti.jets.dao.UserDAOInterface;
 import gov.iti.jets.dto.AttachementDTO;
 import gov.iti.jets.dto.ChatDTO;
 import gov.iti.jets.dto.MessageDTO;
@@ -46,7 +47,9 @@ public class MessageChatController {
     private UserDTO userDTO = new UserDTO();
     private ChatDTO chatDTO = new ChatDTO();
     private AttachementDTO attachement = null;
-    private UserDAO userDAO = new UserDAO();
+    // private UserDAO userDAO = new UserDAO();
+    private UserDAOInterface userDAO;
+
     private AttachementDAO attachementDAO = new AttachementDAO();
     private MessageDAO messageDAO = new MessageDAO();
     private int chatID;
@@ -202,14 +205,19 @@ public class MessageChatController {
                                 }
                             }
         
-                            messageCardController.setMessageData(
-                                userDAO.read(chat.getUserID()), 
-                                chat.getMessageContent(), 
-                                attachementDAO.getAttachmentTitle(chat.getAttachmentID()), 
-                                chat.getMessageDate().toString(), 
-                                chat.getUserID() != user.getUserID(), 
-                                chat.getAttachmentID() != 0
-                            );
+                            try {
+                                messageCardController.setMessageData(
+                                    userDAO.read(chat.getUserID()), 
+                                    chat.getMessageContent(), 
+                                    attachementDAO.getAttachmentTitle(chat.getAttachmentID()), 
+                                    chat.getMessageDate().toString(), 
+                                    chat.getUserID() != user.getUserID(), 
+                                    chat.getAttachmentID() != 0
+                                );
+                            } catch (RemoteException e) {
+                                // TODO Auto-generated catch block
+                                e.printStackTrace();
+                            }
         
                             setGraphic(messageCard);
                         }
@@ -225,8 +233,32 @@ public class MessageChatController {
     
     @FXML
     private void initialize() {
+        Properties props = new Properties();
+        
+        try (InputStream input = getClass().getResourceAsStream("/rmi.properties")) {
+            if (input == null) {
+                throw new IOException("Properties file not found");
+            }
+            props.load(input);
+        } catch (IOException ex) {
+        }
 
-           
+
+        String ip = props.getProperty("rmi_ip");
+        int port = Integer.parseInt(props.getProperty("rmi_port"));
+
+                   Registry reg;
+        try {
+            reg = LocateRegistry.getRegistry(ip,port);
+            userDAO = (UserDAOInterface) reg.lookup("userDAO");
+
+        } catch (RemoteException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (NotBoundException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
 
     }
 

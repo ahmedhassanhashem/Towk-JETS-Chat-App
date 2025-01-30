@@ -2,8 +2,15 @@ package gov.iti.jets.controller;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.rmi.NotBoundException;
+import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
+import java.util.Properties;
 
-import gov.iti.jets.dao.UserDAO;
+// import gov.iti.jets.dao.UserDAO;
+import gov.iti.jets.dao.UserDAOInterface;
 import gov.iti.jets.dto.UserDTO;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -33,7 +40,9 @@ public class LoginPController {
 
     private UserDTO udto;
     private Stage stage;
-    private UserDAO userDao = new UserDAO();
+    // private UserDAO userDao = new UserDAO();
+    private UserDAOInterface userDAO;
+
     @FXML
     private Label errorLabel;
 
@@ -55,7 +64,13 @@ public class LoginPController {
     @FXML
     void loginWithPassword(ActionEvent event) {
         udto.setPassword(passwordField.getText());
-        UserDTO udto2 = userDao.read(udto);
+        UserDTO udto2=null;
+        try {
+            udto2 = userDAO.read(udto);
+        } catch (RemoteException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
         if (udto2 != null) {
 
             FXMLLoader dashLoader = new FXMLLoader(getClass().getResource("/screens/base.fxml"));
@@ -88,6 +103,32 @@ public class LoginPController {
 
     @FXML
     private void initialize() {
+                Properties props = new Properties();
+        
+        try (InputStream input = getClass().getResourceAsStream("/rmi.properties")) {
+            if (input == null) {
+                throw new IOException("Properties file not found");
+            }
+            props.load(input);
+        } catch (IOException ex) {
+        }
+
+
+        String ip = props.getProperty("rmi_ip");
+        int port = Integer.parseInt(props.getProperty("rmi_port"));
+
+                Registry reg;
+        try {
+            reg = LocateRegistry.getRegistry(ip,port);
+            userDAO = (UserDAOInterface) reg.lookup("userDAO");
+
+        } catch (RemoteException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (NotBoundException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
         passwordField.setOnKeyPressed((e) -> {
 
             errorLabel.setVisible(false);

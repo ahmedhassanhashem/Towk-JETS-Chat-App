@@ -1,9 +1,10 @@
 package gov.iti.jets.controller;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-
+import java.rmi.NotBoundException;
+import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
+import java.util.Properties;
 import java.io.*;
 
 import javafx.application.Platform;
@@ -35,7 +36,8 @@ import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
-import gov.iti.jets.dao.UserDAO;
+// import gov.iti.jets.dao.UserDAO;
+import gov.iti.jets.dao.UserDAOInterface;
 import gov.iti.jets.dto.UserDTO;
 
 public class LoginPageController {
@@ -43,7 +45,9 @@ public class LoginPageController {
     private Stage stage;
     private Scene signup;
     private Scene dashScene;
-    private UserDAO userDao = new UserDAO();
+    // private UserDAO userDao = new UserDAO();
+    private UserDAOInterface userDAO;
+
     private DashboardController dashController;
     private Scene loginScene;
 
@@ -78,7 +82,12 @@ public class LoginPageController {
         UserDTO user = new UserDTO();
         user.setPhone(phoneField.getText());
         user.setPassword(passwordField.getText());
-        user = userDao.read(user);
+        try {
+            user = userDAO.read(user);
+        } catch (RemoteException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
         if (user != null) {
 
             FXMLLoader dashLoader = new FXMLLoader(getClass().getResource("/screens/base.fxml"));
@@ -142,6 +151,32 @@ public class LoginPageController {
                 setSaveAccelerator(loginButton);
         });
 
+                Properties props = new Properties();
+        
+        try (InputStream input = getClass().getResourceAsStream("/rmi.properties")) {
+            if (input == null) {
+                throw new IOException("Properties file not found");
+            }
+            props.load(input);
+        } catch (IOException ex) {
+        }
+
+
+        String ip = props.getProperty("rmi_ip");
+        int port = Integer.parseInt(props.getProperty("rmi_port"));
+
+        Registry reg;
+        try {
+            reg = LocateRegistry.getRegistry(ip,port);
+            userDAO = (UserDAOInterface) reg.lookup("userDAO");
+
+        } catch (RemoteException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (NotBoundException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
         // System.out.println(dashScene);
 
     }

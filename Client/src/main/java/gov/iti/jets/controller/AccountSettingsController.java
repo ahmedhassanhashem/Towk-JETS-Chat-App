@@ -1,8 +1,14 @@
 package gov.iti.jets.controller;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.rmi.NotBoundException;
+import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
+import java.util.Properties;
 
-import gov.iti.jets.dao.UserDAO;
+import gov.iti.jets.dao.UserDAOInterface;
 import gov.iti.jets.dto.UserDTO;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -15,13 +21,12 @@ import javafx.scene.layout.GridPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-
 public class AccountSettingsController {
 
     private Stage stage;
     private UserDTO userDTO = new UserDTO();
-    private UserDAO userDAO = new UserDAO();
-    
+    private UserDAOInterface userDAO;
+
     @FXML
     private PasswordField password;
     @FXML
@@ -31,14 +36,13 @@ public class AccountSettingsController {
         this.userDTO = user;
 
     }
-  
-    public void setStage(Stage s){
-        stage =s;
+
+    public void setStage(Stage s) {
+        stage = s;
     }
 
-
     @FXML
-    private void deleteAccount(){
+    private void deleteAccount() {
         Alert alert = new Alert(AlertType.CONFIRMATION);
         alert.setContentText("Are you sure about deleting your account!");
         alert.setHeaderText("Delete Account");
@@ -46,13 +50,17 @@ public class AccountSettingsController {
 
         ButtonType result = alert.showAndWait().orElse(ButtonType.CANCEL);
 
-
         //make the user logout
-        if (result == ButtonType.OK){
-            userDAO.delete(userDTO.getUserID());
+        if (result == ButtonType.OK) {
+            try {
+                userDAO.delete(userDTO.getUserID());
+            } catch (RemoteException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
             try {
                 Stage stage1 = new Stage();
-                int width = 640,height = 480;
+                int width = 640, height = 480;
                 FXMLLoader dashLoader = new FXMLLoader(getClass().getResource("/screens/entreeBase.fxml"));
                 GridPane dashBoard = dashLoader.load();
                 entreeController dashController = dashLoader.getController();
@@ -66,21 +74,57 @@ public class AccountSettingsController {
             stage.close();
 
         }
-        
+
     }
 
     @FXML
     private void updatePassword() {
-        if(!password.getText().equals(confirmPassword.getText())){
+        if (!password.getText().equals(confirmPassword.getText())) {
             Alert alert = new Alert(AlertType.ERROR);
             alert.setContentText("Incorrect Password");
             alert.setHeaderText("ERROR!!");
             alert.initModality(Modality.APPLICATION_MODAL);
             alert.showAndWait();
-        }else{
-            userDAO.updatePassword(userDTO.getUserID(), password.getText());
+        } else {
+            try {
+                userDAO.updatePassword(userDTO.getUserID(), password.getText());
+            } catch (RemoteException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
             password.clear();
             confirmPassword.clear();
+        }
+
+    }
+
+    @FXML
+    private void initialize() {
+        Properties props = new Properties();
+        
+        try (InputStream input = getClass().getResourceAsStream("/rmi.properties")) {
+            if (input == null) {
+                throw new IOException("Properties file not found");
+            }
+            props.load(input);
+        } catch (IOException ex) {
+        }
+
+
+        String ip = props.getProperty("rmi_ip");
+        int port = Integer.parseInt(props.getProperty("rmi_port"));
+        
+        Registry reg;
+        try {
+            reg = LocateRegistry.getRegistry(ip, port);
+            userDAO = (UserDAOInterface) reg.lookup("userDAO");
+
+        } catch (RemoteException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (NotBoundException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
         }
 
     }

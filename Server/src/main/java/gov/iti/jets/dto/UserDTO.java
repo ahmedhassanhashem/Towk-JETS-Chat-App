@@ -1,8 +1,9 @@
 package gov.iti.jets.dto;
 
+import java.io.Serializable;
 import java.sql.Date;
 
-public class UserDTO {
+public class UserDTO implements Serializable{
 
     private int userID;
     private String phone;
