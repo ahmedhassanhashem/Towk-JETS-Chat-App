@@ -5,8 +5,9 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.List;
+import java.sql.Types;
 
+import gov.iti.jets.client.Images;
 import gov.iti.jets.dto.Gender;
 import gov.iti.jets.dto.UserDTO;
 import gov.iti.jets.dto.UserMode;
@@ -14,7 +15,7 @@ import gov.iti.jets.dto.UserStatus;
 
 public class UserDAO {
     DatabaseConnectionManager meh;
-
+    Images images = new Images();
     public UserDAO() {
         meh = DatabaseConnectionManager.getInstance();
     }
@@ -121,9 +122,15 @@ public class UserDAO {
             } catch (IllegalArgumentException | NullPointerException e) {
                 user.setBio(null);
             }
-            try {
-                user.setUserPicture(re.getBytes("userPicture"));
-            } catch (IllegalArgumentException | NullPointerException e) {
+            // try {
+            //     user.setUserPicture(images.downloadPP(re.getString(("userPicture"))));
+            // } catch (IllegalArgumentException | NullPointerException e) {
+            //     user.setUserPicture(null);
+            // }
+            if(re.getString("userPicture") != null && re.getString("userPicture").length()>0) {
+                user.setUserPicture(images.downloadPP(re.getString("userPicture")));
+            } else  {
+                // System.out.println("why");
                 user.setUserPicture(null);
             }
 
@@ -133,5 +140,90 @@ public class UserDAO {
         }
         return null;
     }
+
+
+    public int updatePicture(int userID , String fileName, byte[] userPicture) {
+        String query = "Update User \r\n" +
+                        "SET userPicture = ?\r\n" +
+                        "WHERE userID = ? \r\n";
+        try (Connection con = meh.getConnection();
+            PreparedStatement stmnt = con.prepareStatement(query);){
+
+                if (userPicture != null) {
+                    images.uploadPP(fileName, userPicture);
+                    stmnt.setString(1, fileName); 
+                }
+                else
+                stmnt.setNull(1, Types.CHAR);
+
+
+                stmnt.setInt(2, userID); 
+
+                int rowsUpdated = stmnt.executeUpdate();
+                if(rowsUpdated > 0)
+                    return rowsUpdated;
+
+            }catch(SQLException e){e.printStackTrace();}
+        return 0; 
+    }
+
+
+    public int update(int userID, String name, String bio, UserMode userMode) {
+        String query = "Update User \r\n" +
+                        "SET name = ?, bio = ?, userMode = ?\r\n" +
+                        "WHERE userID = ? \r\n";
+        try (Connection con = meh.getConnection();
+            PreparedStatement stmnt = con.prepareStatement(query);){
+                stmnt.setString(1, name);
+                stmnt.setString(2, bio); 
+
+                if (userMode != null) 
+                    stmnt.setString(3, userMode.name()); 
+
+                stmnt.setInt(4, userID); 
+
+                int rowsUpdated = stmnt.executeUpdate();
+                if(rowsUpdated > 0)
+                    return rowsUpdated;
+
+            }catch(SQLException e){e.printStackTrace();}
+        return 0; 
+    }
+
+    public int updatePassword(int userID ,String password) {
+        String query = "Update User \r\n" +
+                        "SET password = ?\r\n" +
+                        "WHERE userID = ? \r\n";
+        try (Connection con = meh.getConnection();
+            PreparedStatement stmnt = con.prepareStatement(query);){
+                stmnt.setString(1, password);
+                stmnt.setInt(2, userID); 
+
+            int rowsUpdated = stmnt.executeUpdate();
+            if (rowsUpdated > 0)
+                return rowsUpdated;
+            
+            }catch(SQLException e){e.printStackTrace();}
+            return 0;
+    }
+
+
+    public void delete(int userID) {
+        String query = "DELETE FROM User \r\n" +
+                        "WHERE userID = ? \r\n";
+        try (Connection con = meh.getConnection();
+            PreparedStatement stmnt = con.prepareStatement(query);){
+                stmnt.setInt(1, userID); 
+                int rowsDeleted = stmnt.executeUpdate();
+
+                if (rowsDeleted > 0) 
+                    System.out.println("User deleted successfully!");
+                else 
+                    System.out.println("User not found!");
+                
+        
+            }catch(SQLException e){e.printStackTrace();}
+    }
+
 
 }

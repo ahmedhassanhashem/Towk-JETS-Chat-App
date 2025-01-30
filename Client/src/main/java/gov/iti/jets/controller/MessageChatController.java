@@ -1,13 +1,10 @@
 package gov.iti.jets.controller;
 
-import javafx.scene.layout.Region;
-
 import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -18,6 +15,7 @@ import java.nio.file.Paths;
 import java.sql.Date;
 import java.time.LocalDate;
 
+import gov.iti.jets.client.Images;
 import gov.iti.jets.dao.AttachementDAO;
 import gov.iti.jets.dao.MessageDAO;
 import gov.iti.jets.dao.UserDAO;
@@ -25,25 +23,18 @@ import gov.iti.jets.dto.AttachementDTO;
 import gov.iti.jets.dto.ChatDTO;
 import gov.iti.jets.dto.MessageDTO;
 import gov.iti.jets.dto.UserDTO;
-import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
-import javafx.scene.shape.Circle;
-import javafx.scene.text.Text;
-import javafx.scene.text.TextFlow;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.Callback;
@@ -62,6 +53,7 @@ public class MessageChatController {
     private Stage stage;
     // private int attachId = 0;
     // private String fileName;
+    Images images = new Images();
     private byte[] upload;
     public void setStage(Stage s) {
         stage = s;
@@ -111,7 +103,8 @@ public class MessageChatController {
         msg.setMessageDate( Date.valueOf(LocalDate.now()));
         if(attachement !=null){
             msg.setAttachmentID(attachement.getAttachmentID());
-            sendFile();
+            images.uploadAttachment(attachement.getAttachmentTitle(), upload);
+            // sendFile();
         }
         // int attachID = msg.getAttachmentID();
 
@@ -148,38 +141,7 @@ public class MessageChatController {
             }
     }
 
-    private void sendFile(){
-                    Socket s;
-            InputStream sIn;
-            OutputStream sOut;
-            try {
-                s = new Socket("", 3000);
-                sIn = s.getInputStream();
-                sOut = s.getOutputStream();
-            } catch (IOException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-                return;
-            }
-            DataOutputStream out = new DataOutputStream(sOut);
-            DataInputStream in = new DataInputStream(sIn);
 
-                try {
-                    out.writeUTF("upload");
-                    out.writeUTF(attachement.getAttachmentTitle());
-                    out.write(upload);
-                } catch (IOException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
-
-            try {
-                s.close();
-            } catch (IOException e) {
-               
-                e.printStackTrace();
-            }
-    }
     @FXML
     private void textEnter(ActionEvent event){
         String msgContent = text.getText();
@@ -191,7 +153,8 @@ public class MessageChatController {
         msg.setMessageDate( Date.valueOf(LocalDate.now()));
         if(attachement !=null){
             msg.setAttachmentID(attachement.getAttachmentID());
-            sendFile();
+            images.uploadAttachment(attachement.getAttachmentTitle(), upload);
+            // sendFile();
         }
         // int attachID = msg.getAttachmentID();
 
@@ -216,28 +179,39 @@ public class MessageChatController {
             @Override
             public ListCell<MessageDTO> call(ListView<MessageDTO> p) {
                 return new ListCell<MessageDTO>() {
+                    private FXMLLoader loader;
+                    private MessageCardController messageCardController;
+                    private HBox messageCard;
+                    
+                    @Override
                     protected void updateItem(MessageDTO chat, boolean empty) {
-                        // super.updateItem(item, empty);
-                        FXMLLoader messageChattLoader = new FXMLLoader(getClass().getResource("/screens/messageCard.fxml"));
-                        HBox messageCard = null;
-                        try {
-                            messageCard = messageChattLoader.load();
-                        } catch (IOException e) {
-                            // TODO Auto-generated catch block
-                            e.printStackTrace();
-                        }
+                        super.updateItem(chat, empty);
         
-                        MessageCardController messageCardController = messageChattLoader.getController();
-                        messageCardController.setStage(stage);
-                        // System.out.println(stage);
-                        if (chat == null || empty) {
+                        if (empty || chat == null) {
                             setText(null);
                             setGraphic(null);
                         } else {
-
-                            messageCardController.setMessageData(userDAO.read(chat.getUserID()), chat.getMessageContent(),attachementDAO.getAttachmentTitle(chat.getAttachmentID()), chat.getMessageDate().toString(), chat.getUserID() !=user.getUserID(),chat.getAttachmentID()!=0 );
+                            if (loader == null) {
+                                try {
+                                    loader = new FXMLLoader(getClass().getResource("/screens/messageCard.fxml"));
+                                    messageCard = loader.load();
+                                    messageCardController = loader.getController();
+                                    messageCardController.setStage(stage);
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+        
+                            messageCardController.setMessageData(
+                                userDAO.read(chat.getUserID()), 
+                                chat.getMessageContent(), 
+                                attachementDAO.getAttachmentTitle(chat.getAttachmentID()), 
+                                chat.getMessageDate().toString(), 
+                                chat.getUserID() != user.getUserID(), 
+                                chat.getAttachmentID() != 0
+                            );
+        
                             setGraphic(messageCard);
-
                         }
                     }
 

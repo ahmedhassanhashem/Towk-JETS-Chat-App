@@ -16,7 +16,6 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-
 <VBox fx:id="profilePane" spacing="20" style="-fx-background-color: #f5f5f5;;" stylesheets="@../styles/style.css" visible="true" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gov.iti.jets.controller.ProfileSettingsController">
     <padding>
         <Insets bottom="20" left="20" right="20" top="20" />
@@ -29,7 +28,7 @@
       </Text>
       <HBox alignment="CENTER_LEFT" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="44.0" prefWidth="560.0">
          <children>
-            <ImageView fx:id="largeProfileImage" fitHeight="50.0" fitWidth="50.0">
+            <ImageView fx:id="image" fitHeight="50.0" fitWidth="50.0">
                <image>
                   <Image url="@../images/user%20(2).png" />
                </image>
@@ -37,7 +36,7 @@
                   <Insets bottom="20.0" />
                </HBox.margin>
             </ImageView>
-            <Button mnemonicParsing="false" styleClass="action-button" text="Change Photo">
+            <Button mnemonicParsing="false" onAction="#updateImage" styleClass="action-button" text="Change Photo">
                <HBox.margin>
                   <Insets bottom="20.0" left="10.0" />
                </HBox.margin>
@@ -55,7 +54,7 @@
             <Insets />
          </VBox.margin>
       </Label>
-      <TextField promptText="Write your name" styleClass="namefield" />
+      <TextField fx:id="name" promptText="Write your name" styleClass="namefield" />
       <Label text="Bio">
          <font>
             <Font name="System Bold" size="14.0" />
@@ -64,7 +63,7 @@
             <Insets />
          </VBox.margin>
       </Label>
-      <TextArea promptText="Write something about your self" styleClass="bioarea">
+      <TextArea fx:id="bio" promptText="Write something about your self" styleClass="bioarea">
          <VBox.margin>
             <Insets />
          </VBox.margin>
@@ -79,12 +78,12 @@
                   <Insets top="20.0" />
                </VBox.margin>
             </Label>
-            <ComboBox fx:id="userModeComboBox" minHeight="-Infinity" prefHeight="80.0" styleClass="userModeComboBox" VBox.vgrow="ALWAYS">
+            <ComboBox fx:id="userMode" minHeight="-Infinity" prefHeight="80.0" styleClass="userModeComboBox" VBox.vgrow="ALWAYS">
                 <items>
                   <FXCollections fx:factory="observableArrayList">
-    <String fx:value="Available" />
-    <String fx:value="Busy" />
-    <String fx:value="Away" />
+    <String fx:value="AVAILABLE" />
+    <String fx:value="BUSY" />
+    <String fx:value="AWAY" />
 </FXCollections>
 </items>
                <VBox.margin>
@@ -109,7 +108,7 @@
       </HBox>
       <HBox alignment="TOP_RIGHT" prefHeight="66.0" prefWidth="550.0" spacing="30.0">
          <children>
-            <Button layoutX="10.0" layoutY="10.0" maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefWidth="80.0" style="-fx-background-color: linear-gradient(to bottom, #13547a 0%, #80d0c7 100%);" styleClass="action-button" text="Save" textFill="WHITE" />
+            <Button layoutX="10.0" layoutY="10.0" maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#updateUser" prefWidth="80.0" style="-fx-background-color: linear-gradient(to bottom, #13547a 0%, #80d0c7 100%);" styleClass="action-button" text="Save" textFill="WHITE" />
          </children>
       </HBox>
    </children>

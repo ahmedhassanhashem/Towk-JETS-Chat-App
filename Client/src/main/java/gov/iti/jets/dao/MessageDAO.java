@@ -3,9 +3,10 @@ package gov.iti.jets.dao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.util.List;
 
-import javax.sql.rowset.*;
+import javax.sql.rowset.RowSetProvider;
+import javax.sql.rowset.WebRowSet;
+
 import gov.iti.jets.dto.MessageDTO;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -75,6 +76,19 @@ public class MessageDAO {
         }
 
         return msgList;
+    }
+
+    public String findLastMessageGroup(int chatID) {
+
+        if (chatID == 0)
+            return "";
+        ObservableList<MessageDTO> msgList = findAllMessages(chatID);
+        MessageDTO m = msgList.get(msgList.size() - 1);
+        String ret = m.getMessageContent();
+        if (ret.length() > 7)
+            ret = ret.substring(0, 7) + "...";
+        return ret;
+
     }
 
     public String findLastMessage(int user1, int user2) {

@@ -1,20 +1,14 @@
 package gov.iti.jets.controller;
 
-import javafx.scene.layout.Region;
-
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.net.Socket;
 
+import gov.iti.jets.client.Images;
 import javafx.fxml.FXML;
-import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -26,6 +20,7 @@ import javafx.stage.Stage;
 public class MessageCardController {
 
     private Stage stage;
+    Images images = new Images();
     public void setStage(Stage s) {
         stage = s;
 
@@ -70,24 +65,10 @@ public class MessageCardController {
         });
 
         hyperlink.setOnMouseClicked(event -> {
-            Socket s;
-            InputStream sIn;
-            OutputStream sOut;
-            try {
-                s = new Socket("", 3000);
-                sIn = s.getInputStream();
-                sOut = s.getOutputStream();
-            } catch (IOException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-                return;
-            }
-            DataOutputStream out = new DataOutputStream(sOut);
-            DataInputStream in = new DataInputStream(sIn);
+          
 
             try {
-                out.writeUTF("download");
-                out.writeUTF(fileName);
+                
 
             FileChooser fil_chooser = new FileChooser();
 			File file = fil_chooser.showSaveDialog(stage);
@@ -95,7 +76,7 @@ public class MessageCardController {
 
                 FileOutputStream fOut = new FileOutputStream(file);
                 byte[] download ;
-                download = in.readAllBytes();
+                download = images.downloadAttachment(fileName);
                 fOut.write(download);
                 fOut.close();
             }
@@ -105,16 +86,14 @@ public class MessageCardController {
                 e.printStackTrace();
             }
 
-            try {
-                s.close();
-            } catch (IOException e) {
-               
-                e.printStackTrace();
-            }
             System.out.println("Text clicked!");
             
             // getHostServices().showDocument("http://www.example.com");
         });
+        if (messageTextContainerV.getChildren().size() > 1) {
+            messageTextContainerV.getChildren().remove(1, messageTextContainerV.getChildren().size());
+        }
+        
         messageTextContainerV.getChildren().add(hyperlink);
     }
     if (isSender) {

@@ -1,142 +1,222 @@
 package gov.iti.jets.controller;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 
-
-
-
-import java.io.*;
-
-import javafx.application.Platform;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
+import gov.iti.jets.dao.ContactDAO;
+import gov.iti.jets.dto.UserDTO;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Pos;
-import javafx.scene.Node;
-import javafx.scene.Scene;
-import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.control.Button;
+import javafx.geometry.Insets;
 import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
 import javafx.scene.control.Tab;
-import javafx.scene.control.TabPane;
 import javafx.scene.control.TextField;
-import javafx.scene.control.TreeCell;
-import javafx.scene.control.TreeItem;
-import javafx.scene.control.TreeView;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.image.WritableImage;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.FlowPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Region;
-import javafx.stage.FileChooser;
-import javafx.stage.Modality;
+import javafx.scene.layout.Border;
+import javafx.scene.layout.BorderStroke;
+import javafx.scene.layout.BorderStrokeStyle;
+import javafx.scene.layout.BorderWidths;
+import javafx.scene.layout.CornerRadii;
+import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-import javafx.util.Callback;
-
-import java.net.InetAddress;
-import java.net.UnknownHostException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class ContactTabController {
 
     private int pageCounter = 1;
+    private AddContactController addContactController;
+    private UserDTO cdto;
+    private UserDTO userDTO;
+    private Stage stage;
+    private  ContactDAO cdao ;
+    // @FXML
+    // private Label name;
 
-    
-    private TabPane tabPane;
+    @FXML
+    private TextField phone;
 
-    public void setTabPane(TabPane t){
-        tabPane = t;
+    @FXML
+    private  VBox vbox;
+
+    public void setPageCounter(int x) {
+        pageCounter = x;
+        tab.setText("Contact #" + pageCounter);
     }
-    public void setPageCounter(int x){
-        pageCounter =x;
-        tab.setText("Contact #"+pageCounter);
-    }
+
     @FXML
     private Tab tab;
-    // public void setGroupsSceneScene(Scene s){
-    //     groupsScene = s;
-    // }
-    // public void setuserInfoScene(Scene s){
-    //     userInfoScene = s;
-    // }
-
-    // public void setchatsScene(Scene s){
-    //     chatsScene = s;
-    // }
-
-    // public void setcontactScene(Scene s){
-    //     contactScene = s;
-    // }
-
-
-    // @FXML
-    // private void addContact(MouseEvent event){
-    //     // System.out.println("aa");
-    //     stage.setScene(addContactScene);
-    // }
 
     @FXML
-    private void newContact(ActionEvent event){
+    private void newContact(ActionEvent event) {
         Tab tab2 = null;
-        FXMLLoader addContactLoader = new FXMLLoader(getClass().getResource("/screens/ContactTab.fxml"));
-		try {
-            tab2 = addContactLoader.load();
+        UserDTO cdto = new UserDTO();
+        FXMLLoader tabLoader = new FXMLLoader(getClass().getResource("/screens/ContactTab.fxml"));
+        try {
+            tab2 = tabLoader.load();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        ContactTabController addContactController = addContactLoader.getController();
-        addContactController.setTabPane(tabPane);
-        addContactController.setPageCounter(pageCounter+1);
-        tabPane.getTabs().add(tab2);
-        tabPane.getSelectionModel().select(tab2);
+        ContactTabController tabController = tabLoader.getController();
+        tabController.setPageCounter(pageCounter + 1);
+        tabController.setCdto(cdto);
+        tabController.setAddContactController(addContactController);
+        tabController.setStage(stage);
+        tabController.setUserDTO(userDTO);
+        tabController.setCdao(cdao);
+        addContactController.addNewContact(cdto, tab2,tabController);
+        tab.getTabPane().getTabs().add(tab2);
+        tab.getTabPane().getSelectionModel().select(tab2);
+
+    }
+
+    @FXML
+    private void addContact(ActionEvent event){
+         String ret;
+        // for (ArrayList<Object> entry : new ArrayList<>(nwContacts)) {
+        //     UserDTO user = (UserDTO) entry.get(0);
+        //     Tab tab = (Tab)entry.get(1);
+        //     ContactTabController cont = (ContactTabController) entry.get(2);
+        //     System.out.println(userDTO.getPhone()+" "+ user.getPhone());
+            
+        //     ret = cdao.create(userDTO.getPhone(), user.getPhone());
+            // if(!ret.equals("Sent Successfully")){
+            //     tabPane.getSelectionModel().select(tab);
+            //     cont.hamar();
+            //     return;
+            // }else{
+        //         tabPane.getTabs().remove(tab);
+        //         removeContact(user);
+        //     }
+        //     // Do something with user and tab
+        // }
+
+        ret = cdao.create(userDTO.getPhone(), cdto.getPhone());
+        if(!ret.equals("Sent Successfully")){
+            hamar();
+            writeVbox(ret);
+            return;
+        }
+        addContactController.removeContact(cdto);
+        tab.getTabPane().getTabs().remove(tab);
         
+        // if(tab.getTabPane().getTabs().isEmpty()){
+        //     stage.close();
+        // }
+    }
+
+    
+    @FXML
+    private void addAllContacts(ActionEvent event){
+        // tab.getTabPane().getTabs().remove(tab);
+        addContactController.addAll();
+        // stage.close();
+    }
+
+    public void setAddContactController(AddContactController addContactController) {
+        
+        this.addContactController = addContactController;
+
     }
     
-    // @FXML
-    // private void contacts(MouseEvent event){
-        //     // System.out.println("aa");
-        //     stage.setScene(contactScene);
-        // }
-        
-        // @FXML
-        // private void userInfo(MouseEvent event){
-            //     Stage info = new Stage();
-            //     info.initOwner(stage);
-            //     info.initModality(Modality.APPLICATION_MODAL);
-            //     info.setScene(userInfoScene);
-            //     info.show();
-            // }
+    public void setCdto(UserDTO cdto) {
+        this.cdto = cdto;
+    }
+
+    public void hamar(){
+        phone.setBorder(new Border(new BorderStroke(Color.RED, BorderStrokeStyle.SOLID,
+                        new CornerRadii(3), new BorderWidths(2), new Insets(-2))));
+    }
+
+    public void writeVbox(String msg){
+        if(vbox.getChildren().size()>1){
+            Label label = (Label)vbox.getChildren().get(1);
+            label.setText(msg);
+        }else{
+            Label label = new Label();
+            label.setText(msg);
+            label.setTextFill(Color.RED);
+            vbox.getChildren().add(label);
+        }
+    }
+    @FXML
+    private void initialize() {
+
+        tab.setOnClosed((e)->{
+            addContactController.removeContact(cdto);
+
+        });
+        phone.setOnKeyTyped((keyEvent) -> {
+            phone.setBorder(null);
+            cdto.setPhone(phone.getText());
+            if(vbox.getChildren().size()>1){
+                vbox.getChildren().remove(vbox.getChildren().size() - 1);
+            }
             
-            // @FXML
-            // private void settings(MouseEvent event){
-                //     // System.out.println("aa");
-                //     stage.setScene(settingsScene);
-                // }
-                
-                // @FXML
-                // private void groups(MouseEvent event){
-                    //     stage.setScene(groupsScene);
-                    // }
-                    
-                    @FXML
-                    private void initialize() {
-                        
-                    }
+        });
+    }
+
+    public void setStage(Stage stage) {
+        this.stage = stage;
+    }
+
+    public void setUserDTO(UserDTO userDTO) {
+        this.userDTO = userDTO;
+    }
+
+
+    /**
+     * @return int return the pageCounter
+     */
+    public int getPageCounter() {
+        return pageCounter;
+    }
+
+    /**
+     * @return AddContactController return the addContactController
+     */
+    public AddContactController getAddContactController() {
+        return addContactController;
+    }
+
+    /**
+     * @return UserDTO return the cdto
+     */
+    public UserDTO getCdto() {
+        return cdto;
+    }
+
+    /**
+     * @return UserDTO return the userDTO
+     */
+    public UserDTO getUserDTO() {
+        return userDTO;
+    }
+
+    /**
+     * @return Stage return the stage
+     */
+    public Stage getStage() {
+        return stage;
+    }
+
+    /**
+     * @return ContactDAO return the cdao
+     */
+    public ContactDAO getCdao() {
+        return cdao;
+    }
+
+    /**
+     * @param cdao the cdao to set
+     */
+    public void setCdao(ContactDAO cdao) {
+        this.cdao = cdao;
+    }
+
+    /**
+     * @param tab the tab to set
+     */
+    public void setTab(Tab tab) {
+        this.tab = tab;
+    }
+
 }
