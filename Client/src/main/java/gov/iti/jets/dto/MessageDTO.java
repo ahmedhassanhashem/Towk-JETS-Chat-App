@@ -1,8 +1,8 @@
 package gov.iti.jets.dto;
 
+import java.io.Serializable;
 
-
-public class MessageDTO {
+public class MessageDTO implements Serializable{
 
     private int messsageID;
     private String messageContent;

@@ -1,6 +1,11 @@
 package gov.iti.jets.controller;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.rmi.NotBoundException;
+import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -20,10 +25,18 @@ import javafx.stage.Stage;
 import javafx.util.Callback;
 
 import java.sql.SQLException;
-import gov.iti.jets.dao.UserChatDAO;
-import gov.iti.jets.dao.ChatDAO;
-import gov.iti.jets.dao.ContactDAO;
-import gov.iti.jets.dao.MessageDAO;
+import java.util.Properties;
+
+// import gov.iti.jets.dao.UserChatDAO;
+
+import gov.iti.jets.dao.UserDAOInterface;
+// import gov.iti.jets.dao.ChatDAO;
+import gov.iti.jets.dao.ChatDAOInterface;
+import gov.iti.jets.dao.ContactDAOInterface;
+// import gov.iti.jets.dao.ContactDAO;
+// import gov.iti.jets.dao.MessageDAO;
+import gov.iti.jets.dao.MessageDAOInterface;
+import gov.iti.jets.dao.UserChatDAOInterface;
 import gov.iti.jets.dto.UserDTO;
 import gov.iti.jets.dto.UserStatus;
 
@@ -36,10 +49,11 @@ public class ChatsController {
     @FXML
     private BorderPane borderPane;
     private UserDTO userDTO = new UserDTO();
-    private UserChatDAO userChatDAO = new UserChatDAO();
-    private ContactDAO contactDAO = new ContactDAO();
-    private MessageDAO messageDAO = new MessageDAO();
-    private ChatDAO chatDao = new ChatDAO();
+    private UserChatDAOInterface userChatDAO;
+    private ContactDAOInterface contactDAO ;
+    private MessageDAOInterface messageDAO;
+    private ChatDAOInterface chatDao;
+    
 
     public void setStage(Stage s) {
         stage = s;
@@ -92,7 +106,13 @@ public class ChatsController {
     public void chatScene() {
         listView.setItems(contacts);
 
-        ObservableList<UserDTO> userDTOs = userChatDAO.findAll(userDTO.getUserID());
+        ObservableList<UserDTO> userDTOs = FXCollections.observableArrayList();
+        try {
+            userDTOs = FXCollections.observableArrayList(userChatDAO.findAll(userDTO.getUserID()));
+        } catch (RemoteException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
 
         listView.setCellFactory(new Callback<ListView<UserDTO>, ListCell<UserDTO>>() {
             @Override
@@ -121,7 +141,12 @@ public class ChatsController {
                             // super.updateItem(item, empty);     
                             chatCardController.setImage(user.getUserPicture());
                             chatCardController.setLabel(user.getName());
-                            chatCardController.setText(messageDAO.findLastMessage(userDTO.getUserID(), user.getUserID()));
+                            try {
+                                chatCardController.setText(messageDAO.findLastMessage(userDTO.getUserID(), user.getUserID()));
+                            } catch (RemoteException e) {
+                                // TODO Auto-generated catch block
+                                e.printStackTrace();
+                            }
                             chatCard.setOnMouseClicked((e) -> {
                                 try {
                                     final FXMLLoader chatLoader = new FXMLLoader(
@@ -161,7 +186,13 @@ public class ChatsController {
     public void contactScene() {
         listView.setItems(contacts);
 
-        ObservableList<UserDTO> list = contactDAO.findAllContactsACCEPTED(userDTO.getPhone());
+        ObservableList<UserDTO> list = FXCollections.observableArrayList();
+        try {
+            list = FXCollections.observableArrayList(contactDAO.findAllContactsACCEPTED(userDTO.getPhone()));
+        } catch (RemoteException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
 
         listView.setCellFactory(new Callback<ListView<UserDTO>, ListCell<UserDTO>>() {
             @Override
@@ -237,7 +268,13 @@ public class ChatsController {
     public void groupScene() {
         listView.setItems(contacts);
 
-        ObservableList<UserDTO> list = chatDao.findAllGroups(userDTO.getUserID());
+        ObservableList<UserDTO> list = FXCollections.observableArrayList();
+        try {
+            list = FXCollections.observableArrayList(chatDao.findAllGroups(userDTO.getUserID()));
+        } catch (RemoteException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
 
         listView.setCellFactory(new Callback<ListView<UserDTO>, ListCell<UserDTO>>() {
             @Override
@@ -266,7 +303,12 @@ public class ChatsController {
                             // super.updateItem(item, empty);     
                             chatCardController.setImage(user.getUserPicture());
                             chatCardController.setLabel(user.getName());
-                            chatCardController.setText(messageDAO.findLastMessageGroup(user.getUserID()));
+                            try {
+                                chatCardController.setText(messageDAO.findLastMessageGroup(user.getUserID()));
+                            } catch (RemoteException e) {
+                                // TODO Auto-generated catch block
+                                e.printStackTrace();
+                            }
                             chatCard.setOnMouseClicked((e) -> {
                                 try {
                                     final FXMLLoader chatLoader = new FXMLLoader(
@@ -301,5 +343,34 @@ public class ChatsController {
 
     @FXML
     private void initialize() {
+        Properties props = new Properties();
+        
+        try (InputStream input = getClass().getResourceAsStream("/rmi.properties")) {
+            if (input == null) {
+                throw new IOException("Properties file not found");
+            }
+            props.load(input);
+        } catch (IOException ex) {
+        }
+
+
+        String ip = props.getProperty("rmi_ip");
+        int port = Integer.parseInt(props.getProperty("rmi_port"));
+        
+        Registry reg;
+        try {
+            reg = LocateRegistry.getRegistry(ip, port);
+            chatDao = (ChatDAOInterface) reg.lookup("chatDAO");
+            messageDAO = (MessageDAOInterface) reg.lookup("messageDAO");
+            userChatDAO = (UserChatDAOInterface) reg.lookup("userChatDAO");
+            contactDAO = (ContactDAOInterface) reg.lookup("contactDAO");
+
+        } catch (RemoteException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (NotBoundException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
     }
 }

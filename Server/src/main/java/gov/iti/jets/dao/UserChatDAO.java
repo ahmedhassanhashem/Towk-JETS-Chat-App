@@ -1,32 +1,35 @@
 package gov.iti.jets.dao;
 
+import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
-import gov.iti.jets.client.Images;
 import gov.iti.jets.dto.Gender;
 import gov.iti.jets.dto.UserDTO;
 import gov.iti.jets.dto.UserMode;
 import gov.iti.jets.dto.UserStatus;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
+import gov.iti.jets.server.Images;
 
-public class UserChatDAO{
+public class UserChatDAO extends UnicastRemoteObject implements UserChatDAOInterface{
 
     DatabaseConnectionManager dm;
     Images images = new Images();
-    public UserChatDAO() {
+    public UserChatDAO() throws RemoteException{
+        super();
         dm = DatabaseConnectionManager.getInstance();
 
     }
 
 
 
-    public ObservableList<UserDTO> findAll(int userId) {
-        ObservableList<UserDTO> allChatUsers = FXCollections.observableArrayList();
-
+    public List<UserDTO> findAll(int userId) throws RemoteException{
+        // ObservableList<UserDTO> allChatUsers = FXCollections.observableArrayList();
+         List<UserDTO> allChatUsers = new ArrayList<>();
         String query = " SELECT distinct *\n" + //
                         "FROM UserChat uc\n" + //
                         "JOIN User u ON uc.userID = u.userID\n" + //
@@ -64,8 +67,10 @@ public class UserChatDAO{
 
 
 
-    public ObservableList<Integer> getChatParticipants(int chatId) {
-        ObservableList<Integer> participants = FXCollections.observableArrayList();
+    public List<Integer> getChatParticipants(int chatId) throws RemoteException {
+        // ObservableList<Integer> participants = FXCollections.observableArrayList();
+        List<Integer> participants = new ArrayList<>();
+
         String query = "SELECT userID FROM UserChat WHERE chatID = ?";
 
         try (Connection con = dm.getConnection();
@@ -86,8 +91,10 @@ public class UserChatDAO{
 
     
 
-    public ObservableList<Integer> getUserChats(int userId) {
-        ObservableList<Integer> chats = FXCollections.observableArrayList();
+    public List<Integer> getUserChats(int userId) throws RemoteException {
+        // ObservableList<Integer> chats = FXCollections.observableArrayList();
+        List<Integer> chats = new ArrayList<>();
+
         String query = "SELECT chatID FROM UserChat WHERE userID = ?";
 
         try (Connection con = dm.getConnection();

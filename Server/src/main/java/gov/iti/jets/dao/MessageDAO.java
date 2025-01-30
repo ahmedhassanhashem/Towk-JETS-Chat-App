@@ -1,26 +1,29 @@
 package gov.iti.jets.dao;
 
+import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.sql.rowset.RowSetProvider;
 import javax.sql.rowset.WebRowSet;
 
 import gov.iti.jets.dto.MessageDTO;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 
-public class MessageDAO {
+public class MessageDAO extends UnicastRemoteObject implements MessageDAOInterface{
 
     DatabaseConnectionManager dm;
 
-    public MessageDAO() {
+    public MessageDAO() throws RemoteException {
+        super();
         dm = DatabaseConnectionManager.getInstance();
 
     }
 
-    public MessageDTO create(MessageDTO msg) {
+    public MessageDTO create(MessageDTO msg) throws RemoteException {
         String msgContent = msg.getMessageContent();
         int chatID = msg.getChatID();
         int userID = msg.getUserID();
@@ -49,9 +52,9 @@ public class MessageDAO {
         return msg;
     }
 
-    public ObservableList<MessageDTO> findAllMessages(int chatID) {
-        ObservableList<MessageDTO> msgList = FXCollections.observableArrayList();
-
+    public List<MessageDTO> findAllMessages(int chatID) throws RemoteException {
+        // ObservableList<MessageDTO> msgList = FXCollections.observableArrayList();
+ List<MessageDTO> msgList = new ArrayList<>();
         String query = "SELECT * FROM Message WHERE chatID = ?;";
 
         try (Connection con = dm.getConnection();
@@ -78,11 +81,11 @@ public class MessageDAO {
         return msgList;
     }
 
-    public String findLastMessageGroup(int chatID) {
+    public String findLastMessageGroup(int chatID) throws RemoteException{
 
         if (chatID == 0)
             return "";
-        ObservableList<MessageDTO> msgList = findAllMessages(chatID);
+            List<MessageDTO> msgList = findAllMessages(chatID);
         MessageDTO m = msgList.get(msgList.size() - 1);
         String ret = m.getMessageContent();
         if (ret.length() > 7)
@@ -91,7 +94,7 @@ public class MessageDAO {
 
     }
 
-    public String findLastMessage(int user1, int user2) {
+    public String findLastMessage(int user1, int user2) throws RemoteException{
         int chatID;
         try {
             chatID = new ChatDAO().findExistingSingleChat(user1, user2);
@@ -101,7 +104,7 @@ public class MessageDAO {
         }
         if (chatID == 0)
             return "";
-        ObservableList<MessageDTO> msgList = findAllMessages(chatID);
+            List<MessageDTO> msgList = findAllMessages(chatID);
         MessageDTO m = msgList.get(msgList.size() - 1);
         String ret = m.getMessageContent();
         if (ret.length() > 7)

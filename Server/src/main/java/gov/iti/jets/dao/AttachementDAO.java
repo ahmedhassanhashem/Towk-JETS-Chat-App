@@ -1,24 +1,25 @@
 package gov.iti.jets.dao;
 
+import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
 import gov.iti.jets.dto.AttachementDTO;
-import gov.iti.jets.dto.Gender;
-import gov.iti.jets.dto.UserStatus;
 
-public class AttachementDAO {
+public class AttachementDAO  extends UnicastRemoteObject implements AttachementDAOInterface{
     DatabaseConnectionManager meh;
 
-    public AttachementDAO() {
+    public AttachementDAO() throws RemoteException{
+        super();
         meh = DatabaseConnectionManager.getInstance();
     }
 
-    public String getAttachmentTitle(int id) {
+    @Override
+    public String getAttachmentTitle(int id) throws RemoteException{
         if (id < 1)
             return "";
         String sql = "Select attachmentTitle From Attachment where attachmentID = ?";
@@ -37,8 +38,9 @@ public class AttachementDAO {
         return null;
 
     }
-
-    public int getAttachmentID(String title) {
+    
+    @Override
+    public int getAttachmentID(String title) throws RemoteException{
         if (title.length() < 1)
             return 0;
         String sql = "Select attachmentID From Attachment where attachmentTitle = ?";
@@ -85,7 +87,8 @@ public class AttachementDAO {
     // preparedStatement.executeUpdate();
     // System.out.println("Record inserted successfully.");
     // return user;
-    public AttachementDTO createAttachment(AttachementDTO attachementDTO) {
+    @Override
+    public AttachementDTO createAttachment(AttachementDTO attachementDTO) throws RemoteException{
         int id = attachementDTO.getAttachmentID();
         String title = attachementDTO.getAttachmentTitle();
         String type = attachementDTO.getAttachmentType();

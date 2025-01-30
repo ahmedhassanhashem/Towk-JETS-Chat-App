@@ -1,6 +1,8 @@
 package gov.iti.jets.dto;
 
-public class ContactDTO {
+import java.io.Serializable;
+
+public class ContactDTO implements Serializable{
         private int id;
         private int senderID;
         private int receiverID;

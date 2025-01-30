@@ -1,8 +1,9 @@
 package gov.iti.jets.controller;
 
 import java.io.IOException;
+import java.rmi.RemoteException;
 
-import gov.iti.jets.dao.ContactDAO;
+import gov.iti.jets.dao.ContactDAOInterface;
 import gov.iti.jets.dto.UserDTO;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -27,7 +28,7 @@ public class ContactTabController {
     private UserDTO cdto;
     private UserDTO userDTO;
     private Stage stage;
-    private  ContactDAO cdao ;
+    private  ContactDAOInterface cdao ;
     // @FXML
     // private Label name;
 
@@ -70,7 +71,7 @@ public class ContactTabController {
 
     @FXML
     private void addContact(ActionEvent event){
-         String ret;
+         String ret = "Error";
         // for (ArrayList<Object> entry : new ArrayList<>(nwContacts)) {
         //     UserDTO user = (UserDTO) entry.get(0);
         //     Tab tab = (Tab)entry.get(1);
@@ -89,7 +90,12 @@ public class ContactTabController {
         //     // Do something with user and tab
         // }
 
-        ret = cdao.create(userDTO.getPhone(), cdto.getPhone());
+        try {
+            ret = cdao.create(userDTO.getPhone(), cdto.getPhone());
+        } catch (RemoteException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
         if(!ret.equals("Sent Successfully")){
             hamar();
             writeVbox(ret);
@@ -201,14 +207,14 @@ public class ContactTabController {
     /**
      * @return ContactDAO return the cdao
      */
-    public ContactDAO getCdao() {
+    public ContactDAOInterface getCdao() {
         return cdao;
     }
 
     /**
      * @param cdao the cdao to set
      */
-    public void setCdao(ContactDAO cdao) {
+    public void setCdao(ContactDAOInterface cdao) {
         this.cdao = cdao;
     }
 

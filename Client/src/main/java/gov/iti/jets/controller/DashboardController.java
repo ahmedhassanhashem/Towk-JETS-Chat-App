@@ -50,7 +50,7 @@ public class DashboardController {
         userDTO = user;
         nameLabel.setText(user.getName());
         if (user.getUserPicture() != null) {
-
+            // System.out.println(user.getUserPicture().length);
             ByteArrayInputStream bis = new ByteArrayInputStream(user.getUserPicture());
             Image image = new Image(bis);
             profileImage.setImage(image);

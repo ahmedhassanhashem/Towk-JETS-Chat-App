@@ -1,9 +1,18 @@
 package gov.iti.jets.controller;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.rmi.NotBoundException;
+import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
 import java.util.ArrayList;
+import java.util.Properties;
 
-import gov.iti.jets.dao.ContactDAO;
+// import gov.iti.jets.dao.ContactDAO;
+
+import gov.iti.jets.dao.ContactDAOInterface;
+import gov.iti.jets.dao.UserDAOInterface;
 import gov.iti.jets.dto.UserDTO;
 import javafx.collections.ListChangeListener;
 import javafx.fxml.FXML;
@@ -20,7 +29,7 @@ public class AddContactController {
     private Stage stage;
     private int pageCounter = 2;
     private UserDTO userDTO;
-    ContactDAO cdao = new ContactDAO();
+    private ContactDAOInterface cdao;
 
     @FXML
     private TabPane tabPane;
@@ -73,14 +82,19 @@ public class AddContactController {
 
     public void addAll(){
         int cnt = 1;
-        String ret;
+        String ret ="Error";
         for (ArrayList<Object> entry : new ArrayList<>(nwContacts)) {
             UserDTO user = (UserDTO) entry.get(0);
             Tab tab = (Tab)entry.get(1);
             ContactTabController cont = (ContactTabController) entry.get(2);
             // System.out.println(userDTO.getPhone()+" "+ user.getPhone());
             
-            ret = cdao.create(userDTO.getPhone(), user.getPhone());
+            try {
+                ret = cdao.create(userDTO.getPhone(), user.getPhone());
+            } catch (RemoteException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
             if(!ret.equals("Sent Successfully")){
                 tabPane.getSelectionModel().select(tab);
                 cont.hamar();
@@ -100,6 +114,32 @@ public class AddContactController {
 
     @FXML
     private void initialize() {
+        Properties props = new Properties();
+        
+        try (InputStream input = getClass().getResourceAsStream("/rmi.properties")) {
+            if (input == null) {
+                throw new IOException("Properties file not found");
+            }
+            props.load(input);
+        } catch (IOException ex) {
+        }
+
+
+        String ip = props.getProperty("rmi_ip");
+        int port = Integer.parseInt(props.getProperty("rmi_port"));
+        
+        Registry reg;
+        try {
+            reg = LocateRegistry.getRegistry(ip, port);
+            cdao = (ContactDAOInterface) reg.lookup("contactDAO");
+
+        } catch (RemoteException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (NotBoundException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
 
         UserDTO cdto = new UserDTO();
         Tab tab = null;

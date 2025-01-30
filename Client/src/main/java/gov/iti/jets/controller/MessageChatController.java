@@ -17,8 +17,8 @@ import java.time.LocalDate;
 import java.util.Properties;
 
 import gov.iti.jets.client.Images;
-import gov.iti.jets.dao.AttachementDAO;
-import gov.iti.jets.dao.MessageDAO;
+import gov.iti.jets.dao.AttachementDAOInterface;
+import gov.iti.jets.dao.MessageDAOInterface;
 import gov.iti.jets.dao.UserDAOInterface;
 import gov.iti.jets.dto.AttachementDTO;
 import gov.iti.jets.dto.ChatDTO;
@@ -50,8 +50,9 @@ public class MessageChatController {
     // private UserDAO userDAO = new UserDAO();
     private UserDAOInterface userDAO;
 
-    private AttachementDAO attachementDAO = new AttachementDAO();
-    private MessageDAO messageDAO = new MessageDAO();
+    // private AttachementDAO attachementDAO = new AttachementDAO();
+    private AttachementDAOInterface attachementDAO;
+    private MessageDAOInterface messageDAO;
     private int chatID;
     private Stage stage;
     // private int attachId = 0;
@@ -112,7 +113,12 @@ public class MessageChatController {
         // int attachID = msg.getAttachmentID();
 
         
-        chats.add(messageDAO.create(msg));
+        try {
+            chats.add(messageDAO.create(msg));
+        } catch (RemoteException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
         // Platform.runLater(() -> {
         //     listView.layout();   
         //     listView.scrollTo(listView.getItems().size() - 1);
@@ -162,7 +168,12 @@ public class MessageChatController {
         // int attachID = msg.getAttachmentID();
 
         
-        chats.add(messageDAO.create(msg));
+        try {
+            chats.add(messageDAO.create(msg));
+        } catch (RemoteException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
         // Platform.runLater(() -> {
         //     listView.layout();   
         //     listView.scrollTo(listView.getItems().size() - 1);
@@ -176,7 +187,13 @@ public class MessageChatController {
         this.chatID = chatID;
         listView.setItems(chats);
         userDTO = user;
-        ObservableList<MessageDTO> chatDTOs = new MessageDAO().findAllMessages(chatID);
+        ObservableList<MessageDTO> chatDTOs = FXCollections.observableArrayList();
+        try {
+            chatDTOs = FXCollections.observableArrayList(messageDAO.findAllMessages(chatID));
+        } catch (RemoteException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
 
         listView.setCellFactory(new Callback<ListView<MessageDTO>, ListCell<MessageDTO>>() {
             @Override
@@ -251,6 +268,8 @@ public class MessageChatController {
         try {
             reg = LocateRegistry.getRegistry(ip,port);
             userDAO = (UserDAOInterface) reg.lookup("userDAO");
+            attachementDAO = (AttachementDAOInterface) reg.lookup("attachementDAO");
+            messageDAO = (MessageDAOInterface) reg.lookup("messageDAO");
 
         } catch (RemoteException e) {
             // TODO Auto-generated catch block
