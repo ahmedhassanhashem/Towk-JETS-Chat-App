@@ -1,13 +1,15 @@
 package gov.iti.jets.controller;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 
-import gov.iti.jets.dao.UserDAO;
 import gov.iti.jets.dto.UserDTO;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Modality;
@@ -24,6 +26,9 @@ public class DashboardController {
     ChatsController chat;
     @FXML
     private Label nameLabel;
+
+    @FXML
+    private ImageView profileImage;
 
     @FXML
     private BorderPane borderPane;
@@ -43,6 +48,9 @@ public class DashboardController {
     public void setUserDTO(UserDTO user) {
         userDTO = user;
         nameLabel.setText(user.getName());
+        ByteArrayInputStream bis = new ByteArrayInputStream(user.getUserPicture());
+        Image image = new Image(bis);
+        profileImage.setImage(image);
         chat.setUserDTO(userDTO);
         chat.chatScene();
     }

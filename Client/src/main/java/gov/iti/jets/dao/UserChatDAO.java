@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import gov.iti.jets.client.Images;
 import gov.iti.jets.dto.Gender;
 import gov.iti.jets.dto.UserDTO;
 import gov.iti.jets.dto.UserMode;
@@ -15,7 +16,7 @@ import javafx.collections.ObservableList;
 public class UserChatDAO{
 
     DatabaseConnectionManager dm;
-
+    Images images = new Images();
     public UserChatDAO() {
         dm = DatabaseConnectionManager.getInstance();
 
@@ -133,13 +134,13 @@ public class UserChatDAO{
             } catch (IllegalArgumentException | NullPointerException e) {
                 user.setBio(null);
             }
-            try {
-                user.setUserPicture(re.getBytes("userPicture"));
-            } catch (IllegalArgumentException | NullPointerException e) {
+            if(re.getString("userPicture") != null && re.getString("userPicture").length()>0) {
+                user.setUserPicture(images.downloadPP(re.getString("userPicture")));
+            } else  {
                 user.setUserPicture(null);
             }
 
-            user.setUserPicture(re.getBytes("userPicture"));
+            // user.setUserPicture(images.downloadPP(re.getString("userPicture")));
             return user;
         } catch (SQLException e) {
             e.printStackTrace();

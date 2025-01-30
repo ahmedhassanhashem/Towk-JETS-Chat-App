@@ -6,8 +6,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
-import java.util.List;
 
+import gov.iti.jets.client.Images;
 import gov.iti.jets.dto.Gender;
 import gov.iti.jets.dto.UserDTO;
 import gov.iti.jets.dto.UserMode;
@@ -15,7 +15,7 @@ import gov.iti.jets.dto.UserStatus;
 
 public class UserDAO {
     DatabaseConnectionManager meh;
-
+    Images images = new Images();
     public UserDAO() {
         meh = DatabaseConnectionManager.getInstance();
     }
@@ -122,9 +122,15 @@ public class UserDAO {
             } catch (IllegalArgumentException | NullPointerException e) {
                 user.setBio(null);
             }
-            try {
-                user.setUserPicture(re.getBytes("userPicture"));
-            } catch (IllegalArgumentException | NullPointerException e) {
+            // try {
+            //     user.setUserPicture(images.downloadPP(re.getString(("userPicture"))));
+            // } catch (IllegalArgumentException | NullPointerException e) {
+            //     user.setUserPicture(null);
+            // }
+            if(re.getString("userPicture") != null && re.getString("userPicture").length()>0) {
+                user.setUserPicture(images.downloadPP(re.getString("userPicture")));
+            } else  {
+                System.out.println("why");
                 user.setUserPicture(null);
             }
 
@@ -136,17 +142,19 @@ public class UserDAO {
     }
 
 
-    public int updatePicture(int userID, byte[] userPicture) {
+    public int updatePicture(int userID , String fileName, byte[] userPicture) {
         String query = "Update User \r\n" +
                         "SET userPicture = ?\r\n" +
                         "WHERE userID = ? \r\n";
         try (Connection con = meh.getConnection();
             PreparedStatement stmnt = con.prepareStatement(query);){
 
-                if (userPicture != null) 
-                    stmnt.setBytes(1, userPicture); 
+                if (userPicture != null) {
+                    images.uploadPP(fileName, userPicture);
+                    stmnt.setString(1, fileName); 
+                }
                 else
-                stmnt.setNull(1, Types.BLOB);
+                stmnt.setNull(1, Types.CHAR);
 
 
                 stmnt.setInt(2, userID); 

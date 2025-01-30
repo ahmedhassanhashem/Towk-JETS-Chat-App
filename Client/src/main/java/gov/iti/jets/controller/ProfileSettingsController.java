@@ -5,7 +5,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.IOError;
 import java.io.IOException;
 
 import gov.iti.jets.dao.UserDAO;
@@ -86,7 +85,7 @@ public class ProfileSettingsController {
                 imageBytes = imageToByteArray(file);
                 Image img = new Image(file.toURI().toString());
                 image.setImage(img);
-                userDAO.updatePicture(userDTO.getUserID() ,imageBytes);
+                userDAO.updatePicture(userDTO.getUserID(),file.getName() ,imageBytes);
             } catch (IOException e) { e.printStackTrace();}
             
             
