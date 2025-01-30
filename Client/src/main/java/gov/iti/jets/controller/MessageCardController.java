@@ -1,7 +1,5 @@
 package gov.iti.jets.controller;
 
-import javafx.scene.layout.Region;
-
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.File;
@@ -12,9 +10,9 @@ import java.io.OutputStream;
 import java.net.Socket;
 
 import javafx.fxml.FXML;
-import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -115,6 +113,10 @@ public class MessageCardController {
             
             // getHostServices().showDocument("http://www.example.com");
         });
+        if (messageTextContainerV.getChildren().size() > 1) {
+            messageTextContainerV.getChildren().remove(1, messageTextContainerV.getChildren().size());
+        }
+        
         messageTextContainerV.getChildren().add(hyperlink);
     }
     if (isSender) {

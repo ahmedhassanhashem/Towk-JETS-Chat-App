@@ -1,52 +1,57 @@
- <?import javafx.scene.control.Button?>
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Tab?>
-<?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
- <Tab fx:id="tab" text="Contact" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gov.iti.jets.controller.ContactTabController">
+<Tab fx:id="tab" text="Contact" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gov.iti.jets.controller.ContactTabController">
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
                         <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="171.0" spacing="20.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <children>
-                              <HBox alignment="TOP_CENTER" prefHeight="50.0" prefWidth="600.0" spacing="20.0">
+                  <VBox fx:id="vbox" spacing="10.0" alignment="CENTER">
+                     <children>
+                                    <!-- <HBox alignment="TOP_CENTER" prefHeight="50.0" prefWidth="600.0" spacing="20.0">
+                                       <children>
+                                          <Label fx:id="name" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="50.0" prefWidth="55.0" text="Name">
+                                             <font>
+                                                <Font name="Arial Bold" size="14.0" />
+                                             </font>
+                                          </Label>
+                                          <TextField maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="50.0" prefWidth="400.0" promptText="Enter contact Name" HBox.hgrow="NEVER" />
+                                       </children>
+                                    </HBox> -->
+                                    <HBox alignment="TOP_CENTER" spacing="20.0">
+                                       <children>
+                                          <Label prefHeight="50.0" prefWidth="55.0" text="Number">
+                                             <font>
+                                                <Font name="Arial Bold" size="14.0" />
+                                             </font>
+                                          </Label>
+                                          <TextField fx:id="phone" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="50.0" prefWidth="400.0" promptText="Enter Phone Number" HBox.hgrow="NEVER" />
+                                       </children>
+                                    </HBox>
+                     </children>
+                  </VBox>
+                              <HBox  alignment="BOTTOM_CENTER" spacing="20.0">
                                  <children>
-                                    <Label maxWidth="-Infinity" minWidth="-Infinity" prefHeight="50.0" prefWidth="55.0" text="Name">
-                                       <font>
-                                          <Font name="Arial Bold" size="14.0" />
-                                       </font>
-                                    </Label>
-                                    <TextField maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="50.0" prefWidth="400.0" promptText="Enter contact Name" HBox.hgrow="NEVER" />
-                                 </children>
-                              </HBox>
-                              <HBox alignment="TOP_CENTER" spacing="20.0">
-                                 <children>
-                                    <Label prefHeight="50.0" prefWidth="55.0" text="Number">
-                                       <font>
-                                          <Font name="Arial Bold" size="14.0" />
-                                       </font>
-                                    </Label>
-                                    <TextField maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="50.0" prefWidth="400.0" promptText="Enter Phone Number" HBox.hgrow="NEVER" />
-                                 </children>
-                              </HBox>
-                              <HBox alignment="CENTER" spacing="20.0">
-                                 <children>
-                                    <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="30.0" prefWidth="80.0" style="-fx-background-color: linear-gradient(to bottom, #13547a 0%, #80d0c7 100%);" styleClass="action-button" stylesheets="@../styles/style.css" text="Add">
+                                    <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#addContact" prefHeight="30.0" prefWidth="80.0" style="-fx-background-color: linear-gradient(to bottom, #13547a 0%, #80d0c7 100%);" styleClass="action-button" stylesheets="@../styles/style.css" text="Add">
                                        <font>
                                           <Font size="14.0" />
                                        </font>
                                     </Button>
-                                    <Button onAction="#newContact" layoutX="210.0" layoutY="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="30.0" style="-fx-background-color: linear-gradient(to bottom, #13547a 0%, #80d0c7 100%);" styleClass="action-button" stylesheets="@../styles/style.css" text="New Contact">
+                                    <Button layoutX="210.0" layoutY="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#newContact" prefHeight="30.0" style="-fx-background-color: linear-gradient(to bottom, #13547a 0%, #80d0c7 100%);" styleClass="action-button" stylesheets="@../styles/style.css" text="New Contact">
                                        <font>
                                           <Font size="14.0" />
                                        </font>
                                     </Button>
-                                    <Button layoutX="186.0" layoutY="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="30.0" prefWidth="80.0" style="-fx-background-color: linear-gradient(to bottom, #13547a 0%, #80d0c7 100%);" styleClass="action-button" stylesheets="@../styles/style.css" text="Add all">
+                                    <Button layoutX="186.0" layoutY="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#addAllContacts" prefHeight="30.0" prefWidth="80.0" style="-fx-background-color: linear-gradient(to bottom, #13547a 0%, #80d0c7 100%);" styleClass="action-button" stylesheets="@../styles/style.css" text="Add all">
                                        <font>
                                           <Font size="14.0" />
                                        </font>
