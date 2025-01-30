@@ -48,9 +48,12 @@ public class DashboardController {
     public void setUserDTO(UserDTO user) {
         userDTO = user;
         nameLabel.setText(user.getName());
-        ByteArrayInputStream bis = new ByteArrayInputStream(user.getUserPicture());
-        Image image = new Image(bis);
-        profileImage.setImage(image);
+        if(user.getUserPicture() != null){
+
+            ByteArrayInputStream bis = new ByteArrayInputStream(user.getUserPicture());
+            Image image = new Image(bis);
+            profileImage.setImage(image);
+        }
         chat.setUserDTO(userDTO);
         chat.chatScene();
     }

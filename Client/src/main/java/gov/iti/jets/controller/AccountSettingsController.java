@@ -1,17 +1,17 @@
 package gov.iti.jets.controller;
 
+import java.io.IOException;
+
 import gov.iti.jets.dao.UserDAO;
 import gov.iti.jets.dto.UserDTO;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
+import javafx.scene.layout.GridPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -50,7 +50,20 @@ public class AccountSettingsController {
         //make the user logout
         if (result == ButtonType.OK){
             userDAO.delete(userDTO.getUserID());
-            
+            try {
+                Stage stage1 = new Stage();
+                int width = 640,height = 480;
+                FXMLLoader dashLoader = new FXMLLoader(getClass().getResource("/screens/entreeBase.fxml"));
+                GridPane dashBoard = dashLoader.load();
+                entreeController dashController = dashLoader.getController();
+                var dashScene = new Scene(dashBoard, width, height);
+                dashController.setMyScene(dashScene);
+                dashController.setStage(stage1);
+                stage1.setScene(dashScene);
+                stage1.show();
+            } catch (IOException ex) {
+            }
+            stage.close();
 
         }
         

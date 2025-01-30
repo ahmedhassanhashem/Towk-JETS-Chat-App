@@ -130,7 +130,7 @@ public class UserDAO {
             if(re.getString("userPicture") != null && re.getString("userPicture").length()>0) {
                 user.setUserPicture(images.downloadPP(re.getString("userPicture")));
             } else  {
-                System.out.println("why");
+                // System.out.println("why");
                 user.setUserPicture(null);
             }
 
