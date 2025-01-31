@@ -7,7 +7,7 @@ public class AttachementDTO implements Serializable{
     private int attachmentID;
     private String attachmentTitle;
     private String attachmentType;
-    private int attachmentSize;
+    private long attachmentSize;
 
 
     /**
@@ -55,14 +55,14 @@ public class AttachementDTO implements Serializable{
     /**
      * @return int return the attachmentSize
      */
-    public int getAttachmentSize() {
+    public long getAttachmentSize() {
         return attachmentSize;
     }
 
     /**
      * @param attachmentSize the attachmentSize to set
      */
-    public void setAttachmentSize(int attachmentSize) {
+    public void setAttachmentSize(long attachmentSize) {
         this.attachmentSize = attachmentSize;
     }
 
