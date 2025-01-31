@@ -8,6 +8,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
+import java.util.ArrayList;
+import java.util.List;
 
 import gov.iti.jets.dto.Gender;
 import gov.iti.jets.dto.UserDTO;
@@ -29,6 +31,7 @@ public class UserDAO extends UnicastRemoteObject implements UserDAOInterface {
         meh = DatabaseConnectionManager.getInstance();
         // con = meh.getConnection();        
     }
+
     @Override
     public UserDTO create(UserDTO user) throws RemoteException {
         String phone = user.getPhone();
@@ -68,6 +71,7 @@ public class UserDAO extends UnicastRemoteObject implements UserDAOInterface {
 
         // throw new UnsupportedOperationException("Unimplemented method 'create'");
     }
+
     @Override
     public UserDTO read(UserDTO user) throws RemoteException { // u can make it take String and String (phone and password)
         // return null; // change the logic to return user and make condition in the
@@ -112,7 +116,7 @@ public class UserDAO extends UnicastRemoteObject implements UserDAOInterface {
     }
 
     @Override
-    public ObservableList<PieChart.Data> getUserStatistics(String columnName)  throws RemoteException{
+    public ObservableList<PieChart.Data> getUserStatistics(String columnName) throws RemoteException {
         ObservableList<PieChart.Data> data = FXCollections.observableArrayList();
         String query = String.format("SELECT %s, COUNT(*) AS count FROM User GROUP BY %s", columnName, columnName);
 
@@ -164,7 +168,7 @@ public class UserDAO extends UnicastRemoteObject implements UserDAOInterface {
             // }
             if (re.getString("userPicture") != null && re.getString("userPicture").length() > 0) {
                 user.setUserPicture(images.downloadPP(re.getString("userPicture")));
-            System.out.println(user.getUserPicture().length);
+                System.out.println(user.getUserPicture().length);
 
             } else {
                 // System.out.println("why");
@@ -207,24 +211,35 @@ public class UserDAO extends UnicastRemoteObject implements UserDAOInterface {
 
     @Override
     public int update(int userID, String name, String bio, UserMode userMode) throws RemoteException {
-        String query = "Update User \r\n"
-                + "SET name = ?, bio = ?, userMode = ?\r\n"
-                + "WHERE userID = ? \r\n";
-        try (Connection con = meh.getConnection(); PreparedStatement stmnt = con.prepareStatement(query);) {
-            stmnt.setString(1, name);
-            stmnt.setString(2, bio);
-
-            if (userMode != null) {
-                stmnt.setString(3, userMode.name());
+        StringBuilder query = new StringBuilder("UPDATE User SET ");
+        List<Object> params = new ArrayList<>();
+        
+        if (name != null) {
+            query.append("name = ?, ");
+            params.add(name);
+        }
+        if (bio != null) {
+            query.append("bio = ?, ");
+            params.add(bio);
+        }
+        if (userMode != null) {
+            query.append("userMode = ?, ");
+            params.add(userMode.name());
+        }
+    
+        if (params.isEmpty()) {
+            return 0;
+        }
+    
+        query.setLength(query.length() - 2);
+        query.append(" WHERE userID = ?");
+        params.add(userID);
+    
+        try (Connection con = meh.getConnection(); PreparedStatement stmnt = con.prepareStatement(query.toString())) {
+            for (int i = 0; i < params.size(); i++) {
+                stmnt.setObject(i + 1, params.get(i));
             }
-
-            stmnt.setInt(4, userID);
-
-            int rowsUpdated = stmnt.executeUpdate();
-            if (rowsUpdated > 0) {
-                return rowsUpdated;
-            }
-
+            return stmnt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -260,8 +275,8 @@ public class UserDAO extends UnicastRemoteObject implements UserDAOInterface {
             int rowsDeleted = stmnt.executeUpdate();
 
             if (rowsDeleted > 0) {
-                System.out.println("User deleted successfully!"); 
-            }else {
+                System.out.println("User deleted successfully!");
+            } else {
                 System.out.println("User not found!");
             }
 
@@ -272,7 +287,6 @@ public class UserDAO extends UnicastRemoteObject implements UserDAOInterface {
 }
 
 // class test {
-
 //     public static void main(String[] args) {
 //         UserDAO user = new UserDAO();
 //         ObservableList<PieChart.Data> pieChartData = user.getUserStatistics("country");

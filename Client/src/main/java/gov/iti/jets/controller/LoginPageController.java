@@ -105,6 +105,7 @@ public class LoginPageController {
             // System.out.println(dashScene);
             dashController.setUserDTO(user);
             dashController.setDashScene(dashScene);
+            dashController.setDashboardController(dashController);
             stage.setScene(dashScene);
 
         } else {

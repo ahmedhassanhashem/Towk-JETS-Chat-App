@@ -208,7 +208,7 @@ public class RegistrationPageController {
             dashController.setDashScene(dashScene);
             dashController.setLoginsScene(loginScene);
             dashController.setUserDTO(user);
-
+            dashController.setDashboardController(dashController);
             stage.setScene(dashScene);
 
         }

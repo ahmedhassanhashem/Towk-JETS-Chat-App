@@ -24,6 +24,7 @@ public class SettingsController {
     private VBox account = null;
     private ProfileSettingsController controllerProfile;
     private AccountSettingsController controllerAccount;
+    private DashboardController dashboardController;
 
     public void setUserDTO(UserDTO user) {
         userDTO = user;
@@ -73,13 +74,16 @@ public class SettingsController {
 
     @FXML
     private void dashboard(ActionEvent event) {
-        // System.out.println("aa");
+        // System.out.println("aa")
+        dashboardController.changepp();
         stage.setScene(dashboardScene);
     }
 
     @FXML
     private void backButton(ActionEvent event) {
         // System.out.println("aa");
+        dashboardController.changepp();
+
         stage.setScene(dashboardScene);
     }
 
@@ -120,6 +124,10 @@ public class SettingsController {
             controllerProfile.image.setImage(new Image(new ByteArrayInputStream(userDTO.getUserPicture())));
         }
 
+    }
+
+    public void setDashboardController(DashboardController dashboardController) {
+        this.dashboardController = dashboardController;
     }
 
 }

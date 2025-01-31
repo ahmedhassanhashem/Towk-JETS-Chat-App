@@ -28,6 +28,7 @@ public class DashboardController {
     private UserDTO userDTO = new UserDTO();
     private ScheduledExecutorService scheduledExecutorService;
     ChatsController chat;
+    private DashboardController dashboardController;
     @FXML
     private Label nameLabel;
 
@@ -60,6 +61,16 @@ public class DashboardController {
         }
         chat.setUserDTO(userDTO);
         chat.chatScene();
+    }
+
+    public  void changepp(){
+        nameLabel.setText(userDTO.getName());
+        if (userDTO.getUserPicture() != null) {
+            // System.out.println(user.getUserPicture().length);
+            ByteArrayInputStream bis = new ByteArrayInputStream(userDTO.getUserPicture());
+            Image image = new Image(bis);
+            profileImage.setImage(image);
+        }
     }
 
     public void setDashScene(Scene l) {
@@ -155,6 +166,7 @@ Executors. newScheduledThreadPool(20);
 
             settingsController.setDashboardScene(dashScene);
             settingsController.setStage(stage);
+            settingsController.setDashboardController(dashboardController);
             stage.setScene(settingsScene);
             settingsController.setUserDTO(userDTO);
         } catch (IOException e) {
@@ -249,5 +261,9 @@ Executors. newScheduledThreadPool(20);
         
 
 
+    }
+
+    public void setDashboardController(DashboardController dashboardController) {
+        this.dashboardController = dashboardController;
     }
 }

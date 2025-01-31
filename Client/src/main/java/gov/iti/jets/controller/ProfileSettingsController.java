@@ -17,7 +17,6 @@ import gov.iti.jets.dao.UserDAOInterface;
 import gov.iti.jets.dto.UserDTO;
 import gov.iti.jets.dto.UserMode;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
@@ -32,7 +31,7 @@ public class ProfileSettingsController {
     private UserDTO userDTO = new UserDTO();
     // private UserDAO userDAO = new UserDAO();
         private UserDAOInterface userDAO;
-
+        File file;
     private Stage stage;
 
     @FXML
@@ -57,30 +56,48 @@ public class ProfileSettingsController {
 
     @FXML
     private void updateUser() {
-        if (name.getText().isBlank()) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Validation Error");
-            alert.setContentText( "Name cannot be empty.");
-            alert.showAndWait();
-            return;
-        }
+        // if (name.getText().isBlank()) {
+        //     Alert alert = new Alert(Alert.AlertType.ERROR);
+        //     alert.setTitle("Validation Error");
+        //     alert.setContentText( "Name cannot be empty.");
+        //     alert.showAndWait();
+        //     return;
+        // }
 
-        String bioField = (!bio.getText().isBlank()) ? bio.getText() : "Hi im using towk!";
-        UserMode userModeList = (userMode.getValue() != null) ? UserMode.valueOf(userMode.getValue()) : UserMode.AVAILABLE;
-        
+        String bioField = (!bio.getText().isBlank()) ? bio.getText() : null;
+        UserMode userModeList = (userMode.getValue() != null) ? UserMode.valueOf(userMode.getValue()) : null;
+        // String bioField  = bio.getText();
+        String nmae =(!name.getText().isBlank()) ? name.getText():null;
+
         int rowsUpdated=0;
         try {
-            rowsUpdated = userDAO.update(userDTO.getUserID(), name.getText(), bioField, userModeList);
-        } catch (RemoteException e) {
+            if(file != null){
+                byte[] imageBytes;
+                    imageBytes = imageToByteArray(file);
+                    userDTO.setUserPicture(imageBytes);
+                    userDAO.updatePicture(userDTO.getUserID(),file.getName() ,imageBytes);
+
+                
+                
+            }
+            rowsUpdated = userDAO.update(userDTO.getUserID(), nmae, bioField, userModeList);
+            if(nmae != null)userDTO.setName(nmae);
+        } catch (RemoteException  e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
-        }
+        } catch (FileNotFoundException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
 
-        if (rowsUpdated > 0) {
-            System.out.println("Success Profile updated successfully!");
-        } else {
-            System.out.println("Error Failed to update profile.");
-        }
+        // if (rowsUpdated > 0) {
+        //     System.out.println("Success Profile updated successfully!");
+        // } else {
+        //     System.out.println("Error Failed to update profile.");
+        // }
         name.clear();
         bio.clear();
         userMode.getSelectionModel().clearSelection();
@@ -91,7 +108,7 @@ public class ProfileSettingsController {
         FileChooser chooser = new FileChooser();
         chooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.jpeg", "*.gif"));
         
-        File file = chooser.showOpenDialog(stage);
+        file = chooser.showOpenDialog(stage);
         
         if(file != null){
             byte[] imageBytes;
@@ -99,7 +116,6 @@ public class ProfileSettingsController {
                 imageBytes = imageToByteArray(file);
                 Image img = new Image(file.toURI().toString());
                 image.setImage(img);
-                userDAO.updatePicture(userDTO.getUserID(),file.getName() ,imageBytes);
             } catch (IOException e) { e.printStackTrace();}
             
             
