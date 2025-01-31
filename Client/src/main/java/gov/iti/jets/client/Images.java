@@ -14,7 +14,7 @@ public class Images {
         InputStream sIn;
         OutputStream sOut;
         try {
-            s = new Socket("", 3332);
+            s = new Socket("", 3331);
             sIn = s.getInputStream();
             sOut = s.getOutputStream();
         } catch (IOException e) {
@@ -51,7 +51,7 @@ public class Images {
         InputStream sIn;
         OutputStream sOut;
         try {
-            s = new Socket("", 3332);
+            s = new Socket("", 3331);
             sIn = s.getInputStream();
             sOut = s.getOutputStream();
         } catch (IOException e) {
@@ -84,7 +84,7 @@ public class Images {
         InputStream sIn;
         OutputStream sOut;
         try {
-            s = new Socket("", 3332);
+            s = new Socket("", 3331);
             sIn = s.getInputStream();
             sOut = s.getOutputStream();
         } catch (IOException e) {
@@ -116,7 +116,7 @@ public class Images {
             InputStream sIn;
             OutputStream sOut;
             try {
-                s = new Socket("", 3332);
+                s = new Socket("", 3331);
                 sIn = s.getInputStream();
                 sOut = s.getOutputStream();
             } catch (IOException e) {
