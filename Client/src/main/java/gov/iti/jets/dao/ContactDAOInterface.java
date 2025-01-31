@@ -22,5 +22,11 @@ public interface ContactDAOInterface extends Remote{
     // to get all the pending request so you can list in the notfication to accept or reject
     public List<UserDTO> findAllContactsPENDING(String userPhone) throws RemoteException ;
 
+    public boolean acceptContactRequest(String receiverPhone, String senderPhone) throws RemoteException;
+
+    public boolean rejectContactRequest(String receiverPhone, String senderPhone) throws RemoteException;
+
+    public boolean deleteRejectedContact(String receiverPhone, String senderPhone) throws RemoteException;
+
 }
 
