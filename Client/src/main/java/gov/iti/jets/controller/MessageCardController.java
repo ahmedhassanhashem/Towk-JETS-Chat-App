@@ -94,7 +94,9 @@ public class MessageCardController {
             messageTextContainerV.getChildren().remove(1, messageTextContainerV.getChildren().size());
         }
         
+        hyperlink.wrappingWidthProperty().bind(messageTextFlow.widthProperty());
         messageTextContainerV.getChildren().add(hyperlink);
+
     }
     if (isSender) {
         // nameLabel.setVisible(false); 

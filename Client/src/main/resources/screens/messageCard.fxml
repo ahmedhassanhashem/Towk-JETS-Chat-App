@@ -11,19 +11,21 @@
       <VBox fx:id="messageContainer" alignment="TOP_LEFT" spacing="5">
          <children>
             <Label fx:id="nameLabel" styleClass="message-name-label" text="User Name" />
-            <VBox fx:id="messageTextContainerV" alignment="CENTER_LEFT" spacing="5">
-               <children>
+               
                         <HBox fx:id="messageTextContainer" spacing="5">
                            <children>
                               <TextFlow fx:id="messageTextFlow" maxWidth="300" styleClass="message-textflow">
                                  <children>
+            <VBox fx:id="messageTextContainerV" alignment="CENTER_LEFT" spacing="5">
+                                 <children>
                                     <Text fx:id="messageText" text="Sample message text" />
+                                 </children>
+            </VBox>
                                  </children>
                               </TextFlow>
                            </children>
                         </HBox>
-               </children>
-            </VBox>
+               
             <Label fx:id="timeLabel" styleClass="message-time-label" text="12:34 PM" />
          </children>
       </VBox>
