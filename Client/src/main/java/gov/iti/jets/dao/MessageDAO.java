@@ -79,16 +79,24 @@ public class MessageDAO {
     }
 
     public String findLastMessageGroup(int chatID) {
-
-        if (chatID == 0)
+        if (chatID == 0) {
             return "";
+        }
+    
         ObservableList<MessageDTO> msgList = findAllMessages(chatID);
-        MessageDTO m = msgList.get(msgList.size() - 1);
+    
+        if (msgList == null || msgList.isEmpty()) {  
+            return ""; 
+        }
+    
+        MessageDTO m = msgList.get(msgList.size() - 1); 
         String ret = m.getMessageContent();
-        if (ret.length() > 7)
-            ret = ret.substring(0, 7) + "...";
-        return ret;
-
+    
+        if (ret != null && ret.length() > 20) { 
+            ret = ret.substring(0, 20) + "...";
+        }
+        return ret != null ? ret : ""; 
+    
     }
 
     public String findLastMessage(int user1, int user2) {
@@ -104,8 +112,8 @@ public class MessageDAO {
         ObservableList<MessageDTO> msgList = findAllMessages(chatID);
         MessageDTO m = msgList.get(msgList.size() - 1);
         String ret = m.getMessageContent();
-        if (ret.length() > 7)
-            ret = ret.substring(0, 7) + "...";
+        if (ret.length() > 20)
+            ret = ret.substring(0, 20) + "...";
         return ret;
 
     }

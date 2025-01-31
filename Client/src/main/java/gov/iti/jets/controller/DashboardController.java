@@ -4,6 +4,7 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 
 import gov.iti.jets.dto.UserDTO;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -13,8 +14,11 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 public class DashboardController {
 
@@ -48,7 +52,9 @@ public class DashboardController {
 
     public void setUserDTO(UserDTO user) {
         userDTO = user;
-        nameLabel.setText(user.getName());
+        String fullName = user.getName();
+        String firstName = extractFirstName(fullName);
+        nameLabel.setText(firstName);
         if (user.getUserPicture() != null) {
 
             ByteArrayInputStream bis = new ByteArrayInputStream(user.getUserPicture());
@@ -58,6 +64,7 @@ public class DashboardController {
         chat.setUserDTO(userDTO);
         chat.chatScene();
     }
+
 
     public void setDashScene(Scene l) {
         dashScene = l;
@@ -106,19 +113,25 @@ public class DashboardController {
 
     }
 
-    @FXML
+   @FXML
     private void userInfo(MouseEvent event) {
         Stage info = new Stage();
         info.initOwner(stage);
+        info.initStyle(StageStyle.UNDECORATED);
+        info.initStyle(StageStyle.TRANSPARENT);
         info.initModality(Modality.APPLICATION_MODAL);
         FXMLLoader userInfoLoader = new FXMLLoader(getClass().getResource("/screens/User_Info.fxml"));
         BorderPane userInfo;
         try {
             userInfo = userInfoLoader.load();
             UserInfoController userInfoController = userInfoLoader.getController();
-
-            var userInfoScene = new Scene(userInfo, 500, 800);
+            var userInfoScene = new Scene(userInfo);
+            userInfoController.makeWindowDraggable(info);
+            Platform.runLater(() -> userInfoController.applyRoundedCorners(userInfo, 15));
+            userInfoScene.setFill(Color.TRANSPARENT);
             info.setScene(userInfoScene);
+            userInfoController.setUserDTO(userDTO);
+            userInfoController.loadUserData();
             info.show();
         } catch (IOException e) {
             e.printStackTrace();
@@ -174,7 +187,10 @@ public class DashboardController {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-
+        NotificationController c = chatLoader.getController();
+        System.out.println("USERDTO" + userDTO.getPhone());
+        c.setUserDTO(userDTO);
+        c.loadNotifications();
         borderPane.setCenter(hold);
     }
 
@@ -228,5 +244,21 @@ public class DashboardController {
         borderPane.setCenter(hold);
         chat = chatLoader.getController();
 
+        Circle clip = new Circle();
+        clip.setRadius(30);
+        clip.setCenterX(30);
+        clip.setCenterY(30);
+        profileImage.setClip(clip);
+
+    }
+    
+    private String extractFirstName(String fullName) {
+        String[] names = fullName.split("\\s+"); 
+    
+        if (names.length > 0) {
+            return names[0].trim(); 
+        } else {
+            return ""; 
+        }
     }
 }

@@ -12,13 +12,14 @@ import gov.iti.jets.client.Images;
 import gov.iti.jets.dto.UserDTO;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import java.sql.Types;
 
 public class ChatDAO{
 
     DatabaseConnectionManager dm;
     UserChatDAO userChatDAO = new UserChatDAO();
     MessageDAO messageDAO = new MessageDAO();
-Images images = new Images();
+    Images images = new Images();
 
     public ChatDAO() {
         dm = DatabaseConnectionManager.getInstance();
@@ -193,6 +194,32 @@ Images images = new Images();
         return allGroups;
         // TODO Auto-generated method stub
         
+    }
+    
+    public int updateChatPicture(int chatId, String fileName, byte[] chatPicture) {
+        String query = "UPDATE Chat " +
+                       "SET chatPicture = ? " +
+                       "WHERE chatID = ?";
+
+        try (Connection con = dm.getConnection();
+             PreparedStatement stmnt = con.prepareStatement(query)) {
+
+            if (chatPicture != null) {
+                images.uploadPP(fileName, chatPicture); 
+                stmnt.setString(1, fileName);
+            } else {
+                stmnt.setNull(1, Types.CHAR); 
+            }
+
+            stmnt.setInt(2, chatId);
+
+            int rowsUpdated = stmnt.executeUpdate();
+            return rowsUpdated; 
+
+        } catch (SQLException e) {
+            e.printStackTrace(); 
+            return 0; 
+        }
     }
 
 }

@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.image.Image?>
@@ -8,15 +14,14 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Circle?>
 
-
-<HBox alignment="CENTER_LEFT" minHeight="70.0" prefHeight="70.0" prefWidth="200.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gov.iti.jets.controller.ContactCardController">
+<HBox alignment="CENTER_LEFT" minHeight="70.0" prefHeight="70.0" prefWidth="200.0" spacing="5.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gov.iti.jets.controller.ContactCardController">
    <children>
       <ImageView fx:id="picture" fitHeight="40.0" fitWidth="40.0" preserveRatio="true">
          <image>
-            <Image url="@../images/boy.png" />
+            <Image url="@../images/defaultUser.png" />
          </image>
          <HBox.margin>
-            <Insets left="5.0" right="10.0" />
+            <Insets left="10.0" right="10.0" />
          </HBox.margin>
       </ImageView>
       <VBox alignment="CENTER_LEFT" prefWidth="100.0" style="-fx-background-color: white;" HBox.hgrow="ALWAYS">
@@ -25,7 +30,7 @@
             <HBox alignment="CENTER_LEFT" maxHeight="-Infinity" prefHeight="20.0" VBox.vgrow="ALWAYS">
                <children>
                   <Label fx:id="bio" prefHeight="18.0" prefWidth="122.0" text="bio" />
-                  <Circle fx:id="status" fill="DODGERBLUE" radius="4.0" stroke="BLACK" strokeType="INSIDE" >
+                  <Circle fx:id="status" fill="DODGERBLUE" radius="4.0" stroke="BLACK" strokeType="INSIDE">
                      <HBox.margin>
                         <Insets />
                      </HBox.margin>
@@ -35,4 +40,7 @@
          </children>
       </VBox>
    </children>
+   <padding>
+      <Insets right="15.0" />
+   </padding>
 </HBox>

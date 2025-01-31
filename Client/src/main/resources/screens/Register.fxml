@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import javafx.collections.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 <?import java.lang.String?>
 <?import javafx.collections.FXCollections?>
 <?import javafx.geometry.Insets?>
@@ -15,11 +21,11 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox alignment="CENTER" spacing="50.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gov.iti.jets.controller.RegistrationPageController">
+<VBox alignment="CENTER" spacing="50.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gov.iti.jets.controller.RegistrationPageController">
    <children>
-      <HBox alignment="CENTER">
+      <HBox alignment="CENTER" spacing="50.0">
          <children>
-            <VBox alignment="CENTER" spacing="15.0" HBox.hgrow="ALWAYS">
+            <VBox alignment="CENTER" prefWidth="300.0" spacing="22.0" HBox.hgrow="ALWAYS">
                <children>
                   <TextField fx:id="nameField" maxWidth="300.0" prefHeight="40.0" promptText="Name" VBox.vgrow="ALWAYS" />
                   <TextField fx:id="emailField" maxWidth="300.0" prefHeight="40.0" promptText="Email" VBox.vgrow="ALWAYS" />
@@ -27,10 +33,10 @@
                   <PasswordField fx:id="password2Field" maxWidth="300.0" prefHeight="40.0" promptText="Confirm Password" VBox.vgrow="ALWAYS" />
                </children>
                <HBox.margin>
-                  <Insets left="30.0" />
+                  <Insets />
                </HBox.margin>
             </VBox>
-            <VBox alignment="CENTER" spacing="15.0" HBox.hgrow="ALWAYS">
+            <VBox alignment="CENTER" prefWidth="300.0" spacing="15.0" HBox.hgrow="ALWAYS">
                <children>
                   <VBox alignment="CENTER">
                      <children>
@@ -42,7 +48,7 @@
                         </Label>
                      </children>
                   </VBox>
-                  <HBox alignment="CENTER" prefHeight="37.0" prefWidth="353.0" spacing="50.0">
+                  <HBox alignment="CENTER" prefHeight="40.0" prefWidth="300.0" spacing="50.0">
                      <children>
                         <Label text="Gender" textFill="WHITE">
                            <font>
@@ -65,10 +71,13 @@
                         </FXCollections>
                      </items>
                   </ComboBox>
-                  <DatePicker fx:id="dateField" maxWidth="300.0" prefHeight="40.0" promptText="Birth Date" />
+                  <DatePicker fx:id="dateField" maxWidth="300.0" prefHeight="40.0" prefWidth="262.0" promptText="Birth Date" />
                </children>
             </VBox>
          </children>
+         <VBox.margin>
+            <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+         </VBox.margin>
       </HBox>
       <HBox alignment="CENTER">
          <children>
@@ -78,6 +87,9 @@
                </font>
             </Button>
          </children>
+         <VBox.margin>
+            <Insets bottom="20.0" />
+         </VBox.margin>
       </HBox>
    </children>
 </VBox>

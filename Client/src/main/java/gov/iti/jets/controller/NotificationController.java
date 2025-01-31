@@ -1,115 +1,105 @@
 package gov.iti.jets.controller;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-
-
-
-
-import java.io.*;
-
-import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
-import javafx.scene.control.TextField;
-import javafx.scene.control.TreeCell;
-import javafx.scene.control.TreeItem;
-import javafx.scene.control.TreeView;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.image.WritableImage;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.FlowPane;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Region;
-import javafx.stage.FileChooser;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Callback;
-
-import java.net.InetAddress;
-import java.net.UnknownHostException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
+import java.io.IOException;
+import gov.iti.jets.dao.ContactDAO;
+import gov.iti.jets.dto.UserDTO;
 
 public class NotificationController {
-
-
+    private ContactDAO contactDAO = new ContactDAO();
+    ObservableList<UserDTO> contacts = FXCollections.observableArrayList();
+    private UserDTO userDTO = new UserDTO();
     private Stage stage;
     private Scene settingsScene;
     private Scene dashboardScene;
-    ObservableList<HBox> contacts =FXCollections.observableArrayList();
+
     @FXML
-    private ListView<HBox> listView;
+    private ListView<UserDTO> listView;
 
-
-    public void setSettingsScene(Scene s){
+    public void setSettingsScene(Scene s) {
         settingsScene = s;
     }
 
-    public void setDashboardScene(Scene s){
+    public void setDashboardScene(Scene s) {
         dashboardScene = s;
     }
 
-    public void setStage(Stage s){
-        stage =s;
+    public void setStage(Stage s) {
+        stage = s;
     }
 
-
-
+    public void setUserDTO(UserDTO user) {
+        this.userDTO = user;
+        System.out.println("NotificationController userDTO set: " + user.getPhone());
+    }
+    
 
     @FXML
     private void initialize() {
         listView.setItems(contacts);
-        HBox hold =null;
-        FXMLLoader addContactLoader = new FXMLLoader(getClass().getResource("/screens/FriendRequestCard.fxml"));
-
-        try {
-            hold = addContactLoader.load();
-        } catch (IOException e) {
- 
-            e.printStackTrace();
-        }
-        contacts.add(hold);
-        addContactLoader = new FXMLLoader(getClass().getResource("/screens/FriendRequestCard.fxml"));
-
-        try {
-            hold = addContactLoader.load();
-        } catch (IOException e) {
- 
-            e.printStackTrace();
-        }
-        contacts.add(hold);
-        addContactLoader = new FXMLLoader(getClass().getResource("/screens/FriendRequestCard.fxml"));
-
-        try {
-            hold = addContactLoader.load();
-        } catch (IOException e) {
- 
-            e.printStackTrace();
-        }
-        contacts.add(hold);
-
     }
+
+    public void loadNotifications() {
+        System.out.println("UserDTO phone in NotificationController: " + userDTO.getPhone());
+    
+        ObservableList<UserDTO> pendingRequests = contactDAO.findAllContactsPENDING(userDTO.getPhone());
+        System.out.println("DAO returned: " + pendingRequests.size() + " pending requests");
+    
+        listView.setCellFactory(new Callback<ListView<UserDTO>, ListCell<UserDTO>>() {
+            @Override
+            public ListCell<UserDTO> call(ListView<UserDTO> p) {
+                return new ListCell<UserDTO>() {
+                    @Override
+                    protected void updateItem(UserDTO user, boolean empty) {
+                        super.updateItem(user, empty);
+    
+                        if (empty || user == null) {
+                            setText(null);
+                            setGraphic(null);
+                        } else {
+                            try {
+                                FXMLLoader loader = new FXMLLoader(getClass().getResource("/screens/FriendRequestCard.fxml"));
+                                HBox requestCard = loader.load();
+                                FriendRequestController controller = loader.getController();
+    
+                                controller.setPicture(user.getUserPicture());
+                                controller.setName(user.getName());
+    
+                                controller.getAcceptButton().setOnAction(e -> {
+                                    if (contactDAO.acceptContactRequest(userDTO.getPhone(), user.getPhone())) {
+                                        contacts.remove(user);
+                                        System.out.println("Request accepted");
+                                    }
+                                });
+    
+                                controller.getRejectButton().setOnAction(e -> {
+                                    if (contactDAO.rejectContactRequest(userDTO.getPhone(), user.getPhone())) {
+                                        contacts.remove(user);
+                                        System.out.println("Request rejected");
+                                    }
+                                });
+    
+                                setGraphic(requestCard);
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+                };
+            }
+        });
+    
+        contacts.addAll(pendingRequests);
+        System.out.println("Contacts size after adding: " + contacts.size());
+    }
+    
 }
