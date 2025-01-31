@@ -6,6 +6,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Types;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -18,7 +19,7 @@ public class ChatDAO extends UnicastRemoteObject implements ChatDAOInterface{
     DatabaseConnectionManager dm;
     UserChatDAO userChatDAO = new UserChatDAO();
     MessageDAO messageDAO = new MessageDAO();
-Images images = new Images();
+    Images images = new Images();
 
     public ChatDAO() throws RemoteException{
         super();
@@ -194,6 +195,32 @@ Images images = new Images();
         return allGroups;
         // TODO Auto-generated method stub
         
+    }
+    
+    public int updateChatPicture(int chatId, String fileName, byte[] chatPicture) throws RemoteException {
+        String query = "UPDATE Chat " +
+                       "SET chatPicture = ? " +
+                       "WHERE chatID = ?";
+
+        try (Connection con = dm.getConnection();
+             PreparedStatement stmnt = con.prepareStatement(query)) {
+
+            if (chatPicture != null) {
+                images.uploadPP(fileName, chatPicture); 
+                stmnt.setString(1, fileName);
+            } else {
+                stmnt.setNull(1, Types.CHAR); 
+            }
+
+            stmnt.setInt(2, chatId);
+
+            int rowsUpdated = stmnt.executeUpdate();
+            return rowsUpdated; 
+
+        } catch (SQLException e) {
+            e.printStackTrace(); 
+            return 0; 
+        }
     }
 
 }

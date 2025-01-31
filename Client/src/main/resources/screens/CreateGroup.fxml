@@ -6,28 +6,31 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.geometry.*?>
 
-<VBox alignment="CENTER_LEFT" prefHeight="500.0" prefWidth="600.0" spacing="10" style="-fx-background-color: #f9f9f9;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<VBox alignment="CENTER_LEFT" prefHeight="600.0" prefWidth="600.0" spacing="5.0" style="-fx-background-color: #f9f9f9;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gov.iti.jets.controller.CreateGroupController">
     <padding>
         <Insets bottom="20" left="20" right="20" top="20" />
     </padding>
     <children>
         <HBox prefHeight="63.0" prefWidth="719.0" spacing="50.0" VBox.vgrow="ALWAYS">
             <children>
-                <Label style="-fx-font-size: 30px; -fx-font-weight: bold; -fx-text-fill: #13547a;" text="Create New Group" />
+                <Label style="-fx-font-size: 25px; -fx-font-weight: bold; -fx-text-fill: #13547a;" text="Create New Group" />
                 <Region prefHeight="45.0" prefWidth="128.0" HBox.hgrow="ALWAYS">
                <HBox.margin>
                   <Insets />
                </HBox.margin></Region>
-                <Button mnemonicParsing="false" style="-fx-background-color: transparent;">
+                <Button fx:id="exitButton" mnemonicParsing="false" onAction="#handleexitButton" style="-fx-background-color: transparent;">
                     <graphic>
-                        <ImageView fx:id="exitButton" fitHeight="26.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="26.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
                             <image>
-                                <Image url="@ChatApp-JETS/Client/src/main/resources/images/close.png" />
+                                <Image url="@../images/close.png" />
                             </image>
                         </ImageView>
                     </graphic>
                 </Button>
             </children>
+         <VBox.margin>
+            <Insets bottom="30.0" />
+         </VBox.margin>
         </HBox>
 
         <HBox alignment="CENTER_LEFT" spacing="10">
@@ -35,20 +38,22 @@
                 <Label text="Group Name:" />
                 <TextField fx:id="groupNameField" promptText="Enter group name" HBox.hgrow="ALWAYS" />
             </children>
-            <padding>
-                <Insets right="20.0" />
-            </padding>
         </HBox>
+      <HBox alignment="TOP_RIGHT" prefHeight="100.0" prefWidth="200.0">
+         <children>
+            <Label fx:id="alertLabel1" text="Please Enter a group name" textFill="#d75555" />
+         </children>
+      </HBox>
 
-        <VBox alignment="CENTER" spacing="10">
+        <VBox alignment="CENTER" spacing="10.0">
             <children>
                 <Label text="Group Photo:" />
-                <ImageView fx:id="photoImageView" fitHeight="100" fitWidth="100" preserveRatio="true" style="-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 5, 0, 0, 2);">
+                <ImageView fx:id="groupImage" fitHeight="100.0" fitWidth="100.0" preserveRatio="true" style="-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 5, 0, 0, 2);">
                     <image>
-                        <Image url="@images/group1.png" />
+                        <Image url="@../images/group1.png" />
                     </image>
                 </ImageView>
-                <Button fx:id="choosePhotoButton" style="-fx-background-color: #80d0c7;" text="Choose Photo" textFill="WHITE" />
+                <Button fx:id="choosePhotoButton" onAction="#handlechoosePhotoButton" style="-fx-background-color: #80d0c7;" text="Choose Photo" textFill="WHITE" />
             </children>
         </VBox>
 
@@ -58,13 +63,18 @@
             </padding>
             <children>
                 <Label style="-fx-font-weight: bold;" text="Select Group Members:" />
-            <ListView prefHeight="200.0" prefWidth="200.0" />
+            <ListView fx:id="listView" prefWidth="200.0" VBox.vgrow="ALWAYS" />
+            <HBox alignment="TOP_RIGHT" prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <Label fx:id="alertLabel2" text="Need at least 1 participant to create a group" textFill="#d75555" />
+               </children>
+            </HBox>
             </children>
         </VBox>
 
         <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0">
             <children>
-                <Button  style="-fx-background-color: linear-gradient(to bottom, #13547a 0%, #80d0c7 100%); -fx-text-fill: white; -fx-font-size: 16px; -fx-padding: 10 20; -fx-background-radius: 5;" text="Create Group" />
+                <Button fx:id="CreateGroup" onAction="#handleCreateGroup" prefHeight="45.0" prefWidth="135.0" style="-fx-background-color: linear-gradient(to bottom, #13547a 0%, #80d0c7 100%); -fx-text-fill: white; -fx-font-size: 16px; -fx-padding: 10 20; -fx-background-radius: 5;" text="Create Group" />
             </children>
         </HBox>
     </children>

@@ -280,4 +280,95 @@ public class ContactDAO extends UnicastRemoteObject implements ContactDAOInterfa
 
     }
 
+    public boolean acceptContactRequest(String receiverPhone, String senderPhone) throws RemoteException {
+        String getIdQuery = "SELECT id FROM UserContact " +
+                            "WHERE receiverID = (SELECT userID FROM User WHERE phone = ?) " +
+                            "AND senderID = (SELECT userID FROM User WHERE phone = ?) " +
+                            "AND requestStatus = 'PENDING'";
+        String updateQuery = "UPDATE UserContact SET requestStatus = 'ACCEPT' WHERE id = ?";
+    
+        try (Connection con = dm.getConnection();
+             PreparedStatement getIdPs = con.prepareStatement(getIdQuery);
+             PreparedStatement updatePs = con.prepareStatement(updateQuery)) {
+    
+            getIdPs.setString(1, receiverPhone);
+            getIdPs.setString(2, senderPhone);
+            ResultSet rs = getIdPs.executeQuery();
+    
+            if (rs.next()) {
+                int requestId = rs.getInt("id");
+    
+                updatePs.setInt(1, requestId);
+                int affectedRows = updatePs.executeUpdate();
+                return affectedRows > 0;
+            } else {
+                return false; 
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+    
+    public boolean rejectContactRequest(String receiverPhone, String senderPhone) throws RemoteException {
+        String getIdQuery = "SELECT id FROM UserContact " +
+                            "WHERE receiverID = (SELECT userID FROM User WHERE phone = ?) " +
+                            "AND senderID = (SELECT userID FROM User WHERE phone = ?) " +
+                            "AND requestStatus = 'PENDING'";
+        String updateQuery = "UPDATE UserContact SET requestStatus = 'REJECT' WHERE id = ?";
+    
+        try (Connection con = dm.getConnection();
+             PreparedStatement getIdPs = con.prepareStatement(getIdQuery);
+             PreparedStatement updatePs = con.prepareStatement(updateQuery)) {
+    
+            getIdPs.setString(1, receiverPhone);
+            getIdPs.setString(2, senderPhone);
+            ResultSet rs = getIdPs.executeQuery();
+    
+            if (rs.next()) {
+                int requestId = rs.getInt("id");
+                updatePs.setInt(1, requestId);
+                int affectedRows = updatePs.executeUpdate();
+                return affectedRows > 0;
+            } else {
+                return false; 
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+    
+    public boolean deleteRejectedContact(String receiverPhone, String senderPhone) throws RemoteException {
+        String getIdQuery = "SELECT id FROM UserContact " +
+                            "WHERE receiverID = (SELECT userID FROM User WHERE phone = ?) " +
+                            "AND senderID = (SELECT userID FROM User WHERE phone = ?) " +
+                            "AND requestStatus = 'REJECT'";
+        String deleteQuery = "DELETE FROM UserContact WHERE id = ?";
+    
+        try (Connection con = dm.getConnection();
+             PreparedStatement getIdPs = con.prepareStatement(getIdQuery);
+             PreparedStatement deletePs = con.prepareStatement(deleteQuery)) {
+    
+            
+            getIdPs.setString(1, receiverPhone);
+            getIdPs.setString(2, senderPhone);
+            ResultSet rs = getIdPs.executeQuery();
+    
+            if (rs.next()) {
+                int requestId = rs.getInt("id");
+                deletePs.setInt(1, requestId);
+                int affectedRows = deletePs.executeUpdate();
+                return affectedRows > 0;
+            } else {
+                return false; 
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+    
+
+
 }

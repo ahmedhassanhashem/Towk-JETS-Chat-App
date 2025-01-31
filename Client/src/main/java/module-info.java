@@ -1,7 +1,8 @@
 module gov.iti.jets {
     requires javafx.controls;
     requires javafx.fxml;
-    requires javafx.graphics;
+    //requires javafx.graphics;
+    requires transitive javafx.graphics;
     requires java.sql;
     requires javafx.base;
     requires mysql.connector.java;

@@ -1,5 +1,6 @@
 package gov.iti.jets.controller;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 
@@ -19,7 +20,17 @@ public class GroupMemberCellController {
         phoneLabel.setText(phone);
     }
 
+    public String getPhoneNumber() {
+        return phoneLabel.getText();
+    }
+    
+
     public boolean isSelected() {
         return selectCheckBox.isSelected();
     }
+
+     public CheckBox getAcceptButton() {
+        return selectCheckBox;
+    }
+
 }

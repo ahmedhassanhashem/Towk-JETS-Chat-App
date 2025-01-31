@@ -45,5 +45,12 @@ public class ContactCardController {
         if (s != null)
             bio.setText(s);
     }
-
+    @FXML
+    public void initialize() {
+        Circle clip = new Circle();
+        clip.setRadius(20); 
+        clip.setCenterX(20);
+        clip.setCenterY(20);
+        picture.setClip(clip);
+    }
 }

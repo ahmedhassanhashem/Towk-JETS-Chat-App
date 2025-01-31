@@ -29,7 +29,7 @@
                      <children>
                         <ImageView fitHeight="45.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@images/google-docs.png" />
+                              <Image url="@../images/google-docs.png" />
                            </image>
                            <HBox.margin>
                               <Insets bottom="5.0" right="5.0" />
@@ -53,7 +53,7 @@
                            <graphic>
                               <ImageView fx:id="downloadButton" fitHeight="45.0" fitWidth="60.0" onMouseClicked="#downloadButtonHandler" pickOnBounds="true" preserveRatio="true">
                                  <image>
-                                    <Image url="@images/download_5469774%20(1).png" />
+                                    <Image url="@../images/download_5469774%20(1).png" />
                                  </image>
                                  <cursor>
                                     <Cursor fx:constant="HAND" />

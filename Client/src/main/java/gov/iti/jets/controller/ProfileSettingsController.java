@@ -23,6 +23,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.shape.Circle;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
@@ -146,5 +147,10 @@ public class ProfileSettingsController {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
+        Circle clip = new Circle();
+        clip.setRadius(25); 
+        clip.setCenterX(25);
+        clip.setCenterY(25);
+        image.setClip(clip);
     }
 }
