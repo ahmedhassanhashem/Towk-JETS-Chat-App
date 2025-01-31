@@ -15,7 +15,6 @@ import java.rmi.registry.Registry;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.util.Properties;
-import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
@@ -49,7 +48,7 @@ public class MessageChatController {
 
     
     ObservableList<MessageDTO> chats = FXCollections.observableArrayList();
-    ScheduledExecutorService scheduledExecutorService;
+
     private UserDTO userDTO = new UserDTO();
     private ChatDTO chatDTO = new ChatDTO();
     private AttachementDTO attachement = null;
@@ -67,19 +66,7 @@ public class MessageChatController {
     private byte[] upload;
     public void setStage(Stage s) {
         stage = s;
-        try {
-            
-            stage.setOnCloseRequest((e)->{
-                // scheduledExecutorService.close();
-                scheduledExecutorService.shutdownNow();
-                
-            });
-        } catch (Exception e) {
-        }
-        listView.sceneProperty().addListener((a,b,c)->{
-            if (b != null && c == null) 
-            scheduledExecutorService.shutdownNow();
-        });
+
     }
     @FXML
     private ListView<MessageDTO> listView;
@@ -202,12 +189,11 @@ public class MessageChatController {
         text.setText("");
     }
 
-    public void setUserDTO(UserDTO user,int chatID) {
+    public void setUserDTO(UserDTO user,int chatID , ScheduledExecutorService scheduledExecutorService) {
         this.chatID = chatID;
         listView.setItems(chats);
         userDTO = user;
-        scheduledExecutorService =
-Executors. newScheduledThreadPool(1);
+
         scheduledExecutorService.scheduleAtFixedRate(()->{
             try {
                 MessageDTO nw = messageDAO.findLastMessage(chatID);
@@ -217,13 +203,15 @@ Executors. newScheduledThreadPool(1);
                     Platform.runLater(()->{
 
                         chats.add(nw);
+                    listView.scrollTo(chats.size() - 1);
+
                     });
                 }
             } catch (RemoteException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
             }
-        }, 0, 1, TimeUnit.SECONDS);
+        }, 0, 100, TimeUnit.MILLISECONDS);
         ObservableList<MessageDTO> chatDTOs = FXCollections.observableArrayList();
         try {
             chatDTOs = FXCollections.observableArrayList(messageDAO.findAllMessages(chatID));
@@ -290,7 +278,6 @@ Executors. newScheduledThreadPool(1);
                 chats.addListener((ListChangeListener<MessageDTO>) change -> {
             while (change.next()) {
                 if (change.wasAdded()) {
-                    // Scroll to the last item in the list
                     listView.scrollTo(chats.size() - 1);
                 }
             }

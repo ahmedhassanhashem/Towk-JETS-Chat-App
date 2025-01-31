@@ -26,6 +26,7 @@ import javafx.util.Callback;
 
 import java.sql.SQLException;
 import java.util.Properties;
+import java.util.concurrent.ScheduledExecutorService;
 
 // import gov.iti.jets.dao.UserChatDAO;
 import gov.iti.jets.dao.UserDAOInterface;
@@ -52,6 +53,7 @@ public class ChatsController {
     private ContactDAOInterface contactDAO;
     private MessageDAOInterface messageDAO;
     private ChatDAOInterface chatDao;
+    private ScheduledExecutorService scheduledExecutorService;
 
     public void setStage(Stage s) {
         stage = s;
@@ -162,7 +164,7 @@ public class ChatsController {
 
                                     try {
 
-                                        messageController.setUserDTO(userDTO, chatDao.findExistingSingleChat(userDTO.getUserID(), user.getUserID()));
+                                        messageController.setUserDTO(userDTO, chatDao.findExistingSingleChat(userDTO.getUserID(), user.getUserID()),scheduledExecutorService);
                                     } catch (SQLException e1) {
                                         e1.printStackTrace();
                                     }
@@ -249,7 +251,7 @@ public class ChatsController {
                                         if (chatID == 0) {
                                             chatID = chatDao.createSingle(userDTO.getPhone(), user.getPhone());
                                         }
-                                        messageController.setUserDTO(userDTO, chatID);
+                                        messageController.setUserDTO(userDTO, chatID,scheduledExecutorService);
                                     } catch (SQLException e1) {
                                         e1.printStackTrace();
                                     }
@@ -327,7 +329,7 @@ public class ChatsController {
                                     // messageController.setStatus(user.getUserStatus().toString());
                                     messageController.setStage(stage);
 
-                                    messageController.setUserDTO(userDTO, user.getUserID());
+                                    messageController.setUserDTO(userDTO, user.getUserID(),scheduledExecutorService);
 
                                     // chat.setTop(new VBox());
                                     borderPane.setCenter(chat);
@@ -378,5 +380,9 @@ public class ChatsController {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
+    }
+
+    public void setScheduledExecutorService(ScheduledExecutorService scheduledExecutorService) {
+        this.scheduledExecutorService = scheduledExecutorService;
     }
 }
