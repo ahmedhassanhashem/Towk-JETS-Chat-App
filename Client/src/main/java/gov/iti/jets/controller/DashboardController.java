@@ -2,6 +2,8 @@ package gov.iti.jets.controller;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
 
 import gov.iti.jets.dto.UserDTO;
 import javafx.fxml.FXML;
@@ -24,6 +26,7 @@ public class DashboardController {
     private Scene userInfoScene;
     private Scene dashScene;
     private UserDTO userDTO = new UserDTO();
+    private ScheduledExecutorService scheduledExecutorService;
     ChatsController chat;
     @FXML
     private Label nameLabel;
@@ -65,7 +68,19 @@ public class DashboardController {
 
     public void setStage(Stage s) {
         stage = s;
+        scheduledExecutorService=
+Executors. newScheduledThreadPool(20);
+        chat.setScheduledExecutorService(scheduledExecutorService);
         chat.setStage(s);
+        try {
+            
+            stage.setOnCloseRequest((e)->{
+                // scheduledExecutorService.close();
+                scheduledExecutorService.shutdownNow();
+                
+            });
+        } catch (Exception e) {
+        }
     }
 
     @FXML
@@ -84,6 +99,7 @@ public class DashboardController {
         c.setUserDTO(userDTO);
         c.contactScene();
         c.setStage(stage);
+        c.setScheduledExecutorService(scheduledExecutorService);
         borderPane.setCenter(hold);
     }
 
@@ -102,6 +118,7 @@ public class DashboardController {
         c.setUserDTO(userDTO);
         c.chatScene();
         c.setStage(stage);
+        c.setScheduledExecutorService(scheduledExecutorService);
         borderPane.setCenter(hold);
 
     }
@@ -160,6 +177,7 @@ public class DashboardController {
         ChatsController c = chatLoader.getController();
         c.setUserDTO(userDTO);
         c.groupScene();
+        c.setScheduledExecutorService(scheduledExecutorService);
         borderPane.setCenter(hold);
     }
 
@@ -228,6 +246,8 @@ public class DashboardController {
         }
         borderPane.setCenter(hold);
         chat = chatLoader.getController();
+        
+
 
     }
 }
