@@ -28,7 +28,6 @@ import java.sql.SQLException;
 import java.util.Properties;
 
 // import gov.iti.jets.dao.UserChatDAO;
-
 import gov.iti.jets.dao.UserDAOInterface;
 // import gov.iti.jets.dao.ChatDAO;
 import gov.iti.jets.dao.ChatDAOInterface;
@@ -50,10 +49,9 @@ public class ChatsController {
     private BorderPane borderPane;
     private UserDTO userDTO = new UserDTO();
     private UserChatDAOInterface userChatDAO;
-    private ContactDAOInterface contactDAO ;
+    private ContactDAOInterface contactDAO;
     private MessageDAOInterface messageDAO;
     private ChatDAOInterface chatDao;
-    
 
     public void setStage(Stage s) {
         stage = s;
@@ -142,7 +140,11 @@ public class ChatsController {
                             chatCardController.setImage(user.getUserPicture());
                             chatCardController.setLabel(user.getName());
                             try {
-                                chatCardController.setText(messageDAO.findLastMessage(userDTO.getUserID(), user.getUserID()));
+                                String ret = messageDAO.findLastMessage(userDTO.getUserID(), user.getUserID());
+                                if (ret.length() > 7) {
+                                    ret = ret.substring(0, 7) + "...";
+                                }
+                                chatCardController.setText(ret);
                             } catch (RemoteException e) {
                                 // TODO Auto-generated catch block
                                 e.printStackTrace();
@@ -271,6 +273,7 @@ public class ChatsController {
         ObservableList<UserDTO> list = FXCollections.observableArrayList();
         try {
             list = FXCollections.observableArrayList(chatDao.findAllGroups(userDTO.getUserID()));
+            // System.out.println(list.size());
         } catch (RemoteException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -304,7 +307,11 @@ public class ChatsController {
                             chatCardController.setImage(user.getUserPicture());
                             chatCardController.setLabel(user.getName());
                             try {
-                                chatCardController.setText(messageDAO.findLastMessageGroup(user.getUserID()));
+                                String ret = messageDAO.findLastMessage(userDTO.getUserID(), user.getUserID());
+                                if (ret.length() > 7) {
+                                    ret = ret.substring(0, 7) + "...";
+                                }
+                                chatCardController.setText(ret);
                             } catch (RemoteException e) {
                                 // TODO Auto-generated catch block
                                 e.printStackTrace();
@@ -344,7 +351,7 @@ public class ChatsController {
     @FXML
     private void initialize() {
         Properties props = new Properties();
-        
+
         try (InputStream input = getClass().getResourceAsStream("/rmi.properties")) {
             if (input == null) {
                 throw new IOException("Properties file not found");
@@ -353,10 +360,9 @@ public class ChatsController {
         } catch (IOException ex) {
         }
 
-
         String ip = props.getProperty("rmi_ip");
         int port = Integer.parseInt(props.getProperty("rmi_port"));
-        
+
         Registry reg;
         try {
             reg = LocateRegistry.getRegistry(ip, port);

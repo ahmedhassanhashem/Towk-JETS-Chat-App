@@ -88,12 +88,21 @@ public class MessageDAO extends UnicastRemoteObject implements MessageDAOInterfa
             List<MessageDTO> msgList = findAllMessages(chatID);
         MessageDTO m = msgList.get(msgList.size() - 1);
         String ret = m.getMessageContent();
-        if (ret.length() > 7)
-            ret = ret.substring(0, 7) + "...";
+        
         return ret;
 
     }
+    public MessageDTO findLastMessage(int chatID) throws RemoteException{
 
+        if (chatID == 0)
+            return null;
+            List<MessageDTO> msgList = findAllMessages(chatID);
+        MessageDTO m = msgList.get(msgList.size() - 1);
+        // String ret = m.getMessageContent();
+        
+        return m;
+
+    }
     public String findLastMessage(int user1, int user2) throws RemoteException{
         int chatID;
         try {
