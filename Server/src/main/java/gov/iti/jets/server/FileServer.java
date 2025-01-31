@@ -35,7 +35,6 @@ public class FileServer {
         //         try {
         //             s.close();
         //         } catch (IOException e) {
-        //             // TODO Auto-generated catch block
         //             e.printStackTrace();
         //         }
         //     }
