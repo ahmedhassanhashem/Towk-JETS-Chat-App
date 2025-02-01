@@ -128,7 +128,7 @@ public class UserChatDAO extends UnicastRemoteObject implements UserChatDAOInter
             user.setPassword(re.getString("password"));
             user.setFirstLogin(re.getBoolean("firstLogin"));
             user.setUserStatus(UserStatus.valueOf(re.getString("userStatus")));
-            user.setUserMode(UserMode.valueOf(re.getString("userMode")));
+            // user.setUserMode(UserMode.valueOf(re.getString("userMode")));
             
 
             try {
