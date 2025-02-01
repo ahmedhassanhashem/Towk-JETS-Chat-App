@@ -7,6 +7,8 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 import org.junit.jupiter.api.*;
 import org.mockito.*;
+
+import java.rmi.RemoteException;
 import java.sql.*;
 import gov.iti.jets.dto.Gender;
 import gov.iti.jets.dto.UserDTO;
@@ -15,37 +17,15 @@ import javafx.collections.ObservableList;
 import javafx.scene.chart.PieChart;
 
 
-public class UserDAOTest {
+public class UserDAOTest extends MockingDBUtiltiy{
 
-    private static MockedStatic<DatabaseConnectionManager> mockedDbManager;
-    private static DatabaseConnectionManager mockDbManager;
-    private Connection mockConnection;
-    private PreparedStatement mockPreparedStatement;
-    private ResultSet mockResultSet;
     private UserDAO userDAO;
 
-    @BeforeAll
-    static void init() {
-        mockedDbManager = Mockito.mockStatic(DatabaseConnectionManager.class);
-        mockDbManager = Mockito.mock(DatabaseConnectionManager.class);
-        mockedDbManager.when(DatabaseConnectionManager::getInstance).thenReturn(mockDbManager);
-    }
+
 
     @BeforeEach
-    void setup() throws Exception {
-        mockConnection = Mockito.mock(Connection.class);
-        mockPreparedStatement = Mockito.mock(PreparedStatement.class);
-        mockResultSet = Mockito.mock(ResultSet.class);
-
-        when(mockDbManager.getConnection()).thenReturn(mockConnection);
-        when(mockConnection.prepareStatement(anyString())).thenReturn(mockPreparedStatement);
-
+    void initDAO() throws Exception{
         userDAO = new UserDAO();
-    }
-
-    @AfterAll
-    static void tearDown() {
-        mockedDbManager.close();
     }
 
     //valid case
