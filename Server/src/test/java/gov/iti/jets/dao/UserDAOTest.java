@@ -1,24 +1,18 @@
 package gov.iti.jets.dao;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 import org.junit.jupiter.api.*;
 import org.mockito.*;
-
+import java.sql.*;
 import gov.iti.jets.dto.Gender;
 import gov.iti.jets.dto.UserDTO;
 import gov.iti.jets.dto.UserMode;
 import javafx.collections.ObservableList;
 import javafx.scene.chart.PieChart;
-import javafx.scene.chart.PieChart.Data;
-
-import java.rmi.RemoteException;
-import java.sql.*;
-import java.util.Map;
 
 
 public class UserDAOTest {
