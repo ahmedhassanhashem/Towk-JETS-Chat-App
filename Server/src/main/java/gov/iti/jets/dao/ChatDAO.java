@@ -173,10 +173,10 @@ public class ChatDAO extends UnicastRemoteObject implements ChatDAOInterface{
 
             ps.setInt(1, userId);
             ResultSet rs = ps.executeQuery();
-            UserDTO group = new UserDTO();
             
             while (true) {
                 if(!rs.next())break;
+                UserDTO group = new UserDTO();
                 group.setUserID(rs.getInt("chatID"));
                 group.setName(rs.getString("chatName"));
                 // group.setUserPicture(rs.getString("chatPicture"));
