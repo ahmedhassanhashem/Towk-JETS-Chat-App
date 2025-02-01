@@ -1,36 +1,34 @@
 .borderPane {
     -fx-background-image: url('../images/whats3.jpg');
-    -fx-background-size: cover; 
-    -fx-background-repeat: no-repeat; 
-    -fx-background-position: center; 
-    
-    -fx-border-color: white; 
-    -fx-border-width: 2; 
-    -fx-border-style: solid; 
-  
- 
+    -fx-background-size: cover;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
 
-    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 10, 0, 0, 5); 
+    -fx-border-color: white;
+    -fx-border-width: 2;
+    -fx-border-style: solid;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 10, 0, 0, 5);
 
 }
 
 .borderPane2 {
-    -fx-border-radius: 20px; 
+    -fx-border-radius: 20px;
     -fx-background-radius: 20px;
     -fx-background-color: #F5F5F5;
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 20, 0.9, 0, 0);
-    -fx-padding: 15px; 
-    -fx-background-insets: 0; 
-    -fx-border-color: transparent; 
+    -fx-padding: 15px;
+    -fx-background-insets: 0;
+    -fx-border-color: transparent;
 }
 
-.list1{
-    
-     -fx-background-image: url('../images/whats3.jpg');
-    -fx-background-size: cover; 
-    -fx-background-repeat: no-repeat; 
-    -fx-background-position: center; 
+.list1 {
+
+    -fx-background-image: url('../images/whats3.jpg');
+    -fx-background-size: cover;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
 }
+
 .chat-list-view {
     -fx-background-image: url('../images/whats3.jpg');
     -fx-background-size: cover;
@@ -54,15 +52,17 @@
 .chat-list-view .list-cell .vbox {
     -fx-background-color: transparent;
 }
+
 .sent-message {
-     -fx-background-color: #dcf8c6;
+    -fx-background-color: #dcf8c6;
     -fx-padding: 10px;
     -fx-background-radius: 10px;
     -fx-border-radius: 30px;
 }
-.received-message{
-    
-     -fx-background-color: white;
+
+.received-message {
+
+    -fx-background-color: white;
     -fx-padding: 10px;
     -fx-background-radius: 10px;
     -fx-border-radius: 10px;
@@ -78,16 +78,16 @@
 .profileImage {
     -fx-background-color: white;
     -fx-background-radius: 30px;
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 10, 0, 0, 0);
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 10, 0, 0, 0);
 }
 
 .sidebar-button {
-    -fx-background-color: linear-gradient(to bottom, #40c9d1, #45e592); 
-    -fx-text-fill: white; 
+    -fx-background-color: linear-gradient(to bottom, #40c9d1, #45e592);
+    -fx-text-fill: white;
     -fx-alignment: CENTER_LEFT;
     -fx-font-size: 18px;
     -fx-cursor: hand;
-    -fx-background-radius: 10px; 
+    -fx-background-radius: 10px;
     -fx-padding: 10px;
 }
 
@@ -110,61 +110,60 @@
 }
 
 .action-button:hover {
-    -fx-background-color: #38d9a9; 
-    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 10, 0, 0, 0); 
+    -fx-background-color: #38d9a9;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 10, 0, 0, 0);
     -fx-scale-x: 1.03;
     -fx-scale-y: 1.03;
 }
 
 .action-button:pressed {
-    -fx-background-color: #32c193; 
-    -fx-effect: innershadow(gaussian, rgba(0, 0, 0, 0.4), 8, 0, 0, 0); 
+    -fx-background-color: #32c193;
+    -fx-effect: innershadow(gaussian, rgba(0, 0, 0, 0.4), 8, 0, 0, 0);
     -fx-scale-x: 0.98;
     -fx-scale-y: 0.98;
-    -fx-translate-y: 2px; 
+    -fx-translate-y: 2px;
 }
 
 
 
 .namefield {
-    -fx-background-color: #f9f9f9; 
-    -fx-background-radius: 10px; 
-    -fx-border-color: #40c9d1; 
-    -fx-border-width: 2px; 
-    -fx-border-radius: 10px; 
+    -fx-background-color: #f9f9f9;
+    -fx-background-radius: 10px;
+    -fx-border-color: #40c9d1;
+    -fx-border-width: 2px;
+    -fx-border-radius: 10px;
     -fx-padding: 5px;
-    -fx-font-size: 14px; 
-    -fx-text-fill: #333333; 
+    -fx-font-size: 14px;
+    -fx-text-fill: #333333;
     -fx-cursor: text;
 }
 
 .namefield:focused {
-    -fx-border-color: #45e592; 
-    -fx-background-color: #ffffff; 
-    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.25), 8, 0, 0, 2); 
+    -fx-border-color: #45e592;
+    -fx-background-color: #ffffff;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.25), 8, 0, 0, 2);
 }
 
 .bioarea {
-    -fx-background-color: #f9f9f9; 
-    -fx-background-radius: 10px; 
-    -fx-border-color: #40c9d1; 
+    -fx-background-color: #f9f9f9;
+    -fx-background-radius: 10px;
+    -fx-border-color: #40c9d1;
     -fx-border-width: 2px;
     -fx-border-radius: 10px;
-    -fx-padding: 10px; 
-    -fx-font-size: 14px; 
+    -fx-padding: 10px;
+    -fx-font-size: 14px;
     -fx-text-fill: #333333;
-    -fx-cursor: text; 
-    -fx-control-inner-background: #f9f9f9; 
-    
-    -fx-pref-width: 350px; 
-    -fx-pref-height: 100px; 
+    -fx-cursor: text;
+    -fx-control-inner-background: #f9f9f9;
+    -fx-pref-width: 350px;
+    -fx-pref-height: 100px;
 }
 
 
 .bioarea:focused {
-    -fx-border-color: #45e592; 
-    -fx-background-color: #ffffff; 
-    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.25), 8, 0, 0, 2); 
+    -fx-border-color: #45e592;
+    -fx-background-color: #ffffff;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.25), 8, 0, 0, 2);
 }
 
 .userModeComboBox {
@@ -183,7 +182,7 @@
     -fx-padding: 8 10 8 10;
 }
 
-userModeComboBox .arrow-button {
+.userModeComboBox .arrow-button {
     -fx-background-color: transparent;
 }
 
@@ -207,20 +206,18 @@ userModeComboBox .arrow-button {
 }
 
 .statusIndicator {
-     -fx-fill: green; 
+    -fx-fill: green;
     -fx-stroke: green;
     -fx-stroke-width: 1;
     -fx-radius: 5;
-   
+
 }
 
 
-
-.messagechats{
-     -fx-text-fill: white;
+.messagechats {
+    -fx-text-fill: white;
     -fx-background-radius: 10px;
 }
-
 
 
 .chat-list-view .list-cell {
@@ -236,7 +233,8 @@ userModeComboBox .arrow-button {
     -fx-padding: 5;
 }
 
-.list-cell:filled:selected:focused, .list-cell:filled:selected {
+.list-cell:filled:selected:focused,
+.list-cell:filled:selected {
     -fx-background-color: transparent;
 }
 
@@ -254,26 +252,21 @@ userModeComboBox .arrow-button {
 }
 
 
-
 .pagination .control-box {
-  -fx-alignment: center; 
-  -fx-spacing: 10px;                  
+    -fx-alignment: center;
+    -fx-spacing: 10px;
 }
-
-
-
-
 
 
 .pagination .left-arrow,
 .pagination .right-arrow {
     -fx-background-color: transparent;
-    -fx-cursor: hand; 
+    -fx-cursor: hand;
 }
 
 .pagination .left-arrow {
-    -fx-shape: "M10 0 L0 10 L10 20 Z"; 
-    -fx-background-color: #40c9d1; 
+    -fx-shape: "M10 0 L0 10 L10 20 Z";
+    -fx-background-color: #40c9d1;
 }
 
 .pagination .right-arrow {
@@ -283,7 +276,7 @@ userModeComboBox .arrow-button {
 
 .pagination .left-arrow:hover,
 .pagination .right-arrow:hover {
-    -fx-background-color: #38b2bb; 
+    -fx-background-color: #38b2bb;
 }
 
 .pagination .left-arrow:pressed,
@@ -293,24 +286,35 @@ userModeComboBox .arrow-button {
 
 
 .delete-account {
-    -fx-padding: 10 20; /* Adds padding inside the HBox */
-    
-    -fx-background-radius: 5; /* Rounded corners */
-    -fx-text-fill: white; /* Text color */
-    -fx-font-weight: bold; /* Make text bold */
-    -fx-cursor: hand; /* Change the cursor to a hand to indicate it's clickable */
-    -fx-border-color: transparent; /* Remove border if needed */
-    -fx-border-radius: 5; /* Optional rounded border */
-    -fx-alignment: center; /* Align content in the center */
-    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 3, 0.5, 0, 3); /* Add shadow for better visual effect */
+    -fx-padding: 10 20;
+    /* Adds padding inside the HBox */
+
+    -fx-background-radius: 5;
+    /* Rounded corners */
+    -fx-text-fill: white;
+    /* Text color */
+    -fx-font-weight: bold;
+    /* Make text bold */
+    -fx-cursor: hand;
+    /* Change the cursor to a hand to indicate it's clickable */
+    -fx-border-color: transparent;
+    /* Remove border if needed */
+    -fx-border-radius: 5;
+    /* Optional rounded border */
+    -fx-alignment: center;
+    /* Align content in the center */
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 3, 0.5, 0, 3);
+    /* Add shadow for better visual effect */
 }
 
 .delete-account:hover {
-    -fx-background-color: #FF2B2B; /* Change background color when hovered */
+    -fx-background-color: #FF2B2B;
+    /* Change background color when hovered */
 }
 
 .delete-account:pressed {
-    -fx-background-color: #D11F1F; /* Change background color when pressed */
+    -fx-background-color: #D11F1F;
+    /* Change background color when pressed */
 }
 
 
@@ -323,7 +327,8 @@ userModeComboBox .arrow-button {
 .hbox:hover {
     -fx-background-color: transparent;
     -fx-effect: dropshadow(gaussian, rgba(50, 205, 50, 0.6), 15, 0.8, 0, 4);
-    -fx-text-fill: #32cd32; /* Brighter green for text hover */
+    -fx-text-fill: #32cd32;
+    /* Brighter green for text hover */
     -fx-scale-x: 1.1;
     -fx-scale-y: 1.1;
 }
@@ -339,9 +344,9 @@ userModeComboBox .arrow-button {
     -fx-padding: 10;
     -fx-border-radius: 10;
     -fx-background-radius: 10;
-    -fx-max-width: 300; 
-    -fx-alignment: CENTER_RIGHT; 
-    -fx-wrap-text: true; 
+    -fx-max-width: 300;
+    -fx-alignment: CENTER_RIGHT;
+    -fx-wrap-text: true;
 }
 
 .receiver-message {
@@ -349,8 +354,8 @@ userModeComboBox .arrow-button {
     -fx-padding: 10;
     -fx-border-radius: 10;
     -fx-background-radius: 10;
-    -fx-max-width: 300; 
-    -fx-wrap-text: true; 
+    -fx-max-width: 300;
+    -fx-wrap-text: true;
 }
 
 .message-textflow {
@@ -358,7 +363,7 @@ userModeComboBox .arrow-button {
     -fx-background-radius: 10;
     -fx-border-radius: 10;
     -fx-wrap-text: true;
-    -fx-pref-width: -1; 
+    -fx-pref-width: -1;
     -fx-max-width: -1;
 }
 
@@ -372,8 +377,7 @@ userModeComboBox .arrow-button {
     -fx-text-fill: gray;
 }
 
-.message-container > .messageContainer {
+.message-container>.messageContainer {
     -fx-pref-width: -1;
     -fx-max-width: -1;
 }
-

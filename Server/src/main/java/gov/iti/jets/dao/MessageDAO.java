@@ -116,8 +116,8 @@ public class MessageDAO extends UnicastRemoteObject implements MessageDAOInterfa
             List<MessageDTO> msgList = findAllMessages(chatID);
         MessageDTO m = msgList.get(msgList.size() - 1);
         String ret = m.getMessageContent();
-        if (ret.length() > 7)
-            ret = ret.substring(0, 7) + "...";
+        if (ret.length() > 20)
+            ret = ret.substring(0, 20) + "...";
         return ret;
 
     }

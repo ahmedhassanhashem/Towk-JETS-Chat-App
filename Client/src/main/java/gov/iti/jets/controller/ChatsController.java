@@ -7,6 +7,7 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -22,6 +23,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import javafx.util.Callback;
 
 import java.sql.SQLException;
@@ -86,21 +88,31 @@ public class ChatsController {
         addContactController.setUserDTO(userDTO);
     }
 
-    @FXML
+   @FXML
     private void addGroup(ActionEvent event) {
-        VBox hold = null;
+        VBox hold;
         FXMLLoader addContactLoader = new FXMLLoader(getClass().getResource("/screens/CreateGroup.fxml"));
         try {
             hold = addContactLoader.load();
+            CreateGroupController c = addContactLoader.getController();
+            var addContactScene = new Scene(hold, 700, 550);
+            Stage info = new Stage();
+            info.initOwner(stage);
+            info.initStyle(StageStyle.UNDECORATED);
+            info.initStyle(StageStyle.TRANSPARENT);
+            info.initModality(Modality.APPLICATION_MODAL);
+            Platform.runLater(() -> c.applyRoundedCorners(hold, 15));
+            addContactScene.setFill(Color.TRANSPARENT);
+            info.setScene(addContactScene);
+            c.setStage(info);
+            System.out.println("AddGroupUSERDTO" + userDTO.getPhone());
+            c.setUserDTO(userDTO);
+            c.loadContacts();
+            info.show();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        var addContactScene = new Scene(hold, 700, 550);
-        Stage info = new Stage();
-        info.initOwner(stage);
-        info.initModality(Modality.APPLICATION_MODAL);
-        info.setScene(addContactScene);
-        info.show();
+        
     }
 
     public void chatScene() {

@@ -254,6 +254,15 @@ public class ServerController {
         }
         FXMLLoader manageLoader = new FXMLLoader(getClass().getResource("/screens/manage.fxml"));
         manage = manageLoader.load();
+        ManageController manageController = manageLoader.getController();
+        manageController.setReg(reg);
+        manageController.setAnnouncementDAO(announcementDAO);
+        manageController.setAttachementDAO(attachementDAO);
+        manageController.setChatDAO(chatDAO);
+        manageController.setContactDAO(contactDAO);
+        manageController.setMessageDAO(messageDAO);
+        manageController.setUserChatDAO(userChatDAO);
+        manageController.setUserDAO(userDAO);
         FXMLLoader announceLoader = new FXMLLoader(getClass().getResource("/screens/announce.fxml"));
         announce = announceLoader.load();
         FXMLLoader chartLoader = new FXMLLoader(getClass().getResource("/screens/chart.fxml"));

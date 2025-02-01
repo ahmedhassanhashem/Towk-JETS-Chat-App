@@ -34,6 +34,7 @@ import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
 
 public class LoginPController {
@@ -167,6 +168,11 @@ public class LoginPController {
             stage.close();
         });
 
+        Circle clip = new Circle();
+        clip.setRadius(100); 
+        clip.setCenterX(100);
+        clip.setCenterY(100);
+        profileImage.setClip(clip);
     }
 
     public void setProfileImage(byte[] imageData) {

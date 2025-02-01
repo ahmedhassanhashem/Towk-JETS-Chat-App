@@ -7,7 +7,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-
+import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
 
 
@@ -43,7 +43,12 @@ public class ChatCadController {
 
     @FXML
     private void initialize() {
-     
-
+         
+        Circle clip = new Circle();
+        clip.setRadius(20); 
+        clip.setCenterX(20);
+        clip.setCenterY(20);
+        image.setClip(clip);
     }
+
 }
