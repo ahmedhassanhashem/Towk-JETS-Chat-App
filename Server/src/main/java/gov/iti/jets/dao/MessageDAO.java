@@ -54,7 +54,7 @@ public class MessageDAO extends UnicastRemoteObject implements MessageDAOInterfa
 
     public List<MessageDTO> findAllMessages(int chatID) throws RemoteException {
         // ObservableList<MessageDTO> msgList = FXCollections.observableArrayList();
- List<MessageDTO> msgList = new ArrayList<>();
+        List<MessageDTO> msgList = new ArrayList<>();
         String query = "SELECT * FROM Message WHERE chatID = ?;";
 
         try (Connection con = dm.getConnection();
@@ -81,27 +81,49 @@ public class MessageDAO extends UnicastRemoteObject implements MessageDAOInterfa
         return msgList;
     }
 
-    public String findLastMessageGroup(int chatID) throws RemoteException{
-
-        if (chatID == 0)
+    public String findLastMessageGroup(int chatID) throws RemoteException {
+        // System.out.println("findLastMessageGroup: Method called with chatID = " + chatID);
+        try {
+            List<MessageDTO> msgList = findAllMessages(chatID);
+            if (msgList == null || msgList.isEmpty()) {
+                System.out.println("findLastMessageGroup: No messages found!");
+                return "";
+            }
+            MessageDTO m = msgList.get(msgList.size() - 1); 
+            String ret = m.getMessageContent();
+        
+            // if (ret != null && ret.length() > 20) { 
+            //     ret = ret.substring(0, 20) + "...";
+            // }
+            return ret != null ? ret : ""; 
+        } catch (Exception e) {
+            System.out.println("findLastMessageGroup: Caught an exception!");
+            e.printStackTrace();
             return "";
-            List<MessageDTO> msgList = findAllMessages(chatID);
-        MessageDTO m = msgList.get(msgList.size() - 1);
-        String ret = m.getMessageContent();
-        
-        return ret;
-
+        }
     }
-    public MessageDTO findLastMessage(int chatID) throws RemoteException{
-
-        if (chatID == 0)
+    
+    
+    
+    public MessageDTO findLastMessage(int chatID) throws RemoteException {
+        if (chatID == 0) {
             return null;
-            List<MessageDTO> msgList = findAllMessages(chatID);
-        MessageDTO m = msgList.get(msgList.size() - 1);
-        // String ret = m.getMessageContent();
-        
+        }
+    
+        List<MessageDTO> msgList = findAllMessages(chatID);
+    
+        if (msgList == null || msgList.isEmpty()) {  
+            //System.out.println("findLastMessage: No messages found for chatID = " + chatID);
+            return null;
+        }
+    
+        int lastIndex = msgList.size() - 1;
+        MessageDTO m = msgList.get(lastIndex); 
+        if (lastIndex < 0) {
+            return null;
+        }
+    
         return m;
-
     }
     public String findLastMessage(int user1, int user2) throws RemoteException{
         int chatID;
