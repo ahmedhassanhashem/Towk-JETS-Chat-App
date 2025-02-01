@@ -172,9 +172,13 @@ Images images = new Images();
 
             ps.setInt(1, userId);
             ResultSet rs = ps.executeQuery();
-            UserDTO group = new UserDTO();
             
             while (true) {
+                // fix bug
+                // reusing the same UserDTO instance for each group in the while loop, 
+                //leading to overwriting of group names. 
+                //Creating a new instance each time is necessary.
+                UserDTO group = new UserDTO();
                 if(!rs.next())break;
                 group.setUserID(rs.getInt("chatID"));
                 group.setName(rs.getString("chatName"));
