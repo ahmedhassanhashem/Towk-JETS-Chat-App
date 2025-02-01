@@ -87,34 +87,73 @@ public class AttachementDAO  extends UnicastRemoteObject implements AttachementD
     // preparedStatement.executeUpdate();
     // System.out.println("Record inserted successfully.");
     // return user;
+    // @Override
+    // public AttachementDTO createAttachment(AttachementDTO attachementDTO) throws RemoteException{
+    //     String title = attachementDTO.getAttachmentTitle();
+    //     String type = attachementDTO.getAttachmentType();
+    //     long size = attachementDTO.getAttachmentSize();
+
+    //     String sql = "INSERT INTO `Attachment` (`attachmentTitle`, `attachmentType`, `attachmentSize`)\n" + //
+    //             "VALUES\n" + //
+    //             "(?, ?, ?);";
+    //     ResultSet re;
+    //     try (Connection con = meh.getConnection();
+    //             PreparedStatement preparedStatement = con.prepareStatement(sql);) {
+    //                 preparedStatement.setString(1, title);
+    //                 preparedStatement.setString(2, type);
+    //                 preparedStatement.setLong(3, size);
+    //                 preparedStatement.executeUpdate();
+    //                 Statement stmt = con.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
+    //                 re = stmt.executeQuery("SELECT * FROM Attachment");
+    //                 re.last();
+    //                 attachementDTO.setAttachmentID(re.getInt("attachmentID"));
+
+    //         return attachementDTO;
+    //     } catch (SQLException e) {
+
+    //         e.printStackTrace();
+    //     }
+    //     return null;
+
+    // }
+
     @Override
-    public AttachementDTO createAttachment(AttachementDTO attachementDTO) throws RemoteException{
-        int id = attachementDTO.getAttachmentID();
+    public AttachementDTO createAttachment(AttachementDTO attachementDTO) throws RemoteException {
         String title = attachementDTO.getAttachmentTitle();
         String type = attachementDTO.getAttachmentType();
         long size = attachementDTO.getAttachmentSize();
 
-        String sql = "INSERT INTO `Attachment` (`attachmentTitle`, `attachmentType`, `attachmentSize`)\n" + //
-                "VALUES\n" + //
-                "(?, ?, ?);";
-        ResultSet re;
+        String sql = "INSERT INTO Attachment (attachmentTitle, attachmentType, attachmentSize) VALUES (?, ?, ?)";
+
         try (Connection con = meh.getConnection();
-                PreparedStatement preparedStatement = con.prepareStatement(sql);) {
-                    preparedStatement.setString(1, title);
-                    preparedStatement.setString(2, type);
-                    preparedStatement.setLong(3, size);
-                    preparedStatement.executeUpdate();
-                    Statement stmt = con.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
-                    re = stmt.executeQuery("SELECT * FROM Attachment");
-                    re.last();
-                    attachementDTO.setAttachmentID(re.getInt("attachmentID"));
+            PreparedStatement preparedStatement = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+
+            preparedStatement.setString(1, title);
+            preparedStatement.setString(2, type);
+            preparedStatement.setLong(3, size);
+
+            int affectedRows = preparedStatement.executeUpdate();
+
+            // Ensure a record was inserted
+            if (affectedRows == 0) {
+                throw new SQLException("Creating attachment failed, no rows affected.");
+            }
+
+            // Retrieve the generated ID
+            try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
+                if (generatedKeys.next()) {
+                    attachementDTO.setAttachmentID(generatedKeys.getInt(1));
+                } else {
+                    throw new SQLException("Creating attachment failed, no ID obtained.");
+                }
+            }
 
             return attachementDTO;
+
         } catch (SQLException e) {
-
             e.printStackTrace();
+            return null;
         }
-        return null;
-
     }
+
 }
