@@ -191,8 +191,8 @@ public class ChatDAO extends UnicastRemoteObject implements ChatDAOInterface{
         }
     }
 
-      public List<ChatDTO> findAllGroups(int userId) throws RemoteException {
-        List<ChatDTO> allGroups = new ArrayList<>();
+      public List<UserDTO> findAllGroups(int userId) throws RemoteException {
+        List<UserDTO> allGroups = new ArrayList<>();
     
         String query = "SELECT c.chatID, c.chatName, c.chatPicture FROM Chat c " +
                        "JOIN UserChat u ON c.chatID = u.chatID " +
@@ -205,16 +205,15 @@ public class ChatDAO extends UnicastRemoteObject implements ChatDAOInterface{
             ResultSet rs = ps.executeQuery();
     
             while (rs.next()) {
-                ChatDTO groupChat = new ChatDTO();
-                groupChat.setChatID(rs.getInt("chatID"));
-                groupChat.setChatName(rs.getString("chatName"));
-    
-                if (rs.getString("chatPicture") != null && rs.getString("chatPicture").length() > 0) {
-                    groupChat.setChatPicture(images.downloadPP(rs.getString("chatPicture")));
-                } else {
-                    groupChat.setChatPicture(null);
+                UserDTO groupChat = new UserDTO();
+                groupChat.setUserID(rs.getInt("chatID"));
+                groupChat.setName(rs.getString("chatName"));
+                
+                if(rs.getString("chatPicture") != null && rs.getString("chatPicture").length()>0) {
+                    groupChat.setUserPicture(images.downloadPP(rs.getString("chatPicture")));
+                } else  {
+                    groupChat.setUserPicture(null);
                 }
-    
                 allGroups.add(groupChat);
             }
         } catch (SQLException e) {

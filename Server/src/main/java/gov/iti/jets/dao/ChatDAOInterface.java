@@ -18,7 +18,7 @@ public interface ChatDAOInterface extends Remote {
 
     public int getUserIdByPhone(String phone) throws SQLException,RemoteException;
 
-    public List<ChatDTO> findAllGroups(int userId) throws RemoteException;
+    public List<UserDTO> findAllGroups(int userId) throws RemoteException;
 
     public int updateChatPicture(int chatId, String fileName, byte[] chatPicture) throws RemoteException ;
 

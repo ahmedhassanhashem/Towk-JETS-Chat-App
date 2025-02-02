@@ -47,9 +47,8 @@ public class ChatsController {
 
     private Stage stage;
     ObservableList<UserDTO> contacts = FXCollections.observableArrayList();
-    ObservableList<Object> objectsList = FXCollections.observableArrayList();
     @FXML
-    private ListView<Object> listView;
+    private ListView<UserDTO> listView;
     @FXML
     private BorderPane borderPane;
     private UserDTO userDTO = new UserDTO();
@@ -118,34 +117,30 @@ public class ChatsController {
     }
 
     public void chatScene() {
-
-        ObservableList<Object> contactsObjects = FXCollections.observableArrayList();
+        listView.setItems(contacts);
 
         ObservableList<UserDTO> userDTOs = FXCollections.observableArrayList();
         try {
             userDTOs = FXCollections.observableArrayList(userChatDAO.findAll(userDTO.getUserID()));
-            contactsObjects.addAll(userDTOs);
         } catch (RemoteException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        listView.setItems(contactsObjects);
 
-        listView.setCellFactory(new Callback<ListView<Object>, ListCell<Object>>() {
+        listView.setCellFactory(new Callback<ListView<UserDTO>, ListCell<UserDTO>>() {
             @Override
-            public ListCell<Object> call(ListView<Object> p) {
-                return new ListCell<Object>() {
+            public ListCell<UserDTO> call(ListView<UserDTO> p) {
+                return new ListCell<UserDTO>() {
                     FXMLLoader addContactLoader;
                     HBox chatCard;
                     ChatCadController chatCardController;
 
-                    protected void updateItem(Object item, boolean empty) {
+                    protected void updateItem(UserDTO user, boolean empty) {
                         // super.updateItem(user, empty);
-                        if (item == null || empty) {
+                        if (user == null || empty) {
                             setText(null);
                             setGraphic(null);
-                        } else if (item instanceof UserDTO) {
-                            UserDTO user = (UserDTO) item;
+                        } else {
 
                             if (addContactLoader == null) {
                                 try {
@@ -161,8 +156,8 @@ public class ChatsController {
                             chatCardController.setLabel(user.getName());
                             try {
                                 String ret = messageDAO.findLastMessage(userDTO.getUserID(), user.getUserID());
-                                if (ret.length() > 20) {
-                                    ret = ret.substring(0, 20) + "...";
+                                if (ret.length() > 7) {
+                                    ret = ret.substring(0, 7) + "...";
                                 }
                                 chatCardController.setText(ret);
                             } catch (RemoteException e) {
@@ -206,39 +201,36 @@ public class ChatsController {
     }
 
     public void contactScene() {
-        ObservableList<Object> contactsObjects = FXCollections.observableArrayList();
+        listView.setItems(contacts);
 
         ObservableList<UserDTO> list = FXCollections.observableArrayList();
         try {
             list = FXCollections.observableArrayList(contactDAO.findAllContactsACCEPTED(userDTO.getPhone()));
-            contactsObjects.addAll(list);
         } catch (RemoteException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
 
-        listView.setItems(contactsObjects);
-
-        listView.setCellFactory(new Callback<ListView<Object>, ListCell<Object>>() {
+        listView.setCellFactory(new Callback<ListView<UserDTO>, ListCell<UserDTO>>() {
             @Override
-            public ListCell<Object> call(ListView<Object> p) {
-                return new ListCell<Object>() {
+            public ListCell<UserDTO> call(ListView<UserDTO> p) {
+                return new ListCell<UserDTO>() {
                     private FXMLLoader addContactLoader;
                     private HBox contactCard;
                     private ContactCardController contactCardController;
 
                     @Override
-                    protected void updateItem(Object item, boolean empty) {
+                    protected void updateItem(UserDTO user, boolean empty) {
                         // super.updateItem(user, empty); 
 
-                        if (item == null || empty) {
+                        if (empty || user == null) {
                             setText(null);
                             setGraphic(null);
-                        } else if (item instanceof UserDTO) {
-                            UserDTO user = (UserDTO) item;
+                        } else {
                             if (addContactLoader == null) {
                                 try {
-                                    addContactLoader = new FXMLLoader(getClass().getResource("/screens/CardContact.fxml"));
+                                    addContactLoader = new FXMLLoader(
+                                            getClass().getResource("/screens/CardContact.fxml"));
                                     contactCard = addContactLoader.load();
                                     contactCardController = addContactLoader.getController();
                                 } catch (IOException e) {
@@ -260,7 +252,8 @@ public class ChatsController {
 
                             contactCard.setOnMouseClicked((e) -> {
                                 try {
-                                    FXMLLoader chatLoader = new FXMLLoader(getClass().getResource("/screens/messageChat.fxml"));
+                                    FXMLLoader chatLoader = new FXMLLoader(
+                                            getClass().getResource("/screens/messageChat.fxml"));
                                     BorderPane chat = chatLoader.load();
                                     MessageChatController messageController = chatLoader.getController();
                                     messageController.setImage(user.getUserPicture());
@@ -269,11 +262,12 @@ public class ChatsController {
                                     messageController.setStage(stage);
 
                                     try {
-                                        int chatID = chatDao.findExistingSingleChat(userDTO.getUserID(), user.getUserID());
+                                        int chatID = chatDao.findExistingSingleChat(userDTO.getUserID(),
+                                                user.getUserID());
                                         if (chatID == 0) {
                                             chatID = chatDao.createSingle(userDTO.getPhone(), user.getPhone());
                                         }
-                                        messageController.setUserDTO(userDTO, chatID,scheduledExecutorService);
+                                        messageController.setUserDTO(userDTO, chatID, scheduledExecutorService);
                                     } catch (SQLException e1) {
                                         e1.printStackTrace();
                                     }
@@ -290,36 +284,33 @@ public class ChatsController {
         });
         contacts.addAll(list);
     }
- 
+
     public void groupScene() {
-        ObservableList<Object> groupObjects = FXCollections.observableArrayList();
-        ObservableList<ChatDTO> list = FXCollections.observableArrayList();
+        listView.setItems(contacts);
+
+        ObservableList<UserDTO> list = FXCollections.observableArrayList();
         try {
             list = FXCollections.observableArrayList(chatDao.findAllGroups(userDTO.getUserID()));
-            groupObjects.addAll(list);
             // System.out.println(list.size());
         } catch (RemoteException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        listView.setItems(groupObjects);
         listView.setFixedCellSize(70);
-        listView.setCellFactory(new Callback<ListView<Object>, ListCell<Object>>() {
+        listView.setCellFactory(new Callback<ListView<UserDTO>, ListCell<UserDTO>>() {
             @Override
-            public ListCell<Object> call(ListView<Object> p) {
-                return new ListCell<Object>() {
+            public ListCell<UserDTO> call(ListView<UserDTO> p) {
+                return new ListCell<UserDTO>() {
                     FXMLLoader addContactLoader;
                     HBox chatCard;
                     ChatCadController chatCardController;
 
-                    @Override
-                    protected void updateItem(Object item, boolean empty) {
-                        super.updateItem(item, empty);
-                        if (item == null || empty) {
+                    protected void updateItem(UserDTO user, boolean empty) {
+                       // super.updateItem(user, empty);
+                        if (user == null || empty) {
                             setText(null);
                             setGraphic(null);
-                        } else if (item instanceof ChatDTO) {
-                            ChatDTO chat = (ChatDTO) item;
+                        } else {
 
                             if (addContactLoader == null) {
                                 try {
@@ -330,16 +321,13 @@ public class ChatsController {
                                     e.printStackTrace();
                                 }
                             }
-                            
                             Platform.runLater(() -> {
-                                chatCard.setPrefWidth(listView.getWidth() - 20);
-                                chatCardController.setImage(chat.getChatPicture());
-                                chatCardController.setLabel(chat.getChatName());
-                                
+                            chatCard.setPrefWidth(listView.getWidth() - 20);
+                            chatCardController.setImage(user.getUserPicture());
+                            chatCardController.setLabel(user.getName());
                             });
-                            setGraphic(chatCard);
                             try {
-                                String ret = messageDAO.findLastMessageGroup(chat.getChatID());
+                                String ret = messageDAO.findLastMessageGroup(user.getUserID());
                                 if (ret.length() > 10) {
                                     ret = ret.substring(0, 10) + "...";
                                 }
@@ -348,34 +336,36 @@ public class ChatsController {
                                 // TODO Auto-generated catch block
                                 e.printStackTrace();
                             }
-                            Platform.runLater(() -> { 
                             chatCard.setOnMouseClicked((e) -> {
+                                Platform.runLater(() -> {
                                 try {
                                     final FXMLLoader chatLoader = new FXMLLoader(
-                                            getClass().getResource("/screens/messageChat.fxml"));
-                                    final BorderPane chatContainer = chatLoader.load();
+                                        getClass().getResource("/screens/messageChat.fxml"));
+                                    final BorderPane chat = chatLoader.load();
                                     MessageChatController messageController = chatLoader.getController();
-                                    messageController.setImage(chat.getChatPicture());
-                                    messageController.setName(chat.getChatName());
+                                    messageController.setImage(user.getUserPicture());
+                                    messageController.setName(user.getName());
                                     messageController.setStage(stage);
-                                    messageController.setUserDTO(userDTO, chat.getChatID(), scheduledExecutorService);
+                                    messageController.setUserDTO(userDTO, user.getUserID(),scheduledExecutorService);
 
-                                    borderPane.setCenter(chatContainer);
+                                    borderPane.setCenter(chat);
                                 } catch (IOException e1) {
+                                    // TODO Auto-generated catch block
                                     e1.printStackTrace();
                                 }
+                                });
                             });
-                        });     
-                            
+                            setGraphic(chatCard);
                         }
                     }
+
                 };
 
             }
         });
 
+        contacts.addAll(list);
     }
-    
 
     @FXML
     private void initialize() {
