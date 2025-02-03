@@ -179,7 +179,6 @@ public class ChatDAO extends UnicastRemoteObject implements ChatDAOInterface{
                 // reusing the same UserDTO instance for each group in the while loop, 
                 //leading to overwriting of group names. 
                 //Creating a new instance each time is necessary.
-                UserDTO group = new UserDTO();
                 if(!rs.next())break;
                 UserDTO group = new UserDTO();
                 group.setUserID(rs.getInt("chatID"));
