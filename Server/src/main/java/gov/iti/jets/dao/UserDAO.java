@@ -48,7 +48,10 @@ public class UserDAO extends UnicastRemoteObject implements UserDAOInterface {
             return null;
         }
         String sql2 = "INSERT INTO `User` (`phone`, `name` , `country`, `gender`, `email`, `birthdate`,`password`, `firstLogin`, `userStatus`) VALUES(?,?,?,?,?,?,?,?,?)";
-        try (Connection con = meh.getConnection(); PreparedStatement preparedStatement = con.prepareStatement(sql2);) {
+        String sql = "select * from User order by userID desc limit 1;";
+        try (Connection con = meh.getConnection(); PreparedStatement preparedStatement = con.prepareStatement(sql2);
+        PreparedStatement preparedStatement2 = con.prepareStatement(sql)
+        ) {
 
             java.sql.Date birthdate2 = java.sql.Date.valueOf(birthdate.toString());
             preparedStatement.setString(1, phone);
@@ -62,7 +65,8 @@ public class UserDAO extends UnicastRemoteObject implements UserDAOInterface {
             preparedStatement.setString(9, userStatus.toString());
             preparedStatement.executeUpdate();
             System.out.println("Record inserted successfully.");
-            return user;
+            ResultSet re  = preparedStatement2.executeQuery();
+            return convert(re);
         } catch (SQLException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();

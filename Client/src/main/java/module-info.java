@@ -17,4 +17,5 @@ module gov.iti.jets {
     exports gov.iti.jets.controller;
     requires jakarta.xml.bind;
     opens gov.iti.jets.config to jakarta.xml.bind;
+    opens gov.iti.jets.dto to jakarta.xml.bind;
 }

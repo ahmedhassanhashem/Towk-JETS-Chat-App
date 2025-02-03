@@ -17,6 +17,7 @@ import gov.iti.jets.dto.Gender;
 import gov.iti.jets.dto.UserDTO;
 import jakarta.xml.bind.JAXBContext;
 import jakarta.xml.bind.JAXBException;
+import jakarta.xml.bind.Marshaller;
 import jakarta.xml.bind.Unmarshaller;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -214,6 +215,32 @@ public class RegistrationPageController {
             dashController.setUserDTO(user);
             dashController.setDashboardController(dashController);
             stage.setScene(dashScene);
+            try {
+                JAXBContext context = JAXBContext.newInstance(UserDTO.class);
+                Marshaller marshaller = context.createMarshaller(); 
+                
+                marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE); 
+                
+                
+                File XMLfile = new File("/.chatLogged/user.xml");
+                
+                File parentDir = XMLfile.getParentFile();
+                if (!parentDir.exists()) {
+                    parentDir.mkdirs();
+                }
+                if(!XMLfile.exists())
+                {
+                    XMLfile.createNewFile();
+                }
+
+                
+                marshaller.marshal(user, XMLfile); 
+            } catch (JAXBException ex) {
+                ex.printStackTrace();
+            } catch (IOException e) {
+                            // TODO Auto-generated catch block
+                            e.printStackTrace();
+                        }
 
         }
 

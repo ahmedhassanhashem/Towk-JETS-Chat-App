@@ -3,15 +3,28 @@ package gov.iti.jets.dto;
 import java.io.Serializable;
 import java.sql.Date;
 
+import jakarta.xml.bind.annotation.XmlAccessType;
+import jakarta.xml.bind.annotation.XmlAccessorType;
+import jakarta.xml.bind.annotation.XmlElement;
+import jakarta.xml.bind.annotation.XmlRootElement;
+import jakarta.xml.bind.annotation.XmlTransient;
+
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.NONE)
 public class UserDTO implements Serializable {
 
+    @XmlElement
     private int userID;
+    @XmlElement
     private String phone;
+    @XmlElement
     private String name;
     private String country;
     private Gender gender;
     private String email;
+    @XmlTransient
     private Date birthdate;
+    @XmlTransient
     private String password;
     private byte[] userPicture;
     private String bio;
@@ -106,6 +119,7 @@ public class UserDTO implements Serializable {
     /**
      * @return String return the birthdate
      */
+    @XmlTransient
     public Date getBirthdate() {
         return birthdate;
     }
@@ -120,6 +134,7 @@ public class UserDTO implements Serializable {
     /**
      * @return String return the password
      */
+    @XmlTransient
     public String getPassword() {
         return password;
     }
