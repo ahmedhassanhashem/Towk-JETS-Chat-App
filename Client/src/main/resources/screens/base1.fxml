@@ -34,9 +34,9 @@
                         <Insets left="5.0" right="5.0" />
                      </HBox.margin>
                   </TextField>
-                  <Button onAction="#addContact" mnemonicParsing="false" prefHeight="51.0" prefWidth="41.0" style="-fx-background-color: transparent; -fx-padding: 3;">
+                  <Button mnemonicParsing="false" onAction="#addContact" prefHeight="51.0" prefWidth="41.0" style="-fx-background-color: transparent; -fx-padding: 3;">
                    <graphic>
-                  <ImageView fitHeight="26.0" fitWidth="26.0" >
+                  <ImageView fitHeight="26.0" fitWidth="26.0">
                      <image>
                         <Image url="@../images/add-user.png" />
                      </image>
@@ -46,7 +46,7 @@
                   </ImageView>
                    </graphic>
                   </Button>
-                  <Button onAction="#addGroup" mnemonicParsing="false" prefHeight="51.0" prefWidth="41.0" style="-fx-background-color: transparent; -fx-padding: 3;">
+                  <Button mnemonicParsing="false" onAction="#addGroup" prefHeight="51.0" prefWidth="41.0" style="-fx-background-color: transparent; -fx-padding: 3;">
                      <graphic>
                         <ImageView fitHeight="42.0" fitWidth="34.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -57,7 +57,7 @@
                   </Button>
                </children>
             </HBox>
-            <ListView fx:id="listView" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
+            <ListView fx:id="listView" prefHeight="500.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
          </children>
       </VBox>
    </left>

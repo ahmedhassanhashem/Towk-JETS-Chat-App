@@ -176,7 +176,7 @@ public class LoginPageController {
 
         Registry reg;
         try {
-            reg = LocateRegistry.getRegistry(ip,port);
+            reg = LocateRegistry.getRegistry(ip, port);
             userDAO = (UserDAOInterface) reg.lookup("userDAO");
 
         } catch (RemoteException e) {
