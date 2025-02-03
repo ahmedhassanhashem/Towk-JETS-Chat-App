@@ -15,4 +15,6 @@ module gov.iti.jets {
     exports gov.iti.jets.controller;
     opens gov.iti.jets.dao to java.rmi;
     exports gov.iti.jets.dao;
+    requires jakarta.xml.bind;
+    opens gov.iti.jets.config to jakarta.xml.bind;
 }

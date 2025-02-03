@@ -1,14 +1,19 @@
 package gov.iti.jets.dao;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.File;
+import java.net.URISyntaxException;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.Properties;
+
 import javax.sql.DataSource;
+
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
+
+import gov.iti.jets.config.DBConfig;
+import jakarta.xml.bind.JAXBContext;
+import jakarta.xml.bind.JAXBException;
+import jakarta.xml.bind.Unmarshaller;
 
 public class DatabaseConnectionManager {
     private static DatabaseConnectionManager inst = null;
@@ -30,25 +35,29 @@ public class DatabaseConnectionManager {
     }
 
     private static DataSource getHikariDataSource() {
-        Properties props = new Properties();
         HikariConfig config = new HikariConfig();
 
-        try (InputStream is = DatabaseConnectionManager.class.getResourceAsStream("/db.properties")) {
-            if (is == null) {
-                throw new FileNotFoundException("Properties file '/db.properties' not found in the classpath.");
-            }
-            props.load(is);
 
-            config.setJdbcUrl(props.getProperty("MYSQL_DB_URL"));
-            config.setUsername(props.getProperty("MYSQL_DB_USERNAME"));
-            config.setPassword(props.getProperty("MYSQL_DB_PASSWORD"));
+        try{
+
+        File XMLfile = new File(DatabaseConnectionManager.class.getResource("/db.xml").toURI()); 
+        JAXBContext context = JAXBContext.newInstance(DBConfig.class);
+        Unmarshaller unmarshaller = context.createUnmarshaller(); 
+        DBConfig p = (DBConfig) unmarshaller.unmarshal(XMLfile);
+            config.setJdbcUrl(p.getURL());
+            config.setUsername(p.getUsername());
+            config.setPassword(p.getPassword());
             config.setMaximumPoolSize(10);
             config.setMinimumIdle(2);
             config.setIdleTimeout(30000);
             config.setMaxLifetime(1800000);
             config.setConnectionTimeout(30000);
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (URISyntaxException ex) {
+            ex.printStackTrace();
+
+        } catch (JAXBException ex) {
+            ex.printStackTrace();
+
         }
 
         return new HikariDataSource(config);
