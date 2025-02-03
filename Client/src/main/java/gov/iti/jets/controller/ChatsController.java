@@ -39,6 +39,7 @@ import gov.iti.jets.dao.ContactDAOInterface;
 // import gov.iti.jets.dao.MessageDAO;
 import gov.iti.jets.dao.MessageDAOInterface;
 import gov.iti.jets.dao.UserChatDAOInterface;
+import gov.iti.jets.dto.ChatDTO;
 import gov.iti.jets.dto.UserDTO;
 import gov.iti.jets.dto.UserStatus;
 
@@ -228,7 +229,8 @@ public class ChatsController {
                         } else {
                             if (addContactLoader == null) {
                                 try {
-                                    addContactLoader = new FXMLLoader(getClass().getResource("/screens/CardContact.fxml"));
+                                    addContactLoader = new FXMLLoader(
+                                            getClass().getResource("/screens/CardContact.fxml"));
                                     contactCard = addContactLoader.load();
                                     contactCardController = addContactLoader.getController();
                                 } catch (IOException e) {
@@ -250,7 +252,8 @@ public class ChatsController {
 
                             contactCard.setOnMouseClicked((e) -> {
                                 try {
-                                    FXMLLoader chatLoader = new FXMLLoader(getClass().getResource("/screens/messageChat.fxml"));
+                                    FXMLLoader chatLoader = new FXMLLoader(
+                                            getClass().getResource("/screens/messageChat.fxml"));
                                     BorderPane chat = chatLoader.load();
                                     MessageChatController messageController = chatLoader.getController();
                                     messageController.setImage(user.getUserPicture());
@@ -259,11 +262,12 @@ public class ChatsController {
                                     messageController.setStage(stage);
 
                                     try {
-                                        int chatID = chatDao.findExistingSingleChat(userDTO.getUserID(), user.getUserID());
+                                        int chatID = chatDao.findExistingSingleChat(userDTO.getUserID(),
+                                                user.getUserID());
                                         if (chatID == 0) {
                                             chatID = chatDao.createSingle(userDTO.getPhone(), user.getPhone());
                                         }
-                                        messageController.setUserDTO(userDTO, chatID,scheduledExecutorService);
+                                        messageController.setUserDTO(userDTO, chatID, scheduledExecutorService);
                                     } catch (SQLException e1) {
                                         e1.printStackTrace();
                                     }
@@ -292,7 +296,7 @@ public class ChatsController {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-
+        listView.setFixedCellSize(70);
         listView.setCellFactory(new Callback<ListView<UserDTO>, ListCell<UserDTO>>() {
             @Override
             public ListCell<UserDTO> call(ListView<UserDTO> p) {
@@ -302,7 +306,7 @@ public class ChatsController {
                     ChatCadController chatCardController;
 
                     protected void updateItem(UserDTO user, boolean empty) {
-                        // super.updateItem(user, empty);
+                       // super.updateItem(user, empty);
                         if (user == null || empty) {
                             setText(null);
                             setGraphic(null);
@@ -317,13 +321,15 @@ public class ChatsController {
                                     e.printStackTrace();
                                 }
                             }
-                            // super.updateItem(item, empty);     
+                            Platform.runLater(() -> {
+                            chatCard.setPrefWidth(listView.getWidth() - 20);
                             chatCardController.setImage(user.getUserPicture());
                             chatCardController.setLabel(user.getName());
+                            });
                             try {
-                                String ret = messageDAO.findLastMessage(userDTO.getUserID(), user.getUserID());
-                                if (ret.length() > 7) {
-                                    ret = ret.substring(0, 7) + "...";
+                                String ret = messageDAO.findLastMessageGroup(user.getUserID());
+                                if (ret.length() > 10) {
+                                    ret = ret.substring(0, 10) + "...";
                                 }
                                 chatCardController.setText(ret);
                             } catch (RemoteException e) {
@@ -331,24 +337,23 @@ public class ChatsController {
                                 e.printStackTrace();
                             }
                             chatCard.setOnMouseClicked((e) -> {
+                                Platform.runLater(() -> {
                                 try {
                                     final FXMLLoader chatLoader = new FXMLLoader(
-                                            getClass().getResource("/screens/messageChat.fxml"));
+                                        getClass().getResource("/screens/messageChat.fxml"));
                                     final BorderPane chat = chatLoader.load();
                                     MessageChatController messageController = chatLoader.getController();
                                     messageController.setImage(user.getUserPicture());
                                     messageController.setName(user.getName());
-                                    // messageController.setStatus(user.getUserStatus().toString());
                                     messageController.setStage(stage);
-
                                     messageController.setUserDTO(userDTO, user.getUserID(),scheduledExecutorService);
 
-                                    // chat.setTop(new VBox());
                                     borderPane.setCenter(chat);
                                 } catch (IOException e1) {
                                     // TODO Auto-generated catch block
                                     e1.printStackTrace();
                                 }
+                                });
                             });
                             setGraphic(chatCard);
                         }

@@ -251,7 +251,9 @@ Executors. newScheduledThreadPool(20);
 
         var dashScene = new Scene(dashBoard, width, height);
         dashController.setStage(stage);
-        dashController.setNameField(userDTO.getName());
+        String fullName = userDTO.getName();
+        String firstName = extractFirstName(fullName);
+        dashController.setNameField(firstName+"!");
         if(userDTO.getUserPicture() !=null)
         dashController.setProfileImage(userDTO.getUserPicture());
         userDTO.setPassword(null);

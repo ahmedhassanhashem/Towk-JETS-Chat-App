@@ -152,8 +152,8 @@ public class LoginPageController {
                 setSaveAccelerator(loginButton);
         });
 
-                Properties props = new Properties();
-        
+        Properties props = new Properties();
+
         try (InputStream input = getClass().getResourceAsStream("/rmi.properties")) {
             if (input == null) {
                 throw new IOException("Properties file not found");
@@ -162,13 +162,12 @@ public class LoginPageController {
         } catch (IOException ex) {
         }
 
-
         String ip = props.getProperty("rmi_ip");
         int port = Integer.parseInt(props.getProperty("rmi_port"));
 
         Registry reg;
         try {
-            reg = LocateRegistry.getRegistry(ip,port);
+            reg = LocateRegistry.getRegistry(ip, port);
             userDAO = (UserDAOInterface) reg.lookup("userDAO");
 
         } catch (RemoteException e) {

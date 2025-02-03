@@ -40,6 +40,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
+import javafx.scene.shape.Circle;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.Callback;
@@ -193,13 +194,13 @@ public class MessageChatController {
         this.chatID = chatID;
         listView.setItems(chats);
         userDTO = user;
-
+        System.out.println(chatID);
         scheduledExecutorService.scheduleAtFixedRate(()->{
             try {
                 MessageDTO nw = messageDAO.findLastMessage(chatID);
-                // System.out.println(nw);
                 // System.out.println(chats.get(chats.size()-1));
                 if(!nw.toString().equals(chats.get(chats.size()-1).toString())){
+                    System.out.println(nw);
                     Platform.runLater(()->{
 
                         chats.add(nw);
@@ -310,6 +311,11 @@ public class MessageChatController {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
+        Circle clip = new Circle();
+        clip.setRadius(30); 
+        clip.setCenterX(30);
+        clip.setCenterY(30);
+        image.setClip(clip);
 
     }
 

@@ -14,7 +14,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 
-<HBox alignment="CENTER_LEFT" minHeight="70.0" spacing="10.0" style="-fx-background-color: WHITE;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gov.iti.jets.controller.ChatCadController">
+<HBox alignment="CENTER_LEFT" minHeight="70.0" prefHeight="70.0" spacing="10.0" style="-fx-background-color: WHITE;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gov.iti.jets.controller.ChatCadController">
    <children>
       <ImageView fx:id="image" fitHeight="40.0" fitWidth="40.0">
          <image>

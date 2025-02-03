@@ -11,7 +11,7 @@ public interface ChatDAOInterface extends Remote {
 
     public Integer createSingle(String currentUserPhone, String otherUserPhone) throws RemoteException;
 
-    public String createGroup(String creatorPhone, List<String> participantPhones, String groupName) throws RemoteException;
+    public int createGroup(String creatorPhone, List<String> participantPhones, String groupName) throws RemoteException;
 
     public Integer findExistingSingleChat(int user1, int user2) throws SQLException,RemoteException;
 
