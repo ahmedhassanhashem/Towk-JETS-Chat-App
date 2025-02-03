@@ -15,4 +15,6 @@ module gov.iti.jets {
     exports gov.iti.jets;
     opens gov.iti.jets.controller to javafx.fxml;
     exports gov.iti.jets.controller;
+    requires jakarta.xml.bind;
+    opens gov.iti.jets.config to jakarta.xml.bind;
 }

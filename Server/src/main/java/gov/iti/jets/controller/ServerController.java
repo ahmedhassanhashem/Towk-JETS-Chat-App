@@ -1,12 +1,13 @@
 package gov.iti.jets.controller;
 
+import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
+import java.net.URISyntaxException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
-import java.util.Properties;
 
+import gov.iti.jets.config.RMIConfig;
 import gov.iti.jets.dao.AnnouncementDAO;
 import gov.iti.jets.dao.AnnouncementDAOInterface;
 import gov.iti.jets.dao.AttachementDAO;
@@ -22,6 +23,9 @@ import gov.iti.jets.dao.UserChatDAOInterface;
 import gov.iti.jets.dao.UserDAO;
 import gov.iti.jets.dao.UserDAOInterface;
 import gov.iti.jets.server.FileServer;
+import jakarta.xml.bind.JAXBContext;
+import jakarta.xml.bind.JAXBException;
+import jakarta.xml.bind.Unmarshaller;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -203,20 +207,22 @@ public class ServerController {
 
     @FXML
     private void initialize() throws IOException {
-                Properties props = new Properties();
-        
-        try (InputStream input = getClass().getResourceAsStream("/rmi.properties")) {
-            if (input == null) {
-                throw new IOException("Properties file not found");
-            }
-            // System.out.println(new String(input.readAllBytes()));
-            props.load(input);
-        } catch (IOException ex) {
-            System.out.println(ex);
+        RMIConfig p = null;
+                try { 
+            File XMLfile = new File(getClass().getResource("/rmi.xml").toURI()); 
+            JAXBContext context = JAXBContext.newInstance(RMIConfig.class);
+            Unmarshaller unmarshaller = context.createUnmarshaller(); 
+            p = (RMIConfig) unmarshaller.unmarshal(XMLfile);
+            // System.out.println(p.getIp() +" " + p.getPort());
+        } catch (JAXBException ex) {
+            System.out.println(ex.getMessage());
+        } catch (URISyntaxException e1) {
+            // TODO Auto-generated catch block
+            e1.printStackTrace();
         }
-        // System.out.println(props.getProperty("rmi_port"));
-        String ip = props.getProperty("rmi_ip");
-        int port = Integer.parseInt(props.getProperty("rmi_port"));
+
+        String ip =p.getIp();
+        int port = p.getPort();
         Registry reg = LocateRegistry.createRegistry(port);
 
         UserDAOInterface userDAO = new UserDAO();
