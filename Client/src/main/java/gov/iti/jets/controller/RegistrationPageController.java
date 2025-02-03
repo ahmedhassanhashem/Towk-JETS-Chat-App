@@ -222,8 +222,8 @@ public class RegistrationPageController {
                 marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE); 
                 
                 
-                File XMLfile = new File("/.chatLogged/user.xml");
-                
+                File XMLfile = new File("C:/.chatLogged/user.xml");
+
                 File parentDir = XMLfile.getParentFile();
                 if (!parentDir.exists()) {
                     parentDir.mkdirs();

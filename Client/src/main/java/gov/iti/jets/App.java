@@ -34,7 +34,7 @@ public class App extends Application {
         dashController.setMyScene(dashScene);
         dashController.setStage(stage);
 
-        File XMLfile = new File("/.chatLogged/user.xml");
+        File XMLfile = new File("C:/.chatLogged/user.xml");
         if (XMLfile.exists()) {
             try {
                 JAXBContext context = JAXBContext.newInstance(UserDTO.class);
