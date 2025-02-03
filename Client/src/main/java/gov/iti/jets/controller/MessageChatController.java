@@ -295,7 +295,7 @@ public class MessageChatController {
             p = (RMIConfig) unmarshaller.unmarshal(XMLfile);
             // System.out.println(p.getIp() +" " + p.getPort());
         } catch (JAXBException ex) {
-            System.out.println(ex.getMessage());
+            ex.printStackTrace();
         } catch (URISyntaxException e1) {
             // TODO Auto-generated catch block
             e1.printStackTrace();
