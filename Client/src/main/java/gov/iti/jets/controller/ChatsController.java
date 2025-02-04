@@ -210,8 +210,11 @@ public class ChatsController {
                                 }
                             }
                             // super.updateItem(item, empty);     
-                            chatCardController.setImage(user.getUserPicture());
-                            chatCardController.setLabel(user.getName());
+                            Platform.runLater(() -> {
+                                chatCard.setPrefWidth(listView.getWidth() - 20);
+                                chatCardController.setImage(user.getUserPicture());
+                                chatCardController.setLabel(user.getName());
+                                });
                             try {
                                 String ret = messageDAO.findLastMessage(userDTO.getUserID(), user.getUserID());
                                 if (ret.length() > 7) {
