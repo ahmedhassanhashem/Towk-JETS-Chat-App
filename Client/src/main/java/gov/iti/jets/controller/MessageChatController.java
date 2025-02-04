@@ -15,8 +15,10 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.sql.Date;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Properties;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
 import gov.iti.jets.client.Images;
@@ -51,6 +53,7 @@ import javafx.stage.Stage;
 import javafx.util.Callback;
 
 public class MessageChatController {
+        private ScheduledFuture<?> messagePollingTask;
 
     
     ObservableList<MessageDTO> chats = FXCollections.observableArrayList();
@@ -108,37 +111,7 @@ public class MessageChatController {
             status.setText(s);
     }
 
-    @FXML
-    private void send(ActionEvent event){
-        String msgContent = text.getText();
-        // if(msgContent.length()==0 && attachement==null)return;
-        MessageDTO msg = new MessageDTO();
-        msg.setMessageContent(msgContent);
-        msg.setChatID(chatID);
-        msg.setUserID(userDTO.getUserID());
-        msg.setMessageDate( Date.valueOf(LocalDate.now()));
-        if(attachement !=null){
-            msg.setAttachmentID(attachement.getAttachmentID());
-            images.uploadAttachment(attachement.getAttachmentTitle(), upload);
-            // sendFile();
-        }
-        // int attachID = msg.getAttachmentID();
 
-        
-        try {
-            chats.add(messageDAO.create(msg));
-        } catch (RemoteException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        // Platform.runLater(() -> {
-        //     listView.layout();   
-        //     listView.scrollTo(listView.getItems().size() - 1);
-        // });
-
-        attachement=null;
-        text.setText("");
-    }
 
     @FXML
     private void attach(ActionEvent event){
@@ -200,24 +173,27 @@ public class MessageChatController {
         listView.setItems(chats);
         userDTO = user;
         System.out.println(chatID);
-        scheduledExecutorService.scheduleAtFixedRate(()->{
+        // Cancel any existing task before starting a new one
+        if (messagePollingTask != null) {
+            messagePollingTask.cancel(false);
+        }
+
+
+        messagePollingTask = scheduledExecutorService.scheduleAtFixedRate(() -> {
             try {
-                MessageDTO nw = messageDAO.findLastMessage(chatID);
-                // System.out.println(chats.get(chats.size()-1));
-                if(!nw.toString().equals(chats.get(chats.size()-1).toString())){
-                    System.out.println(nw);
-                    Platform.runLater(()->{
-
-                        chats.add(nw);
-                    listView.scrollTo(chats.size() - 1);
-
-                    });
-                }
+                List<MessageDTO> newMessages = messageDAO.findAllMessages(chatID);
+                Platform.runLater(() -> {
+                    // Clear and reload to avoid duplicates
+                    chats.setAll(newMessages);
+                    // listView.scrollTo(chats.size() - 1);
+                });
             } catch (RemoteException e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
             }
-        }, 0, 100, TimeUnit.MILLISECONDS);
+        }, 1000, 1000, TimeUnit.MILLISECONDS); // Increase interval to 1 second
+
+
+
         ObservableList<MessageDTO> chatDTOs = FXCollections.observableArrayList();
         try {
             chatDTOs = FXCollections.observableArrayList(messageDAO.findAllMessages(chatID));
@@ -280,14 +256,41 @@ public class MessageChatController {
     }
     
     @FXML
+    private void send(ActionEvent event) {
+        String msgContent = text.getText();
+        MessageDTO msg = new MessageDTO();
+        msg.setMessageContent(msgContent);
+        msg.setChatID(chatID);
+        msg.setUserID(userDTO.getUserID());
+        msg.setMessageDate(Date.valueOf(LocalDate.now()));
+    
+        if (attachement != null) {
+            msg.setAttachmentID(attachement.getAttachmentID());
+            images.uploadAttachment(attachement.getAttachmentTitle(), upload);
+        }
+    
+        try {
+            // Only send the message; do NOT add to chats here
+            messageDAO.create(msg);
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+    
+        attachement = null;
+        text.setText("");
+    }
+
+    
+    
+    @FXML
     private void initialize() {
-                chats.addListener((ListChangeListener<MessageDTO>) change -> {
-            while (change.next()) {
-                if (change.wasAdded()) {
-                    listView.scrollTo(chats.size() - 1);
-                }
-            }
-        });
+        //         chats.addListener((ListChangeListener<MessageDTO>) change -> {
+        //     while (change.next()) {
+        //         if (change.wasAdded()) {
+        //             listView.scrollTo(chats.size() - 1);
+        //         }
+        //     }
+        // });
         RMIConfig p = null;
                 try { 
             File XMLfile = new File(getClass().getResource("/rmi.xml").toURI()); 
@@ -325,6 +328,13 @@ public class MessageChatController {
         clip.setCenterY(30);
         image.setClip(clip);
 
+    }
+
+    public void stopMessagePolling() {
+        if (messagePollingTask != null) {
+            messagePollingTask.cancel(false);
+            messagePollingTask = null;
+        }
     }
 
 }

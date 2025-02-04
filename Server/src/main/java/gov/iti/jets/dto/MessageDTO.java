@@ -113,9 +113,6 @@ public class MessageDTO implements Serializable{
         return "MessageDTO [messsageID=" + messsageID + ", messageContent=" + messageContent + ", chatID=" + chatID
                 + ", userID=" + userID + ", messageDate=" + messageDate + ", attachmentID=" + attachmentID + "]";
     }
-
-
-
     
 
 }

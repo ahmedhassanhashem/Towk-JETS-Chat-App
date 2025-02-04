@@ -1,6 +1,7 @@
 package gov.iti.jets.dto;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 public class MessageDTO implements Serializable{
 
@@ -113,6 +114,7 @@ public class MessageDTO implements Serializable{
         return "MessageDTO [messsageID=" + messsageID + ", messageContent=" + messageContent + ", chatID=" + chatID
                 + ", userID=" + userID + ", messageDate=" + messageDate + ", attachmentID=" + attachmentID + "]";
     }
+
 
 
 

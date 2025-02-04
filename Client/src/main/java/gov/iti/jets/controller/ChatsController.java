@@ -52,6 +52,8 @@ import jakarta.xml.bind.Unmarshaller;
 
 public class ChatsController {
 
+    private MessageChatController currentMessageController;
+
     private Stage stage;
     ObservableList<UserDTO> contacts = FXCollections.observableArrayList();
     @FXML
@@ -64,6 +66,29 @@ public class ChatsController {
     private MessageDAOInterface messageDAO;
     private ChatDAOInterface chatDao;
     private ScheduledExecutorService scheduledExecutorService;
+
+
+    private void loadChat(UserDTO user) {
+        try {
+            FXMLLoader chatLoader = new FXMLLoader(getClass().getResource("/screens/messageChat.fxml"));
+            BorderPane chat = chatLoader.load();
+            MessageChatController messageController = chatLoader.getController();
+
+            // Stop previous chat's polling
+            if (currentMessageController != null) {
+                currentMessageController.stopMessagePolling();
+            }
+            currentMessageController = messageController;
+
+            // Set up the new controller
+            messageController.setStage(stage);
+            messageController.setUserDTO(userDTO, chatDao.findExistingSingleChat(userDTO.getUserID(), user.getUserID()), scheduledExecutorService);
+
+            borderPane.setCenter(chat);
+        } catch (IOException | SQLException e) {
+            e.printStackTrace();
+        }
+    }
 
     public void setStage(Stage s) {
         stage = s;
@@ -124,6 +149,7 @@ public class ChatsController {
     }
 
     public void chatScene() {
+        contacts.clear();
         listView.setItems(contacts);
 
         ObservableList<UserDTO> userDTOs = FXCollections.observableArrayList();
@@ -134,6 +160,7 @@ public class ChatsController {
             e.printStackTrace();
         }
 
+        listView.setCellFactory(null);
         listView.setCellFactory(new Callback<ListView<UserDTO>, ListCell<UserDTO>>() {
             @Override
             public ListCell<UserDTO> call(ListView<UserDTO> p) {
@@ -171,31 +198,12 @@ public class ChatsController {
                                 // TODO Auto-generated catch block
                                 e.printStackTrace();
                             }
-                            chatCard.setOnMouseClicked((e) -> {
-                                try {
-                                    final FXMLLoader chatLoader = new FXMLLoader(
-                                            getClass().getResource("/screens/messageChat.fxml"));
-                                    final BorderPane chat = chatLoader.load();
-                                    MessageChatController messageController = chatLoader.getController();
-                                    messageController.setImage(user.getUserPicture());
-                                    messageController.setName(user.getName());
-                                    messageController.setStatus(user.getUserStatus().toString());
-                                    messageController.setStage(stage);
-
-                                    try {
-
-                                        messageController.setUserDTO(userDTO, chatDao.findExistingSingleChat(userDTO.getUserID(), user.getUserID()),scheduledExecutorService);
-                                    } catch (SQLException e1) {
-                                        e1.printStackTrace();
-                                    }
-                                    // chat.setTop(new VBox());
-                                    borderPane.setCenter(chat);
-                                } catch (IOException e1) {
-                                    // TODO Auto-generated catch block
-                                    e1.printStackTrace();
-                                }
-                            });
                             setGraphic(chatCard);
+                            chatCard.setOnMouseClicked((e) -> {
+                                loadChat(user); // Use the centralized method
+
+                            });
+
                         }
                     }
 
@@ -208,6 +216,7 @@ public class ChatsController {
     }
 
     public void contactScene() {
+        contacts.clear();
         listView.setItems(contacts);
 
         ObservableList<UserDTO> list = FXCollections.observableArrayList();
@@ -218,6 +227,7 @@ public class ChatsController {
             e.printStackTrace();
         }
 
+        listView.setCellFactory(null);
         listView.setCellFactory(new Callback<ListView<UserDTO>, ListCell<UserDTO>>() {
             @Override
             public ListCell<UserDTO> call(ListView<UserDTO> p) {
@@ -254,36 +264,15 @@ public class ChatsController {
                             } else {
                                 contactCardController.getStatus().setFill(Color.GREEN);
                             }
-
                             setGraphic(contactCard);
 
                             contactCard.setOnMouseClicked((e) -> {
-                                try {
-                                    FXMLLoader chatLoader = new FXMLLoader(
-                                            getClass().getResource("/screens/messageChat.fxml"));
-                                    BorderPane chat = chatLoader.load();
-                                    MessageChatController messageController = chatLoader.getController();
-                                    messageController.setImage(user.getUserPicture());
-                                    messageController.setName(user.getName());
-                                    messageController.setStatus(user.getUserStatus().toString());
-                                    messageController.setStage(stage);
+                                loadChat(user); // Use the centralized method
 
-                                    try {
-                                        int chatID = chatDao.findExistingSingleChat(userDTO.getUserID(),
-                                                user.getUserID());
-                                        if (chatID == 0) {
-                                            chatID = chatDao.createSingle(userDTO.getPhone(), user.getPhone());
-                                        }
-                                        messageController.setUserDTO(userDTO, chatID, scheduledExecutorService);
-                                    } catch (SQLException e1) {
-                                        e1.printStackTrace();
-                                    }
-
-                                    borderPane.setCenter(chat);
-                                } catch (IOException e1) {
-                                    e1.printStackTrace();
-                                }
                             });
+
+
+                            
                         }
                     }
                 };
@@ -293,6 +282,7 @@ public class ChatsController {
     }
 
     public void groupScene() {
+        contacts.clear();
         listView.setItems(contacts);
 
         ObservableList<UserDTO> list = FXCollections.observableArrayList();
@@ -303,6 +293,8 @@ public class ChatsController {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
+        
+        listView.setCellFactory(null);
         listView.setFixedCellSize(70);
         listView.setCellFactory(new Callback<ListView<UserDTO>, ListCell<UserDTO>>() {
             @Override
@@ -343,26 +335,13 @@ public class ChatsController {
                                 // TODO Auto-generated catch block
                                 e.printStackTrace();
                             }
-                            chatCard.setOnMouseClicked((e) -> {
-                                Platform.runLater(() -> {
-                                try {
-                                    final FXMLLoader chatLoader = new FXMLLoader(
-                                        getClass().getResource("/screens/messageChat.fxml"));
-                                    final BorderPane chat = chatLoader.load();
-                                    MessageChatController messageController = chatLoader.getController();
-                                    messageController.setImage(user.getUserPicture());
-                                    messageController.setName(user.getName());
-                                    messageController.setStage(stage);
-                                    messageController.setUserDTO(userDTO, user.getUserID(),scheduledExecutorService);
-
-                                    borderPane.setCenter(chat);
-                                } catch (IOException e1) {
-                                    // TODO Auto-generated catch block
-                                    e1.printStackTrace();
-                                }
-                                });
-                            });
                             setGraphic(chatCard);
+                            
+                            chatCard.setOnMouseClicked((e) -> {
+                                loadChat(user); // Use the centralized method
+
+                            });
+
                         }
                     }
 
