@@ -90,6 +90,30 @@ public class ChatsController {
         }
     }
 
+    private void loadGroupChat(UserDTO group) {
+        try {
+            FXMLLoader chatLoader = new FXMLLoader(getClass().getResource("/screens/messageChat.fxml"));
+            BorderPane chat = chatLoader.load();
+            MessageChatController messageController = chatLoader.getController();
+            
+            // Stop previous polling if needed
+            // if (currentMessageController != null) {
+            //     currentMessageController.stopMessagePolling();
+            // }
+            
+            messageController.setStage(stage);
+            // For group chats, the chat ID is already provided by group.getUserID()
+            messageController.setUserDTO(userDTO, group.getUserID(), scheduledExecutorService);
+            // Optionally set the image and name if needed:
+            messageController.setImage(group.getUserPicture());
+            messageController.setName(group.getName());
+            
+            borderPane.setCenter(chat);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     public void setStage(Stage s) {
         stage = s;
     }
@@ -338,7 +362,7 @@ public class ChatsController {
                             setGraphic(chatCard);
                             
                             chatCard.setOnMouseClicked((e) -> {
-                                loadChat(user); // Use the centralized method
+                                loadGroupChat(user); // Use the group chat method
 
                             });
 
