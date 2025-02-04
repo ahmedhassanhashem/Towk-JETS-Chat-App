@@ -194,13 +194,13 @@ public class MessageChatController {
 
 
 
-        ObservableList<MessageDTO> chatDTOs = FXCollections.observableArrayList();
-        try {
-            chatDTOs = FXCollections.observableArrayList(messageDAO.findAllMessages(chatID));
-        } catch (RemoteException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
+        // ObservableList<MessageDTO> chatDTOs = FXCollections.observableArrayList();
+        // try {
+        //     chatDTOs = FXCollections.observableArrayList(messageDAO.findAllMessages(chatID));
+        // } catch (RemoteException e) {
+        //     // TODO Auto-generated catch block
+        //     e.printStackTrace();
+        // }
 
         listView.setCellFactory(new Callback<ListView<MessageDTO>, ListCell<MessageDTO>>() {
             @Override
@@ -252,7 +252,7 @@ public class MessageChatController {
             }
         });
 
-        chats.addAll(chatDTOs);
+        // chats.addAll(chatDTOs);
     }
     
     @FXML
@@ -272,6 +272,7 @@ public class MessageChatController {
         try {
             // Only send the message; do NOT add to chats here
             messageDAO.create(msg);
+            // Platform.runLater(()->{chats.add(msg);});
         } catch (RemoteException e) {
             e.printStackTrace();
         }

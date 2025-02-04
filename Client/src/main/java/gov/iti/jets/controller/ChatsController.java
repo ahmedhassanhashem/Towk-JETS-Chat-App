@@ -240,6 +240,8 @@ public class ChatsController {
         });
 
         contacts.addAll(userDTOs);
+
+
     }
 
     public void contactScene() {
@@ -306,6 +308,7 @@ public class ChatsController {
             }
         });
         contacts.addAll(list);
+
     }
 
     public void groupScene() {
@@ -378,6 +381,7 @@ public class ChatsController {
         });
 
         contacts.addAll(list);
+
     }
 
     @FXML
