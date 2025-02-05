@@ -381,3 +381,33 @@
     -fx-pref-width: -1;
     -fx-max-width: -1;
 }
+/* ------------ */
+.chat-list-view {
+    -fx-background-insets: 0;
+    -fx-padding: 0;
+    -fx-background-color: transparent;
+}
+
+.chat-list-view .list-cell {
+    -fx-background-insets: 0;
+    -fx-padding: 2 0 2 0;
+    -fx-background-color: transparent;
+}
+
+.chat-list-view .list-cell:selected {
+    -fx-background-color: derive(#e8e8e8, 50%);
+}
+
+.chat-list-view .scroll-bar:vertical {
+    -fx-pref-width: 12;
+    -fx-background-color: transparent;
+}
+
+.chat-list-view .scroll-bar:vertical .thumb {
+    -fx-background-color: #dadada;
+    -fx-background-radius: 6;
+}
+
+.chat-list-view .scroll-bar:vertical .track {
+    -fx-background-color: transparent;
+}

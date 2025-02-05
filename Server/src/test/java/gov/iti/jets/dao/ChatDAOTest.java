@@ -1,18 +1,16 @@
 package gov.iti.jets.dao;
 
+import java.sql.PreparedStatement;
+import java.util.Arrays;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-
-
-import java.sql.PreparedStatement;
-import java.util.Arrays;
-
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 
 public class ChatDAOTest extends MockingDBUtiltiy {
     private ChatDAO chatDAO;
@@ -45,9 +43,9 @@ void testCreateGroup() throws Exception {
     when(mockPreparedStatement.getGeneratedKeys()).thenReturn(mockResultSet);
     when(mockResultSet.getInt(1)).thenReturn(200);
 
-    String result = chatDAO.createGroup(creatorPhone, participantPhones, groupName);
+    int result = chatDAO.createGroup(creatorPhone, participantPhones, groupName);
 
-    assertEquals("Group chat created with ID: 200", result, "The group creation result should match the expected message");
+    assertEquals(200, result, "The group creation result should match the expected message");
 
     verify(mockPreparedStatement).executeUpdate();
 }

@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
@@ -10,7 +16,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox alignment="CENTER" prefHeight="700.0" prefWidth="900.0" style="-fx-background-color: linear-gradient(to bottom, #13547a 0%, #80d0c7 100%);" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gov.iti.jets.controller.LoginPController">
+<VBox alignment="CENTER" prefHeight="700.0" prefWidth="900.0" style="-fx-background-color: linear-gradient(to bottom, #13547a 0%, #80d0c7 100%);" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gov.iti.jets.controller.LoginPController">
    <children>
        
                          <StackPane>
@@ -24,7 +30,7 @@
                   <VBox alignment="CENTER">
                      <children>
                            
-                                             <Label alignment="CENTER" style="-fx-font-size: 24px; -fx-text-fill: #13547a;" text="Welcome Back!" />
+                                             <Label alignment="CENTER" style="-fx-font-size: 24px; -fx-text-fill: #13547a;" text="Welcome Back," />
                         <Label fx:id="nameField" alignment="CENTER" contentDisplay="CENTER" text="Label">
                            <font>
                               <Font size="18.0" />
@@ -35,7 +41,7 @@
                      
                                        <ImageView fx:id="profileImage" fitHeight="200.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
                         <image>
-                            <Image url="@../images/boy.png" />
+                            <Image url="@../images/defaultUser.png" />
                         </image>
                      </ImageView>
                      
