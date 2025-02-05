@@ -96,7 +96,7 @@ public class AnnouncementController {
                             setGraphic(null); 
                         } else {
                             // Load the announcement card in the background
-                            Task<HBox> loadTask = new Task<HBox>() {
+                            Task<HBox>  loadTask = new Task<HBox>() {
                                 @Override
                                 protected HBox call() throws Exception {
                                     FXMLLoader loader = new FXMLLoader(getClass().getResource("/screens/AnnouncementCard.fxml"));
