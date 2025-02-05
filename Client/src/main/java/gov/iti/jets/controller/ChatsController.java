@@ -186,7 +186,7 @@ public class ChatsController {
                                                     e1.printStackTrace();
                                                 }
                                             }
-                                            client = loadChat(currentUser);
+                                            client = loadChat(currentUser,chatCardController);
                                             // Clear selection to avoid issues on re-rendering
                                             getListView().getSelectionModel().clearSelection();
                                         }
@@ -419,7 +419,7 @@ public class ChatsController {
                                                     e1.printStackTrace();
                                                 }
                                             }
-                                            client =loadGroupChat(currentUser);
+                                            client =loadGroupChat(currentUser,chatCardController);
                                         }
                                     });
                                     chatCard.sceneProperty().addListener((observable, oldScene, newScene) -> {
@@ -549,7 +549,7 @@ public class ChatsController {
     
 
 
-    private ClientImpl loadChat(UserDTO user) {
+    private ClientImpl loadChat(UserDTO user,ChatCadController chatCardCadController) {
         try {
             FXMLLoader chatLoader = new FXMLLoader(getClass().getResource("/screens/messageChat.fxml"));
             BorderPane chat = chatLoader.load();
@@ -566,6 +566,7 @@ public class ChatsController {
             messageController.setName(user.getName());
             messageController.setStatus(user.getUserStatus().toString());
             messageController.setStage(stage);
+            messageController.setChatCadController(chatCardCadController);
             int chatId = chatDao.findExistingSingleChat(userDTO.getUserID(), user.getUserID());
 
             ClientImpl clientImpl = new ClientImpl(chatId, messageController);
@@ -583,7 +584,7 @@ public class ChatsController {
         return null;
     }
 
-    private ClientImpl loadGroupChat(UserDTO group) {
+    private ClientImpl loadGroupChat(UserDTO group,ChatCadController chatCardCadController) {
         try {
             FXMLLoader chatLoader = new FXMLLoader(getClass().getResource("/screens/messageChat.fxml"));
             BorderPane chat = chatLoader.load();
@@ -599,7 +600,7 @@ public class ChatsController {
             messageController.setName(group.getName());
             messageController.setStatus("Group Chat"); // Or appropriate status
             messageController.setStage(stage);
-
+            messageController.setChatCadController(chatCardCadController);
             // Initialize group chat
             messageController.setUserDTO(userDTO, group.getUserID());
             ClientImpl clientImpl = new ClientImpl(group.getUserID(), messageController);
