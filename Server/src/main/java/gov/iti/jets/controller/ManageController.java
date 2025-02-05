@@ -115,7 +115,8 @@ public class ManageController {
             } catch (AccessException |NotBoundException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
-            } catch (RemoteException e) {
+            }
+             catch (RemoteException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
             }

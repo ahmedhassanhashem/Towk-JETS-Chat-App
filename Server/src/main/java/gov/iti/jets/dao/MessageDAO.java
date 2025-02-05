@@ -6,21 +6,52 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.sql.rowset.RowSetProvider;
 import javax.sql.rowset.WebRowSet;
 
+import gov.iti.jets.client.ClientInt;
 import gov.iti.jets.dto.MessageDTO;
 
 public class MessageDAO extends UnicastRemoteObject implements MessageDAOInterface{
 
     DatabaseConnectionManager dm;
+    HashMap<Integer,ArrayList<ClientInt>> online;
 
     public MessageDAO() throws RemoteException {
         super();
         dm = DatabaseConnectionManager.getInstance();
+        online = new HashMap<>();
 
+    }
+
+    @Override
+    public void register(int chatID,ClientInt clientRef) throws RemoteException {
+        // clientsVector.add(clientRef);
+        // online.put(chatID, clientRef);
+        // online.putIfAbsent(chatID, new ArrayList<ClientInt>());
+        online.computeIfAbsent(chatID, k -> new ArrayList<>()).add(clientRef);
+        // online.get(chatID).add(clientRef);
+        System.out.println("Client added");
+    }
+
+    // Unregister a client
+    @Override
+    public void unRegister(int chatID,ClientInt clientRef) throws RemoteException {
+        // clientsVector.remove(clientRef);
+        // online.remove(chatID, clientRef);
+        if (online.containsKey(chatID)) {
+            List<ClientInt> clientList = online.get(chatID);
+            
+            clientList.remove(clientRef);
+            
+            if (clientList.isEmpty()) {
+                online.remove(chatID);
+            }
+        }
+        System.out.println("Client removed");
     }
 
     public MessageDTO create(MessageDTO msg) throws RemoteException {
@@ -46,6 +77,9 @@ public class MessageDAO extends UnicastRemoteObject implements MessageDAOInterfa
                 ps.setInt(5, attachID);
             ps.executeUpdate();
             System.out.println("Message inserted successfully.");
+            for(ClientInt c: online.get(msg.getChatID()) ){
+                c.sendMessage(msg);
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
