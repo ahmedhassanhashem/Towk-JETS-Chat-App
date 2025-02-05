@@ -3,9 +3,12 @@ package gov.iti.jets.controller;
 import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.rmi.AccessException;
+import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
+import java.rmi.server.UnicastRemoteObject;
 
 import gov.iti.jets.config.RMIConfig;
 import gov.iti.jets.dao.AnnouncementDAO;
@@ -35,6 +38,7 @@ import javafx.scene.Scene;
 import javafx.scene.chart.PieChart;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
 public class ServerController {
@@ -43,8 +47,8 @@ public class ServerController {
     private BorderPane manage;
     private BorderPane announce;
     private BorderPane chart;
-    private Scene login;
     private UserDAO userDao;
+    private Registry reg;
     // private Scene signup;
 
     @FXML
@@ -54,7 +58,34 @@ public class ServerController {
 
     @FXML
     private void signOut(ActionEvent event) {
-        stage.setScene(login);
+        try {
+            Stage stage2 = new Stage();
+            int width = 640,height = 480;
+            FXMLLoader loginLoader = new FXMLLoader(getClass().getResource("/screens/Login.fxml"));
+            GridPane rootLogin = loginLoader.load();
+            LoginController loginController = loginLoader.getController();
+            Scene loginScene = new Scene(rootLogin, width, height);
+            loginController.setStage(stage2);
+            stage2.setScene(loginScene);
+            stage2.show();
+        } catch (IOException ex) {
+        }
+        stage.close();
+        String[] boundNames;
+        try {
+            boundNames = reg.list();
+            for (String name : boundNames) {
+                reg.unbind(name); 
+            }
+            UnicastRemoteObject.unexportObject(reg, true);
+        } catch (AccessException |NotBoundException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (RemoteException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        FileServer.Stop();
     }
     // @FXML
     // private void gotoSingup(){
@@ -63,15 +94,29 @@ public class ServerController {
 
     public void setStage(Stage stage) {
         this.stage = stage;
-        stage.setOnCloseRequest((e)->{
-            FileServer.running = false;
+        stage.setOnCloseRequest((ev)->{
+            String[] boundNames;
+            try {
+                boundNames = reg.list();
+                for (String name : boundNames) {
+                    reg.unbind(name); 
+                }
+                UnicastRemoteObject.unexportObject(reg, true);
+            } catch (AccessException |NotBoundException e) {
+                // TODO Auto-generated catch block
+                // e.printStackTrace();
+                System.out.println(e.getMessage());
+            } catch (RemoteException e) {
+                // TODO Auto-generated catch block
+                // e.printStackTrace();
+                System.out.println(e.getMessage());
+            }
+            FileServer.Stop();
+            System.exit(0);
         });
 
     }
 
-    public void setLogin(Scene login) {
-        this.login = login;
-    }
     // public void setSignUp(Scene s){
     //     signup = s;
     // }
@@ -223,7 +268,7 @@ public class ServerController {
 
         String ip =p.getIp();
         int port = p.getPort();
-        Registry reg = LocateRegistry.createRegistry(port);
+        reg = LocateRegistry.createRegistry(port);
 
         UserDAOInterface userDAO = new UserDAO();
         reg.rebind("userDAO", userDAO);
@@ -246,7 +291,7 @@ public class ServerController {
         ContactDAOInterface contactDAO = new ContactDAO();
         reg.rebind("contactDAO", contactDAO);
 
-    Thread fileserver = new Thread(() -> FileServer.Start());
+        Thread fileserver = new Thread(() -> FileServer.Start());
         fileserver.setDaemon(true);
         fileserver.start();
 

@@ -271,6 +271,27 @@ public class UserDAO extends UnicastRemoteObject implements UserDAOInterface {
     }
 
     @Override
+    public int updateFirstLogin(int userID) throws RemoteException{
+        String sql = "update User set firstLogin = 0 where  userID = ?;";
+        String sql2 = "select * from User where userID = ? and firstLogin = 1;";
+        int ret  = 0;
+        try (Connection con = meh.getConnection(); 
+        PreparedStatement stmnt = con.prepareStatement(sql);
+        PreparedStatement preparedStatement = con.prepareStatement(sql2);
+        ) {
+            stmnt.setInt(1, userID);
+            preparedStatement.setInt(1 , userID);
+            ResultSet re = preparedStatement.executeQuery();
+            ret = re.isBeforeFirst()?1:0;
+            stmnt.executeUpdate();
+
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return ret;
+    }
+    @Override
     public void delete(int userID) throws RemoteException {
         String query = "DELETE FROM User \r\n"
                 + "WHERE userID = ? \r\n";

@@ -1,10 +1,16 @@
 package gov.iti.jets.controller;
 
 
+import java.io.File;
+import java.net.URISyntaxException;
+import java.rmi.AccessException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
+import java.rmi.server.UnicastRemoteObject;
 
+import gov.iti.jets.config.RMIConfig;
 import gov.iti.jets.dao.AnnouncementDAOInterface;
 import gov.iti.jets.dao.AttachementDAOInterface;
 import gov.iti.jets.dao.ChatDAOInterface;
@@ -13,6 +19,9 @@ import gov.iti.jets.dao.MessageDAOInterface;
 import gov.iti.jets.dao.UserChatDAOInterface;
 import gov.iti.jets.dao.UserDAO;
 import gov.iti.jets.dao.UserDAOInterface;
+import jakarta.xml.bind.JAXBContext;
+import jakarta.xml.bind.JAXBException;
+import jakarta.xml.bind.Unmarshaller;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
@@ -48,7 +57,24 @@ public class ManageController {
 
     @FXML
     private void start(ActionEvent event) {
+                RMIConfig p = null;
+                try { 
+            File XMLfile = new File(getClass().getResource("/rmi.xml").toURI()); 
+            JAXBContext context = JAXBContext.newInstance(RMIConfig.class);
+            Unmarshaller unmarshaller = context.createUnmarshaller(); 
+            p = (RMIConfig) unmarshaller.unmarshal(XMLfile);
+            // System.out.println(p.getIp() +" " + p.getPort());
+        } catch (JAXBException ex) {
+            System.out.println(ex.getMessage());
+        } catch (URISyntaxException e1) {
+            // TODO Auto-generated catch block
+            e1.printStackTrace();
+        }
+
+        String ip =p.getIp();
+        int port = p.getPort();
         try {
+            reg = LocateRegistry.createRegistry(port);
             reg.rebind("userDAO", userDAO);
             
             
@@ -77,33 +103,25 @@ public class ManageController {
     @FXML
     private void stop(ActionEvent event) {
 
-        try {
-            reg.unbind("userDAO");
-            
-            
-            reg.unbind("announcementDAO");
-            
-            
-            reg.unbind("attachementDAO");
-            
-            
-            reg.unbind("chatDAO");
-            
-            
-            reg.unbind("messageDAO");
-            
-            
-            reg.unbind("userChatDAO");
-            
-            
-            reg.rebind("contactDAO", contactDAO);
+
+            try {
+            String[] boundNames;
+
+                boundNames = reg.list();
+                for (String name : boundNames) {
+                    reg.unbind(name); 
+                }
+                UnicastRemoteObject.unexportObject(reg, true);
+            } catch (AccessException |NotBoundException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            } catch (RemoteException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
             stopButton.setDisable(true);
             startButton.setDisable(false);
-        } catch (RemoteException ex) {
-        } catch (NotBoundException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
+        
     }
 
     public void setStage(Stage stage) {
