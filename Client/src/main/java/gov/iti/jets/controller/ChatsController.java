@@ -78,6 +78,7 @@ public class ChatsController {
 
     public void setStage(Stage s) {
         stage = s;
+        
     }
 
     public void setUserDTO(UserDTO user) {

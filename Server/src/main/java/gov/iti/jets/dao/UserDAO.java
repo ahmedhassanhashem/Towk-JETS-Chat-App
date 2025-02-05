@@ -29,7 +29,7 @@ public class UserDAO extends UnicastRemoteObject implements UserDAOInterface {
     public UserDAO() throws RemoteException {
         super();
         meh = DatabaseConnectionManager.getInstance();
-        // con = meh.getConnection();        
+        // con = meh.getConnection();
     }
 
     @Override
@@ -49,9 +49,9 @@ public class UserDAO extends UnicastRemoteObject implements UserDAOInterface {
         }
         String sql2 = "INSERT INTO `User` (`phone`, `name` , `country`, `gender`, `email`, `birthdate`,`password`, `firstLogin`, `userStatus`) VALUES(?,?,?,?,?,?,?,?,?)";
         String sql = "select * from User order by userID desc limit 1;";
-        try (Connection con = meh.getConnection(); PreparedStatement preparedStatement = con.prepareStatement(sql2);
-        PreparedStatement preparedStatement2 = con.prepareStatement(sql)
-        ) {
+        try (Connection con = meh.getConnection();
+                PreparedStatement preparedStatement = con.prepareStatement(sql2);
+                PreparedStatement preparedStatement2 = con.prepareStatement(sql)) {
 
             java.sql.Date birthdate2 = java.sql.Date.valueOf(birthdate.toString());
             preparedStatement.setString(1, phone);
@@ -65,7 +65,7 @@ public class UserDAO extends UnicastRemoteObject implements UserDAOInterface {
             preparedStatement.setString(9, userStatus.toString());
             preparedStatement.executeUpdate();
             System.out.println("Record inserted successfully.");
-            ResultSet re  = preparedStatement2.executeQuery();
+            ResultSet re = preparedStatement2.executeQuery();
             return convert(re);
         } catch (SQLException e) {
             // TODO Auto-generated catch block
@@ -77,7 +77,8 @@ public class UserDAO extends UnicastRemoteObject implements UserDAOInterface {
     }
 
     @Override
-    public UserDTO read(UserDTO user) throws RemoteException { // u can make it take String and String (phone and password)
+    public UserDTO read(UserDTO user) throws RemoteException { // u can make it take String and String (phone and
+                                                               // password)
         // return null; // change the logic to return user and make condition in the
         // controller
         // or u can create default method in DAO or create it in the userDAO
@@ -124,7 +125,9 @@ public class UserDAO extends UnicastRemoteObject implements UserDAOInterface {
         ObservableList<PieChart.Data> data = FXCollections.observableArrayList();
         String query = String.format("SELECT %s, COUNT(*) AS count FROM User GROUP BY %s", columnName, columnName);
 
-        try (Connection con = meh.getConnection(); PreparedStatement ps = con.prepareStatement(query); ResultSet rs = ps.executeQuery()) {
+        try (Connection con = meh.getConnection();
+                PreparedStatement ps = con.prepareStatement(query);
+                ResultSet rs = ps.executeQuery()) {
 
             while (rs.next()) {
                 String label = rs.getString(columnName);
@@ -166,9 +169,9 @@ public class UserDAO extends UnicastRemoteObject implements UserDAOInterface {
                 user.setBio(null);
             }
             // try {
-            //     user.setUserPicture(images.downloadPP(re.getString(("userPicture"))));
+            // user.setUserPicture(images.downloadPP(re.getString(("userPicture"))));
             // } catch (IllegalArgumentException | NullPointerException e) {
-            //     user.setUserPicture(null);
+            // user.setUserPicture(null);
             // }
             if (re.getString("userPicture") != null && re.getString("userPicture").length() > 0) {
                 user.setUserPicture(images.downloadPP(re.getString("userPicture")));
@@ -217,7 +220,7 @@ public class UserDAO extends UnicastRemoteObject implements UserDAOInterface {
     public int update(int userID, String name, String bio, UserMode userMode) throws RemoteException {
         StringBuilder query = new StringBuilder("UPDATE User SET ");
         List<Object> params = new ArrayList<>();
-        
+
         if (name != null) {
             query.append("name = ?, ");
             params.add(name);
@@ -230,15 +233,15 @@ public class UserDAO extends UnicastRemoteObject implements UserDAOInterface {
             query.append("userMode = ?, ");
             params.add(userMode.name());
         }
-    
+
         if (params.isEmpty()) {
             return 0;
         }
-    
+
         query.setLength(query.length() - 2);
         query.append(" WHERE userID = ?");
         params.add(userID);
-    
+
         try (Connection con = meh.getConnection(); PreparedStatement stmnt = con.prepareStatement(query.toString())) {
             for (int i = 0; i < params.size(); i++) {
                 stmnt.setObject(i + 1, params.get(i));
@@ -271,26 +274,25 @@ public class UserDAO extends UnicastRemoteObject implements UserDAOInterface {
     }
 
     @Override
-    public int updateFirstLogin(int userID) throws RemoteException{
+    public int updateFirstLogin(int userID) throws RemoteException {
         String sql = "update User set firstLogin = 0 where  userID = ?;";
         String sql2 = "select * from User where userID = ? and firstLogin = 1;";
-        int ret  = 0;
-        try (Connection con = meh.getConnection(); 
-        PreparedStatement stmnt = con.prepareStatement(sql);
-        PreparedStatement preparedStatement = con.prepareStatement(sql2);
-        ) {
+        int ret = 0;
+        try (Connection con = meh.getConnection();
+                PreparedStatement stmnt = con.prepareStatement(sql);
+                PreparedStatement preparedStatement = con.prepareStatement(sql2);) {
             stmnt.setInt(1, userID);
-            preparedStatement.setInt(1 , userID);
+            preparedStatement.setInt(1, userID);
             ResultSet re = preparedStatement.executeQuery();
-            ret = re.isBeforeFirst()?1:0;
+            ret = re.isBeforeFirst() ? 1 : 0;
             stmnt.executeUpdate();
-
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return ret;
     }
+
     @Override
     public void delete(int userID) throws RemoteException {
         String query = "DELETE FROM User \r\n"
@@ -309,12 +311,40 @@ public class UserDAO extends UnicastRemoteObject implements UserDAOInterface {
             e.printStackTrace();
         }
     }
+
+    @Override
+    public void changeStatus(int userID,String status) throws RemoteException {
+        String query = "update User set userStatus = ? where userID = ?;";
+
+        try (Connection con = meh.getConnection(); 
+        PreparedStatement stmnt = con.prepareStatement(query);
+        ) {
+
+            UserStatus stat= UserStatus.valueOf(status);
+            int ret = 0;
+            if(stat.equals(UserStatus.ONLINE)){
+                stmnt.setString(1, UserStatus.ONLINE.toString());
+                stmnt.setInt(2, userID);
+                ret = stmnt.executeUpdate();
+
+            }else{
+                stmnt.setString(1, UserStatus.OFFLINE.toString());
+                stmnt.setInt(2, userID);
+                ret = stmnt.executeUpdate();
+            }
+
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 }
 
 // class test {
-//     public static void main(String[] args) {
-//         UserDAO user = new UserDAO();
-//         ObservableList<PieChart.Data> pieChartData = user.getUserStatistics("country");
-//         System.out.println(pieChartData.size());
-//     }
+// public static void main(String[] args) {
+// UserDAO user = new UserDAO();
+// ObservableList<PieChart.Data> pieChartData =
+// user.getUserStatistics("country");
+// System.out.println(pieChartData.size());
+// }
 // }
