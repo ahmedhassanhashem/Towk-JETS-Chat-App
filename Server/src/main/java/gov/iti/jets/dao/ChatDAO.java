@@ -30,32 +30,35 @@ public class ChatDAO extends UnicastRemoteObject implements ChatDAOInterface{
     public Integer createSingle(String currentUserPhone, String otherUserPhone) throws RemoteException {
         Connection con = dm.getConnection();
         try {
-            
             if (currentUserPhone == null || otherUserPhone == null 
                 || currentUserPhone.length() != 11 || otherUserPhone.length() != 11) {
+                System.out.println("Invalid phone numbers");
                 return 0;
             }
-
+    
             // Get user IDs
             int currentUserId = getUserIdByPhone(currentUserPhone);
             int otherUserId = getUserIdByPhone(otherUserPhone);
             
             if (currentUserId == -1 || otherUserId == -1) {
+                System.out.println("User IDs not found");
                 return 0;
             }
-
+    
             // Check for existing chat
             Integer existingChatId = findExistingSingleChat(currentUserId, otherUserId);
-            if (existingChatId != null) {
+            if (existingChatId != 0) {  // Change here: check if not 0.
+                System.out.println("Existing chat found: " + existingChatId);
                 return 0;
             }
-
+    
             // Create new chat
             con.setAutoCommit(false);
-            int chatId = createNewChat("SINGLE", null);
-            linkUsersToChat(chatId, Arrays.asList(currentUserId, otherUserId));
+            int chatId = createNewChat(con, "SINGLE", null);
+            System.out.println("New chat created with ID: " + chatId);
+            linkUsersToChat(con, chatId, Arrays.asList(currentUserId, otherUserId));
             con.commit();
-
+    
             return chatId;
             
         } catch (SQLException e) {
@@ -65,7 +68,7 @@ public class ChatDAO extends UnicastRemoteObject implements ChatDAOInterface{
                 ex.printStackTrace();
             }
             return 0;
-        }finally{
+        } finally {
             try {
                 con.close();
             } catch (SQLException e) {
@@ -73,6 +76,7 @@ public class ChatDAO extends UnicastRemoteObject implements ChatDAOInterface{
             }
         }
     }
+    
 
     
 
@@ -109,12 +113,12 @@ public class ChatDAO extends UnicastRemoteObject implements ChatDAOInterface{
             if (userIds.size() < 2) return -1; 
     
             con.setAutoCommit(false);
-            chatId = createNewChat("GROUP", groupName); 
+            chatId = createNewChat(con, "GROUP", groupName); 
             if (chatId == -1) { 
                 con.rollback();
                 return -1;
             }
-            linkUsersToChat(chatId, userIds);
+            linkUsersToChat(con, chatId, userIds);
             con.commit();
     
             System.out.println("Group chat created with ID: " + chatId);
@@ -151,32 +155,29 @@ public class ChatDAO extends UnicastRemoteObject implements ChatDAOInterface{
         }
     }
 
-    private int createNewChat(String chatType, String chatName) throws SQLException {
-        String query = "INSERT INTO Chat (chatType, chatName) VALUES (?, ?)";
-        try (Connection con = dm.getConnection();
-            PreparedStatement ps = con.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS)) {
-            ps.setString(1, chatType);
-            ps.setString(2, chatName);
-            ps.executeUpdate();
-            
-            ResultSet rs = ps.getGeneratedKeys();
-            if (rs.next()) return rs.getInt(1);
-            throw new SQLException("Failed to get generated chat ID");
-        }
+    private int createNewChat(Connection con, String chatType, String chatName) throws SQLException {
+    String query = "INSERT INTO Chat (chatType, chatName) VALUES (?, ?)";
+    try (PreparedStatement ps = con.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS)) {
+        ps.setString(1, chatType);
+        ps.setString(2, chatName);
+        ps.executeUpdate();
+        ResultSet rs = ps.getGeneratedKeys();
+        if (rs.next()) return rs.getInt(1);
+        throw new SQLException("Failed to get generated chat ID");
     }
+}
 
-    private void linkUsersToChat(int chatId, List<Integer> userIds) throws SQLException {
-        String query = "INSERT INTO UserChat (chatID, userID) VALUES (?, ?)";
-        try (Connection con = dm.getConnection();
-            PreparedStatement ps = con.prepareStatement(query)) {
-            for (int userId : userIds) {
-                ps.setInt(1, chatId);
-                ps.setInt(2, userId);
-                ps.addBatch();
-            }
-            ps.executeBatch();
+private void linkUsersToChat(Connection con, int chatId, List<Integer> userIds) throws SQLException {
+    String query = "INSERT INTO UserChat (chatID, userID) VALUES (?, ?)";
+    try (PreparedStatement ps = con.prepareStatement(query)) {
+        for (int userId : userIds) {
+            ps.setInt(1, chatId);
+            ps.setInt(2, userId);
+            ps.addBatch();
         }
+        ps.executeBatch();
     }
+}
 
 
 

@@ -238,27 +238,27 @@ public class ChatsController {
                                     contactCard = addContactLoader.load();
                                     contactCardController = addContactLoader.getController();
         
-                                    // Set click handler ONCE during FXML load
                                     contactCard.setOnMouseClicked(e -> {
-                                        UserDTO currentUser = getItem(); // Get current user
+                                        UserDTO currentUser = getItem();
                                         if (currentUser != null) {
                                             try {
-                                                int existingChat = chatDao.findExistingSingleChat(
-                                                    userDTO.getUserID(), 
-                                                    currentUser.getUserID()
-                                                );
+                                                int existingChat = chatDao.findExistingSingleChat(userDTO.getUserID(), currentUser.getUserID());
+                                                int chatId;
                                                 if (existingChat == 0) {
-                                                    chatDao.createSingle(
-                                                        userDTO.getPhone(), 
-                                                        currentUser.getPhone()
-                                                    );
+                                                    // Create a new chat and use the returned chat id.
+                                                    chatId = chatDao.createSingle(userDTO.getPhone(), currentUser.getPhone());
+                                                    System.out.println("Created new chat: " + chatId);
+                                                } else {
+                                                    chatId = existingChat;
                                                 }
-                                                loadChat(currentUser);
+                                                loadChat(currentUser, chatId);
                                             } catch (RemoteException | SQLException ex) {
                                                 ex.printStackTrace();
                                             }
                                         }
                                     });
+
+
                                 } catch (IOException e) {
                                     e.printStackTrace();
                                 }
@@ -396,6 +396,34 @@ public class ChatsController {
     public void setScheduledExecutorService(ScheduledExecutorService scheduledExecutorService) {
         this.scheduledExecutorService = scheduledExecutorService;
     }
+
+
+
+    private void loadChat(UserDTO user, int chatId) {
+        try {
+            FXMLLoader chatLoader = new FXMLLoader(getClass().getResource("/screens/messageChat.fxml"));
+            BorderPane chat = chatLoader.load();
+            MessageChatController messageController = chatLoader.getController();
+    
+            if (currentMessageController != null) {
+                currentMessageController.stopMessagePolling();
+            }
+            currentMessageController = messageController;
+    
+            messageController.setImage(user.getUserPicture());
+            messageController.setName(user.getName());
+            messageController.setStatus(user.getUserStatus().toString());
+            messageController.setStage(stage);
+    
+            // Pass the new chatId directly instead of calling findExistingSingleChat again.
+            messageController.setUserDTO(userDTO, chatId, scheduledExecutorService);
+    
+            borderPane.setCenter(chat);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    
 
 
     private void loadChat(UserDTO user) {
