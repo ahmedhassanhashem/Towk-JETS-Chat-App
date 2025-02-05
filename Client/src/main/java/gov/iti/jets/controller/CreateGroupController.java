@@ -27,6 +27,7 @@ import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -62,9 +63,13 @@ public class CreateGroupController {
     @FXML
     private Label alertLabel2;
 
-        private ChatDAOInterface chatDAO;
-            private ContactDAOInterface contactDAO;
-;
+    private ChatDAOInterface chatDAO;
+    private ContactDAOInterface contactDAO;
+    private int createdChatId = -1;
+    private byte[] tempImageBytes; 
+    private String tempFileName;
+    private File tempFile;
+
 
     ObservableList<UserDTO> contacts = FXCollections.observableArrayList();
     private List<GroupMemberCellController> cellControllers = new ArrayList<>();
@@ -216,10 +221,33 @@ public class CreateGroupController {
         System.out.println(participantPhones.size());
         System.out.println(groupName);
         System.out.println(creatorPhone);
-        try {
-            chatDAO.createGroup(creatorPhone, participantPhones, groupName);
+      try {
+            createdChatId = chatDAO.createGroup(userDTO.getPhone(), participantPhones, groupName);
+
+            if (createdChatId != -1) {
+                System.out.println("Group created successfully. Chat ID: " + createdChatId);
+                stage.close();
+
+                if (tempImageBytes != null) {
+                    try {
+                        chatDAO.updateChatPicture(createdChatId, tempFileName, tempImageBytes);
+                        tempImageBytes = null; 
+                        tempFileName = null;
+                        tempFile = null;
+                    } catch (RemoteException ex) {
+                        System.err.println("Error uploading image: " + ex.getMessage());
+                        ex.printStackTrace();
+                    }
+                }
+
+            } else {
+                System.out.println("Failed to create group. Check the logs for details.");
+            }
         } catch (RemoteException e) {
-            // TODO Auto-generated catch block
+            System.err.println("Error occurred while creating the group: " + e.getMessage());
+            e.printStackTrace();
+        } catch (Exception e) {
+            System.err.println("Unexpected error: " + e.getMessage());
             e.printStackTrace();
         }
     }
@@ -237,19 +265,21 @@ public class CreateGroupController {
     private void handlechoosePhotoButton() {
         FileChooser chooser = new FileChooser();
         chooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.jpeg", "*.gif"));
-        
+
         File file = chooser.showOpenDialog(stage);
-        
-        if(file != null){
-            byte[] imageBytes;
+
+        if (file != null) {
             try {
-                imageBytes = imageToByteArray(file);
+                tempImageBytes = imageToByteArray(file);
+                tempFileName = file.getName();
+                tempFile = file;
                 Image img = new Image(file.toURI().toString());
                 groupImage.setImage(img);
-                chatDAO.updateChatPicture(userDTO.getUserID(),file.getName() ,imageBytes);
-            } catch (IOException e) { e.printStackTrace();}
-            
-            
+
+            } catch (IOException e) {
+                System.err.println("Error converting image: " + e.getMessage());
+                e.printStackTrace();
+            }
         }
     }
 

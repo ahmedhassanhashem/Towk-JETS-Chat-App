@@ -30,32 +30,35 @@ public class ChatDAO extends UnicastRemoteObject implements ChatDAOInterface{
     public Integer createSingle(String currentUserPhone, String otherUserPhone) throws RemoteException {
         Connection con = dm.getConnection();
         try {
-            
             if (currentUserPhone == null || otherUserPhone == null 
                 || currentUserPhone.length() != 11 || otherUserPhone.length() != 11) {
+                System.out.println("Invalid phone numbers");
                 return 0;
             }
-
+    
             // Get user IDs
             int currentUserId = getUserIdByPhone(currentUserPhone);
             int otherUserId = getUserIdByPhone(otherUserPhone);
             
             if (currentUserId == -1 || otherUserId == -1) {
+                System.out.println("User IDs not found");
                 return 0;
             }
-
+    
             // Check for existing chat
             Integer existingChatId = findExistingSingleChat(currentUserId, otherUserId);
-            if (existingChatId != null) {
+            if (existingChatId != 0) {  // Change here: check if not 0.
+                System.out.println("Existing chat found: " + existingChatId);
                 return 0;
             }
-
+    
             // Create new chat
             con.setAutoCommit(false);
-            int chatId = createNewChat("SINGLE", null);
-            linkUsersToChat(chatId, Arrays.asList(currentUserId, otherUserId));
+            int chatId = createNewChat(con, "SINGLE", null);
+            System.out.println("New chat created with ID: " + chatId);
+            linkUsersToChat(con, chatId, Arrays.asList(currentUserId, otherUserId));
             con.commit();
-
+    
             return chatId;
             
         } catch (SQLException e) {
@@ -65,7 +68,7 @@ public class ChatDAO extends UnicastRemoteObject implements ChatDAOInterface{
                 ex.printStackTrace();
             }
             return 0;
-        }finally{
+        } finally {
             try {
                 con.close();
             } catch (SQLException e) {
@@ -73,39 +76,66 @@ public class ChatDAO extends UnicastRemoteObject implements ChatDAOInterface{
             }
         }
     }
+    
 
     
 
  
-    public String createGroup(String creatorPhone, List<String> participantPhones, String groupName) throws RemoteException {
-    try (Connection con = dm.getConnection();){
-        List<Integer> userIds = new ArrayList<>();
-        
-        // Get creator ID
-        int creatorId = getUserIdByPhone(creatorPhone);
-        if (creatorId == -1) return "Creator not found";
-        userIds.add(creatorId);
-        
-        // Get participant IDs
-        for (String phone : participantPhones) {
-            int userId = getUserIdByPhone(phone);
-            if (userId != -1) userIds.add(userId);
+    public int createGroup(String creatorPhone, List<String> participantPhones, String groupName) {
+        int chatId = -1; 
+    
+        try (Connection con = dm.getConnection()) {
+            List<Integer> userIds = new ArrayList<>();
+    
+            int creatorId = -1;
+            try {
+                creatorId = getUserIdByPhone(creatorPhone);
+            } catch (RemoteException e) {
+                System.err.println("Error fetching creator ID: " + e.getMessage());
+                return -1;
+            }
+    
+            if (creatorId == -1) return -1; 
+            userIds.add(creatorId);
+    
+            for (String phone : participantPhones) {
+                int userId = -1;
+                try {
+                    userId = getUserIdByPhone(phone);
+                } catch (RemoteException e) {
+                    System.err.println("Error fetching user ID for phone: " + phone);
+                    continue; 
+                }
+    
+                if (userId != -1) userIds.add(userId);
+            }
+    
+            if (userIds.size() < 2) return -1; 
+    
+            con.setAutoCommit(false);
+            chatId = createNewChat(con, "GROUP", groupName); 
+            if (chatId == -1) { 
+                con.rollback();
+                return -1;
+            }
+            linkUsersToChat(con, chatId, userIds);
+            con.commit();
+    
+            System.out.println("Group chat created with ID: " + chatId);
+    
+        } catch (SQLException e) {
+            e.printStackTrace();
+            try {
+                if (dm.getConnection() != null) { 
+                    dm.getConnection().rollback(); 
+                }
+            } catch (SQLException rollbackException) {
+                rollbackException.printStackTrace();
+            }
+            chatId = -1; 
         }
-        
-        if (userIds.size() < 2) return "Need at least 2 participants";
-        
-        con.setAutoCommit(false);
-        int chatId = createNewChat("GROUP", groupName);
-        linkUsersToChat(chatId, userIds);
-        con.commit();
-        
-        return "Group chat created with ID: " + chatId;
-        
-    } catch (SQLException e) {
-        e.printStackTrace();
+        return chatId; 
     }
-        return groupName;
-}
 
     public Integer findExistingSingleChat(int user1, int user2) throws SQLException,RemoteException {
         String query ="SELECT c.chatID \r\n" + //
@@ -125,32 +155,29 @@ public class ChatDAO extends UnicastRemoteObject implements ChatDAOInterface{
         }
     }
 
-    private int createNewChat(String chatType, String chatName) throws SQLException {
-        String query = "INSERT INTO Chat (chatType, chatName) VALUES (?, ?)";
-        try (Connection con = dm.getConnection();
-            PreparedStatement ps = con.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS)) {
-            ps.setString(1, chatType);
-            ps.setString(2, chatName);
-            ps.executeUpdate();
-            
-            ResultSet rs = ps.getGeneratedKeys();
-            if (rs.next()) return rs.getInt(1);
-            throw new SQLException("Failed to get generated chat ID");
-        }
+    private int createNewChat(Connection con, String chatType, String chatName) throws SQLException {
+    String query = "INSERT INTO Chat (chatType, chatName) VALUES (?, ?)";
+    try (PreparedStatement ps = con.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS)) {
+        ps.setString(1, chatType);
+        ps.setString(2, chatName);
+        ps.executeUpdate();
+        ResultSet rs = ps.getGeneratedKeys();
+        if (rs.next()) return rs.getInt(1);
+        throw new SQLException("Failed to get generated chat ID");
     }
+}
 
-    private void linkUsersToChat(int chatId, List<Integer> userIds) throws SQLException {
-        String query = "INSERT INTO UserChat (chatID, userID) VALUES (?, ?)";
-        try (Connection con = dm.getConnection();
-            PreparedStatement ps = con.prepareStatement(query)) {
-            for (int userId : userIds) {
-                ps.setInt(1, chatId);
-                ps.setInt(2, userId);
-                ps.addBatch();
-            }
-            ps.executeBatch();
+private void linkUsersToChat(Connection con, int chatId, List<Integer> userIds) throws SQLException {
+    String query = "INSERT INTO UserChat (chatID, userID) VALUES (?, ?)";
+    try (PreparedStatement ps = con.prepareStatement(query)) {
+        for (int userId : userIds) {
+            ps.setInt(1, chatId);
+            ps.setInt(2, userId);
+            ps.addBatch();
         }
+        ps.executeBatch();
     }
+}
 
 
 
@@ -164,42 +191,35 @@ public class ChatDAO extends UnicastRemoteObject implements ChatDAOInterface{
         }
     }
 
-        public List<UserDTO> findAllGroups(int userId) throws RemoteException {
-        // ObservableList<UserDTO> allGroups = FXCollections.observableArrayList();
- List<UserDTO> allGroups = new ArrayList<>();
-        String query = "select c.chatID , chatName,chatPicture from Chat c join UserChat u on c.chatID = u.chatID where userID = ? and chatType = \"GROUP\"";
+      public List<UserDTO> findAllGroups(int userId) throws RemoteException {
+        List<UserDTO> allGroups = new ArrayList<>();
+    
+        String query = "SELECT c.chatID, c.chatName, c.chatPicture FROM Chat c " +
+                       "JOIN UserChat u ON c.chatID = u.chatID " +
+                       "WHERE u.userID = ? AND c.chatType = 'GROUP'";
+    
         try (Connection con = dm.getConnection();
-                PreparedStatement ps = con.prepareStatement(query)) {
-
+             PreparedStatement ps = con.prepareStatement(query)) {
+    
             ps.setInt(1, userId);
             ResultSet rs = ps.executeQuery();
-            
-            while (true) {
-                // fix bug
-                // reusing the same UserDTO instance for each group in the while loop, 
-                //leading to overwriting of group names. 
-                //Creating a new instance each time is necessary.
-                // UserDTO group = new UserDTO();
-                if(!rs.next())break;
-                UserDTO group = new UserDTO();
-                group.setUserID(rs.getInt("chatID"));
-                group.setName(rs.getString("chatName"));
-                // group.setUserPicture(rs.getString("chatPicture"));
+    
+            while (rs.next()) {
+                UserDTO groupChat = new UserDTO();
+                groupChat.setUserID(rs.getInt("chatID"));
+                groupChat.setName(rs.getString("chatName"));
+                
                 if(rs.getString("chatPicture") != null && rs.getString("chatPicture").length()>0) {
-                    group.setUserPicture(images.downloadPP(rs.getString("chatPicture")));
+                    groupChat.setUserPicture(images.downloadPP(rs.getString("chatPicture")));
                 } else  {
-                    group.setUserPicture(null);
+                    groupChat.setUserPicture(null);
                 }
-                // user = convert(rs);
-                // if(user == null)break;
-                allGroups.add(group);
+                allGroups.add(groupChat);
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return allGroups;
-        // TODO Auto-generated method stub
-        
     }
     
     public int updateChatPicture(int chatId, String fileName, byte[] chatPicture) throws RemoteException {

@@ -105,7 +105,6 @@ public class LoginPageController {
             }
             dashController = dashLoader.getController();
             dashController.setStage(stage);
-            dashController.setLoginsScene(loginScene);
             dashScene = new Scene(dashBoard, 600 + 200, 480 + 100);
             // System.out.println(dashScene);
             dashController.setUserDTO(user);
@@ -203,7 +202,7 @@ public class LoginPageController {
 
         Registry reg;
         try {
-            reg = LocateRegistry.getRegistry(ip,port);
+            reg = LocateRegistry.getRegistry(ip, port);
             userDAO = (UserDAOInterface) reg.lookup("userDAO");
 
         } catch (RemoteException e) {
