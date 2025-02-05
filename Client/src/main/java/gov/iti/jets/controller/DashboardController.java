@@ -1,11 +1,23 @@
 package gov.iti.jets.controller;
 
 import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.io.IOException;
+import java.net.URISyntaxException;
+import java.rmi.NotBoundException;
+import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 
+import gov.iti.jets.config.RMIConfig;
+import gov.iti.jets.dao.UserDAOInterface;
 import gov.iti.jets.dto.UserDTO;
+import gov.iti.jets.dto.UserStatus;
+import jakarta.xml.bind.JAXBContext;
+import jakarta.xml.bind.JAXBException;
+import jakarta.xml.bind.Unmarshaller;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -54,7 +66,7 @@ public class DashboardController {
         chat.chatScene();
     }
 
-    public  void changepp(){
+    public void changepp() {
         nameLabel.setText(userDTO.getName());
         if (userDTO.getUserPicture() != null) {
             // System.out.println(user.getUserPicture().length);
@@ -70,18 +82,51 @@ public class DashboardController {
 
     public void setStage(Stage s) {
         stage = s;
-        scheduledExecutorService=
-Executors. newScheduledThreadPool(20);
+        scheduledExecutorService = Executors.newScheduledThreadPool(20);
         chat.setScheduledExecutorService(scheduledExecutorService);
         chat.setStage(s);
+        // System.out.println(stage);
+
         try {
-            
-            stage.setOnCloseRequest((e)->{
-                // scheduledExecutorService.close();
-                scheduledExecutorService.shutdownNow();
-                
+            RMIConfig p = null;
+
+            File XMLfile = new File(getClass().getResource("/rmi.xml").toURI());
+            JAXBContext context = JAXBContext.newInstance(RMIConfig.class);
+            Unmarshaller unmarshaller = context.createUnmarshaller();
+            p = (RMIConfig) unmarshaller.unmarshal(XMLfile);
+            // System.out.println(p.getIp() +" " + p.getPort());
+
+            String ip = p.getIp();
+            int port = p.getPort();
+
+            Registry reg;
+            reg = LocateRegistry.getRegistry(ip, port);
+            UserDAOInterface userDAO = (UserDAOInterface) reg.lookup("userDAO");
+            Platform.runLater(() -> {
+
+                stage.setOnCloseRequest(e -> {
+                    // System.out.println("as");
+                    try {
+                        userDAO.changeStatus(userDTO.getUserID(), UserStatus.OFFLINE.toString());
+                    } catch (RemoteException e1) {
+                        // TODO Auto-generated catch block
+                        e1.printStackTrace();
+                    }
+
+                });
             });
-        } catch (Exception e) {
+        } catch (RemoteException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (NotBoundException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (JAXBException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (URISyntaxException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
         }
     }
 
@@ -125,7 +170,7 @@ Executors. newScheduledThreadPool(20);
 
     }
 
-   @FXML
+    @FXML
     private void userInfo(MouseEvent event) {
         Stage info = new Stage();
         info.initOwner(stage);
@@ -239,13 +284,52 @@ Executors. newScheduledThreadPool(20);
         dashController.setStage(stage);
         String fullName = userDTO.getName();
         String firstName = extractFirstName(fullName);
-        dashController.setNameField(firstName+"!");
-        if(userDTO.getUserPicture() !=null)
-        dashController.setProfileImage(userDTO.getUserPicture());
+        dashController.setNameField(firstName + "!");
+        if (userDTO.getUserPicture() != null)
+            dashController.setProfileImage(userDTO.getUserPicture());
         userDTO.setPassword(null);
         dashController.setUdto(userDTO);
-        
+
         stage.setScene(dashScene);
+        try {
+            RMIConfig p = null;
+
+            File XMLfile = new File(getClass().getResource("/rmi.xml").toURI());
+            JAXBContext context = JAXBContext.newInstance(RMIConfig.class);
+            Unmarshaller unmarshaller = context.createUnmarshaller();
+            p = (RMIConfig) unmarshaller.unmarshal(XMLfile);
+            // System.out.println(p.getIp() +" " + p.getPort());
+
+            String ip = p.getIp();
+            int port = p.getPort();
+
+            Registry reg;
+            reg = LocateRegistry.getRegistry(ip, port);
+            UserDAOInterface userDAO = (UserDAOInterface) reg.lookup("userDAO");
+
+            userDAO.changeStatus(userDTO.getUserID(), UserStatus.OFFLINE.toString());
+            stage.setOnCloseRequest(e -> {
+                try {
+                    userDAO.changeStatus(userDTO.getUserID(), UserStatus.OFFLINE.toString());
+                } catch (RemoteException e1) {
+                    // TODO Auto-generated catch block
+                    e1.printStackTrace();
+                }
+
+            });
+        } catch (RemoteException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (NotBoundException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (JAXBException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (URISyntaxException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
     }
 
     @FXML
@@ -261,8 +345,6 @@ Executors. newScheduledThreadPool(20);
         }
         borderPane.setCenter(hold);
         chat = chatLoader.getController();
-        
-
 
         Circle clip = new Circle();
         clip.setRadius(30);
@@ -271,14 +353,14 @@ Executors. newScheduledThreadPool(20);
         profileImage.setClip(clip);
 
     }
-    
+
     private String extractFirstName(String fullName) {
-        String[] names = fullName.split("\\s+"); 
-    
+        String[] names = fullName.split("\\s+");
+
         if (names.length > 0) {
-            return names[0].trim(); 
+            return names[0].trim();
         } else {
-            return ""; 
+            return "";
         }
     }
 

@@ -15,6 +15,7 @@ import gov.iti.jets.config.RMIConfig;
 // import gov.iti.jets.dao.UserDAO;
 import gov.iti.jets.dao.UserDAOInterface;
 import gov.iti.jets.dto.UserDTO;
+import gov.iti.jets.dto.UserStatus;
 import jakarta.xml.bind.JAXBContext;
 import jakarta.xml.bind.JAXBException;
 import jakarta.xml.bind.Unmarshaller;
@@ -97,6 +98,12 @@ public class LoginPController {
             dashController.setDashScene(dashScene);
             dashController.setDashboardController(dashController);
             stage.setScene(dashScene);
+                        try {
+                userDAO.changeStatus(udto2.getUserID(),UserStatus.ONLINE.toString());
+            } catch (RemoteException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
 
         } else {
             Platform.runLater(() -> {
@@ -163,19 +170,18 @@ public class LoginPController {
 
         loginNewUser.setOnMouseClicked(event -> {
             try {
-                Stage stage1 = new Stage();
                 int width = 640,height = 480;
                 FXMLLoader dashLoader = new FXMLLoader(getClass().getResource("/screens/entreeBase.fxml"));
                 GridPane dashBoard = dashLoader.load();
                 entreeController dashController = dashLoader.getController();
                 var dashScene = new Scene(dashBoard, width, height);
                 dashController.setMyScene(dashScene);
-                dashController.setStage(stage1);
-                stage1.setScene(dashScene);
-                stage1.show();
+                dashController.setStage(stage);
+                stage.setScene(dashScene);
+                stage.show();
             } catch (IOException ex) {
             }
-            stage.close();
+            // stage.close();
         });
 
         Circle clip = new Circle();

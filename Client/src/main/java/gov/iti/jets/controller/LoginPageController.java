@@ -40,6 +40,7 @@ import gov.iti.jets.config.RMIConfig;
 // import gov.iti.jets.dao.UserDAO;
 import gov.iti.jets.dao.UserDAOInterface;
 import gov.iti.jets.dto.UserDTO;
+import gov.iti.jets.dto.UserStatus;
 import jakarta.xml.bind.JAXBContext;
 import jakarta.xml.bind.JAXBException;
 import jakarta.xml.bind.Marshaller;
@@ -111,6 +112,12 @@ public class LoginPageController {
             dashController.setDashScene(dashScene);
             dashController.setDashboardController(dashController);
             stage.setScene(dashScene);
+            try {
+                userDAO.changeStatus(user.getUserID(),UserStatus.ONLINE.toString());
+            } catch (RemoteException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
                         try {
                 JAXBContext context = JAXBContext.newInstance(UserDTO.class);
                 Marshaller marshaller = context.createMarshaller(); 

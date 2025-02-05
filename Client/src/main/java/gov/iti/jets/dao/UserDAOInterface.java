@@ -27,4 +27,6 @@ public interface UserDAOInterface extends Remote {
     public int updatePassword(int userID ,String password) throws RemoteException ;
 
     public void delete(int userID) throws RemoteException;
+
+    public void changeStatus(int userID,String status) throws RemoteException;
 }
