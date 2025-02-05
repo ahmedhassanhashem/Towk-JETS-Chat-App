@@ -8,12 +8,13 @@ import java.util.concurrent.Executors;
 
 public class FileServer {
     public static volatile boolean running = true;
-
+    private static ServerSocket s;
     public static void Start() {
             ExecutorService executorService =
     Executors. newFixedThreadPool(20);
         // System.out.println(FileServer.class.getResource("/screens"));
-        try (ServerSocket s = new ServerSocket(3331)) {
+        try {
+            s = new ServerSocket(3331);
             int i = 1;
             while (running) {
                 Socket incoming = s.accept();
@@ -28,7 +29,8 @@ public class FileServer {
                 i++;
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            // e.printStackTrace();
+            System.out.println(e.getMessage());
         } 
         // finally {
         //     for (Socket s : ThreadedEchoHandler.arr) {
@@ -39,6 +41,16 @@ public class FileServer {
         //         }
         //     }
         // }
+    }
+    public static void Stop() {
+        running = false;
+        try {
+            if (s != null) {
+                s.close();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 }

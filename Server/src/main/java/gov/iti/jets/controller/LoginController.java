@@ -1,10 +1,13 @@
 package gov.iti.jets.controller;
 
 
+import java.io.IOException;
+
 import javafx.application.Platform;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -25,11 +28,14 @@ import javafx.scene.layout.BorderStroke;
 import javafx.scene.layout.BorderStrokeStyle;
 import javafx.scene.layout.BorderWidths;
 import javafx.scene.layout.CornerRadii;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 
 import gov.iti.jets.dao.UserDAO;
 import gov.iti.jets.dto.UserDTO;
@@ -37,7 +43,6 @@ import gov.iti.jets.dto.UserDTO;
 public class LoginController {
 
     private Stage stage;
-    private Scene serverScene;
     private UserDAO userDao;
 
     @FXML
@@ -75,8 +80,30 @@ public class LoginController {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        if(user != null)
-        Platform.runLater(() -> stage.setScene(serverScene));
+        if(user != null){
+            try {
+                 int ret = userDao.updateFirstLogin(user.getUserID());
+                 int width = 640,height = 480;
+                 if(ret ==0){
+                     FXMLLoader serveLoader= new FXMLLoader(getClass().getResource("/screens/Server.fxml"));
+                     GridPane server = serveLoader.load();
+                     ServerController serverController = serveLoader.getController();
+                     serverController.setStage(stage);
+                     Scene serverScene = new Scene(server, width+200, height+20);
+                     Platform.runLater(() -> stage.setScene(serverScene));
+                    }else{
+                        FXMLLoader settingsLoader= new FXMLLoader(getClass().getResource("/screens/AccountSettings.fxml"));
+                        VBox settings = settingsLoader.load();
+                        AccountSettingsController settingsController = settingsLoader.getController();
+                        settingsController.setStage(stage);
+                        settingsController.setUserDTO(user);
+                        Scene settingsrScene = new Scene(settings, width, height);
+                        Platform.runLater(() -> stage.setScene(settingsrScene));
+                    }
+            } catch (IOException ex) {
+                ex.printStackTrace();;
+            }
+        }
         // stage.setScene(serverScene);
         else{
             Platform.runLater(() ->{
@@ -88,21 +115,17 @@ public class LoginController {
         }
     }
 
-    public void setServerScene(Scene s) {
-        
-        serverScene = s;
-    }
-
-
 
     @FXML
     private void initialize() {
         try {
             userDao = new UserDAO();
+            UnicastRemoteObject.unexportObject(userDao, true);
         } catch (RemoteException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
+        
         // phoneField.onKeyTypedProperty(()-> invalid.setVisible(false));
         phoneField.setOnKeyPressed((e)-> {
             
