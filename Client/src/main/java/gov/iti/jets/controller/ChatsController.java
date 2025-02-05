@@ -143,6 +143,7 @@ public class ChatsController {
         }
 
         listView.setCellFactory(null);
+        listView.setFixedCellSize(70);
         listView.setCellFactory(new Callback<ListView<UserDTO>, ListCell<UserDTO>>() {
             @Override
             public ListCell<UserDTO> call(ListView<UserDTO> p) {
@@ -217,6 +218,7 @@ public class ChatsController {
         }
 
         listView.setCellFactory(null);
+        listView.setFixedCellSize(70);
         listView.setCellFactory(new Callback<ListView<UserDTO>, ListCell<UserDTO>>() {
             @Override
             public ListCell<UserDTO> call(ListView<UserDTO> p) {
@@ -301,7 +303,7 @@ public class ChatsController {
         }
         
         listView.setCellFactory(null);
-        // listView.setFixedCellSize(70);
+        listView.setFixedCellSize(70);
         listView.setCellFactory(new Callback<ListView<UserDTO>, ListCell<UserDTO>>() {
             @Override
             public ListCell<UserDTO> call(ListView<UserDTO> p) {
