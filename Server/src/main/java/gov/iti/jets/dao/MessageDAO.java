@@ -34,6 +34,9 @@ public class MessageDAO extends UnicastRemoteObject implements MessageDAOInterfa
         // online.putIfAbsent(chatID, new ArrayList<ClientInt>());
         online.computeIfAbsent(chatID, k -> new ArrayList<>()).add(clientRef);
         // online.get(chatID).add(clientRef);
+        for(ClientInt a:online.get(chatID)){
+            System.out.println(a);
+        }
         System.out.println("Client added");
     }
 
