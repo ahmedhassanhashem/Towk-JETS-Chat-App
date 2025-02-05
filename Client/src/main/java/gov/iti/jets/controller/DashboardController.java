@@ -25,9 +25,6 @@ import javafx.stage.StageStyle;
 public class DashboardController {
 
     private Stage stage;
-    private Scene LoginScene;
-    private Scene settingsScene;
-    private Scene userInfoScene;
     private Scene dashScene;
     private UserDTO userDTO = new UserDTO();
     private ScheduledExecutorService scheduledExecutorService;
@@ -41,18 +38,6 @@ public class DashboardController {
 
     @FXML
     private BorderPane borderPane;
-
-    public void setLoginsScene(Scene s) {
-        LoginScene = s;
-    }
-
-    public void setSettingsScene(Scene s) {
-        settingsScene = s;
-    }
-
-    public void setuserInfoScene(Scene s) {
-        userInfoScene = s;
-    }
 
     public void setUserDTO(UserDTO user) {
         userDTO = user;

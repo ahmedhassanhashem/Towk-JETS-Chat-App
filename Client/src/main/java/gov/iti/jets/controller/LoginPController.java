@@ -95,6 +95,7 @@ public class LoginPController {
             // System.out.println(dashScene);
             dashController.setUserDTO(udto2);
             dashController.setDashScene(dashScene);
+            dashController.setDashboardController(dashController);
             stage.setScene(dashScene);
 
         } else {

@@ -105,7 +105,6 @@ public class LoginPageController {
             }
             dashController = dashLoader.getController();
             dashController.setStage(stage);
-            dashController.setLoginsScene(loginScene);
             dashScene = new Scene(dashBoard, 600 + 200, 480 + 100);
             // System.out.println(dashScene);
             dashController.setUserDTO(user);
