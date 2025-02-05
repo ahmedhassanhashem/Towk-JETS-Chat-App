@@ -36,6 +36,7 @@ import java.util.concurrent.ScheduledExecutorService;
 // import gov.iti.jets.dao.UserChatDAO;
 
 import gov.iti.jets.dao.UserDAOInterface;
+import gov.iti.jets.client.ClientImpl;
 import gov.iti.jets.config.RMIConfig;
 // import gov.iti.jets.dao.ChatDAO;
 import gov.iti.jets.dao.ChatDAOInterface;
@@ -416,7 +417,9 @@ public class ChatsController {
             messageController.setStage(stage);
     
             // Pass the new chatId directly instead of calling findExistingSingleChat again.
-            messageController.setUserDTO(userDTO, chatId, scheduledExecutorService);
+            ClientImpl clientImpl = new ClientImpl(chatId, messageController);
+            messageDAO.register(chatId, clientImpl);
+            messageController.setUserDTO(userDTO, chatId);
     
             borderPane.setCenter(chat);
         } catch (IOException e) {
@@ -443,11 +446,14 @@ public class ChatsController {
             messageController.setName(user.getName());
             messageController.setStatus(user.getUserStatus().toString());
             messageController.setStage(stage);
-            
+            int chatId = chatDao.findExistingSingleChat(userDTO.getUserID(), user.getUserID());
+
+            ClientImpl clientImpl = new ClientImpl(chatId, messageController);
+            messageDAO.register(chatId, clientImpl);
+
             // Load chat messages
             messageController.setUserDTO(userDTO, 
-                chatDao.findExistingSingleChat(userDTO.getUserID(), user.getUserID()), 
-                scheduledExecutorService
+            chatId
             );
 
             borderPane.setCenter(chat);
@@ -474,7 +480,9 @@ public class ChatsController {
             messageController.setStage(stage);
 
             // Initialize group chat
-            messageController.setUserDTO(userDTO, group.getUserID(), scheduledExecutorService);
+            messageController.setUserDTO(userDTO, group.getUserID());
+            ClientImpl clientImpl = new ClientImpl(group.getUserID(), messageController);
+            messageDAO.register(group.getUserID(), clientImpl);
 
             borderPane.setCenter(chat);
         } catch (IOException e) {

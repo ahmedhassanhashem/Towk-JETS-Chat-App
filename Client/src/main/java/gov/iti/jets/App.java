@@ -67,6 +67,9 @@ public class App extends Application {
         }
         stage.setScene(dashScene);
         stage.show();
+        stage.setOnCloseRequest((e)->{
+            System.exit(0);
+        });
     }
 
     public static void main(String[] args) {

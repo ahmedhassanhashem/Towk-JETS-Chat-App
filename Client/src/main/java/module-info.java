@@ -18,4 +18,5 @@ module gov.iti.jets {
     requires jakarta.xml.bind;
     opens gov.iti.jets.config to jakarta.xml.bind;
     opens gov.iti.jets.dto to jakarta.xml.bind;
+    opens gov.iti.jets.client to java.rmi;
 }

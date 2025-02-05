@@ -153,8 +153,15 @@ public class MessageChatController {
         attachement = null;
         text.setText("");
     }
-    
-    public void setUserDTO(UserDTO user, int chatID, ScheduledExecutorService scheduledExecutorService) {
+    public void addToChats(MessageDTO m){
+        Platform.runLater(() -> {
+        chats.add(m);
+            if (autoScrollEnabled) {
+                listView.scrollTo(chats.size() - 1);
+            }
+        });
+    }
+    public void setUserDTO(UserDTO user, int chatID) {
         this.chatID = chatID;
         listView.setItems(chats);
         userDTO = user;
@@ -179,23 +186,6 @@ public class MessageChatController {
         // Setup the scroll listener (only once).
         setupScrollListener();
         
-        // Start the polling task.
-        messagePollingTask = scheduledExecutorService.scheduleAtFixedRate(() -> {
-            try {
-                List<MessageDTO> newMessages = messageDAO.findAllMessages(chatID);
-                // Use size or a property (e.g., last message ID) to determine changes.
-                if (newMessages.size() != chats.size()) {
-                    Platform.runLater(() -> {
-                        chats.setAll(newMessages);
-                        if (autoScrollEnabled) {
-                            listView.scrollTo(chats.size() - 1);
-                        }
-                    });
-                }
-            } catch (RemoteException e) {
-                e.printStackTrace();
-            }
-        }, 500, 500, TimeUnit.MILLISECONDS); // Adjust polling interval as needed
         
         // Set the cell factory for messages.
         listView.setCellFactory(new Callback<ListView<MessageDTO>, ListCell<MessageDTO>>() {
