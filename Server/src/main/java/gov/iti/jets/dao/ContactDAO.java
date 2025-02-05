@@ -58,7 +58,12 @@ public class ContactDAO extends UnicastRemoteObject implements ContactDAOInterfa
                 System.out.println("Receiver account not found");
                 return "Receiver account not found";
             }
+            if (checkSent(receiverPhone,senderPhone)) {
+                acceptContactRequest(receiverPhone,senderPhone);
+                acceptContactRequest(senderPhone,receiverPhone);
 
+                return "Sent Successfully";
+            }
             ps.setString(1, senderPhone);
             ps.setString(2, receiverPhone);
 
@@ -89,7 +94,7 @@ public class ContactDAO extends UnicastRemoteObject implements ContactDAOInterfa
 
         } catch (SQLException e) {
             e.printStackTrace();
-            return true;
+            return false;
         }
     }
 
