@@ -69,51 +69,6 @@ public class ChatsController {
     private ScheduledExecutorService scheduledExecutorService;
 
 
-    private void loadChat(UserDTO user) {
-        try {
-            FXMLLoader chatLoader = new FXMLLoader(getClass().getResource("/screens/messageChat.fxml"));
-            BorderPane chat = chatLoader.load();
-            MessageChatController messageController = chatLoader.getController();
-
-            // Stop previous chat's polling
-            if (currentMessageController != null) {
-                currentMessageController.stopMessagePolling();
-            }
-            currentMessageController = messageController;
-
-            // Set up the new controller
-            messageController.setStage(stage);
-            messageController.setUserDTO(userDTO, chatDao.findExistingSingleChat(userDTO.getUserID(), user.getUserID()), scheduledExecutorService);
-
-            borderPane.setCenter(chat);
-        } catch (IOException | SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void loadGroupChat(UserDTO group) {
-        try {
-            FXMLLoader chatLoader = new FXMLLoader(getClass().getResource("/screens/messageChat.fxml"));
-            BorderPane chat = chatLoader.load();
-            MessageChatController messageController = chatLoader.getController();
-            
-            // Stop previous polling if needed
-            // if (currentMessageController != null) {
-            //     currentMessageController.stopMessagePolling();
-            // }
-            
-            messageController.setStage(stage);
-            // For group chats, the chat ID is already provided by group.getUserID()
-            messageController.setUserDTO(userDTO, group.getUserID(), scheduledExecutorService);
-            // Optionally set the image and name if needed:
-            messageController.setImage(group.getUserPicture());
-            messageController.setName(group.getName());
-            
-            borderPane.setCenter(chat);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 
     public void setStage(Stage s) {
         stage = s;
@@ -441,7 +396,69 @@ public class ChatsController {
     public void setScheduledExecutorService(ScheduledExecutorService scheduledExecutorService) {
         this.scheduledExecutorService = scheduledExecutorService;
     }
+
+
+    private void loadChat(UserDTO user) {
+        try {
+            FXMLLoader chatLoader = new FXMLLoader(getClass().getResource("/screens/messageChat.fxml"));
+            BorderPane chat = chatLoader.load();
+            MessageChatController messageController = chatLoader.getController();
+
+            // Stop previous chat's polling
+            if (currentMessageController != null) {
+                currentMessageController.stopMessagePolling();
+            }
+            currentMessageController = messageController;
+
+            // Set user info and initialize chat
+            messageController.setImage(user.getUserPicture());
+            messageController.setName(user.getName());
+            messageController.setStatus(user.getUserStatus().toString());
+            messageController.setStage(stage);
+            
+            // Load chat messages
+            messageController.setUserDTO(userDTO, 
+                chatDao.findExistingSingleChat(userDTO.getUserID(), user.getUserID()), 
+                scheduledExecutorService
+            );
+
+            borderPane.setCenter(chat);
+        } catch (IOException | SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void loadGroupChat(UserDTO group) {
+        try {
+            FXMLLoader chatLoader = new FXMLLoader(getClass().getResource("/screens/messageChat.fxml"));
+            BorderPane chat = chatLoader.load();
+            MessageChatController messageController = chatLoader.getController();
+
+            if (currentMessageController != null) {
+                currentMessageController.stopMessagePolling();
+            }
+            currentMessageController = messageController;
+
+            // Set group info
+            messageController.setImage(group.getUserPicture());
+            messageController.setName(group.getName());
+            messageController.setStatus("Group Chat"); // Or appropriate status
+            messageController.setStage(stage);
+
+            // Initialize group chat
+            messageController.setUserDTO(userDTO, group.getUserID(), scheduledExecutorService);
+
+            borderPane.setCenter(chat);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    
+
 }
+
+
 
 
 

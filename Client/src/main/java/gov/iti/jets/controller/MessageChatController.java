@@ -174,39 +174,45 @@ public class MessageChatController {
         this.chatID = chatID;
         listView.setItems(chats);
         userDTO = user;
+
         System.out.println(chatID);
+
         // Cancel any existing task before starting a new one
         if (messagePollingTask != null) {
             messagePollingTask.cancel(false);
         }
 
+        ObservableList<MessageDTO> chatDTOs = FXCollections.observableArrayList();
+        try {
+            chatDTOs = FXCollections.observableArrayList(messageDAO.findAllMessages(chatID));
+            chats.addAll(chatDTOs);
+            // listView.scrollTo(chats.size() - 1);
+
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
 
         messagePollingTask = scheduledExecutorService.scheduleAtFixedRate(() -> {
             try {
                 List<MessageDTO> newMessages = messageDAO.findAllMessages(chatID);
-                Platform.runLater(() -> {
-                    boolean wasAtBottom = isScrolledToBottom();
-                    // Clear and reload to avoid duplicates
-                    chats.setAll(newMessages);
-                    // listView.scrollTo(chats.size() - 1);
-                    if (wasAtBottom) 
-                        listView.scrollTo(chats.size() - 1);
-                });
-                
+                if (!chats.isEmpty() && !newMessages.equals(chats.get(chats.size()-1))) {
+                    Platform.runLater(() -> {
+                        boolean wasAtBottom = isScrolledToBottom();
+                        // Clear and reload to avoid duplicates
+                        chats.setAll(newMessages);
+                        // listView.scrollTo(chats.size() - 1);
+                        if (wasAtBottom) 
+                            listView.scrollTo(chats.size() - 1);
+                    });
+                }
             } catch (RemoteException e) {
                 e.printStackTrace();
             }
-        }, 1000, 1000, TimeUnit.MILLISECONDS); // Increase interval to 1 second
+        }, 100, 100, TimeUnit.MILLISECONDS); 
 
 
 
-        // ObservableList<MessageDTO> chatDTOs = FXCollections.observableArrayList();
-        // try {
-        //     chatDTOs = FXCollections.observableArrayList(messageDAO.findAllMessages(chatID));
-        // } catch (RemoteException e) {
-        //     // TODO Auto-generated catch block
-        //     e.printStackTrace();
-        // }
+        
 
         listView.setCellFactory(new Callback<ListView<MessageDTO>, ListCell<MessageDTO>>() {
             @Override
@@ -258,7 +264,6 @@ public class MessageChatController {
             }
         });
 
-        // chats.addAll(chatDTOs);
     }
     
     @FXML
