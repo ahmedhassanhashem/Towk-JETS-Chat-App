@@ -65,7 +65,12 @@ public class MessageChatController {
     private Stage stage;
     Images images = new Images();
     private byte[] upload;
+    private ChatCadController chatCadController;
     
+    public void setChatCadController(ChatCadController chatCadController) {
+        this.chatCadController = chatCadController;
+    }
+
     // We'll hold a reference to the vertical ScrollBar so that we add the listener only once.
     private ScrollBar verticalBar;
 
@@ -159,6 +164,10 @@ public class MessageChatController {
             if (autoScrollEnabled) {
                 listView.scrollTo(chats.size() - 1);
             }
+            String ret = m.getMessageContent();
+            if (ret.length() > 10) ret = ret.substring(0, 10) + "...";
+            chatCadController.setText(ret);
+
         });
     }
     public void setUserDTO(UserDTO user, int chatID) {
