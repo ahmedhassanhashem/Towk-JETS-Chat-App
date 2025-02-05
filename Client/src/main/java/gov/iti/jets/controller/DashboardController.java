@@ -99,8 +99,8 @@ Executors. newScheduledThreadPool(20);
         }
         ChatsController c = contactLoader.getController();
         c.setUserDTO(userDTO);
-        c.contactScene();
         c.setStage(stage);
+        c.contactScene();
         c.setScheduledExecutorService(scheduledExecutorService);
         borderPane.setCenter(hold);
     }
@@ -118,8 +118,8 @@ Executors. newScheduledThreadPool(20);
         }
         ChatsController c = chatLoader.getController();
         c.setUserDTO(userDTO);
-        c.chatScene();
         c.setStage(stage);
+        c.chatScene();
         c.setScheduledExecutorService(scheduledExecutorService);
         borderPane.setCenter(hold);
 
@@ -185,6 +185,7 @@ Executors. newScheduledThreadPool(20);
         }
         ChatsController c = chatLoader.getController();
         c.setUserDTO(userDTO);
+        c.setStage(stage);
         c.groupScene();
         c.setScheduledExecutorService(scheduledExecutorService);
         borderPane.setCenter(hold);
