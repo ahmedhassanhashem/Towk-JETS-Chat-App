@@ -40,9 +40,11 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
+import javafx.scene.control.ScrollBar;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -183,10 +185,14 @@ public class MessageChatController {
             try {
                 List<MessageDTO> newMessages = messageDAO.findAllMessages(chatID);
                 Platform.runLater(() -> {
+                    boolean wasAtBottom = isScrolledToBottom();
                     // Clear and reload to avoid duplicates
                     chats.setAll(newMessages);
                     // listView.scrollTo(chats.size() - 1);
+                    if (wasAtBottom) 
+                        listView.scrollTo(chats.size() - 1);
                 });
+                
             } catch (RemoteException e) {
                 e.printStackTrace();
             }
@@ -272,7 +278,10 @@ public class MessageChatController {
         try {
             // Only send the message; do NOT add to chats here
             messageDAO.create(msg);
-            // Platform.runLater(()->{chats.add(msg);});
+            Platform.runLater(() -> {
+                // chats.add(msg);
+                listView.scrollTo(chats.size() - 1);
+            });
         } catch (RemoteException e) {
             e.printStackTrace();
         }
@@ -337,5 +346,27 @@ public class MessageChatController {
             messagePollingTask = null;
         }
     }
+
+
+    // --- Helper method to check if ListView is scrolled to bottom ---
+private boolean isScrolledToBottom() {
+    // Lookup the vertical scrollbar using CSS lookup.
+    ScrollBar verticalScrollbar = null;
+    for (Node node : listView.lookupAll(".scroll-bar")) {
+        if (node instanceof ScrollBar) {
+            ScrollBar sb = (ScrollBar) node;
+            if (sb.getOrientation() == javafx.geometry.Orientation.VERTICAL) {
+                verticalScrollbar = sb;
+                break;
+            }
+        }
+    }
+    if (verticalScrollbar != null) {
+        // Allow a small tolerance (0.1)
+        return verticalScrollbar.getValue() >= verticalScrollbar.getMax() - 0.1;
+    }
+    return true; // If not found, assume we are at the bottom.
+}
+
 
 }
