@@ -4,7 +4,7 @@ import java.rmi.*;
 
 import gov.iti.jets.dto.MessageDTO;
 
-public interface ClientInt extends Remote
+public interface ClientInt<T> extends Remote
 {
-void sendMessage(MessageDTO message) throws RemoteException;
+void sendMessage(T message) throws RemoteException;
 }

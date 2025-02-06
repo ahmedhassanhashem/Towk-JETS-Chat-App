@@ -17,7 +17,7 @@ import gov.iti.jets.dto.UserStatus;
 import gov.iti.jets.server.Images;
 
 public class ContactDAO extends UnicastRemoteObject implements ContactDAOInterface{
-
+    
     DatabaseConnectionManager dm;
     Images images = new Images();
 
