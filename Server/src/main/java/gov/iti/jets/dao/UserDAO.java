@@ -120,8 +120,8 @@ public class UserDAO extends UnicastRemoteObject implements UserDAOInterface {
             preparedStatement.setString(2, user.getPassword());
             re = preparedStatement.executeQuery();
             UserDTO ret = convert(re);
-            ret.setUserStatus(UserStatus.ONLINE);
             if(ret!=null){
+                ret.setUserStatus(UserStatus.ONLINE);
                 for(int i : online.keySet()){
                     if(checkFriend(i,ret.getUserID())){
                         online.get(i).forEach((e ->{

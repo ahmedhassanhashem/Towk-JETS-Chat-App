@@ -78,6 +78,7 @@ public class ChatsController {
     private ScheduledExecutorService scheduledExecutorService;
     private ClientImpl client;
     private ClientImplContact clientContact;
+    private ClientImplContact clientContactChat;
     private ArrayList<ClientImplContact> arrClientContact = new ArrayList<>();
 
     public void setStage(Stage s) {
@@ -188,10 +189,27 @@ public class ChatsController {
                                                     UnicastRemoteObject.unexportObject(client, true);
                                                 } catch (RemoteException e1) {
                                                     // TODO Auto-generated catch block
-                                                    e1.printStackTrace();
+                                                    // e1.printStackTrace();
                                                 }
                                             }
-                                            client = loadChat(currentUser,chatCardController);
+                                            if(clientContactChat !=null){
+                                                // unloadChat(entry.getKey(), entry.getValue());
+                                                try {
+                                                userDAO.unRegister(userDTO.getUserID(), clientContactChat);
+                                                try {
+                                                    UnicastRemoteObject.unexportObject(clientContactChat, true);
+                                                } catch (Exception ew) {
+                                                    // TODO: handle exception
+                                                }
+                                            } catch (RemoteException e1) {
+                                                    // TODO Auto-generated catch block
+                                                    // e1.printStackTrace();
+                                                }
+                                            }
+
+                                            ArrayList<ClientInt> tmp = loadChat(currentUser,chatCardController);
+                                                client = (ClientImpl)tmp.get(0);
+                                                clientContactChat = (ClientImplContact)tmp.get(1);
                                             // Clear selection to avoid issues on re-rendering
                                             getListView().getSelectionModel().clearSelection();
                                         }
@@ -205,7 +223,19 @@ public class ChatsController {
                                                     UnicastRemoteObject.unexportObject(client, true);
                                                 } catch (RemoteException e1) {
                                                     // TODO Auto-generated catch block
-                                                    e1.printStackTrace();
+                                                    // e1.printStackTrace();
+                                                }
+                                            }
+                                            if(clientContactChat !=null){
+                                                // unloadChat(entry.getKey(), entry.getValue());
+                                                try {
+                                                    userDAO.unRegister(userDTO.getUserID(), clientContactChat);
+
+                                                        UnicastRemoteObject.unexportObject(clientContactChat, true);
+
+                                            } catch (RemoteException e1) {
+                                                    // TODO Auto-generated catch block
+                                                    // e1.printStackTrace();
                                                 }
                                             }
                                         }
@@ -218,7 +248,21 @@ public class ChatsController {
                                                 UnicastRemoteObject.unexportObject(client, true);
                                             } catch (RemoteException e1) {
                                                 // TODO Auto-generated catch block
-                                                e1.printStackTrace();
+                                                // e1.printStackTrace();
+                                            }
+                                        }
+                                        if(clientContactChat !=null){
+                                            // unloadChat(entry.getKey(), entry.getValue());
+                                            try {
+                                                userDAO.unRegister(userDTO.getUserID(), clientContactChat);
+                                                try {
+                                                    UnicastRemoteObject.unexportObject(clientContactChat, true);
+                                                } catch (Exception ew) {
+                                                    // TODO: handle exception
+                                                }
+                                        } catch (RemoteException e1) {
+                                                // TODO Auto-generated catch block
+                                                // e1.printStackTrace();
                                             }
                                         }
                                     });
@@ -310,10 +354,27 @@ public class ChatsController {
                                                     UnicastRemoteObject.unexportObject(client, true);
                                                 } catch (RemoteException e1) {
                                                         // TODO Auto-generated catch block
-                                                        e1.printStackTrace();
+                                                        // e1.printStackTrace();
                                                     }
                                                 }
-                                                client = loadChat(currentUser, chatId);
+                                                if(clientContactChat !=null){
+                                                    // unloadChat(entry.getKey(), entry.getValue());
+                                                    try {
+                                                    userDAO.unRegister(userDTO.getUserID(), clientContactChat);
+                                                    try {
+                                                        UnicastRemoteObject.unexportObject(clientContactChat, true);
+                                                    } catch (Exception ew) {
+                                                        // TODO: handle exception
+                                                    }
+                                                } catch (RemoteException e1) {
+                                                        // TODO Auto-generated catch block
+                                                        // e1.printStackTrace();
+                                                    }
+                                                }
+
+                                                ArrayList<ClientInt> tmp = loadChat(currentUser, chatId);
+                                                client = (ClientImpl)tmp.get(0);
+                                                clientContactChat = (ClientImplContact)tmp.get(1);
                                             } catch (RemoteException | SQLException ex) {
                                                 ex.printStackTrace();
                                             }
@@ -330,6 +391,20 @@ public class ChatsController {
                                                     UnicastRemoteObject.unexportObject(client, true);
 
                                                 } catch (RemoteException e1) {
+                                                    // TODO Auto-generated catch block
+                                                    // e1.printStackTrace();
+                                                }
+                                            }
+                                            if(clientContactChat !=null){
+                                                // unloadChat(entry.getKey(), entry.getValue());
+                                                try {
+                                                    userDAO.unRegister(userDTO.getUserID(), clientContactChat);
+                                            try {
+                                                UnicastRemoteObject.unexportObject(clientContactChat, true);
+                                            } catch (Exception e) {
+                                                // TODO: handle exception
+                                            }
+                                            } catch (RemoteException e1) {
                                                     // TODO Auto-generated catch block
                                                     // e1.printStackTrace();
                                                 }
@@ -351,7 +426,7 @@ public class ChatsController {
                                                         }
                                                     } catch (RemoteException e1) {
                                                         // TODO Auto-generated catch block
-                                                        e1.printStackTrace();
+                                                        // e1.printStackTrace();
                                                     }
                                                 }
                                             
@@ -365,10 +440,24 @@ public class ChatsController {
                                                 UnicastRemoteObject.unexportObject(client, true);
                                             } catch (RemoteException e1) {
                                                 // TODO Auto-generated catch block
-                                                e1.printStackTrace();
+                                                // e1.printStackTrace();
                                             }
                                         }
-                                        if(arrClientContact.size() != 0){
+                                        if(clientContactChat !=null){
+                                            // unloadChat(entry.getKey(), entry.getValue());
+                                            try {
+                                                userDAO.unRegister(userDTO.getUserID(), clientContactChat);
+                                                try {
+                                                    UnicastRemoteObject.unexportObject(clientContactChat, true);
+                                                } catch (Exception ew) {
+                                                    // TODO: handle exception
+                                                }
+                                        } catch (RemoteException e1) {
+                                                // TODO Auto-generated catch block
+                                                // e1.printStackTrace();
+                                            }
+                                        }
+
                                             for(ClientImplContact c :arrClientContact){
 
                                                 try {
@@ -382,10 +471,10 @@ public class ChatsController {
                                                     }
                                                     } catch (RemoteException e1) {
                                                     // TODO Auto-generated catch block
-                                                    e1.printStackTrace();
+                                                    // e1.printStackTrace();
                                                 }
                                             }
-                                        }
+
                                     });
 
                                 } catch (IOException e) {
@@ -470,7 +559,7 @@ public class ChatsController {
                                                     UnicastRemoteObject.unexportObject(client, true);
                                                 } catch (RemoteException e1) {
                                                     // TODO Auto-generated catch block
-                                                    e1.printStackTrace();
+                                                    // e1.printStackTrace();
                                                 }
                                             }
                                             client =loadGroupChat(currentUser,chatCardController);
@@ -485,13 +574,12 @@ public class ChatsController {
                                                     UnicastRemoteObject.unexportObject(client, true);
                                                 } catch (RemoteException e1) {
                                                     // TODO Auto-generated catch block
-                                                    e1.printStackTrace();
+                                                    // e1.printStackTrace();
                                                 }
                                             }
                                         }
                                     });
                                     stage.setOnCloseRequest(e->{
-                                        System.out.println(client);
                                         if(client !=null){
                                             // unloadChat(entry.getKey(), entry.getValue());
                                             try {
@@ -499,7 +587,7 @@ public class ChatsController {
                                                 UnicastRemoteObject.unexportObject(client, true);
                                             } catch (RemoteException e1) {
                                                 // TODO Auto-generated catch block
-                                                e1.printStackTrace();
+                                                // e1.printStackTrace();
                                             }
                                         }
                                     });
@@ -574,7 +662,7 @@ public class ChatsController {
 
 
 
-    private ClientImpl loadChat(UserDTO user, int chatId) {
+    private ArrayList<ClientInt> loadChat(UserDTO user, int chatId) {
         try {
             FXMLLoader chatLoader = new FXMLLoader(getClass().getResource("/screens/messageChat.fxml"));
             BorderPane chat = chatLoader.load();
@@ -595,7 +683,12 @@ public class ChatsController {
             messageDAO.register(chatId, clientImpl);
             messageController.setUserDTO(userDTO, chatId);
             borderPane.setCenter(chat);
-            return clientImpl;
+            ArrayList<ClientInt> ret = new ArrayList<>();
+            ret.add(clientImpl);
+            ClientImplContact clientImplContact = new ClientImplContact(user.getUserID(), messageController);
+            userDAO.register(userDTO.getUserID(), clientImplContact);
+            ret.add(clientImplContact);
+            return ret;
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -604,7 +697,7 @@ public class ChatsController {
     
 
 
-    private ClientImpl loadChat(UserDTO user,ChatCadController chatCardCadController) {
+    private ArrayList<ClientInt> loadChat(UserDTO user,ChatCadController chatCardCadController) {
         try {
             FXMLLoader chatLoader = new FXMLLoader(getClass().getResource("/screens/messageChat.fxml"));
             BorderPane chat = chatLoader.load();
@@ -632,7 +725,12 @@ public class ChatsController {
             chatId
             );
             borderPane.setCenter(chat);
-            return clientImpl;
+            ArrayList<ClientInt> ret = new ArrayList<>();
+            ret.add(clientImpl);
+            ClientImplContact clientImplContact = new ClientImplContact(user.getUserID(), messageController);
+            userDAO.register(userDTO.getUserID(), clientImplContact);
+            ret.add(clientImplContact);
+            return ret;
         } catch (IOException | SQLException e) {
             e.printStackTrace();
         }
@@ -670,17 +768,6 @@ public class ChatsController {
         return null;
     }
 
-    private void unloadChat( int chatId,MessageChatController msg) {
-        try {
-           
-            // Pass the new chatId directly instead of calling findExistingSingleChat again.
-            ClientImpl clientImpl = new ClientImpl(chatId, msg);
-            messageDAO.register(chatId, clientImpl);
-            messageDAO.unRegister(chatId, clientImpl);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 }
 
 

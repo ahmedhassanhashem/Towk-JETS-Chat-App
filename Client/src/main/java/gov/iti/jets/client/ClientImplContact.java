@@ -8,6 +8,7 @@ import gov.iti.jets.controller.MessageChatController;
 import gov.iti.jets.dto.MessageDTO;
 import gov.iti.jets.dto.UserDTO;
 import gov.iti.jets.dto.UserStatus;
+import javafx.application.Platform;
 import javafx.scene.paint.Color;
 
 public class ClientImplContact extends UnicastRemoteObject implements ClientInt<UserDTO> {
@@ -32,6 +33,13 @@ public class ClientImplContact extends UnicastRemoteObject implements ClientInt<
                 } else {
                     contactCardController.getStatus().setFill(Color.GREEN);
                 }
+            }
+            if(msgControl instanceof MessageChatController messageChatController){
+                Platform.runLater(()->{
+
+                    messageChatController.setStatus(user.getUserStatus().toString());
+                });
+
             }
         }
     }
