@@ -11,6 +11,8 @@ import java.rmi.registry.Registry;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 
+import com.mysql.cj.xdevapi.ClientImpl;
+
 import gov.iti.jets.config.RMIConfig;
 import gov.iti.jets.dao.UserDAOInterface;
 import gov.iti.jets.dto.UserDTO;
@@ -40,6 +42,7 @@ public class DashboardController {
     private Scene dashScene;
     private UserDTO userDTO = new UserDTO();
     private ScheduledExecutorService scheduledExecutorService;
+    UserDAOInterface userDAO;
     ChatsController chat;
     private DashboardController dashboardController;
     @FXML
@@ -86,7 +89,22 @@ public class DashboardController {
         chat.setScheduledExecutorService(scheduledExecutorService);
         chat.setStage(s);
         // System.out.println(stage);
+        Platform.runLater(() -> {
+            Runtime.getRuntime().addShutdownHook(new Thread(() -> {
 
+                try {
+                        userDAO.changeStatus(userDTO.getUserID(), UserStatus.OFFLINE.toString());
+                        userDTO.setUserStatus(UserStatus.OFFLINE);
+                        userDAO.propagateOffline(userDTO);
+                    
+                } catch (RemoteException e1) {
+                    // TODO Auto-generated catch block
+                    e1.printStackTrace();
+                }
+                
+
+        }));
+        });
         try {
             RMIConfig p = null;
 
@@ -101,20 +119,11 @@ public class DashboardController {
 
             Registry reg;
             reg = LocateRegistry.getRegistry(ip, port);
-            UserDAOInterface userDAO = (UserDAOInterface) reg.lookup("userDAO");
-            Platform.runLater(() -> {
+            userDAO = (UserDAOInterface) reg.lookup("userDAO");
+            
+            
+          
 
-                stage.setOnCloseRequest(e -> {
-                    // System.out.println("as");
-                    try {
-                        userDAO.changeStatus(userDTO.getUserID(), UserStatus.OFFLINE.toString());
-                    } catch (RemoteException e1) {
-                        // TODO Auto-generated catch block
-                        e1.printStackTrace();
-                    }
-
-                });
-            });
         } catch (RemoteException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -145,7 +154,7 @@ public class DashboardController {
         ChatsController c = contactLoader.getController();
         c.setUserDTO(userDTO);
         c.setStage(stage);
-        c.contactScene();
+        c.contactScene(hold);
         c.setScheduledExecutorService(scheduledExecutorService);
         borderPane.setCenter(hold);
     }
@@ -308,15 +317,9 @@ public class DashboardController {
             UserDAOInterface userDAO = (UserDAOInterface) reg.lookup("userDAO");
 
             userDAO.changeStatus(userDTO.getUserID(), UserStatus.OFFLINE.toString());
-            stage.setOnCloseRequest(e -> {
-                try {
-                    userDAO.changeStatus(userDTO.getUserID(), UserStatus.OFFLINE.toString());
-                } catch (RemoteException e1) {
-                    // TODO Auto-generated catch block
-                    e1.printStackTrace();
-                }
+            userDTO.setUserStatus(UserStatus.OFFLINE);
+            userDAO.propagateOffline(userDTO);
 
-            });
         } catch (RemoteException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();

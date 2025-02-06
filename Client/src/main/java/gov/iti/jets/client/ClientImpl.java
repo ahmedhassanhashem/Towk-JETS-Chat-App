@@ -6,7 +6,7 @@ import java.rmi.server.UnicastRemoteObject;
 import gov.iti.jets.controller.MessageChatController;
 import gov.iti.jets.dto.MessageDTO;
 
-public class ClientImpl extends UnicastRemoteObject implements ClientInt {
+public class ClientImpl extends UnicastRemoteObject implements ClientInt<MessageDTO> {
     public int chatID ;
     public MessageChatController msgControl;
     public ClientImpl(int id,MessageChatController m) throws RemoteException {

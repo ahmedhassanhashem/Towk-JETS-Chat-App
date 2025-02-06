@@ -29,22 +29,15 @@ public class MessageDAO extends UnicastRemoteObject implements MessageDAOInterfa
 
     @Override
     public void register(int chatID,ClientInt clientRef) throws RemoteException {
-        // clientsVector.add(clientRef);
-        // online.put(chatID, clientRef);
-        // online.putIfAbsent(chatID, new ArrayList<ClientInt>());
+
         online.computeIfAbsent(chatID, k -> new ArrayList<>()).add(clientRef);
-        // online.get(chatID).add(clientRef);
-        for(ClientInt a:online.get(chatID)){
-            System.out.println(a);
-        }
-        System.out.println("Client added");
+
     }
 
     // Unregister a client
     @Override
     public void unRegister(int chatID,ClientInt clientRef) throws RemoteException {
-        // clientsVector.remove(clientRef);
-        // online.remove(chatID, clientRef);
+
         if (online.containsKey(chatID)) {
             List<ClientInt> clientList = online.get(chatID);
             
@@ -54,7 +47,6 @@ public class MessageDAO extends UnicastRemoteObject implements MessageDAOInterfa
                 online.remove(chatID);
             }
         }
-        System.out.println("Client removed");
     }
 
     public MessageDTO create(MessageDTO msg) throws RemoteException {

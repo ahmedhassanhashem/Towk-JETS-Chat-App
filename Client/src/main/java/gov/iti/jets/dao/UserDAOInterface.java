@@ -3,6 +3,7 @@ package gov.iti.jets.dao;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 
+import gov.iti.jets.client.ClientInt;
 import gov.iti.jets.dto.UserDTO;
 import gov.iti.jets.dto.UserMode;
 import javafx.collections.ObservableList;
@@ -29,4 +30,10 @@ public interface UserDAOInterface extends Remote {
     public void delete(int userID) throws RemoteException;
 
     public void changeStatus(int userID,String status) throws RemoteException;
+
+        public void register(int userID,ClientInt clientRef) throws RemoteException;
+
+    public void unRegister(int userID,ClientInt clientRef) throws RemoteException;
+
+    public void propagateOffline(UserDTO id) throws RemoteException;
 }

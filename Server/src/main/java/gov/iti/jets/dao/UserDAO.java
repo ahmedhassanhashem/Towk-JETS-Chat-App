@@ -9,8 +9,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
+import gov.iti.jets.client.ClientInt;
 import gov.iti.jets.dto.Gender;
 import gov.iti.jets.dto.UserDTO;
 import gov.iti.jets.dto.UserMode;
@@ -22,6 +24,8 @@ import javafx.scene.chart.PieChart;
 
 public class UserDAO extends UnicastRemoteObject implements UserDAOInterface {
 
+    HashMap<Integer,ArrayList<ClientInt>> online;
+
     DatabaseConnectionManager meh;
     Images images = new Images();
 
@@ -29,7 +33,31 @@ public class UserDAO extends UnicastRemoteObject implements UserDAOInterface {
     public UserDAO() throws RemoteException {
         super();
         meh = DatabaseConnectionManager.getInstance();
+        online = new HashMap<>();
         // con = meh.getConnection();
+    }
+
+    @Override
+    public void register(int userID,ClientInt clientRef) throws RemoteException {
+
+        online.computeIfAbsent(userID, k -> new ArrayList<>()).add(clientRef);
+
+
+    }
+
+    // Unregister a client
+    @Override
+    public void unRegister(int userID,ClientInt clientRef) throws RemoteException {
+
+        if (online.containsKey(userID)) {
+            List<ClientInt> clientList = online.get(userID);
+            
+            clientList.remove(clientRef);
+            
+            if (clientList.isEmpty()) {
+                online.remove(userID);
+            }
+        }
     }
 
     @Override
@@ -91,8 +119,23 @@ public class UserDAO extends UnicastRemoteObject implements UserDAOInterface {
             preparedStatement.setString(1, user.getPhone());
             preparedStatement.setString(2, user.getPassword());
             re = preparedStatement.executeQuery();
-
-            return convert(re);
+            UserDTO ret = convert(re);
+            ret.setUserStatus(UserStatus.ONLINE);
+            if(ret!=null){
+                for(int i : online.keySet()){
+                    if(checkFriend(i,ret.getUserID())){
+                        online.get(i).forEach((e ->{
+                            try {
+                                e.sendMessage(ret);
+                            } catch (RemoteException e1) {
+                                // TODO Auto-generated catch block
+                                e1.printStackTrace();
+                            }
+                        }));
+                    }
+                }
+            }
+            return ret;
         } catch (SQLException e) {
 
             e.printStackTrace();
@@ -101,6 +144,21 @@ public class UserDAO extends UnicastRemoteObject implements UserDAOInterface {
 
     }
 
+    @Override
+    public void propagateOffline(UserDTO id) throws RemoteException{
+        for(int i : online.keySet()){
+            if(checkFriend(i,id.getUserID())){
+                online.get(i).forEach((e ->{
+                    try {
+                        e.sendMessage(id);
+                    } catch (RemoteException e1) {
+                        // TODO Auto-generated catch block
+                        e1.printStackTrace();
+                    }
+                }));
+            }
+        }
+    }
     @Override
     public String read(int id) throws RemoteException {
 
@@ -336,6 +394,25 @@ public class UserDAO extends UnicastRemoteObject implements UserDAOInterface {
 
         } catch (SQLException e) {
             e.printStackTrace();
+        }
+    }
+    public boolean checkFriend(int user1, int user2) throws RemoteException {
+
+        String query = "SELECT uc.* FROM UserContact uc  WHERE uc.receiverID = ? AND uc.senderID = ? AND uc.requestStatus = 'ACCEPT' \n" + //
+                        "UNION SELECT uc.* FROM UserContact uc  WHERE uc.receiverID = ? AND uc.senderID = ? AND uc.requestStatus = 'ACCEPT' ;";
+
+        try (Connection con = meh.getConnection(); PreparedStatement ps = con.prepareStatement(query)) {
+
+            ps.setInt(1, user1);
+            ps.setInt(2, user2);
+            ps.setInt(3, user2);
+            ps.setInt(4, user1);
+            ResultSet re = ps.executeQuery();
+            return re.isBeforeFirst();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
         }
     }
 }
