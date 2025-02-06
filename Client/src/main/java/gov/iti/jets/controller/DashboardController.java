@@ -42,6 +42,7 @@ public class DashboardController {
     private Scene dashScene;
     private UserDTO userDTO = new UserDTO();
     private ScheduledExecutorService scheduledExecutorService;
+    BorderPane hold2;
     UserDAOInterface userDAO;
     ChatsController chat;
     private DashboardController dashboardController;
@@ -66,7 +67,7 @@ public class DashboardController {
             profileImage.setImage(image);
         }
         chat.setUserDTO(userDTO);
-        chat.chatScene();
+        chat.chatScene(hold2);
     }
 
     public void changepp() {
@@ -173,7 +174,7 @@ public class DashboardController {
         ChatsController c = chatLoader.getController();
         c.setUserDTO(userDTO);
         c.setStage(stage);
-        c.chatScene();
+        c.chatScene(hold);
         c.setScheduledExecutorService(scheduledExecutorService);
         borderPane.setCenter(hold);
 
@@ -240,7 +241,7 @@ public class DashboardController {
         ChatsController c = chatLoader.getController();
         c.setUserDTO(userDTO);
         c.setStage(stage);
-        c.groupScene();
+        c.groupScene(hold);
         c.setScheduledExecutorService(scheduledExecutorService);
         borderPane.setCenter(hold);
     }
@@ -337,16 +338,16 @@ public class DashboardController {
 
     @FXML
     private void initialize() {
-        BorderPane hold = null;
+         hold2 = null;
         FXMLLoader chatLoader = new FXMLLoader(getClass().getResource("/screens/base1.fxml"));
 
         try {
-            hold = chatLoader.load();
+            hold2 = chatLoader.load();
         } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        borderPane.setCenter(hold);
+        borderPane.setCenter(hold2);
         chat = chatLoader.getController();
 
         Circle clip = new Circle();
