@@ -19,14 +19,37 @@ public class MessageDAO extends UnicastRemoteObject implements MessageDAOInterfa
 
     DatabaseConnectionManager dm;
     HashMap<Integer,ArrayList<ClientInt>> online;
+    HashMap<Integer,ArrayList<ClientInt>> onlineChatCard;
 
     public MessageDAO() throws RemoteException {
         super();
         dm = DatabaseConnectionManager.getInstance();
         online = new HashMap<>();
+        onlineChatCard=new HashMap<>();
+
+    }
+    @Override
+    public void registerChat(int chatID,ClientInt clientRef) throws RemoteException {
+
+        onlineChatCard.computeIfAbsent(chatID, k -> new ArrayList<>()).add(clientRef);
+
 
     }
 
+    // Unregister a client
+    @Override
+    public void unRegisterChat(int chatID,ClientInt clientRef) throws RemoteException {
+
+        if (onlineChatCard.containsKey(chatID)) {
+            List<ClientInt> clientList = onlineChatCard.get(chatID);
+            
+            clientList.remove(clientRef);
+            
+            if (clientList.isEmpty()) {
+                online.remove(chatID);
+            }
+        }
+    }
     @Override
     public void register(int chatID,ClientInt clientRef) throws RemoteException {
 
@@ -73,6 +96,9 @@ public class MessageDAO extends UnicastRemoteObject implements MessageDAOInterfa
             ps.executeUpdate();
             System.out.println("Message inserted successfully.");
             for(ClientInt c: online.get(msg.getChatID()) ){
+                c.sendMessage(msg);
+            }
+            for(ClientInt c:onlineChatCard.get(msg.getChatID())){
                 c.sendMessage(msg);
             }
         } catch (SQLException e) {

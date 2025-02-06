@@ -42,6 +42,7 @@ import java.util.concurrent.ScheduledExecutorService;
 
 import gov.iti.jets.dao.UserDAOInterface;
 import gov.iti.jets.client.ClientImpl;
+import gov.iti.jets.client.ClientImplChat;
 import gov.iti.jets.client.ClientImplContact;
 import gov.iti.jets.client.ClientInt;
 import gov.iti.jets.config.RMIConfig;
@@ -79,7 +80,9 @@ public class ChatsController {
     private ClientImpl client;
     private ClientImplContact clientContact;
     private ClientImplContact clientContactChat;
+    private ClientImplChat clientChat;
     private ArrayList<ClientImplContact> arrClientContact = new ArrayList<>();
+    private ArrayList<ClientImplChat> arrClientChat = new ArrayList<>();
 
     public void setStage(Stage s) {
         stage = s;
@@ -140,7 +143,7 @@ public class ChatsController {
         
     }
 
-    public void chatScene() {
+    public void chatScene(BorderPane chatScene) {
         contacts.clear();
         listView.setItems(contacts);
         listView.setSelectionModel(new NoSelectionModel<>());
@@ -240,9 +243,29 @@ public class ChatsController {
                                             }
                                         }
                                     });
+                                    chatScene.sceneProperty().addListener((observable, oldScene, newScene) -> {
+                                        // if (oldScene != null && newScene!= null) {
+
+                                                for(ClientImplChat c :arrClientChat){
+                                                    try {
+                                                        messageDAO.unRegisterChat(c.chatID, c);
+                                                        try {
+                                                            
+                                                            UnicastRemoteObject.unexportObject(c, true);
+                                                        } catch (Exception e) {
+                                                            // TODO: handle exception
+                                                        }
+                                                    } catch (RemoteException e1) {
+                                                        // TODO Auto-generated catch block
+                                                        // e1.printStackTrace();
+                                                    }
+                                                }
+                                            
+                                        // }
+                                    });
                                     stage.setOnCloseRequest(e->{
                                         if(client !=null){
-                                            // unloadChat(entry.getKey(), entry.getValue());
+
                                             try {
                                                 messageDAO.unRegister(client.chatID, client);
                                                 UnicastRemoteObject.unexportObject(client, true);
@@ -252,7 +275,7 @@ public class ChatsController {
                                             }
                                         }
                                         if(clientContactChat !=null){
-                                            // unloadChat(entry.getKey(), entry.getValue());
+
                                             try {
                                                 userDAO.unRegister(userDTO.getUserID(), clientContactChat);
                                                 try {
@@ -261,6 +284,20 @@ public class ChatsController {
                                                     // TODO: handle exception
                                                 }
                                         } catch (RemoteException e1) {
+                                                // TODO Auto-generated catch block
+                                                // e1.printStackTrace();
+                                            }
+                                        }
+                                        for(ClientImplChat c :arrClientChat){
+                                            try {
+                                                messageDAO.unRegisterChat(c.chatID, c);
+                                                try {
+                                                    
+                                                    UnicastRemoteObject.unexportObject(c, true);
+                                                } catch (Exception ea) {
+                                                    // TODO: handle exception
+                                                }
+                                            } catch (RemoteException e1) {
                                                 // TODO Auto-generated catch block
                                                 // e1.printStackTrace();
                                             }
@@ -282,7 +319,20 @@ public class ChatsController {
                             } catch (RemoteException e) {
                                 e.printStackTrace();
                             }
-
+                            try {
+                                try {
+                                    chatId =chatDao.findExistingSingleChat(userDTO.getUserID(), user.getUserID());
+                                } catch (SQLException e) {
+                                    // TODO Auto-generated catch block
+                                    e.printStackTrace();
+                                }
+                                clientChat = new ClientImplChat(chatId, chatCardController);
+                                arrClientChat.add(clientChat);
+                                messageDAO.registerChat(chatId, clientChat);
+                            } catch (RemoteException e) {
+                                // TODO Auto-generated catch block
+                                e.printStackTrace();
+                            }
                             // Always set the graphic, regardless of selection
                             setGraphic(chatCard);
                         }
@@ -511,7 +561,7 @@ public class ChatsController {
 
     }
 
-    public void groupScene() {
+    public void groupScene(BorderPane groupScene) {
         contacts.clear();
         listView.setItems(contacts);
         listView.setSelectionModel(new NoSelectionModel<>()); // Add this
@@ -579,12 +629,46 @@ public class ChatsController {
                                             }
                                         }
                                     });
+                                    groupScene.sceneProperty().addListener((observable, oldScene, newScene) -> {
+                                        // if (oldScene != null && newScene!= null) {
+
+                                                for(ClientImplChat c :arrClientChat){
+                                                    try {
+                                                        messageDAO.unRegisterChat(c.chatID, c);
+                                                        try {
+                                                            
+                                                            UnicastRemoteObject.unexportObject(c, true);
+                                                        } catch (Exception e) {
+                                                            // TODO: handle exception
+                                                        }
+                                                    } catch (RemoteException e1) {
+                                                        // TODO Auto-generated catch block
+                                                        // e1.printStackTrace();
+                                                    }
+                                                }
+                                            
+                                        // }
+                                    });
                                     stage.setOnCloseRequest(e->{
                                         if(client !=null){
                                             // unloadChat(entry.getKey(), entry.getValue());
                                             try {
                                                 messageDAO.unRegister(client.chatID, client);
                                                 UnicastRemoteObject.unexportObject(client, true);
+                                            } catch (RemoteException e1) {
+                                                // TODO Auto-generated catch block
+                                                // e1.printStackTrace();
+                                            }
+                                        }
+                                        for(ClientImplChat c :arrClientChat){
+                                            try {
+                                                messageDAO.unRegisterChat(c.chatID, c);
+                                                try {
+                                                    
+                                                    UnicastRemoteObject.unexportObject(c, true);
+                                                } catch (Exception ea) {
+                                                    // TODO: handle exception
+                                                }
                                             } catch (RemoteException e1) {
                                                 // TODO Auto-generated catch block
                                                 // e1.printStackTrace();
@@ -600,11 +684,14 @@ public class ChatsController {
                             chatCard.setPrefWidth(listView.getWidth() - 20);
                             chatCardController.setImage(user.getUserPicture());
                             chatCardController.setLabel(user.getName());
-    
+
                             try {
                                 String ret = messageDAO.findLastMessageGroup(user.getUserID());
                                 if (ret.length() > 10) ret = ret.substring(0, 10) + "...";
                                 chatCardController.setText(ret);
+                                clientChat = new ClientImplChat(user.getUserID(), chatCardController);
+                                arrClientChat.add(clientChat);
+                                messageDAO.registerChat(user.getUserID(), clientChat);
                             } catch (RemoteException e) {
                                 e.printStackTrace();
                             }
@@ -724,6 +811,8 @@ public class ChatsController {
             messageController.setUserDTO(userDTO, 
             chatId
             );
+
+
             borderPane.setCenter(chat);
             ArrayList<ClientInt> ret = new ArrayList<>();
             ret.add(clientImpl);

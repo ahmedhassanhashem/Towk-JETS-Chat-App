@@ -44,4 +44,6 @@ public class ClientImplContact extends UnicastRemoteObject implements ClientInt<
         }
     }
 
+
+
 }

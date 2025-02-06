@@ -24,4 +24,8 @@ public interface MessageDAOInterface extends Remote{
 
     public void unRegister(int chatID,ClientInt clientRef) throws RemoteException ;
 
+    public void registerChat(int userID,ClientInt clientRef) throws RemoteException;
+
+    public void unRegisterChat(int userID,ClientInt clientRef) throws RemoteException;
+
 }
