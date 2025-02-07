@@ -8,13 +8,17 @@ import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
+import java.rmi.server.UnicastRemoteObject;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 
 import com.mysql.cj.xdevapi.ClientImpl;
 
 import gov.iti.jets.chatbot.BotService;
+import gov.iti.jets.client.ClientImplChat;
+import gov.iti.jets.client.ClientImplContact;
 import gov.iti.jets.config.RMIConfig;
+import gov.iti.jets.dao.ChatDAOInterface;
 import gov.iti.jets.dao.UserDAOInterface;
 import gov.iti.jets.dto.UserDTO;
 import gov.iti.jets.dto.UserStatus;
@@ -28,9 +32,11 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
@@ -44,8 +50,12 @@ public class DashboardController {
     private Scene dashScene;
     private UserDTO userDTO = new UserDTO();
     private ScheduledExecutorService scheduledExecutorService;
+    BorderPane hold2;
     UserDAOInterface userDAO;
+    ChatDAOInterface chatDAO;
     ChatsController chat;
+    ClientImplContact clientImplContact;
+
     private DashboardController dashboardController;
 
     @FXML
@@ -72,7 +82,7 @@ public class DashboardController {
             profileImage.setImage(image);
         }
         chat.setUserDTO(userDTO);
-        chat.chatScene();
+        chat.chatScene(hold2);
     }
 
     public void changepp() {
@@ -99,17 +109,16 @@ public class DashboardController {
             Runtime.getRuntime().addShutdownHook(new Thread(() -> {
 
                 try {
-                        userDAO.changeStatus(userDTO.getUserID(), UserStatus.OFFLINE.toString());
-                        userDTO.setUserStatus(UserStatus.OFFLINE);
-                        userDAO.propagateOffline(userDTO);
-                    
+                    userDAO.changeStatus(userDTO.getUserID(), UserStatus.OFFLINE.toString());
+                    userDTO.setUserStatus(UserStatus.OFFLINE);
+                    userDAO.propagateOffline(userDTO);
+
                 } catch (RemoteException e1) {
                     // TODO Auto-generated catch block
                     e1.printStackTrace();
                 }
-                
 
-        }));
+            }));
         });
         try {
             RMIConfig p = null;
@@ -126,9 +135,7 @@ public class DashboardController {
             Registry reg;
             reg = LocateRegistry.getRegistry(ip, port);
             userDAO = (UserDAOInterface) reg.lookup("userDAO");
-            
-            
-          
+            chatDAO = (ChatDAOInterface) reg.lookup("chatDAO");
 
         } catch (RemoteException e) {
             // TODO Auto-generated catch block
@@ -179,7 +186,7 @@ public class DashboardController {
         ChatsController c = chatLoader.getController();
         c.setUserDTO(userDTO);
         c.setStage(stage);
-        c.chatScene();
+        c.chatScene(hold);
         c.setScheduledExecutorService(scheduledExecutorService);
         borderPane.setCenter(hold);
 
@@ -246,9 +253,70 @@ public class DashboardController {
         ChatsController c = chatLoader.getController();
         c.setUserDTO(userDTO);
         c.setStage(stage);
-        c.groupScene();
+        c.groupScene(hold);
         c.setScheduledExecutorService(scheduledExecutorService);
         borderPane.setCenter(hold);
+
+        if (clientImplContact != null) {
+            // unloadChat(entry.getKey(), entry.getValue());
+            try {
+                chatDAO.unRegister(userDTO.getUserID(), clientImplContact);
+                UnicastRemoteObject.unexportObject(clientImplContact, true);
+            } catch (RemoteException e1) {
+                // TODO Auto-generated catch block
+                // e1.printStackTrace();
+            }
+
+        }
+        try {
+            clientImplContact = new ClientImplContact(0, c);
+
+            chatDAO.register(userDTO.getUserID(), clientImplContact);
+
+            hold.sceneProperty().addListener((observable, oldScene, newScene) -> {
+                // if (oldScene != null && newScene!= null) {
+                if (clientImplContact != null) {
+                    // unloadChat(entry.getKey(), entry.getValue());
+                    try {
+                        chatDAO.unRegister(userDTO.getUserID(), clientImplContact);
+                        // UnicastRemoteObject.unexportObject(clientImplContact, true);
+                        boolean unexported = UnicastRemoteObject.unexportObject(clientImplContact, true);
+                        // System.out.println("Unexport result: " + unexported);
+                    } catch (RemoteException e1) {
+                        // TODO Auto-generated catch block
+                        e1.printStackTrace();
+                    }
+
+                }
+
+                // }
+            });
+
+        } catch (RemoteException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        Platform.runLater(() -> {
+
+            stage.setOnCloseRequest((e) -> {
+
+                settings(event);
+                StackPane temp = new StackPane();
+                borderPane.setCenter(temp);
+                try {
+                    chatDAO.unRegister(userDTO.getUserID(), clientImplContact);
+                    // UnicastRemoteObject.unexportObject(clientImplContact, true);
+                    UnicastRemoteObject.unexportObject(clientImplContact, true);
+                } catch (RemoteException e1) {
+                    // TODO Auto-generated catch block
+                    // e1.printStackTrace();
+                }
+                System.exit(0);
+                Platform.exit();
+            });
+
+        });
+
     }
 
     @FXML
@@ -307,35 +375,12 @@ public class DashboardController {
 
         stage.setScene(dashScene);
         try {
-            RMIConfig p = null;
-
-            File XMLfile = new File(getClass().getResource("/rmi.xml").toURI());
-            JAXBContext context = JAXBContext.newInstance(RMIConfig.class);
-            Unmarshaller unmarshaller = context.createUnmarshaller();
-            p = (RMIConfig) unmarshaller.unmarshal(XMLfile);
-            // System.out.println(p.getIp() +" " + p.getPort());
-
-            String ip = p.getIp();
-            int port = p.getPort();
-
-            Registry reg;
-            reg = LocateRegistry.getRegistry(ip, port);
-            UserDAOInterface userDAO = (UserDAOInterface) reg.lookup("userDAO");
 
             userDAO.changeStatus(userDTO.getUserID(), UserStatus.OFFLINE.toString());
             userDTO.setUserStatus(UserStatus.OFFLINE);
             userDAO.propagateOffline(userDTO);
 
         } catch (RemoteException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (NotBoundException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (JAXBException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (URISyntaxException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
@@ -357,16 +402,17 @@ public class DashboardController {
 
     @FXML
     private void initialize() {
-        BorderPane hold = null;
+
+        hold2 = null;
         FXMLLoader chatLoader = new FXMLLoader(getClass().getResource("/screens/base1.fxml"));
 
         try {
-            hold = chatLoader.load();
+            hold2 = chatLoader.load();
         } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        borderPane.setCenter(hold);
+        borderPane.setCenter(hold2);
         chat = chatLoader.getController();
 
         Circle clip = new Circle();
