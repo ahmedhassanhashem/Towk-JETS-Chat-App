@@ -13,6 +13,7 @@ import java.util.concurrent.ScheduledExecutorService;
 
 import com.mysql.cj.xdevapi.ClientImpl;
 
+import gov.iti.jets.chatbot.BotService;
 import gov.iti.jets.config.RMIConfig;
 import gov.iti.jets.dao.UserDAOInterface;
 import gov.iti.jets.dto.UserDTO;
@@ -29,6 +30,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
@@ -37,7 +39,7 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
 public class DashboardController {
-
+    private boolean botService = false;
     private Stage stage;
     private Scene dashScene;
     private UserDTO userDTO = new UserDTO();
@@ -45,6 +47,10 @@ public class DashboardController {
     UserDAOInterface userDAO;
     ChatsController chat;
     private DashboardController dashboardController;
+
+    @FXML
+    private HBox bot;
+
     @FXML
     private Label nameLabel;
 
@@ -334,6 +340,20 @@ public class DashboardController {
             e.printStackTrace();
         }
     }
+
+    @FXML
+    private void chatbot(){
+        botService = !botService;
+        BotService.getInstance().setBotServiceStatus(botService);
+        if(botService){
+            bot.getStyleClass().remove("hbox");
+            bot.getStyleClass().add("selected");
+        }else{
+            bot.getStyleClass().remove("selected");
+            bot.getStyleClass().add("hbox");
+        }
+    }
+   
 
     @FXML
     private void initialize() {

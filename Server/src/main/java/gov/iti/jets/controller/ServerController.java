@@ -10,6 +10,8 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 
+import gov.iti.jets.chatbot.ChatbotImpl;
+import gov.iti.jets.chatbot.ChatbotInterface;
 import gov.iti.jets.config.RMIConfig;
 import gov.iti.jets.dao.AnnouncementDAO;
 import gov.iti.jets.dao.AnnouncementDAOInterface;
@@ -291,6 +293,9 @@ public class ServerController {
         ContactDAOInterface contactDAO = new ContactDAO();
         reg.rebind("contactDAO", contactDAO);
 
+        ChatbotInterface chatbot = new ChatbotImpl();
+        reg.rebind("chatbot", chatbot);
+
         Thread fileserver = new Thread(() -> FileServer.Start());
         fileserver.setDaemon(true);
         fileserver.start();
@@ -314,6 +319,8 @@ public class ServerController {
         manageController.setMessageDAO(messageDAO);
         manageController.setUserChatDAO(userChatDAO);
         manageController.setUserDAO(userDAO);
+        manageController.setChatbot(chatbot);
+
         FXMLLoader announceLoader = new FXMLLoader(getClass().getResource("/screens/announce.fxml"));
         announce = announceLoader.load();
         FXMLLoader chartLoader = new FXMLLoader(getClass().getResource("/screens/chart.fxml"));

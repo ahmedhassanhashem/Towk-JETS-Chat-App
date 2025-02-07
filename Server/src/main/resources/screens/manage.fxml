@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="200.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gov.iti.jets.controller.ManageController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="200.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gov.iti.jets.controller.ManageController">
    <top>
       <Label alignment="CENTER" text="Service Manage" textAlignment="JUSTIFY" BorderPane.alignment="BOTTOM_CENTER">
          <font>
@@ -21,12 +21,12 @@
    <center>
       <VBox alignment="CENTER" spacing="30.0" BorderPane.alignment="CENTER">
          <children>
-            <Button fx:id="startButton" onAction="#start" mnemonicParsing="false" prefHeight="62.0" prefWidth="130.0" text="Start" textFill="#0cba00">
+            <Button fx:id="startButton" mnemonicParsing="false" onAction="#start" prefHeight="62.0" prefWidth="130.0" style="-fx-background-color: linear-gradient(to bottom, #13547a 0%, #80ffc7 100%);" text="Start" textFill="#0cba00">
                <font>
                   <Font size="26.0" />
                </font>
             </Button>
-            <Button fx:id="stopButton" onAction="#stop" mnemonicParsing="false" prefHeight="59.0" prefWidth="134.0" text="Stop" textFill="#fa0000">
+            <Button fx:id="stopButton" mnemonicParsing="false" onAction="#stop" prefHeight="59.0" prefWidth="134.0" style="-fx-background-color: linear-gradient(to bottom, #13547a 0%, #80ffc7 100%);" text="Stop" textFill="#fa0000">
                <font>
                   <Font size="26.0" />
                </font>

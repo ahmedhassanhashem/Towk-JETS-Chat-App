@@ -16,5 +16,8 @@ module gov.iti.jets {
     opens gov.iti.jets.dao to java.rmi;
     exports gov.iti.jets.dao;
     requires jakarta.xml.bind;
+    requires org.json;
+	requires okhttp3;
+    exports gov.iti.jets.chatbot;
     opens gov.iti.jets.config to jakarta.xml.bind;
 }

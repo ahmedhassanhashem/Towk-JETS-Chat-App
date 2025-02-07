@@ -14,7 +14,7 @@
 
 <GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" styleClass="grid" stylesheets="@../styles/server.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gov.iti.jets.controller.LoginController">
   <columnConstraints>
-    <ColumnConstraints hgrow="NEVER" maxWidth="200" minWidth="200" prefWidth="200" />
+    <ColumnConstraints hgrow="NEVER" maxWidth="200.0" minWidth="200.0" prefWidth="200.0" />
     <ColumnConstraints hgrow="NEVER" />
     <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" />
   </columnConstraints>
@@ -28,18 +28,14 @@
    <children>
       <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnSpan="2147483647">
          <children>
-            <!-- <Region GridPane.rowIndex="3" /> -->
-            <Label styleClass="row0" text="Towk" textAlignment="JUSTIFY" textFill="#4b978f" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <Label layoutX="43.0" layoutY="-6.0" prefHeight="90.0" prefWidth="365.0" text="t o w k" textFill="#356299">
                <font>
-                  <Font name="Arial" size="48.0" />
+                  <Font name="Comic Sans MS Italic" size="63.0" />
                </font>
-               <padding>
-                  <Insets left="70.0" />
-               </padding>
             </Label>
          </children>
       </AnchorPane>
-      <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="30.0" styleClass="login" stylesheets="@../Styles/server.css" GridPane.columnSpan="2147483647" GridPane.rowIndex="1" GridPane.rowSpan="2147483647">
+      <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="30.0" style="-fx-background-color: linear-gradient(to bottom, #13547a 0%, #80d0c7 100%);" stylesheets="@../Styles/server.css" GridPane.columnSpan="2147483647" GridPane.rowIndex="1" GridPane.rowSpan="2147483647">
          <children>
             <Label fx:id="invalid" text="Invalid Phone/Password" textFill="#c41818" visible="false">
                <font>
@@ -56,7 +52,7 @@
                   <Insets />
                </VBox.margin>
             </PasswordField>
-            <Button fx:id="loginButton" mnemonicParsing="false" onAction="#signIn" text="Sign In">
+            <Button fx:id="loginButton" mnemonicParsing="false" onAction="#signIn" style="-fx-background-color: linear-gradient(to bottom, #13547a 0%, #80ffc7 100%);" text="Sign In">
                <VBox.margin>
                   <Insets bottom="20.0" />
                </VBox.margin>

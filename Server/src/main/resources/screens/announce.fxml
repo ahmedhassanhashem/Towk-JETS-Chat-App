@@ -35,7 +35,7 @@
    <right>
       <!-- <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER"> -->
          <!-- <children> -->
-            <Button alignment="CENTER" mnemonicParsing="false" onAction="#handleSendAnnouncement" prefHeight="42.0" prefWidth="95.0" text="Send" textAlignment="CENTER" BorderPane.alignment="CENTER">
+            <Button alignment="CENTER" mnemonicParsing="false" onAction="#handleSendAnnouncement" prefHeight="42.0" prefWidth="95.0" style="-fx-background-color: linear-gradient(to bottom, #13547a 0%, #80d0c7 100%);" text="Send" textAlignment="CENTER" BorderPane.alignment="CENTER">
                <font>
                   <Font size="24.0" />
                </font>
