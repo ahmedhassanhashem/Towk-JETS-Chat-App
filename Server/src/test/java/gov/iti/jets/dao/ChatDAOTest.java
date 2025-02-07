@@ -43,7 +43,7 @@ void testCreateGroup() throws Exception {
     when(mockPreparedStatement.getGeneratedKeys()).thenReturn(mockResultSet);
     when(mockResultSet.getInt(1)).thenReturn(200);
 
-    int result = chatDAO.createGroup(creatorPhone, participantPhones, groupName);
+    int result = chatDAO.createGroup(creatorPhone, participantPhones, groupName,null);
 
     assertEquals(200, result, "The group creation result should match the expected message");
 

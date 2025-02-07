@@ -222,7 +222,7 @@ public class CreateGroupController {
         System.out.println(groupName);
         System.out.println(creatorPhone);
       try {
-            createdChatId = chatDAO.createGroup(userDTO.getPhone(), participantPhones, groupName);
+            createdChatId = chatDAO.createGroup(userDTO.getPhone(), participantPhones, groupName,tempImageBytes);
 
             if (createdChatId != -1) {
                 System.out.println("Group created successfully. Chat ID: " + createdChatId);

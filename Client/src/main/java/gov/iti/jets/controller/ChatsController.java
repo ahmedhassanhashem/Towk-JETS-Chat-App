@@ -560,7 +560,9 @@ public class ChatsController {
         contacts.addAll(list);
 
     }
-
+    public void addOneGroup(UserDTO group){
+        contacts.add(group);
+    }
     public void groupScene(BorderPane groupScene) {
         contacts.clear();
         listView.setItems(contacts);
