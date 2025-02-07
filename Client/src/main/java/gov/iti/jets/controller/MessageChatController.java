@@ -19,6 +19,8 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
+import org.jsoup.Jsoup;
+
 import gov.iti.jets.client.Images;
 import gov.iti.jets.config.RMIConfig;
 import gov.iti.jets.dao.AttachementDAOInterface;
@@ -37,6 +39,8 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
@@ -49,6 +53,7 @@ import javafx.scene.shape.Circle;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.Callback;
+import javafx.scene.input.MouseEvent;
 
 public class MessageChatController {
     private ScheduledFuture<?> messagePollingTask;
@@ -84,6 +89,7 @@ public class MessageChatController {
     private Label status;
     @FXML
     private TextField text;
+    private String formattedText;
     
     public void setStage(Stage s) {
         stage = s;
@@ -132,10 +138,11 @@ public class MessageChatController {
         // Similar to send action; you could combine these if needed.
         sendMessage();
     }
-    
+
     private void sendMessage() {
-        String msgContent = text.getText();
-        if (msgContent.trim().isEmpty() && attachement == null) return;
+        String msgContent = (formattedText != null && !formattedText.isEmpty()) ? formattedText : text.getText();
+        if (msgContent.trim().isEmpty() && attachement == null)
+            return;
         MessageDTO msg = new MessageDTO();
         msg.setMessageContent(msgContent);
         msg.setChatID(chatID);
@@ -296,5 +303,31 @@ public class MessageChatController {
                 }
             }
         });
+    }
+
+     @FXML
+     private void openFormattingDialog(MouseEvent event) {
+         try {
+             FXMLLoader loader = new FXMLLoader(getClass().getResource("/screens/FormattingDialog.fxml"));
+             Parent root = loader.load();
+     
+             FormattingDialogController controller = loader.getController();
+             Stage stage = new Stage();
+     
+             controller.setParentController(this, stage, text.getText()); 
+     
+             stage.setTitle("Format Message");
+             stage.setScene(new Scene(root));
+             stage.show();
+         } catch (IOException e) {
+             e.printStackTrace();
+         }
+     }
+     
+     public void applyFormattedText(String formattedText) {
+        // text.setText(formattedText);
+        this.formattedText = formattedText;
+        String plainText = Jsoup.parse(formattedText).text();
+        text.setText(plainText);
     }
 }

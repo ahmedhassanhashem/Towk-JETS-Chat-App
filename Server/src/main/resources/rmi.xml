@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <rmiConfig>
     <ip>127.0.0.1</ip>
-    <port>1056</port>
+    <port>1057</port>
 </rmiConfig>

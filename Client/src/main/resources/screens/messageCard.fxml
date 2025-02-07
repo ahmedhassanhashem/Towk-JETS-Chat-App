@@ -11,21 +11,16 @@
       <VBox fx:id="messageContainer" alignment="TOP_LEFT" spacing="5">
          <children>
             <Label fx:id="nameLabel" styleClass="message-name-label" text="User Name" />
-               
-                        <HBox fx:id="messageTextContainer" spacing="5">
-                           <children>
-                              <TextFlow fx:id="messageTextFlow" maxWidth="300" styleClass="message-textflow">
-                                 <children>
+            
+            <!-- Container for attachments and message -->
             <VBox fx:id="messageTextContainerV" alignment="CENTER_LEFT" spacing="5">
-                                 <children>
-                                    <Text fx:id="messageText" text="Sample message text" />
-                                 </children>
+               <!-- Attachment link will be added here -->
             </VBox>
-                                 </children>
-                              </TextFlow>
-                           </children>
-                        </HBox>
-               
+            
+            <TextFlow fx:id="messageTextFlow" maxWidth="300" styleClass="message-textflow">
+               <Text fx:id="messageText" text="Sample message text" />
+            </TextFlow>
+            
             <Label fx:id="timeLabel" styleClass="message-time-label" text="12:34 PM" />
          </children>
       </VBox>
