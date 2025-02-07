@@ -31,8 +31,8 @@ public class ClientImplChat extends UnicastRemoteObject implements ClientInt<Mes
 
             if (msgControl instanceof ChatCadController chatCadController) {
                 String ret = user.getMessageContent();
-                if (ret.length() > 7)
-                    ret = ret.substring(0, 7) + "...";
+                // if (ret.length() > 7)
+                //     ret = ret.substring(0, 7) + "...";
                 String ret2= ret;
                 {
                     Platform.runLater(() -> {

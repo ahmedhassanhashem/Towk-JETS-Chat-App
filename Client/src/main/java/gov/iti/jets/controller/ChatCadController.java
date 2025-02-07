@@ -42,7 +42,7 @@ public class ChatCadController {
 
 
     public void setText(String content) {
-        // System.out.println("Original Content1: " + content);
+        System.out.println("Original Content1: " + content);
         if (content != null) {
             text.getChildren().clear();
             displayFormattedContent(content);
