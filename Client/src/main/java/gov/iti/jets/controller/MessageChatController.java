@@ -140,7 +140,13 @@ public class MessageChatController {
     }
 
     private void sendMessage() {
-        String msgContent = (formattedText != null && !formattedText.isEmpty()) ? formattedText : text.getText();
+        // String msgContent = (formattedText != null && !formattedText.isEmpty()) ? formattedText : text.getText();
+        String msgContent;
+        if (formattedText != null && !formattedText.isEmpty()) {
+            msgContent = formattedText;
+        } else {
+            msgContent = "<html><body><p>" + text.getText().replace("\n", "<br>") + "</p></body></html>";
+        }
         if (msgContent.trim().isEmpty() && attachement == null)
             return;
         MessageDTO msg = new MessageDTO();
@@ -172,7 +178,7 @@ public class MessageChatController {
                 listView.scrollTo(chats.size() - 1);
             }
             String ret = m.getMessageContent();
-            if (ret.length() > 10) ret = ret.substring(0, 10) + "...";
+            //if (ret.length() > 10) ret = ret.substring(0, 10) + "...";
             chatCadController.setText(ret);
 
         });
