@@ -302,7 +302,9 @@ public class DashboardController {
 
                 settings(event);
                 StackPane temp = new StackPane();
+                StackPane temp2 = new StackPane();
                 borderPane.setCenter(temp);
+                stage.setScene(new Scene(temp2));
                 try {
                     chatDAO.unRegister(userDTO.getUserID(), clientImplContact);
                     // UnicastRemoteObject.unexportObject(clientImplContact, true);
@@ -311,6 +313,14 @@ public class DashboardController {
                     // TODO Auto-generated catch block
                     // e1.printStackTrace();
                 }
+                new Thread(()->{
+                    try {
+                        Thread.sleep(500);
+                    } catch (InterruptedException e1) {
+                        // TODO Auto-generated catch block
+                        e1.printStackTrace();
+                    }
+                }).start();;
                 System.exit(0);
                 Platform.exit();
             });

@@ -170,7 +170,7 @@ public class ChatDAO extends UnicastRemoteObject implements ChatDAOInterface {
                                 e.sendMessage(group);
                             } catch (RemoteException e1) {
                                 // TODO Auto-generated catch block
-                                e1.printStackTrace();
+                                // e1.printStackTrace();
                             }
                         }));
                     }
