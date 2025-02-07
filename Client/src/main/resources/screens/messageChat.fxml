@@ -45,7 +45,7 @@
       </AnchorPane>
    </top>
    <bottom>
-      <HBox prefHeight="70.0" style="-fx-background-color: white;" BorderPane.alignment="CENTER">
+<HBox alignment="CENTER" prefHeight="70.0" spacing="10.0" style="-fx-background-color: white;" BorderPane.alignment="CENTER">
          <Button mnemonicParsing="false" onAction="#attach" style="-fx-background-color: white;">
             <graphic>
                <ImageView fitHeight="20" fitWidth="20">
@@ -55,7 +55,7 @@
                </ImageView>
             </graphic>
             <HBox.margin>
-               <Insets left="30.0" right="30.0" />
+               <Insets left="10.0" right="10.0" />
             </HBox.margin>
 
          </Button>
@@ -64,9 +64,17 @@
                <Insets />
             </HBox.margin>
             <children>
-               <TextField fx:id="text" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onAction="#textEnter" prefHeight="40.0" promptText="Type a message" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+               <TextField fx:id="text" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onAction="#textEnter" prefHeight="40.0" promptText="Type a message" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="10.0" />
             </children>
          </AnchorPane>
+         <ImageView fitHeight="20" fitWidth="20" onMouseClicked="#openFormattingDialog">
+            <image>
+               <Image url="@../images/written_2842191.png" />
+            </image>
+            <HBox.margin>
+               <Insets left="10.0" />
+            </HBox.margin>
+         </ImageView>
          <Button mnemonicParsing="false" style="-fx-background-color: white;">
             <graphic>
                <ImageView fitHeight="20" fitWidth="20">
@@ -76,7 +84,7 @@
                </ImageView>
             </graphic>
             <HBox.margin>
-               <Insets left="10.0" />
+               <Insets />
             </HBox.margin>
          </Button>
          <Button mnemonicParsing="false" onAction="#send" style="-fx-background-color: white;">
@@ -91,7 +99,7 @@
                </ImageView>
             </graphic>
             <HBox.margin>
-               <Insets left="20.0" />
+               <Insets right="10.0" />
             </HBox.margin>
          </Button>
          <padding>

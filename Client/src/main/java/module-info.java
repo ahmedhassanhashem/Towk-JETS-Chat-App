@@ -11,6 +11,8 @@ module gov.iti.jets {
     requires com.zaxxer.hikari;
     requires java.rmi;
     requires java.desktop;
+    requires javafx.web;
+    requires org.jsoup;
     opens gov.iti.jets to javafx.fxml;
     exports gov.iti.jets;
     opens gov.iti.jets.controller to javafx.fxml;

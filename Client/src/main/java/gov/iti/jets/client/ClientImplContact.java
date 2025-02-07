@@ -50,7 +50,7 @@ public class ClientImplContact extends UnicastRemoteObject implements ClientInt<
         if(msgControl instanceof ChatsController chatsController){
             Platform.runLater(()->{
 
-            chatsController.addOneGroup(user);
+            // chatsController.addOneGroup(user);
         });
 
         }
