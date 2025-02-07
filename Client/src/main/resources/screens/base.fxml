@@ -154,7 +154,7 @@
                      </children>
                   </HBox>
                   <!-- Chatbot -->
-                  <HBox alignment="CENTER_LEFT" minHeight="40.0" styleClass="hbox">
+                  <HBox fx:id="bot" onMouseClicked="#chatbot" alignment="CENTER_LEFT" minHeight="40.0" styleClass="hbox">
                      <children>
                         <ImageView fitHeight="30.0" fitWidth="30.0">
                            <image>

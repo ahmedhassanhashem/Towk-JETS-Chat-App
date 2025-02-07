@@ -411,3 +411,20 @@
 .chat-list-view .scroll-bar:vertical .track {
     -fx-background-color: transparent;
 }
+
+.selected {
+    
+-fx-background-color: transparent;
+-fx-effect: dropshadow(gaussian, rgba(93, 63, 211, 0.8), 20, 0.9, 0, 4);
+    }
+.selected:hover {
+    
+-fx-background-color: transparent;
+    
+-fx-effect: dropshadow(gaussian, rgba(50, 205, 50, 0.6), 15, 0.8, 0, 4), /* Green glow */
+                    dropshadow(gaussian, rgba(93, 63, 211, 0.8), 20, 0.9, 0, 4); /* Purple shadow */
+    
+-fx-scale-x: 1.1;
+    
+-fx-scale-y: 1.1;
+}

@@ -10,6 +10,7 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 
+import gov.iti.jets.chatbot.ChatbotInterface;
 import gov.iti.jets.config.RMIConfig;
 import gov.iti.jets.dao.AnnouncementDAOInterface;
 import gov.iti.jets.dao.AttachementDAOInterface;
@@ -29,6 +30,7 @@ import javafx.scene.control.Button;
 import javafx.stage.Stage;
 
 public class ManageController {
+    ChatbotInterface chatbot;
 
     private Stage stage;
     private Scene serverScene;
@@ -80,7 +82,9 @@ public class ManageController {
             
             reg.rebind("announcementDAO", announcementDAO);
             
-            
+
+            reg.rebind("chatbot", chatbot);
+
             reg.rebind("attachementDAO", attachementDAO);
             
             
@@ -123,6 +127,10 @@ public class ManageController {
             stopButton.setDisable(true);
             startButton.setDisable(false);
         
+    }
+
+    public void setChatbot(ChatbotInterface chatbot){
+        this.chatbot = chatbot;
     }
 
     public void setStage(Stage stage) {
