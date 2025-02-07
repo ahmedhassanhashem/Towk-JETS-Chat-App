@@ -19,6 +19,8 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
+import gov.iti.jets.chatbot.BotService;
+import gov.iti.jets.chatbot.ChatbotInterface;
 import gov.iti.jets.client.Images;
 import gov.iti.jets.config.RMIConfig;
 import gov.iti.jets.dao.AttachementDAOInterface;
@@ -53,7 +55,7 @@ import javafx.util.Callback;
 public class MessageChatController {
     private ScheduledFuture<?> messagePollingTask;
     private boolean autoScrollEnabled = true;
-    
+    ChatbotInterface chatbot;
     ObservableList<MessageDTO> chats = FXCollections.observableArrayList();
     private UserDTO userDTO = new UserDTO();
     private ChatDTO chatDTO = new ChatDTO();
@@ -158,6 +160,30 @@ public class MessageChatController {
         attachement = null;
         text.setText("");
     }
+    private void sendMessage(String msgContent) {
+        if (msgContent.trim().isEmpty() && attachement == null) return;
+        MessageDTO msg = new MessageDTO();
+        msg.setMessageContent(msgContent);
+        msg.setChatID(chatID);
+        msg.setUserID(userDTO.getUserID());
+        msg.setMessageDate(Date.valueOf(LocalDate.now()));
+        if(attachement != null) {
+            msg.setAttachmentID(attachement.getAttachmentID());
+            images.uploadAttachment(attachement.getAttachmentTitle(), upload);
+        }
+        try {
+            messageDAO.create(msg);
+            // After sending, force auto-scroll.
+            Platform.runLater(() -> {
+                listView.scrollTo(chats.size() - 1);
+                autoScrollEnabled = true;
+            });
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+        attachement = null;
+        text.setText("");
+    }
     public void addToChats(MessageDTO m){
         Platform.runLater(() -> {
         chats.add(m);
@@ -167,6 +193,16 @@ public class MessageChatController {
             String ret = m.getMessageContent();
             if (ret.length() > 10) ret = ret.substring(0, 10) + "...";
             chatCadController.setText(ret);
+
+
+            if(m.getUserID() != userDTO.getUserID() && BotService.getInstance().getBotServiceStatus()){
+                    try {
+                        sendMessage(chatbot.sendMessage(m.getMessageContent()));
+    
+                    } catch (RemoteException e) {
+                        e.printStackTrace();
+                    }
+                }
 
         });
     }
@@ -266,6 +302,7 @@ public class MessageChatController {
             userDAO = (UserDAOInterface) reg.lookup("userDAO");
             attachementDAO = (AttachementDAOInterface) reg.lookup("attachementDAO");
             messageDAO = (MessageDAOInterface) reg.lookup("messageDAO");
+            chatbot = (ChatbotInterface) reg.lookup("chatbot");
         } catch (RemoteException | NotBoundException e) {
             e.printStackTrace();
         }
