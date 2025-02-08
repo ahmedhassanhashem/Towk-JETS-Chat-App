@@ -56,6 +56,11 @@ public class ClientImplContact extends UnicastRemoteObject implements ClientInt<
         }
     }
 
+    @Override
+    public int get() throws RemoteException{
+        return userID;
+    }
+
 
 
 }

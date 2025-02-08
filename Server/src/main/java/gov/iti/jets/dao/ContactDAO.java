@@ -10,7 +10,12 @@ import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.sql.rowset.RowSetProvider;
+import javax.sql.rowset.WebRowSet;
+
+import gov.iti.jets.client.ClientInt;
 import gov.iti.jets.dto.Gender;
+import gov.iti.jets.dto.MessageDTO;
 import gov.iti.jets.dto.UserDTO;
 import gov.iti.jets.dto.UserMode;
 import gov.iti.jets.dto.UserStatus;
@@ -20,12 +25,15 @@ public class ContactDAO extends UnicastRemoteObject implements ContactDAOInterfa
     
     DatabaseConnectionManager dm;
     Images images = new Images();
+    NotificationDAO notificationDAO;
 
     public ContactDAO() throws RemoteException {
         super();
         dm = DatabaseConnectionManager.getInstance();
     }
-
+    public void setNotDao(NotificationDAO notificationDAO){
+        this.notificationDAO = notificationDAO;
+    }
     public String create(String senderPhone, String receiverPhone) throws RemoteException {
         if (receiverPhone == null) {
             return "Empty phone number";
@@ -62,14 +70,23 @@ public class ContactDAO extends UnicastRemoteObject implements ContactDAOInterfa
                 acceptContactRequest(receiverPhone,senderPhone);
                 acceptContactRequest(senderPhone,receiverPhone);
 
-                return "Sent Successfully";
+                return "Already Sent";
             }
             ps.setString(1, senderPhone);
             ps.setString(2, receiverPhone);
 
             int affectedRows = ps.executeUpdate();
             if (affectedRows > 0) {
+                UserDTO userDTO = convert(senderPhone);
+                int id = readID(receiverPhone);
+                if(notificationDAO.online.get(id)!= null && userDTO != null ){
+
+                for(ClientInt c:notificationDAO.online.get(id)){
+                    c.sendMessage(userDTO);
+                }
+            }
                 return "Sent Successfully";
+
             }
             return "Failed to send request";
 
@@ -81,6 +98,27 @@ public class ContactDAO extends UnicastRemoteObject implements ContactDAOInterfa
         }
     }
 
+    
+    private int readID(String phone){
+           String query = "SELECT * FROM User WHERE phone = ?;";
+
+        try (Connection con = dm.getConnection();
+                WebRowSet rs = RowSetProvider.newFactory().createWebRowSet();) {
+            rs.setCommand(query);
+            rs.setString(1, phone);
+            rs.execute(con);
+
+            if (rs.next()) {
+
+
+                return rs.getInt(1);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
     public boolean checkSent(String senderPhone, String receiverPhone) throws RemoteException {
 
         String query = "select * from UserContact where senderID =(select userID from User where phone = ?) and receiverID = (select userID from User where phone = ?);";
@@ -274,7 +312,7 @@ public class ContactDAO extends UnicastRemoteObject implements ContactDAOInterfa
                     // user.setPassword(re.getString("password"));
                     // user.setFirstLogin(re.getBoolean("firstLogin"));
                     user.setUserStatus(UserStatus.valueOf(re.getString("userStatus")));
-                    user.setUserMode(UserMode.valueOf(re.getString("userMode")));
+                    // user.setUserMode(UserMode.valueOf(re.getString("userMode")));
                     pendingReceived.add(user);
                 }
             }
@@ -374,6 +412,63 @@ public class ContactDAO extends UnicastRemoteObject implements ContactDAOInterfa
         }
     }
     
+    private UserDTO convert(String  phone) {
+        String query = "SELECT * FROM User WHERE phone = ?;";
+        try (Connection con = dm.getConnection();
+        PreparedStatement preparedStatement = con.prepareStatement(query);) {
+            
+            
+            preparedStatement.setString(1,phone);
+            ResultSet rs = preparedStatement.executeQuery();
 
+ 
+
+
+        UserDTO user = new UserDTO();
+        if(rs == null)return user;
+        try {
+            if (!rs.next()) {
+                return null;
+            }
+            // rs.next();
+            user.setUserID(rs.getInt("userID"));
+            user.setPhone(rs.getString("phone"));
+            user.setName(rs.getString("name"));
+            user.setCountry(rs.getString("country"));
+            user.setGender(Gender.valueOf(rs.getString("gender")));
+            user.setEmail(rs.getString("email"));
+            user.setBirthdate(rs.getDate("birthdate"));
+            user.setPassword(rs.getString("password"));
+            user.setFirstLogin(rs.getBoolean("firstLogin"));
+            user.setUserStatus(UserStatus.valueOf(rs.getString("userStatus")));
+            try {
+                user.setUserMode(UserMode.valueOf(rs.getString("userMode")));
+            } catch (IllegalArgumentException | NullPointerException e) {
+                user.setUserMode(null);
+            }
+            try {
+                user.setBio(rs.getString("bio"));
+            } catch (IllegalArgumentException | NullPointerException e) {
+                user.setBio(null);
+            }
+
+            if (rs.getString("userPicture") != null && rs.getString("userPicture").length() > 0) {
+                user.setUserPicture(images.downloadPP(rs.getString("userPicture")));
+                System.out.println(user.getUserPicture().length);
+
+            } else {
+                // System.out.println("why");
+                user.setUserPicture(null);
+            }
+
+            return user;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }        }
+         catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 
 }

@@ -9,11 +9,13 @@ import javafx.application.Platform;
 
 public class ClientImpl extends UnicastRemoteObject implements ClientInt<MessageDTO> {
     public int chatID ;
+    public int userID;
     public MessageChatController msgControl;
-    public ClientImpl(int id,MessageChatController m) throws RemoteException {
+    public ClientImpl(int id,int userID,MessageChatController m) throws RemoteException {
         super();
         chatID = id;
         msgControl = m;
+        this.userID = userID;
         
     }
 
@@ -27,5 +29,9 @@ public class ClientImpl extends UnicastRemoteObject implements ClientInt<Message
     });
 }
 
+    @Override
+    public int get() throws RemoteException{
+        return userID;
+    }
 
 }

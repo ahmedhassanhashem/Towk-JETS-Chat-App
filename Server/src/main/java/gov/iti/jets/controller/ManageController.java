@@ -1,6 +1,5 @@
 package gov.iti.jets.controller;
 
-
 import java.io.File;
 import java.net.URISyntaxException;
 import java.rmi.AccessException;
@@ -17,6 +16,7 @@ import gov.iti.jets.dao.AttachementDAOInterface;
 import gov.iti.jets.dao.ChatDAOInterface;
 import gov.iti.jets.dao.ContactDAOInterface;
 import gov.iti.jets.dao.MessageDAOInterface;
+import gov.iti.jets.dao.NotificationDAOInterface;
 import gov.iti.jets.dao.UserChatDAOInterface;
 import gov.iti.jets.dao.UserDAO;
 import gov.iti.jets.dao.UserDAOInterface;
@@ -36,21 +36,22 @@ public class ManageController {
     private Scene serverScene;
     private UserDAO userDao;
     private Registry reg;
-     UserDAOInterface userDAO ;
+    UserDAOInterface userDAO;
 
-        AnnouncementDAOInterface announcementDAO ;
+    AnnouncementDAOInterface announcementDAO;
 
+    AttachementDAOInterface attachementDAO;
 
-        AttachementDAOInterface attachementDAO;
+    ChatDAOInterface chatDAO;
 
+    MessageDAOInterface messageDAO;
 
-        ChatDAOInterface chatDAO ;
+    UserChatDAOInterface userChatDAO;
 
-        MessageDAOInterface messageDAO ;
+    ContactDAOInterface contactDAO;
 
-        UserChatDAOInterface userChatDAO ;
+    NotificationDAOInterface notificationDAO;
 
-        ContactDAOInterface contactDAO ;
     @FXML
     private Button startButton;
 
@@ -59,11 +60,11 @@ public class ManageController {
 
     @FXML
     private void start(ActionEvent event) {
-                RMIConfig p = null;
-                try { 
-            File XMLfile = new File(getClass().getResource("/rmi.xml").toURI()); 
+        RMIConfig p = null;
+        try {
+            File XMLfile = new File(getClass().getResource("/rmi.xml").toURI());
             JAXBContext context = JAXBContext.newInstance(RMIConfig.class);
-            Unmarshaller unmarshaller = context.createUnmarshaller(); 
+            Unmarshaller unmarshaller = context.createUnmarshaller();
             p = (RMIConfig) unmarshaller.unmarshal(XMLfile);
             // System.out.println(p.getIp() +" " + p.getPort());
         } catch (JAXBException ex) {
@@ -73,31 +74,28 @@ public class ManageController {
             e1.printStackTrace();
         }
 
-        String ip =p.getIp();
+        String ip = p.getIp();
         int port = p.getPort();
         try {
             reg = LocateRegistry.createRegistry(port);
             reg.rebind("userDAO", userDAO);
-            
-            
+
             reg.rebind("announcementDAO", announcementDAO);
-            
 
             reg.rebind("chatbot", chatbot);
 
             reg.rebind("attachementDAO", attachementDAO);
-            
-            
+
             reg.rebind("chatDAO", chatDAO);
-            
-            
+
             reg.rebind("messageDAO", messageDAO);
-            
-            
+
             reg.rebind("userChatDAO", userChatDAO);
-            
-            
+
             reg.rebind("contactDAO", contactDAO);
+
+            // reg.rebind("notificationDAO", notificationDAO);
+
             startButton.setDisable(true);
             stopButton.setDisable(false);
         } catch (RemoteException ex) {
@@ -107,29 +105,27 @@ public class ManageController {
     @FXML
     private void stop(ActionEvent event) {
 
-
-            try {
+        try {
             String[] boundNames;
 
-                boundNames = reg.list();
-                for (String name : boundNames) {
-                    reg.unbind(name); 
-                }
-                UnicastRemoteObject.unexportObject(reg, true);
-            } catch (AccessException |NotBoundException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
+            boundNames = reg.list();
+            for (String name : boundNames) {
+                reg.unbind(name);
             }
-             catch (RemoteException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-            stopButton.setDisable(true);
-            startButton.setDisable(false);
-        
+            UnicastRemoteObject.unexportObject(reg, true);
+        } catch (AccessException | NotBoundException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (RemoteException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        stopButton.setDisable(true);
+        startButton.setDisable(false);
+
     }
 
-    public void setChatbot(ChatbotInterface chatbot){
+    public void setChatbot(ChatbotInterface chatbot) {
         this.chatbot = chatbot;
     }
 
@@ -137,17 +133,14 @@ public class ManageController {
         this.stage = stage;
         // ReadOnlyDoubleProperty h = stage.heightProperty();
 
-
         // invalid.minWidthProperty().bind(w);
         // invalid.minHeightProperty().bind(h);
     }
 
-   
-
     @FXML
     private void initialize() {
-       
-   }
+
+    }
 
     public void setReg(Registry reg) {
         this.reg = reg;
@@ -179,5 +172,9 @@ public class ManageController {
 
     public void setContactDAO(ContactDAOInterface contactDAO) {
         this.contactDAO = contactDAO;
+    }
+
+    public void setnotificationDAO(NotificationDAOInterface notificationDAO) {
+        this.notificationDAO = notificationDAO;
     }
 }

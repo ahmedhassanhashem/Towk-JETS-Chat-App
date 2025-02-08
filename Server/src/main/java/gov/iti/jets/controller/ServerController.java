@@ -23,6 +23,8 @@ import gov.iti.jets.dao.ContactDAO;
 import gov.iti.jets.dao.ContactDAOInterface;
 import gov.iti.jets.dao.MessageDAO;
 import gov.iti.jets.dao.MessageDAOInterface;
+import gov.iti.jets.dao.NotificationDAO;
+import gov.iti.jets.dao.NotificationDAOInterface;
 import gov.iti.jets.dao.UserChatDAO;
 import gov.iti.jets.dao.UserChatDAOInterface;
 import gov.iti.jets.dao.UserDAO;
@@ -284,18 +286,23 @@ public class ServerController {
         ChatDAOInterface chatDAO = new ChatDAO();
         reg.rebind("chatDAO", chatDAO);
 
-        MessageDAOInterface messageDAO = new MessageDAO();
+        MessageDAO messageDAO = new MessageDAO();
         reg.rebind("messageDAO", messageDAO);
 
         UserChatDAOInterface userChatDAO = new UserChatDAO();
         reg.rebind("userChatDAO", userChatDAO);
 
-        ContactDAOInterface contactDAO = new ContactDAO();
+        ContactDAO contactDAO = new ContactDAO();
         reg.rebind("contactDAO", contactDAO);
 
         ChatbotInterface chatbot = new ChatbotImpl();
         reg.rebind("chatbot", chatbot);
 
+        NotificationDAO notificationDAO = new NotificationDAO();
+        reg.rebind("notificationDAO", notificationDAO);
+
+        messageDAO.setNotDao(notificationDAO);
+        contactDAO.setNotDao(notificationDAO);
         Thread fileserver = new Thread(() -> FileServer.Start());
         fileserver.setDaemon(true);
         fileserver.start();
@@ -320,6 +327,7 @@ public class ServerController {
         manageController.setUserChatDAO(userChatDAO);
         manageController.setUserDAO(userDAO);
         manageController.setChatbot(chatbot);
+        manageController.setnotificationDAO(notificationDAO);
 
         FXMLLoader announceLoader = new FXMLLoader(getClass().getResource("/screens/announce.fxml"));
         announce = announceLoader.load();

@@ -4,6 +4,7 @@ import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -14,18 +15,21 @@ import javax.sql.rowset.WebRowSet;
 
 import gov.iti.jets.client.ClientInt;
 import gov.iti.jets.dto.MessageDTO;
+import gov.iti.jets.dto.NotificationDTO;
 
 public class MessageDAO extends UnicastRemoteObject implements MessageDAOInterface{
 
     DatabaseConnectionManager dm;
     HashMap<Integer,ArrayList<ClientInt>> online;
     HashMap<Integer,ArrayList<ClientInt>> onlineChatCard;
+    NotificationDAO notificationDAO;
 
     public MessageDAO() throws RemoteException {
         super();
         dm = DatabaseConnectionManager.getInstance();
         online = new HashMap<>();
         onlineChatCard=new HashMap<>();
+        // notificationDAO = new NotificationDAO();
 
     }
     @Override
@@ -36,6 +40,9 @@ public class MessageDAO extends UnicastRemoteObject implements MessageDAOInterfa
 
     }
 
+    public void setNotDao(NotificationDAO notificationDAO){
+        this.notificationDAO = notificationDAO;
+    }
     // Unregister a client
     @Override
     public void unRegisterChat(int chatID,ClientInt clientRef) throws RemoteException {
@@ -83,8 +90,11 @@ public class MessageDAO extends UnicastRemoteObject implements MessageDAOInterfa
             return null;
 
         String query = "INSERT INTO Message (messageContent, chatID, userID, messageDate, attachmentID) VALUES (?, ?, ?, ?, ?)";
+        String sql ="select * from Message order by messageID desc limit 1 ;";
         try (Connection con = dm.getConnection();
-                PreparedStatement ps = con.prepareStatement(query);) {
+                PreparedStatement ps = con.prepareStatement(query);
+                PreparedStatement preparedStatement = con.prepareStatement(sql);
+                ) {
             ps.setString(1, msgContent);
             ps.setInt(2, chatID);
             ps.setInt(3, userID);
@@ -95,18 +105,59 @@ public class MessageDAO extends UnicastRemoteObject implements MessageDAOInterfa
                 ps.setInt(5, attachID);
             ps.executeUpdate();
             System.out.println("Message inserted successfully.");
+            ResultSet re = preparedStatement.executeQuery();
+            if(re.next())
+            msg.setMesssageID(re.getInt("messageID"));
+
+            List<Integer> onlineUserIDs = new ArrayList<>();
             for(ClientInt c: online.get(msg.getChatID()) ){
                 c.sendMessage(msg);
+                onlineUserIDs.add(c.get());
             }
             for(ClientInt c:onlineChatCard.get(msg.getChatID())){
                 c.sendMessage(msg);
             }
+            sendToRest(onlineUserIDs, msg);
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return msg;
     }
+    private void sendToRest(List<Integer> userIDs,MessageDTO msg ){
+                String sql = "select * from UserChat where chatID = ? ;";
+        List<Integer> participants = new ArrayList<>();
 
+        try (Connection con = dm.getConnection();
+                PreparedStatement preparedStatement = con.prepareStatement(sql);) {
+
+            preparedStatement.setInt(1, msg.getChatID());
+            ResultSet re = preparedStatement.executeQuery();
+
+            while (re.next()) {
+                participants.add(re.getInt("userID"));
+            }
+            participants.removeAll(userIDs);
+            for(Integer i : participants){
+
+                NotificationDTO nDto =new NotificationDTO();
+                nDto.setUserID(i);
+                nDto.setMessageID(msg.getMesssageID());
+                // System.out.println(i + " " + msg.getMesssageID());
+                try {
+                    notificationDAO.create(nDto);
+                } catch (RemoteException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+            }
+
+  
+            
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
     public List<MessageDTO> findAllMessages(int chatID) throws RemoteException {
         // ObservableList<MessageDTO> msgList = FXCollections.observableArrayList();
         List<MessageDTO> msgList = new ArrayList<>();
@@ -125,6 +176,7 @@ public class MessageDAO extends UnicastRemoteObject implements MessageDAOInterfa
                 msg.setUserID(rs.getInt("userID"));
                 msg.setMessageDate(rs.getDate("messageDate"));
                 msg.setAttachmentID(rs.getInt("attachmentID"));
+                msg.setMesssageID(rs.getInt("messageID"));
 
                 msgList.add(msg);
             }
@@ -134,6 +186,34 @@ public class MessageDAO extends UnicastRemoteObject implements MessageDAOInterfa
         }
 
         return msgList;
+    }
+
+    @Override
+    public MessageDTO read(int msgID) throws RemoteException{
+        String query = "SELECT * FROM Message WHERE messageID = ?;";
+
+        try (Connection con = dm.getConnection();
+                WebRowSet rs = RowSetProvider.newFactory().createWebRowSet();) {
+            rs.setCommand(query);
+            rs.setInt(1, msgID);
+            rs.execute(con);
+
+            if (rs.next()) {
+                MessageDTO msg = new MessageDTO();
+                msg.setMessageContent(rs.getString("messageContent"));
+                msg.setChatID(rs.getInt("chatID"));
+                msg.setUserID(rs.getInt("userID"));
+                msg.setMessageDate(rs.getDate("messageDate"));
+                msg.setAttachmentID(rs.getInt("attachmentID"));
+                msg.setMesssageID(msgID);
+
+                return msg;
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     public String findLastMessageGroup(int chatID) throws RemoteException {

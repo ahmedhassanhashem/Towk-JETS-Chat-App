@@ -45,6 +45,11 @@ public class ClientImplChat extends UnicastRemoteObject implements ClientInt<Mes
             
         }
     }
+
+    @Override
+    public int get() throws RemoteException{
+        return chatID;
+    }
     
 
 }
