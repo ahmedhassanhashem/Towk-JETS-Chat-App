@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox spacing="20" styleClass="main-container" stylesheets="@../styles/style.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gov.iti.jets.controller.Group_InfoController">
+   <children>
+   
+        <VBox alignment="CENTER_RIGHT">
+      <children>
+          <Button fx:id="exitBtn" onAction="#closeWindow" style="-fx-background-color: transparent;">
+                           <graphic>
+                              <ImageView fitHeight="20" fitWidth="20">
+                     <image>
+                        <Image url="@../images/close.png" />
+                     </image>
+                  </ImageView>
+                           </graphic>
+                        </Button>
+      </children>
+       </VBox>
+       <!-- Group Header Section -->
+       <HBox spacing="20" styleClass="group-header" stylesheets="@../styles/style.css">
+          <children>
+              <!-- Group Image -->
+              <StackPane styleClass="group-image-container" stylesheets="@../styles/style.css">
+                 <children>
+                     <ImageView fx:id="groupImage" fitHeight="120.0" fitWidth="120.0" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/group1.png" />
+                     </image>
+                     <StackPane.margin>
+                        <Insets bottom="20.0" />
+                     </StackPane.margin>
+                  </ImageView>
+                 </children>
+              </StackPane>
+      
+              <!-- Group Info -->
+              <VBox styleClass="group-info" stylesheets="@../styles/style.css">
+         <children>
+                     <Label fx:id="groupNameLabel" styleClass="group-name" stylesheets="@../styles/style.css" text="Software Development Team" />
+                     <Label fx:id="creatorLabel" styleClass="group-meta" stylesheets="@../styles/style.css" text="Created by: John Doe" />
+                     <Label fx:id="memberCountLabel" styleClass="group-meta" stylesheets="@../styles/style.css" text="Members: 8" />
+         </children>
+              </VBox>
+          </children>
+       </HBox>
+   
+       <!-- Members Section -->
+       <VBox styleClass="members-section" stylesheets="@../styles/style.css">
+      <children>
+              <Label styleClass="section-title" stylesheets="@../styles/style.css" text="Members" />
+            <ListView fx:id="membersContainer" prefHeight="200.0" prefWidth="200.0" />
+      </children>
+       </VBox>
+   
+       <!-- Buttons Section -->
+       <HBox spacing="10" styleClass="buttons-container" stylesheets="@../styles/style.css">
+      <children>
+              <Button fx:id="addMemberButton" styleClass="button,button-primary" text="Add New Member" />
+              <Button fx:id="exitButton" styleClass="button,button-danger" text="Exit Group" />
+      </children>
+       </HBox>
+   </children>
+
+</VBox>

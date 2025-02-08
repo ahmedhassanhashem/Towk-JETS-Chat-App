@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.URL?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox fx:id="contactContainer" alignment="CENTER" maxWidth="400" spacing="10" styleClass="contact-container" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gov.iti.jets.controller.Contact_InfoController">
+    
+    <padding>
+        <Insets bottom="20" left="20" right="20" top="20" />
+    </padding>
+    
+ <VBox alignment="CENTER_RIGHT">
+    <Button fx:id="exitBtn" onAction="#closeWindow" style="-fx-background-color: transparent;">
+                     <graphic>
+                        <ImageView fitHeight="20" fitWidth="20">
+                           <image>
+                              <Image url="@../images/close.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+    </VBox>
+
+    
+   <ImageView fx:id="imageinfo" fitHeight="120.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true" styleClass="contact-image">
+      <image>
+         <Image url="@../images/defaultUser.png" />
+      </image></ImageView>
+
+  
+    
+    <Label fx:id="nameLabel" styleClass="contact-name" stylesheets="@../styles/style.css" text="name" />
+    
+    <GridPane alignment="CENTER" hgap="10" vgap="5">
+        <Label styleClass="contact-label" stylesheets="@../styles/style.css" text="Phone:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+        <Label fx:id="phoneLabel" styleClass="contact-detail" stylesheets="@../styles/style.css" text="0123" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+        
+        <Label styleClass="contact-label" text="Mode" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+        <Label fx:id="categoryLabel" styleClass="contact-detail" text="Busy" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+      <columnConstraints>
+         <ColumnConstraints />
+         <ColumnConstraints />
+      </columnConstraints>
+      <rowConstraints>
+         <RowConstraints />
+         <RowConstraints />
+      </rowConstraints>
+    </GridPane>
+    
+    <Label styleClass="bio-label" stylesheets="@../styles/style.css" text="Bio:" />
+    
+    <TextArea fx:id="bioTextArea" editable="false" minHeight="40.0" prefHeight="50.0" styleClass="bio-text" wrapText="true" />
+    
+    <Button fx:id="blockButton" onAction="#blockButton" styleClass="block-button" stylesheets="@../styles/style.css">
+      
+      <graphic>
+         <HBox alignment="CENTER">
+              <ImageView fx:id="blockIcon" fitHeight="20" fitWidth="20" preserveRatio="true">
+                <image>
+                    <Image url="@../images/block.png" /> 
+                </image>
+            </ImageView>
+            <Label text="" textFill="WHITE">
+               <HBox.margin>
+                  <Insets left="5.0" />
+               </HBox.margin></Label>
+         </HBox>
+      </graphic>
+    </Button>
+   <stylesheets>
+      <URL value="@../styles/style.css" />
+      <URL value="@../styles/style.css" />
+   </stylesheets>
+</VBox>
