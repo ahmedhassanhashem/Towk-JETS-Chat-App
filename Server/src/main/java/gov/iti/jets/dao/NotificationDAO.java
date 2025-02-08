@@ -77,14 +77,12 @@ public class NotificationDAO extends UnicastRemoteObject implements Notification
             preparedStatement.setInt(2, msgID);
             ResultSet re = preparedStatement.executeQuery();
             notificationDTO = convert(re);
-            System.out.println(notificationDTO.getUserID());
             if(online.get(notificationDTO.getUserID())!= null && notificationDTO !=null){
 
                 for(ClientInt c:online.get(notificationDTO.getUserID())){
                     c.sendMessage(notificationDTO);
                 }
             }
-            System.out.println(online);
         } catch (SQLException e) {
             e.printStackTrace();
         }

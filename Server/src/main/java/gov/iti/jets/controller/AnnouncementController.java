@@ -62,13 +62,11 @@ private  AnnouncementDAO announcementDAO;
 
     }
 
+    public void setAnnouncementDAO( AnnouncementDAO announcementDAO){
+       this.announcementDAO =  announcementDAO;
+    }
     @FXML
     private void initialize() {
-        try {
-            announcementDAO = new AnnouncementDAO();
-        } catch (RemoteException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
+
     }
 }

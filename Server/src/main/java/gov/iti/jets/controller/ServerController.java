@@ -277,7 +277,7 @@ public class ServerController {
         UserDAOInterface userDAO = new UserDAO();
         reg.rebind("userDAO", userDAO);
 
-        AnnouncementDAOInterface announcementDAO = new AnnouncementDAO();
+        AnnouncementDAO announcementDAO = new AnnouncementDAO();
         reg.rebind("announcementDAO", announcementDAO);
 
         AttachementDAOInterface attachementDAO = new AttachementDAO();
@@ -331,6 +331,8 @@ public class ServerController {
 
         FXMLLoader announceLoader = new FXMLLoader(getClass().getResource("/screens/announce.fxml"));
         announce = announceLoader.load();
+        AnnouncementController announcementController = announceLoader.getController();
+        announcementController.setAnnouncementDAO(announcementDAO);
         FXMLLoader chartLoader = new FXMLLoader(getClass().getResource("/screens/chart.fxml"));
         chart = chartLoader.load();
 

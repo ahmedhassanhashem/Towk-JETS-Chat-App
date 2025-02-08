@@ -4,6 +4,7 @@ import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.util.List;
 
+import gov.iti.jets.client.ClientInt;
 import gov.iti.jets.dto.AnnouncementDTO;
 
 public interface AnnouncementDAOInterface extends Remote {
@@ -20,5 +21,8 @@ public interface AnnouncementDAOInterface extends Remote {
 
     
     public List<AnnouncementDTO> findAll() throws RemoteException ;
+
+    public void register(int userID,ClientInt clientRef) throws RemoteException;
+public void unRegister(int userID,ClientInt clientRef) throws RemoteException;
 
 }
