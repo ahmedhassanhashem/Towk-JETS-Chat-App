@@ -50,8 +50,12 @@ public class NotificationController {
     private Scene settingsScene;
     private Scene dashboardScene;
 
+
     @FXML
-    private ListView listView;
+private ListView<UserDTO> friendRequestsListView;
+
+@FXML
+private ListView<NotificationDTO> missedMessagesListView;
 
     @FXML
     private ToggleButton friendRequestsButton;
@@ -114,9 +118,11 @@ public class NotificationController {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        listView.setItems(contacts);
+        friendRequestsListView.setItems(contacts);
         friendRequestsButton.setDisable(true);
         missedMessagesButton.setDisable(false);
+        friendRequestsListView.setVisible(true);
+        missedMessagesListView.setVisible(false);
         friendRequestsButton.setOnAction(event -> handleFriendRequestsToggle());
         missedMessagesButton.setOnAction(event -> handleMissedMessagesToggle());
 
@@ -125,9 +131,13 @@ public class NotificationController {
 
                 friendRequestsButton.setDisable(true);
                 missedMessagesButton.setDisable(false);
+                friendRequestsListView.setVisible(true);
+                missedMessagesListView.setVisible(false);
             } else if (newToggle == missedMessagesButton) {
                 friendRequestsButton.setDisable(false);
                 missedMessagesButton.setDisable(true);
+                friendRequestsListView.setVisible(false);
+                missedMessagesListView.setVisible(true);
 
             }
         });
@@ -137,9 +147,9 @@ public class NotificationController {
     private void handleFriendRequestsToggle() {
         if (friendRequestsButton.isSelected()) {
             contacts.clear();
-            listView.getItems().clear(); 
-            listView.setItems(contacts);
-            listView.setCellFactory(null);
+            friendRequestsListView.getItems().clear(); 
+            friendRequestsListView.setItems(contacts);
+            friendRequestsListView.setCellFactory(null);
             loadNotifications();
         }
     }
@@ -147,9 +157,9 @@ public class NotificationController {
     private void handleMissedMessagesToggle() {
         if (missedMessagesButton.isSelected()) {
             notifications.clear(); 
-            listView.getItems().clear();
-            listView.setItems(notifications);
-            listView.setCellFactory(null);
+            missedMessagesListView.getItems().clear();
+            missedMessagesListView.setItems(notifications);
+            missedMessagesListView.setCellFactory(null);
             loadMissedMessages();
         }
     }
@@ -167,7 +177,7 @@ public class NotificationController {
         }
         System.out.println("DAO returned: " + pendingRequests.size() + " pending requests");
 
-        listView.setCellFactory(new Callback<ListView<UserDTO>, ListCell<UserDTO>>() {
+        friendRequestsListView.setCellFactory(new Callback<ListView<UserDTO>, ListCell<UserDTO>>() {
             @Override
             public ListCell<UserDTO> call(ListView<UserDTO> p) {
                 return new ListCell<UserDTO>() {
@@ -250,7 +260,7 @@ public class NotificationController {
             e.printStackTrace();
         }
 
-        listView.setCellFactory(new Callback<ListView<NotificationDTO>, ListCell<NotificationDTO>>() {
+        missedMessagesListView.setCellFactory(new Callback<ListView<NotificationDTO>, ListCell<NotificationDTO>>() {
             @Override
             public ListCell<NotificationDTO> call(ListView<NotificationDTO> p) {
                 return new ListCell<NotificationDTO>() {
