@@ -95,6 +95,11 @@ public class ChatsController {
 
     }
 
+    UserDTO contact =new UserDTO();
+    public UserDTO getcontact(){
+        return contact;
+    } 
+
     @FXML
     private void addContact(ActionEvent event) {
         AnchorPane hold = null;
@@ -813,6 +818,8 @@ public class ChatsController {
             messageController.setStage(stage);
             messageController.setChatCadController(chatCardCadController);
             int chatId = chatDao.findExistingSingleChat(userDTO.getUserID(), user.getUserID());
+
+            messageController.setContact(user); //set contact to contact_info
 
             ClientImpl clientImpl = new ClientImpl(chatId, messageController);
             messageDAO.register(chatId, clientImpl);

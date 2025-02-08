@@ -20,13 +20,22 @@ public interface ContactDAOInterface extends Remote{
     public List<UserDTO> findAllContactsREJECTED(String userPhone) throws RemoteException ;
 
     // to get all the pending request so you can list in the notfication to accept or reject
-    public List<UserDTO> findAllContactsPENDING(String userPhone) throws RemoteException ;
+    public List<UserDTO> findAllContactsPENDING(String userPhone) throws RemoteException;
+    
+    // public List<UserDTO> findAllContactsBLOCKED(String userPhone) throws RemoteException ;
 
     public boolean acceptContactRequest(String receiverPhone, String senderPhone) throws RemoteException;
 
     public boolean rejectContactRequest(String receiverPhone, String senderPhone) throws RemoteException;
 
     public boolean deleteRejectedContact(String receiverPhone, String senderPhone) throws RemoteException;
+
+    public boolean blockContact(String blockerPhone, String blockedPhone) throws RemoteException;
+    public boolean isContactBlocked(String userPhone, String contactPhone) throws RemoteException;
+
+    public boolean unblockContact(String blockerPhone, String blockedPhone) throws RemoteException;
+    boolean isUserBlocker(String blockerPhone, String blockedPhone) throws RemoteException;
+
 
 }
 
