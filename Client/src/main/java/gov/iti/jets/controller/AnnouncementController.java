@@ -81,6 +81,8 @@ public class AnnouncementController {
         } catch (RemoteException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
+        }catch(NullPointerException sd){
+            ExceptionUtility.alert();
         }
 
         listView.setCellFactory(new Callback<ListView<AnnouncementDTO>, ListCell<AnnouncementDTO>>() {

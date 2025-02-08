@@ -100,7 +100,7 @@ public class NotificationController {
         } catch (RemoteException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
-        }
+        } catch(NullPointerException asd){ExceptionUtility.alert();}
         System.out.println("DAO returned: " + pendingRequests.size() + " pending requests");
     
         listView.setCellFactory(new Callback<ListView<UserDTO>, ListCell<UserDTO>>() {

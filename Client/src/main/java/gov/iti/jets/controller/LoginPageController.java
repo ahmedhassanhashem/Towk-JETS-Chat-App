@@ -93,6 +93,8 @@ public class LoginPageController {
         } catch (RemoteException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
+        }catch(NullPointerException e){
+            ExceptionUtility.alert();
         }
         if (user != null) {
 

@@ -154,6 +154,8 @@ public class ChatsController {
         } catch (RemoteException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
+        }catch(NullPointerException e){
+            ExceptionUtility.alert();
         }
 
         listView.setCellFactory(null);
@@ -209,7 +211,7 @@ public class ChatsController {
                                                     // e1.printStackTrace();
                                                 }
                                             }
-
+                                            
                                             ArrayList<ClientInt> tmp = loadChat(currentUser,chatCardController);
                                                 client = (ClientImpl)tmp.get(0);
                                                 clientContactChat = (ClientImplContact)tmp.get(1);
@@ -358,6 +360,8 @@ public class ChatsController {
         } catch (RemoteException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
+        }catch(NullPointerException e){
+            ExceptionUtility.alert();
         }
 
         listView.setCellFactory(null);
@@ -575,6 +579,8 @@ public class ChatsController {
         } catch (RemoteException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
+        }catch(NullPointerException e){
+            ExceptionUtility.alert();
         }
         
         listView.setCellFactory(null);

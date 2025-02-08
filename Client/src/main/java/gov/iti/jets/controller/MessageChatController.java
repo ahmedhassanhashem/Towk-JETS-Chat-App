@@ -156,7 +156,12 @@ public class MessageChatController {
             });
         } catch (RemoteException e) {
             e.printStackTrace();
+            ExceptionUtility.alert();
+        }catch(NullPointerException sdf){
+            ExceptionUtility.alert();
         }
+
+
         attachement = null;
         text.setText("");
     }
@@ -226,7 +231,7 @@ public class MessageChatController {
             });
         } catch (RemoteException e) {
             e.printStackTrace();
-        }
+        }catch(NullPointerException e){ExceptionUtility.alert();}
         
         // Setup the scroll listener (only once).
         setupScrollListener();
