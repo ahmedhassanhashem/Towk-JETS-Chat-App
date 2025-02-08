@@ -20,6 +20,8 @@ public interface MessageDAOInterface extends Remote{
 
     public String findLastMessage(int user1, int user2) throws RemoteException ;
 
+    public MessageDTO read(int msgID) throws RemoteException;
+
     public void register(int chatID,ClientInt clientRef) throws RemoteException;
 
     public void unRegister(int chatID,ClientInt clientRef) throws RemoteException ;

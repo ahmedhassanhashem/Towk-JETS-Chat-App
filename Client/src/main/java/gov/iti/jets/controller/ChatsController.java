@@ -778,7 +778,7 @@ public class ChatsController {
             messageController.setStage(stage);
 
             // Pass the new chatId directly instead of calling findExistingSingleChat again.
-            ClientImpl clientImpl = new ClientImpl(chatId, messageController);
+            ClientImpl clientImpl = new ClientImpl(chatId,userDTO.getUserID(), messageController);
             messageDAO.register(chatId, clientImpl);
             messageController.setUserDTO(userDTO, chatId);
             borderPane.setCenter(chat);
@@ -814,7 +814,7 @@ public class ChatsController {
             messageController.setChatCadController(chatCardCadController);
             int chatId = chatDao.findExistingSingleChat(userDTO.getUserID(), user.getUserID());
 
-            ClientImpl clientImpl = new ClientImpl(chatId, messageController);
+            ClientImpl clientImpl = new ClientImpl(chatId,userDTO.getUserID(), messageController);
             messageDAO.register(chatId, clientImpl);
 
             // Load chat messages
@@ -855,7 +855,7 @@ public class ChatsController {
             messageController.setChatCadController(chatCardCadController);
             // Initialize group chat
             messageController.setUserDTO(userDTO, group.getUserID());
-            ClientImpl clientImpl = new ClientImpl(group.getUserID(), messageController);
+            ClientImpl clientImpl = new ClientImpl(group.getUserID(),userDTO.getUserID(), messageController);
             messageDAO.register(group.getUserID(), clientImpl);
 
             borderPane.setCenter(chat);

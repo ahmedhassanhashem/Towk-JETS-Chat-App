@@ -4,9 +4,12 @@
  */
 package gov.iti.jets.controller;
 import java.net.URL;
+import java.rmi.RemoteException;
 import java.util.ResourceBundle;
 
+import gov.iti.jets.dao.AnnouncementDAOInterface;
 import gov.iti.jets.dto.AnnouncementDTO;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -21,6 +24,7 @@ import javafx.scene.text.Text;
  */
 public class AnnouncementCardController implements Initializable {
 
+    private AnnouncementDTO announcement;
     @FXML
     private HBox DynamicHBox;
     @FXML
@@ -37,13 +41,15 @@ public class AnnouncementCardController implements Initializable {
 
       public void setAnnouncementData(AnnouncementDTO announcement) {
     
+          this.announcement = announcement;
         LabelAnnouncement.setText(announcement.getAnnouncementTitle());
         TextAnnouncemet.setText(announcement.getAnnouncementContent());
     }
-/* 
-    @FXML
-    private void buttonAnnuncement(ActionEvent event) {
-    }
-    */
+
+    // @FXML
+    // private void deleteAnnouncement(ActionEvent event) {
+
+    // }
+    
     
 }

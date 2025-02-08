@@ -14,11 +14,15 @@ import java.util.concurrent.ScheduledExecutorService;
 
 import com.mysql.cj.xdevapi.ClientImpl;
 
+import gov.iti.jets.client.ClientImplAnn;
 import gov.iti.jets.client.ClientImplChat;
 import gov.iti.jets.client.ClientImplContact;
+import gov.iti.jets.client.ClientImplNot;
 import gov.iti.jets.chatbot.BotService;
 import gov.iti.jets.config.RMIConfig;
+import gov.iti.jets.dao.AnnouncementDAOInterface;
 import gov.iti.jets.dao.ChatDAOInterface;
+import gov.iti.jets.dao.NotificationDAOInterface;
 import gov.iti.jets.dao.UserDAOInterface;
 import gov.iti.jets.dto.UserDTO;
 import gov.iti.jets.dto.UserStatus;
@@ -53,9 +57,13 @@ public class DashboardController {
     BorderPane hold2;
     UserDAOInterface userDAO;
     ChatDAOInterface chatDAO;
+        private AnnouncementDAOInterface announcementDAO;
+
+    private NotificationDAOInterface notificationDAO;
     ChatsController chat;
     ClientImplContact clientImplContact;
-
+    ClientImplNot clientImplNot ;
+    ClientImplAnn clientImplAnn;
     private DashboardController dashboardController;
 
     @FXML
@@ -136,6 +144,8 @@ public class DashboardController {
             reg = LocateRegistry.getRegistry(ip, port);
             userDAO = (UserDAOInterface) reg.lookup("userDAO");
             chatDAO = (ChatDAOInterface) reg.lookup("chatDAO");
+            notificationDAO = (NotificationDAOInterface) reg.lookup("notificationDAO");
+            announcementDAO = (AnnouncementDAOInterface) reg.lookup("announcementDAO");
 
         } catch (RemoteException e) {
             // TODO Auto-generated catch block
@@ -344,6 +354,66 @@ public class DashboardController {
         System.out.println("USERDTO" + userDTO.getPhone());
         c.setUserDTO(userDTO);
         c.loadNotifications();
+
+        if (clientImplNot != null) {
+            // unloadChat(entry.getKey(), entry.getValue());
+            try {
+                notificationDAO.unRegister(userDTO.getUserID(), clientImplNot);
+                UnicastRemoteObject.unexportObject(clientImplNot, true);
+            } catch (RemoteException e1) {
+                // TODO Auto-generated catch block
+                // e1.printStackTrace();
+            }
+
+        }
+        try {
+            clientImplNot = new ClientImplNot(userDTO.getUserID(), c);
+            notificationDAO.register(userDTO.getUserID(), clientImplNot);
+
+
+            
+        } catch (RemoteException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        hold.sceneProperty().addListener((observable, oldScene, newScene) -> {
+            if (oldScene != null ) {
+            if (clientImplNot != null) {
+                // unloadChat(entry.getKey(), entry.getValue());
+                try {
+                    notificationDAO.unRegister(userDTO.getUserID(), clientImplNot);
+                    UnicastRemoteObject.unexportObject(clientImplNot, true);
+                    // System.out.println("Unexport result: " + unexported);
+                } catch (RemoteException e1) {
+                    // TODO Auto-generated catch block
+                    e1.printStackTrace();
+                }
+
+            }
+
+            }
+        });
+        Platform.runLater(() -> {
+
+            stage.setOnCloseRequest((e) -> {
+
+                // settings(event);
+                // StackPane temp = new StackPane();
+                // StackPane temp2 = new StackPane();
+                // borderPane.setCenter(temp);
+                // stage.setScene(new Scene(temp2));
+                try {
+                    notificationDAO.unRegister(userDTO.getUserID(), clientImplNot);
+                    UnicastRemoteObject.unexportObject(clientImplNot, true);
+                } catch (RemoteException e1) {
+                    // TODO Auto-generated catch block
+                    // e1.printStackTrace();
+                }
+                System.exit(0);
+                Platform.exit();
+            });
+
+        });
         borderPane.setCenter(hold);
     }
 
@@ -358,6 +428,67 @@ public class DashboardController {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
+        AnnouncementController c = chatLoader.getController();
+
+        if (clientImplAnn != null) {
+            // unloadChat(entry.getKey(), entry.getValue());
+            try {
+                announcementDAO.unRegister(userDTO.getUserID(), clientImplAnn);
+                UnicastRemoteObject.unexportObject(clientImplAnn, true);
+            } catch (RemoteException e1) {
+                // TODO Auto-generated catch block
+                // e1.printStackTrace();
+            }
+
+        }
+        try {
+            clientImplAnn = new ClientImplAnn(userDTO.getUserID(), c);
+            announcementDAO.register(userDTO.getUserID(), clientImplAnn);
+
+
+            
+        } catch (RemoteException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        hold.sceneProperty().addListener((observable, oldScene, newScene) -> {
+            if (oldScene != null ) {
+            if (clientImplAnn != null) {
+                // unloadChat(entry.getKey(), entry.getValue());
+                try {
+                    announcementDAO.unRegister(userDTO.getUserID(), clientImplAnn);
+                    UnicastRemoteObject.unexportObject(clientImplAnn, true);
+                    // System.out.println("Unexport result: " + unexported);
+                } catch (RemoteException e1) {
+                    // TODO Auto-generated catch block
+                    e1.printStackTrace();
+                }
+
+            }
+
+            }
+        });
+        Platform.runLater(() -> {
+
+            stage.setOnCloseRequest((e) -> {
+
+                // settings(event);
+                // StackPane temp = new StackPane();
+                // StackPane temp2 = new StackPane();
+                // borderPane.setCenter(temp);
+                // stage.setScene(new Scene(temp2));
+                try {
+                    announcementDAO.unRegister(userDTO.getUserID(), clientImplAnn);
+                    UnicastRemoteObject.unexportObject(clientImplAnn, true);
+                } catch (RemoteException e1) {
+                    // TODO Auto-generated catch block
+                    // e1.printStackTrace();
+                }
+                System.exit(0);
+                Platform.exit();
+            });
+
+        });
 
         borderPane.setCenter(hold);
     }

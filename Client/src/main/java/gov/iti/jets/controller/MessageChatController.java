@@ -27,6 +27,7 @@ import gov.iti.jets.client.Images;
 import gov.iti.jets.config.RMIConfig;
 import gov.iti.jets.dao.AttachementDAOInterface;
 import gov.iti.jets.dao.MessageDAOInterface;
+import gov.iti.jets.dao.NotificationDAOInterface;
 import gov.iti.jets.dao.UserDAOInterface;
 import gov.iti.jets.dto.AttachementDTO;
 import gov.iti.jets.dto.ChatDTO;
@@ -68,6 +69,7 @@ public class MessageChatController {
     private UserDAOInterface userDAO;
     private AttachementDAOInterface attachementDAO;
     private MessageDAOInterface messageDAO;
+    private NotificationDAOInterface notificationDAO;
     private int chatID;
     private Stage stage;
     Images images = new Images();
@@ -207,6 +209,12 @@ public class MessageChatController {
             //if (ret.length() > 10) ret = ret.substring(0, 10) + "...";
             chatCadController.setText(ret);
 
+            try {
+                notificationDAO.delete(userDTO.getUserID(), m.getMesssageID());
+            } catch (RemoteException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
 
             if(m.getUserID() != userDTO.getUserID() && BotService.getInstance().getBotServiceStatus()){
                     try {
@@ -272,6 +280,7 @@ public class MessageChatController {
                                 }
                             }
                             try {
+                                notificationDAO.delete(userDTO.getUserID(), chat.getMesssageID());
                                 messageCardController.setMessageData(
                                     userDAO.read(chat.getUserID()), 
                                     chat.getMessageContent(), 
@@ -316,6 +325,8 @@ public class MessageChatController {
             attachementDAO = (AttachementDAOInterface) reg.lookup("attachementDAO");
             messageDAO = (MessageDAOInterface) reg.lookup("messageDAO");
             chatbot = (ChatbotInterface) reg.lookup("chatbot");
+            notificationDAO = (NotificationDAOInterface) reg.lookup("notificationDAO");
+
         } catch (RemoteException | NotBoundException e) {
             e.printStackTrace();
         }

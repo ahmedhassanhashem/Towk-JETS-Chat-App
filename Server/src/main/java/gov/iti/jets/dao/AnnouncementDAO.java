@@ -7,18 +7,43 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
+import gov.iti.jets.client.ClientInt;
 import gov.iti.jets.dto.AnnouncementDTO;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 public class AnnouncementDAO extends UnicastRemoteObject implements AnnouncementDAOInterface {
 
-    
+        HashMap<Integer,ArrayList<ClientInt>> online;
+
     public AnnouncementDAO() throws RemoteException {
         super();
+        online = new HashMap<>();
         //TODO Auto-generated constructor stub
+    }
+
+    @Override
+    public void register(int userID,ClientInt clientRef) throws RemoteException {
+
+        online.computeIfAbsent(userID, k -> new ArrayList<>()).add(clientRef);
+    }
+
+    // Unregister a client
+    @Override
+    public void unRegister(int userID,ClientInt clientRef) throws RemoteException {
+
+        if (online.containsKey(userID)) {
+            List<ClientInt> clientList = online.get(userID);
+            
+            clientList.remove(clientRef);
+            
+            if (clientList.isEmpty()) {
+                online.remove(userID);
+            }
+        }
     }
 
     @Override
@@ -38,6 +63,16 @@ public class AnnouncementDAO extends UnicastRemoteObject implements Announcement
                 ResultSet generatedKeys = insertStatement.getGeneratedKeys();
                 if (generatedKeys.next()) {
                     announcement.setAnnouncementID(generatedKeys.getInt(1));
+                }
+                for(int id : online.keySet()){
+                    System.out.println(id);
+                    if(online.get(id)!= null ){
+                        
+                        for(ClientInt c:online.get(id)){
+                            System.out.println(c);
+                            c.sendMessage(announcement);
+                        }
+                    }
                 }
                 return announcement;
             } else {
