@@ -49,10 +49,23 @@ CREATE TABLE `UserContact`(
     `id` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
     `senderID` INT UNSIGNED NOT NULL,
     `receiverID` INT UNSIGNED NOT NULL,
-    `requestStatus` ENUM('ACCEPT', 'PENDING', 'REJECT','BLOCK') NOT NULL DEFAULT 'PENDING'
+    `requestStatus` ENUM('ACCEPT', 'PENDING', 'REJECT','BLOCK') NOT NULL DEFAULT 'PENDING',
+    `blockedBy` INT UNSIGNED
+);
+CREATE TABLE `Notification`(
+    `id` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    `userID` INT UNSIGNED NOT NULL,
+    `messageID` INT UNSIGNED NOT NULL
+
 );
 ALTER TABLE
     `UserContact` ADD CONSTRAINT `usercontact_senderid_foreign` FOREIGN KEY(`senderID`) REFERENCES `User`(`userID`);
+ALTER TABLE 
+    `UserContact` ADD CONSTRAINT `usercontact_blockedBy_foreign` FOREIGN KEY (`blockedBy`) REFERENCES `User`(`userID`);
+ALTER TABLE 
+    `Notification` ADD CONSTRAINT `Notification_userID_foreign` FOREIGN KEY (`userID`) REFERENCES `User`(`userID`);
+ALTER TABLE 
+    `Notification` ADD CONSTRAINT `Notification_messageID_foreign` FOREIGN KEY (`messageID`) REFERENCES `Message`(`messageID`);
 ALTER TABLE
     `UserChat` ADD CONSTRAINT `userchat_userid_foreign` FOREIGN KEY(`userID`) REFERENCES `User`(`userID`);
 ALTER TABLE
@@ -70,11 +83,11 @@ ALTER TABLE
 -- Insert dummy users
 INSERT INTO `User` (`phone`, `name`, `country`, `gender`, `email`, `birthdate`, `password`, `userPicture`, `bio`, `firstLogin`, `userStatus`, `userMode`)
 VALUES
-('12345678901', 'Alice Johnson', 'USA', 'FEMALE', 'alice@example.com', '1990-05-15', 'password123', NULL, 'Hello, I am Alice!', TRUE, 'ONLINE', 'AVAILABLE'),
-('23456789012', 'Bob Smith', 'Canada', 'MALE', 'bob@example.com', '1985-08-20', 'password123', NULL, 'Hi, I am Bob!', TRUE, 'ONLINE', 'BUSY'),
+('12345678901', 'Alice Johnson', 'USA', 'FEMALE', 'alice@example.com', '1990-05-15', 'password123', NULL, 'Hello, I am Alice!', TRUE, 'OFFLINE', 'AVAILABLE'),
+('23456789012', 'Bob Smith', 'Canada', 'MALE', 'bob@example.com', '1985-08-20', 'password123', NULL, 'Hi, I am Bob!', TRUE, 'OFFLINE', 'BUSY'),
 ('34567890123', 'Charlie Brown', 'UK', 'MALE', 'charlie@example.com', '1995-02-10', 'password123', NULL, 'Hey, I am Charlie!', TRUE, 'OFFLINE', 'AWAY'),
-('45678901234', 'Diana Prince', 'USA', 'FEMALE', 'diana@example.com', '1992-11-25', 'password123', NULL, 'Hi, I am Diana!', TRUE, 'ONLINE', 'AVAILABLE'),
-('56789012345', 'Eve Adams', 'Australia', 'FEMALE', 'eve@example.com', '1988-07-30', 'password123', NULL, 'Hello, I am Eve!', TRUE, 'ONLINE', 'BUSY');
+('45678901234', 'Diana Prince', 'USA', 'FEMALE', 'diana@example.com', '1992-11-25', 'password123', NULL, 'Hi, I am Diana!', TRUE, 'OFFLINE', 'AVAILABLE'),
+('56789012345', 'Eve Adams', 'Australia', 'FEMALE', 'eve@example.com', '1988-07-30', 'password123', NULL, 'Hello, I am Eve!', TRUE, 'OFFLINE', 'BUSY');
 
 -- Insert dummy chats
 INSERT INTO `Chat` (`chatType`, `chatName`, `chatPicture`)
