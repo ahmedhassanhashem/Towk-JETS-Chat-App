@@ -1,6 +1,6 @@
 package gov.iti.jets.dto;
 
 public enum RequestStatus {
-    ACCEPT, PENDING, REJECT
+    ACCEPT, PENDING, REJECT, BLOCK
 
 }

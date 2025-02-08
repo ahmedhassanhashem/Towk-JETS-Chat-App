@@ -16,36 +16,53 @@
 
 <BorderPane fx:id="mainBorderPane" styleClass="borderPane" stylesheets="@../styles/style.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gov.iti.jets.controller.MessageChatController">
    <top>
-      <AnchorPane style="-fx-background-color: white;" BorderPane.alignment="CENTER">
+      <HBox alignment="CENTER_LEFT" spacing="50.0" style="-fx-background-color: white;" BorderPane.alignment="CENTER">
          <children>
-            <ImageView fx:id="image" fitHeight="60.0" fitWidth="60.0" layoutX="20.0" layoutY="10.399999618530273" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../images/defaultUser.png" />
-               </image>
-            </ImageView>
-            <ImageView fitHeight="35.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="35.0">
-               <image>
-                  <Image url="@../images/chatsearch.png" />
-               </image>
-            </ImageView>
-            <VBox alignment="CENTER_LEFT" layoutX="105.5999984741211">
+            <HBox alignment="CENTER_LEFT" prefHeight="83.0" prefWidth="221.0" spacing="20.0">
                <children>
-                  <Label fx:id="name" text="Omar">
-                     <VBox.margin>
-                        <Insets top="20.0" />
-                     </VBox.margin>
-                     <font>
-                        <Font name="Arial Bold" size="12.0" />
-                     </font>
-                  </Label>
-                  <Label fx:id="status" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" text="Online" />
+                  <ImageView fx:id="image" fitHeight="60.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/defaultUser.png" />
+                     </image>
+                  </ImageView>
+                  <VBox prefHeight="83.0" prefWidth="141.0">
+                     <children>
+                        <Label fx:id="name" text="Omar">
+                           <VBox.margin>
+                              <Insets top="20.0" />
+                           </VBox.margin>
+                           <font>
+                              <Font name="Arial Bold" size="12.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="status" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" text="Online" />
+                     </children>
+                  </VBox>
                </children>
-            </VBox>
+               <padding>
+                  <Insets left="10.0" />
+               </padding>
+            </HBox>
+            <HBox alignment="CENTER_RIGHT" prefHeight="83.0" prefWidth="102.0">
+               <children>
+                  <ImageView fitHeight="26.0" fitWidth="30.0" onMouseClicked="#chatInfo" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/information.png" />
+                     </image>
+                  </ImageView>
+               </children>
+               <HBox.margin>
+                  <Insets />
+               </HBox.margin>
+               <padding>
+                  <Insets right="10.0" />
+               </padding>
+            </HBox>
          </children>
-      </AnchorPane>
+      </HBox>
    </top>
    <bottom>
-<HBox alignment="CENTER" prefHeight="70.0" spacing="10.0" style="-fx-background-color: white;" BorderPane.alignment="CENTER">
+     <HBox alignment="CENTER" prefHeight="70.0" spacing="10.0" style="-fx-background-color: white;" BorderPane.alignment="TOP_LEFT">
          <Button mnemonicParsing="false" onAction="#attach" style="-fx-background-color: white;">
             <graphic>
                <ImageView fitHeight="20" fitWidth="20">
@@ -64,7 +81,7 @@
                <Insets />
             </HBox.margin>
             <children>
-               <TextField fx:id="text" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onAction="#textEnter" prefHeight="40.0" promptText="Type a message" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="10.0" />
+               <TextField fx:id="text" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onAction="#textEnter" prefHeight="40.0" promptText="Type a message" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="5.0" />
             </children>
          </AnchorPane>
          <ImageView fitHeight="20" fitWidth="20" onMouseClicked="#openFormattingDialog">
@@ -75,18 +92,6 @@
                <Insets left="10.0" />
             </HBox.margin>
          </ImageView>
-         <Button mnemonicParsing="false" style="-fx-background-color: white;">
-            <graphic>
-               <ImageView fitHeight="20" fitWidth="20">
-                  <image>
-                     <Image url="@../images/smile.png" />
-                  </image>
-               </ImageView>
-            </graphic>
-            <HBox.margin>
-               <Insets />
-            </HBox.margin>
-         </Button>
          <Button mnemonicParsing="false" onAction="#send" style="-fx-background-color: white;">
             <graphic>
                <ImageView fitHeight="20" fitWidth="20">

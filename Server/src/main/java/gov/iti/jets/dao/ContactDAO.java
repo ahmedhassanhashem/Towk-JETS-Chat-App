@@ -312,7 +312,8 @@ public class ContactDAO extends UnicastRemoteObject implements ContactDAOInterfa
                     // user.setPassword(re.getString("password"));
                     // user.setFirstLogin(re.getBoolean("firstLogin"));
                     user.setUserStatus(UserStatus.valueOf(re.getString("userStatus")));
-                    // user.setUserMode(UserMode.valueOf(re.getString("userMode")));
+                    if(re.getString("userMode") != null)
+                    user.setUserMode(UserMode.valueOf(re.getString("userMode")));
                     pendingReceived.add(user);
                 }
             }
@@ -384,27 +385,26 @@ public class ContactDAO extends UnicastRemoteObject implements ContactDAOInterfa
     
     public boolean deleteRejectedContact(String receiverPhone, String senderPhone) throws RemoteException {
         String getIdQuery = "SELECT id FROM UserContact " +
-                            "WHERE receiverID = (SELECT userID FROM User WHERE phone = ?) " +
-                            "AND senderID = (SELECT userID FROM User WHERE phone = ?) " +
-                            "AND requestStatus = 'REJECT'";
+                "WHERE receiverID = (SELECT userID FROM User WHERE phone = ?) " +
+                "AND senderID = (SELECT userID FROM User WHERE phone = ?) " +
+                "AND requestStatus = 'REJECT'";
         String deleteQuery = "DELETE FROM UserContact WHERE id = ?";
-    
+
         try (Connection con = dm.getConnection();
-             PreparedStatement getIdPs = con.prepareStatement(getIdQuery);
-             PreparedStatement deletePs = con.prepareStatement(deleteQuery)) {
-    
-            
+                PreparedStatement getIdPs = con.prepareStatement(getIdQuery);
+                PreparedStatement deletePs = con.prepareStatement(deleteQuery)) {
+
             getIdPs.setString(1, receiverPhone);
             getIdPs.setString(2, senderPhone);
             ResultSet rs = getIdPs.executeQuery();
-    
+
             if (rs.next()) {
                 int requestId = rs.getInt("id");
                 deletePs.setInt(1, requestId);
                 int affectedRows = deletePs.executeUpdate();
                 return affectedRows > 0;
             } else {
-                return false; 
+                return false;
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -470,5 +470,222 @@ public class ContactDAO extends UnicastRemoteObject implements ContactDAOInterfa
         }
         return null;
     }
+     /* ------------------My Functions Implementation---Block Feature--------------------- */
+
+        /* 
+        //my Implementation
+        @Override
+        public List<UserDTO> findAllContactsBLOCKED(String userPhone) throws RemoteException {
+        List<UserDTO> blockedContacts = new ArrayList<>();
+        
+        String getUserIDQuery = "SELECT userID FROM User WHERE phone = ?";
+        String getBlockedContactsQuery =
+                "(SELECT u.* FROM UserContact uc JOIN User u ON uc.receiverID = u.userID " +
+                "WHERE uc.senderID = ? AND uc.requestStatus = 'Block') " +
+                "UNION " +
+                "(SELECT u.* FROM UserContact uc JOIN User u ON uc.senderID = u.userID " +
+                "WHERE uc.receiverID = ? AND uc.requestStatus = 'Block')";
+        
+        try (Connection con = dm.getConnection();
+             PreparedStatement psGetUserID = con.prepareStatement(getUserIDQuery)) {
+        
+            psGetUserID.setString(1, userPhone);
+            ResultSet rsUser = psGetUserID.executeQuery();
+        
+            if (!rsUser.next()) {
+                return blockedContacts; 
+            }
+        
+            int userID = rsUser.getInt("userID");
+        
+            try (PreparedStatement psContacts = con.prepareStatement(getBlockedContactsQuery)) {
+                psContacts.setInt(1, userID);
+                psContacts.setInt(2, userID);
+                ResultSet rs = psContacts.executeQuery();
+        
+                while (rs.next()) {
+                    UserDTO user = new UserDTO();
+                    user.setUserID(rs.getInt("userID"));
+                    user.setPhone(rs.getString("phone"));
+                    user.setName(rs.getString("name"));
+                    user.setCountry(rs.getString("country"));
+                    user.setGender(Gender.valueOf(rs.getString("gender")));
+                    user.setEmail(rs.getString("email"));
+                    user.setBirthdate(rs.getDate("birthdate"));
+                    user.setUserStatus(UserStatus.valueOf(rs.getString("userStatus")));
+        
+                    String mode = rs.getString("userMode");
+                    user.setUserMode(mode != null ? UserMode.valueOf(mode) : UserMode.AVAILABLE);
+        
+                    String bio = rs.getString("bio");
+                    user.setBio(bio != null ? bio : "Hi, I'm using towk!");
+        
+                    if (rs.getString("userPicture") != null && rs.getString("userPicture").length() > 0) {
+                        user.setUserPicture(images.downloadPP(rs.getString("userPicture")));
+                    } else {
+                        user.setUserPicture(null);
+                    }
+        
+                    blockedContacts.add(user);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        
+        return blockedContacts;
+        }
+        
+        */
+
+public boolean isContactBlocked(String userPhone, String contactPhone) throws RemoteException {
+    String checkBlockQuery = 
+        "SELECT uc.requestStatus " +
+        "FROM UserContact uc " +
+        "JOIN User sender ON uc.senderID = sender.userID " +
+        "JOIN User receiver ON uc.receiverID = receiver.userID " +
+        "WHERE ((sender.phone = ? AND receiver.phone = ?) " +
+        "OR (sender.phone = ? AND receiver.phone = ?)) " +
+        "AND uc.requestStatus = 'BLOCK'";
+        
+    try (Connection con = dm.getConnection();
+         PreparedStatement ps = con.prepareStatement(checkBlockQuery)) {
+            
+        ps.setString(1, userPhone);
+        ps.setString(2, contactPhone);
+        ps.setString(3, contactPhone);
+        ps.setString(4, userPhone);
+        
+        try (ResultSet rs = ps.executeQuery()) {
+            return rs.next(); // Returns true if a blocked record exists
+        }
+    } catch (SQLException e) {
+        System.err.println("SQL Error checking block status: " + e.getMessage());
+        e.printStackTrace();
+        return false;
+    }
+}
+
+public boolean blockContact(String blockerPhone, String blockedPhone) throws RemoteException {
+    if (isContactBlocked(blockerPhone, blockedPhone)) {
+        System.out.println("Contact is already blocked");
+        return false;
+    }
+
+    String getIdQuery =
+    "SELECT uc.id, uc.senderID, uc.receiverID, uc.requestStatus " +
+    "FROM UserContact uc " +
+    "JOIN User sender ON uc.senderID = sender.userID " +
+    "JOIN User receiver ON uc.receiverID = receiver.userID " +
+    "WHERE ((sender.phone = ? AND receiver.phone = ?) " +
+    "OR (sender.phone = ? AND receiver.phone = ?)) " +
+    "AND uc.requestStatus = 'ACCEPT'";
+
+    String updateQuery =
+        "UPDATE UserContact SET requestStatus = 'BLOCK', blockedBy = (SELECT userID FROM User WHERE phone = ?) WHERE id = ?";
+
+    try (Connection con = dm.getConnection();
+         PreparedStatement getIdPs = con.prepareStatement(getIdQuery)) {
+        
+        getIdPs.setString(1, blockerPhone);
+        getIdPs.setString(2, blockedPhone);
+        getIdPs.setString(3, blockedPhone);
+        getIdPs.setString(4, blockerPhone);
+        
+        try (ResultSet rs = getIdPs.executeQuery()) {
+            if (rs.next()) {
+                int requestId = rs.getInt("id");
+
+                try (PreparedStatement updatePs = con.prepareStatement(updateQuery)) {
+                    updatePs.setString(1, blockerPhone);  // Store blocker’s ID
+                    updatePs.setInt(2, requestId);
+                    int affectedRows = updatePs.executeUpdate();
+                    return affectedRows > 0;
+                }
+            }
+            return false;
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+        return false;
+    }
+}
+
+@Override
+public boolean isUserBlocker(String blockerPhone, String blockedPhone) throws RemoteException {
+    String query = """
+        SELECT 1
+        FROM UserContact uc
+        JOIN User blocker ON uc.blockedBy = blocker.userID
+        JOIN User sender ON uc.senderID = sender.userID
+        JOIN User receiver ON uc.receiverID = receiver.userID
+        WHERE blocker.phone = ?
+          AND ((sender.phone = ? AND receiver.phone = ?) OR (sender.phone = ? AND receiver.phone = ?))
+          AND uc.requestStatus = 'BLOCK'
+    """;
+
+    try (Connection con = dm.getConnection();
+         PreparedStatement ps = con.prepareStatement(query)) {
+         
+        ps.setString(1, blockerPhone); 
+        ps.setString(2, blockerPhone);
+        ps.setString(3, blockedPhone);
+        ps.setString(4, blockedPhone);
+        ps.setString(5, blockerPhone);
+
+        try (ResultSet rs = ps.executeQuery()) {
+            return rs.next();  // Returns true if blocker exists
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+        return false;
+    }
+}
+
+
+public boolean unblockContact(String blockerPhone, String blockedPhone) throws RemoteException {
+    String getIdQuery =
+    "SELECT uc.id " +
+    "FROM UserContact uc " +
+    "JOIN User sender ON uc.senderID = sender.userID " +
+    "JOIN User receiver ON uc.receiverID = receiver.userID " +
+    "WHERE ((sender.phone = ? AND receiver.phone = ?) " +
+    "OR (sender.phone = ? AND receiver.phone = ?)) " +
+    "AND uc.requestStatus = 'BLOCK'";
+
+    String updateQuery = "UPDATE UserContact SET requestStatus = 'ACCEPT', blockedBy = NULL WHERE id = ?";
+
+    try (Connection con = dm.getConnection();
+         PreparedStatement getIdPs = con.prepareStatement(getIdQuery)) {
+           
+        getIdPs.setString(1, blockerPhone);
+        getIdPs.setString(2, blockedPhone);
+        getIdPs.setString(3, blockedPhone);
+        getIdPs.setString(4, blockerPhone);
+       
+        try (ResultSet rs = getIdPs.executeQuery()) {
+            if (rs.next()) {
+                int requestId = rs.getInt("id");
+               
+                try (PreparedStatement updatePs = con.prepareStatement(updateQuery)) {
+                    updatePs.setInt(1, requestId);
+                    int affectedRows = updatePs.executeUpdate();
+                    System.out.println("Unblock affected " + affectedRows + " rows");
+                    return affectedRows > 0;
+                }
+            } else {
+                System.out.println("No blocked contact record found");
+                return false;
+            }
+        }
+    } catch (SQLException e) {
+        System.err.println("SQL Error during unblock: " + e.getMessage());
+        e.printStackTrace();
+        return false;
+    }
+}
+
+ 
+
 
 }
