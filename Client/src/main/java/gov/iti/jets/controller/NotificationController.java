@@ -174,7 +174,7 @@ private ListView<NotificationDTO> missedMessagesListView;
         } catch (RemoteException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
-        }
+        } catch(NullPointerException asd){ExceptionUtility.alert();}
         System.out.println("DAO returned: " + pendingRequests.size() + " pending requests");
 
         friendRequestsListView.setCellFactory(new Callback<ListView<UserDTO>, ListCell<UserDTO>>() {

@@ -160,6 +160,8 @@ public class ChatsController {
         } catch (RemoteException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
+        }catch(NullPointerException e){
+            ExceptionUtility.alert();
         }
 
         listView.setCellFactory(null);
@@ -366,6 +368,8 @@ public class ChatsController {
         } catch (RemoteException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
+        }catch(NullPointerException e){
+            ExceptionUtility.alert();
         }
 
         listView.setCellFactory(null);
@@ -592,6 +596,8 @@ public class ChatsController {
         } catch (RemoteException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
+        }catch(NullPointerException e){
+            ExceptionUtility.alert();
         }
 
         listView.setCellFactory(null);

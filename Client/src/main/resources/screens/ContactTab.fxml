@@ -15,7 +15,7 @@
                      <children>
                         <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="171.0" spacing="20.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <children>
-                  <VBox fx:id="vbox" spacing="10.0" alignment="CENTER">
+                  <VBox fx:id="vbox" alignment="CENTER" spacing="10.0">
                      <children>
                                     <!-- <HBox alignment="TOP_CENTER" prefHeight="50.0" prefWidth="600.0" spacing="20.0">
                                        <children>
@@ -39,19 +39,19 @@
                                     </HBox>
                      </children>
                   </VBox>
-                              <HBox  alignment="BOTTOM_CENTER" spacing="20.0">
+                              <HBox alignment="BOTTOM_CENTER" spacing="20.0">
                                  <children>
-                                    <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#addContact" prefHeight="30.0" prefWidth="80.0" style="-fx-background-color: linear-gradient(to bottom, #13547a 0%, #80d0c7 100%);" styleClass="action-button" stylesheets="@../styles/style.css" text="Add">
+                                    <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#addContact" style="-fx-background-color: linear-gradient(to bottom, #13547a 0%, #80d0c7 100%);" styleClass="action-button" stylesheets="@../styles/style.css" text="Add">
                                        <font>
                                           <Font size="14.0" />
                                        </font>
                                     </Button>
-                                    <Button layoutX="210.0" layoutY="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#newContact" prefHeight="30.0" style="-fx-background-color: linear-gradient(to bottom, #13547a 0%, #80d0c7 100%);" styleClass="action-button" stylesheets="@../styles/style.css" text="New Contact">
+                                    <Button layoutX="210.0" layoutY="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#newContact" style="-fx-background-color: linear-gradient(to bottom, #13547a 0%, #80d0c7 100%);" styleClass="action-button" stylesheets="@../styles/style.css" text="New Contact">
                                        <font>
                                           <Font size="14.0" />
                                        </font>
                                     </Button>
-                                    <Button layoutX="186.0" layoutY="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#addAllContacts" prefHeight="30.0" prefWidth="80.0" style="-fx-background-color: linear-gradient(to bottom, #13547a 0%, #80d0c7 100%);" styleClass="action-button" stylesheets="@../styles/style.css" text="Add all">
+                                    <Button layoutX="186.0" layoutY="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#addAllContacts" style="-fx-background-color: linear-gradient(to bottom, #13547a 0%, #80d0c7 100%);" styleClass="action-button" stylesheets="@../styles/style.css" text="Add all">
                                        <font>
                                           <Font size="14.0" />
                                        </font>

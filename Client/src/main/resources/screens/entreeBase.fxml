@@ -26,8 +26,8 @@
    <children>
       <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="103.0" prefWidth="906.0" spacing="40.0" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
          <children>
-            <Button fx:id="signupButton" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#gotoSingup" prefHeight="40.0" prefWidth="105.0" style="-fx-background-color: aaac25;" text="Sign Up" textFill="WHITE" />
-            <Button fx:id="signButton" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#gotoSingin" prefHeight="40.0" prefWidth="105.0" style="-fx-background-color: aaac25;" text="Sign In" textFill="WHITE" />
+            <Button fx:id="signupButton" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#gotoSingup" prefHeight="40.0" prefWidth="105.0" style="-fx-background-color: linear-gradient(to bottom, #13547a 0%, #80ffc7 100%);" text="Sign Up" textFill="WHITE" />
+            <Button fx:id="signButton" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#gotoSingin" prefHeight="40.0" prefWidth="105.0" style="-fx-background-color: linear-gradient(to bottom, #13547a 0%, #80ffc7 100%);" text="Sign In" textFill="WHITE" />
          </children>
       </HBox>
       <BorderPane fx:id="borderPane" prefHeight="200.0" prefWidth="200.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="2" GridPane.rowSpan="2147483647" />
