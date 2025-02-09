@@ -45,7 +45,7 @@ public class App extends Application {
 
                 LoginPController dashController2 = dashLoader2.getController();
 
-                dashScene = new Scene(dashBoard2, width, height);
+                dashScene = new Scene(dashBoard2, width+200, height+100);
                 dashController2.setStage(stage);
                 String fullName = user.getName();
                 String[] names = fullName.split("\\s+");

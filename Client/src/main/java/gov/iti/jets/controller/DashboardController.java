@@ -500,7 +500,7 @@ public class DashboardController {
 
     @FXML
     private void signOut(MouseEvent event) {
-        int width = 640, height = 480;
+        int width = 840, height = 580;
         FXMLLoader dashLoader = new FXMLLoader(getClass().getResource("/screens/loginP.fxml"));
         VBox dashBoard = null;
         try {

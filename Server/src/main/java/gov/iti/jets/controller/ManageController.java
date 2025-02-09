@@ -94,7 +94,7 @@ public class ManageController {
 
             reg.rebind("contactDAO", contactDAO);
 
-            // reg.rebind("notificationDAO", notificationDAO);
+            reg.rebind("notificationDAO", notificationDAO);
 
             startButton.setDisable(true);
             stopButton.setDisable(false);
