@@ -167,7 +167,7 @@ public class DashboardController {
             e.printStackTrace();
         }
 
-        System.out.println(userDTO.getUserID());
+
         try {
             clientImplNotGlobal = new ClientImplNot(userDTO.getUserID(),null);
             notificationDAO.register(userDTO.getUserID(), clientImplNotGlobal);
@@ -179,22 +179,7 @@ public class DashboardController {
             e.printStackTrace();
         }
 
-        Platform.runLater(() -> {
 
-            stage.setOnCloseRequest((e) -> {
-
-                try {
-                    notificationDAO.unRegister(userDTO.getUserID(), clientImplNotGlobal);
-                    UnicastRemoteObject.unexportObject(clientImplNotGlobal, true);
-                } catch (RemoteException e1) {
-                    // TODO Auto-generated catch block
-                    // e1.printStackTrace();
-                }
-                System.exit(0);
-                Platform.exit();
-            });
-
-        });
     }
 
     @FXML
@@ -603,7 +588,18 @@ public class DashboardController {
         clip.setCenterX(30);
         clip.setCenterY(30);
         profileImage.setClip(clip);
+Platform.runLater(()->{
+    Runtime.getRuntime().addShutdownHook(new Thread(() -> {
 
+    try {
+        UnicastRemoteObject.unexportObject(clientImplNotGlobal, true);
+        notificationDAO.unRegister(userDTO.getUserID(), clientImplNotGlobal);
+    } catch (RemoteException e1) {
+        // TODO Auto-generated catch block
+        // e1.printStackTrace();
+    }
+}));    
+});
     }
 
     private String extractFirstName(String fullName) {
