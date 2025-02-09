@@ -68,6 +68,7 @@ public class DashboardController {
     ChatsController chat;
     ClientImplContact clientImplContact;
     ClientImplNot clientImplNot ;
+    ClientImplNot clientImplNotGlobal ;
     ClientImplAnn clientImplAnn;
     private DashboardController dashboardController;
 
@@ -165,6 +166,35 @@ public class DashboardController {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
+
+        System.out.println(userDTO.getUserID());
+        try {
+            clientImplNotGlobal = new ClientImplNot(userDTO.getUserID(),null);
+            notificationDAO.register(userDTO.getUserID(), clientImplNotGlobal);
+
+
+            
+        } catch (RemoteException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+        Platform.runLater(() -> {
+
+            stage.setOnCloseRequest((e) -> {
+
+                try {
+                    notificationDAO.unRegister(userDTO.getUserID(), clientImplNotGlobal);
+                    UnicastRemoteObject.unexportObject(clientImplNotGlobal, true);
+                } catch (RemoteException e1) {
+                    // TODO Auto-generated catch block
+                    // e1.printStackTrace();
+                }
+                System.exit(0);
+                Platform.exit();
+            });
+
+        });
     }
 
     @FXML
@@ -529,6 +559,13 @@ public class DashboardController {
         } catch (RemoteException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
+        }
+        try {
+            notificationDAO.unRegister(userDTO.getUserID(), clientImplNotGlobal);
+            UnicastRemoteObject.unexportObject(clientImplNotGlobal, true);
+        } catch (RemoteException e1) {
+            // TODO Auto-generated catch block
+            e1.printStackTrace();
         }
     }
 
