@@ -21,10 +21,12 @@ import jakarta.xml.bind.JAXBException;
 import jakarta.xml.bind.Unmarshaller;
 import javafx.fxml.FXML;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -34,10 +36,11 @@ public class ProfileSettingsController {
 
     private UserDTO userDTO = new UserDTO();
     // private UserDAO userDAO = new UserDAO();
-        private UserDAOInterface userDAO;
-        File file;
+    private UserDAOInterface userDAO;
+    File file;
     private Stage stage;
-
+    @FXML
+    Label statusLabel;
     @FXML
     TextField name;
     @FXML
@@ -60,18 +63,14 @@ public class ProfileSettingsController {
 
     @FXML
     private void updateUser() {
-        // if (name.getText().isBlank()) {
-        //     Alert alert = new Alert(Alert.AlertType.ERROR);
-        //     alert.setTitle("Validation Error");
-        //     alert.setContentText( "Name cannot be empty.");
-        //     alert.showAndWait();
-        //     return;
-        // }
+
 
         String bioField = (!bio.getText().isBlank()) ? bio.getText() : null;
         UserMode userModeList = (userMode.getValue() != null) ? UserMode.valueOf(userMode.getValue()) : null;
-        // String bioField  = bio.getText();
         String nmae =(!name.getText().isBlank()) ? name.getText():null;
+
+
+
 
         int rowsUpdated=0;
         try {
@@ -89,22 +88,22 @@ public class ProfileSettingsController {
         } catch (RemoteException  e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
-        } catch (FileNotFoundException e) {
+        } catch(NullPointerException er){
+            ExceptionUtility.alert();
+        }
+        
+        catch (FileNotFoundException e) {
                     // TODO Auto-generated catch block
                     e.printStackTrace();
                 } catch (IOException e) {
                     // TODO Auto-generated catch block
                     e.printStackTrace();
                 }
-
-        // if (rowsUpdated > 0) {
-        //     System.out.println("Success Profile updated successfully!");
-        // } else {
-        //     System.out.println("Error Failed to update profile.");
-        // }
+        
+       
         name.clear();
         bio.clear();
-        userMode.getSelectionModel().clearSelection();
+        // userMode.getSelectionModel().clearSelection();
     }
 
     @FXML
@@ -141,6 +140,23 @@ public class ProfileSettingsController {
  
     @FXML
     private void initialize(){
+
+        Circle clip = new Circle();
+        clip.setRadius(25); 
+        clip.setCenterX(25);
+        clip.setCenterY(25);
+        image.setClip(clip);
+        
+        
+
+        String[] items = {"AWAY", "AVAILABLE", "BUSY"};
+        userMode.getItems().addAll(items);
+        userMode.setOnAction(e->{
+            String mode = userMode.getSelectionModel().getSelectedItem().toString();
+            statusLabel.setText("Current Status: " + mode);
+        });
+        
+
         RMIConfig p = null;
                 try { 
             File XMLfile = new File(getClass().getResource("/rmi.xml").toURI()); 
@@ -169,10 +185,7 @@ public class ProfileSettingsController {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        Circle clip = new Circle();
-        clip.setRadius(25); 
-        clip.setCenterX(25);
-        clip.setCenterY(25);
-        image.setClip(clip);
+        
+        
     }
 }

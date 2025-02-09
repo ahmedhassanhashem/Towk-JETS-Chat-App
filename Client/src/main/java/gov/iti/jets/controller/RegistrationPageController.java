@@ -181,6 +181,8 @@ public class RegistrationPageController {
         } catch (RemoteException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
+        }catch(NullPointerException e){
+            ExceptionUtility.alert();
         }
         if (ret != null) {
             invalid.setVisible(true);
@@ -196,7 +198,7 @@ public class RegistrationPageController {
         }
         if (user == null) {
             System.out.println("err");
-            showWarn("Unknown error!");
+            ExceptionUtility.alert();
         } else {
             FXMLLoader dashLoader = new FXMLLoader(getClass().getResource("/screens/base.fxml"));
             BorderPane dashBoard = null;

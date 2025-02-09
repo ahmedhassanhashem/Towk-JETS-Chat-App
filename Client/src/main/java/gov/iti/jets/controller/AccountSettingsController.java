@@ -61,6 +61,8 @@ public class AccountSettingsController {
             } catch (RemoteException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
+            }catch (NullPointerException er){
+                ExceptionUtility.alert();
             }
             try {
                 Stage stage1 = new Stage();
@@ -95,6 +97,8 @@ public class AccountSettingsController {
             } catch (RemoteException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
+            }catch (NullPointerException er){
+                ExceptionUtility.alert();
             }
             password.clear();
             confirmPassword.clear();
