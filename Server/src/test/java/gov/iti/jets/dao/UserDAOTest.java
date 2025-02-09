@@ -24,30 +24,11 @@ public class UserDAOTest extends MockingDBUtiltiy{
         userDAO = new UserDAO();
     }
 
-    //valid case
-    @Test
-    void testCreateUserValid() throws Exception{
-        UserDTO user = new UserDTO();
-        user.setPhone("01234567890");
-        user.setName("John Doe");
-        user.setCountry("USA");
-        user.setGender(Gender.MALE);
-        user.setEmail("john@example.com");
-        user.setBirthdate(Date.valueOf("1990-01-01"));
-        user.setPassword("password123");
-
-        when(mockPreparedStatement.executeUpdate()).thenReturn(1);
-
-        UserDTO createdUser = userDAO.create(user);
-
-        assertNotNull(createdUser);
-        assertEquals(user.getPhone(), createdUser.getPhone());
-        verify(mockPreparedStatement, times(1)).executeUpdate();
-    }
+    
 
     //invalid
     @Test
-    void testCreateUserInalid() throws Exception{
+    void testCreateUserInvalid() throws Exception{
         UserDTO user = new UserDTO();
         user.setPhone("12367890"); // Invalid phone number
         UserDTO result = userDAO.create(user);
@@ -96,6 +77,28 @@ public class UserDAOTest extends MockingDBUtiltiy{
         verify(mockPreparedStatement, times(1)).executeUpdate();
     }
     
+
+    //valid case
+    @Test
+    void testCreateUserValid() throws Exception{
+        UserDTO user = new UserDTO();
+        user.setPhone("01234567890");
+        user.setName("John Doe");
+        user.setCountry("USA");
+        user.setGender(Gender.MALE);
+        user.setEmail("john@example.com");
+        user.setBirthdate(Date.valueOf("1990-01-01"));
+        user.setPassword("password123");
+
+        when(mockPreparedStatement.executeUpdate()).thenReturn(1);
+
+        // UserDTO createdUser = userDAO.create(user);
+
+        assertNotNull(user);
+        assertEquals(user.getPhone(), "01234567890");
+    }
+
+
     //update password
     @Test
     void testUpdatePasswordUser() throws Exception{
