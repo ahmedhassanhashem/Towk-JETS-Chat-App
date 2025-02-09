@@ -37,13 +37,14 @@ import javafx.stage.Stage;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 
+import gov.iti.jets.dao.AdminDAO;
 import gov.iti.jets.dao.UserDAO;
 import gov.iti.jets.dto.UserDTO;
 
 public class LoginController {
 
     private Stage stage;
-    private UserDAO userDao;
+    private AdminDAO userDao;
 
     @FXML
     private Button loginButton;
@@ -74,12 +75,9 @@ public class LoginController {
         UserDTO user = new UserDTO();
         user.setPhone(phoneField.getText());
         user.setPassword(passwordField.getText());
-        try {
+
             user = userDao.read(user);
-        } catch (RemoteException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
+    
         if(user != null){
             try {
                  int ret = userDao.updateFirstLogin(user.getUserID());
@@ -118,13 +116,9 @@ public class LoginController {
 
     @FXML
     private void initialize() {
-        try {
-            userDao = new UserDAO();
-            UnicastRemoteObject.unexportObject(userDao, true);
-        } catch (RemoteException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
+
+            userDao = new AdminDAO();
+
         
         // phoneField.onKeyTypedProperty(()-> invalid.setVisible(false));
         phoneField.setOnKeyPressed((e)-> {

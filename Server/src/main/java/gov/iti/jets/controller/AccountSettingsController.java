@@ -10,6 +10,7 @@ import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 
 import gov.iti.jets.config.RMIConfig;
+import gov.iti.jets.dao.AdminDAO;
 import gov.iti.jets.dao.UserDAO;
 import gov.iti.jets.dao.UserDAOInterface;
 import gov.iti.jets.dto.UserDTO;
@@ -40,7 +41,7 @@ public class AccountSettingsController {
 
     private Stage stage;
     private UserDTO userDTO = new UserDTO();
-    private UserDAOInterface userDAO;
+    private AdminDAO userDAO;
 
     @FXML
     private PasswordField password;
@@ -69,12 +70,9 @@ public class AccountSettingsController {
 
         // make the user logout
         if (result == ButtonType.OK) {
-            try {
+
                 userDAO.delete(userDTO.getUserID());
-            } catch (RemoteException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
+
             try {
                 int width = 640, height = 480;
                 FXMLLoader loginLoader = new FXMLLoader(getClass().getResource("/screens/Login.fxml"));
@@ -100,12 +98,9 @@ public class AccountSettingsController {
             alert.initModality(Modality.APPLICATION_MODAL);
             alert.showAndWait();
         } else {
-            try {
+
                 userDAO.updatePassword(userDTO.getUserID(), password.getText());
-            } catch (RemoteException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
+
             password.clear();
             confirmPassword.clear();
             int width = 640, height = 480;
@@ -129,13 +124,8 @@ public class AccountSettingsController {
     @FXML
     private void initialize() {
 
-        try {
-            userDAO = new UserDAO();
-UnicastRemoteObject.unexportObject(userDAO, true);
-        } catch (RemoteException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
+            userDAO = new AdminDAO();
+
         confirmPassword.setOnKeyReleased((e) -> {
             if (!password.getText().equals(confirmPassword.getText())) {
                 invalid2.setVisible(true);

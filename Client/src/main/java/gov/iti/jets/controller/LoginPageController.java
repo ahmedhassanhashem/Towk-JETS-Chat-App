@@ -128,6 +128,7 @@ public class LoginPageController {
                 
                 
                 File XMLfile = new File("C:/.chatLogged/user.xml");
+                File picfile = new File("C:/.chatLogged/user.pic");
                 
                 File parentDir = XMLfile.getParentFile();
                 if (!parentDir.exists()) {
@@ -137,7 +138,13 @@ public class LoginPageController {
                 {
                     XMLfile.createNewFile();
                 }
-
+                if(!picfile.exists()){
+                    picfile.createNewFile();
+                }
+                FileOutputStream fOut = new FileOutputStream(picfile);
+                fOut.write(user.getUserPicture());
+                fOut.flush();
+                fOut.close();
                 
                 marshaller.marshal(user, XMLfile); 
             } catch (JAXBException ex) {
