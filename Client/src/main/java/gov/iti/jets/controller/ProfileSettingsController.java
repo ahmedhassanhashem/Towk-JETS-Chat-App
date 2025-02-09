@@ -5,6 +5,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.rmi.NotBoundException;
@@ -79,6 +80,15 @@ public class ProfileSettingsController {
                     imageBytes = imageToByteArray(file);
                     userDTO.setUserPicture(imageBytes);
                     userDAO.updatePicture(userDTO.getUserID(),file.getName() ,imageBytes);
+                    File picfile = new File("C:/.chatLogged/user.pic");
+
+                                    if(!picfile.exists()){
+                    picfile.createNewFile();
+                }
+                FileOutputStream fOut = new FileOutputStream(picfile);
+                fOut.write(userDTO.getUserPicture());
+                fOut.flush();
+                fOut.close();
 
                 
                 

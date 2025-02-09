@@ -1,6 +1,7 @@
 package gov.iti.jets;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 
 import gov.iti.jets.controller.LoginPController;
@@ -40,6 +41,12 @@ public class App extends Application {
                 JAXBContext context = JAXBContext.newInstance(UserDTO.class);
                 Unmarshaller unmarshaller = context.createUnmarshaller();
                 UserDTO user = (UserDTO) unmarshaller.unmarshal(XMLfile);
+                File picfile = new File("C:/.chatLogged/user.pic");
+                if(picfile.exists()){
+                    FileInputStream fIn = new FileInputStream(picfile);
+                    user.setUserPicture(fIn.readAllBytes());
+                    fIn.close();
+                }
                 FXMLLoader dashLoader2 = new FXMLLoader(getClass().getResource("/screens/loginP.fxml"));
                 VBox dashBoard2 = dashLoader2.load();
 
