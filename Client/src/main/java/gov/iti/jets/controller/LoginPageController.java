@@ -126,9 +126,10 @@ public class LoginPageController {
                 
                 marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE); 
                 
-                
-                File XMLfile = new File("C:/.chatLogged/user.xml");
-                File picfile = new File("C:/.chatLogged/user.pic");
+                String userHome = System.getProperty("user.home");
+                // File XMLfile = new File(userHome + "/.chatLogged/user.xml");
+                File XMLfile = new File(userHome + "/.chatLogged/user.xml");
+                File picfile = new File(userHome + "/.chatLogged/user.pic");
                 
                 File parentDir = XMLfile.getParentFile();
                 if (!parentDir.exists()) {
