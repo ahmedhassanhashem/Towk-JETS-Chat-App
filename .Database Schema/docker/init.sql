@@ -13,6 +13,12 @@ CREATE TABLE `User`(
     `userStatus` ENUM('ONLINE', 'OFFLINE') NOT NULL,
     `userMode` ENUM('AVAILABLE', 'BUSY', 'AWAY') NULL
 );
+CREATE TABLE `Admin`(
+    `userID` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    `phone` VARCHAR(11) NOT NULL,
+    `password` VARCHAR(255) NOT NULL,
+    `firstLogin` BOOLEAN NOT NULL
+);
 ALTER TABLE
     `User` ADD UNIQUE `user_phone_unique`(`phone`);
 CREATE TABLE `Chat`(
@@ -37,8 +43,8 @@ CREATE TABLE `Attachment`(
 );
 CREATE TABLE `Announcement`(
     `announcementID` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    `announcementTitle` VARCHAR(255) NOT NULL,
-    `announcementContent` VARCHAR(255) NOT NULL
+    `announcementTitle` TEXT NOT NULL,
+    `announcementContent` TEXT NOT NULL
 );
 CREATE TABLE `UserChat`(
     `id` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -88,6 +94,11 @@ VALUES
 ('34567890123', 'Charlie Brown', 'UK', 'MALE', 'charlie@example.com', '1995-02-10', 'password123', NULL, 'Hey, I am Charlie!', TRUE, 'OFFLINE', 'AWAY'),
 ('45678901234', 'Diana Prince', 'USA', 'FEMALE', 'diana@example.com', '1992-11-25', 'password123', NULL, 'Hi, I am Diana!', TRUE, 'OFFLINE', 'AVAILABLE'),
 ('56789012345', 'Eve Adams', 'Australia', 'FEMALE', 'eve@example.com', '1988-07-30', 'password123', NULL, 'Hello, I am Eve!', TRUE, 'OFFLINE', 'BUSY');
+
+-- Insert dummy admins
+INSERT INTO `Admin` (`phone`, `password`,`firstLogin`)
+VALUES
+('2',  '',TRUE);
 
 -- Insert dummy chats
 INSERT INTO `Chat` (`chatType`, `chatName`, `chatPicture`)

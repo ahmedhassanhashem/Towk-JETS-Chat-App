@@ -18,6 +18,7 @@ import gov.iti.jets.client.ClientImplAnn;
 import gov.iti.jets.client.ClientImplChat;
 import gov.iti.jets.client.ClientImplContact;
 import gov.iti.jets.client.ClientImplNot;
+import gov.iti.jets.App;
 import gov.iti.jets.chatbot.BotService;
 import gov.iti.jets.chatbot.BotService;
 import gov.iti.jets.client.ClientImplChat;
@@ -120,19 +121,25 @@ public class DashboardController {
         chat.setStage(s);
         // System.out.println(stage);
         Platform.runLater(() -> {
-            Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            stage.setOnCloseRequest((e)->{
 
+                // Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+                    
                 try {
                     userDAO.changeStatus(userDTO.getUserID(), UserStatus.OFFLINE.toString());
                     userDTO.setUserStatus(UserStatus.OFFLINE);
                     userDAO.propagateOffline(userDTO);
-
+                    if(clientImplNotGlobal != null){
+                        notificationDAO.unRegister(userDTO.getUserID(), clientImplNotGlobal);
+                        
+                    }
                 } catch (RemoteException e1) {
                     // TODO Auto-generated catch block
                     e1.printStackTrace();
                 }
+            });
 
-            }));
+            // }));
         });
         try {
             RMIConfig p = null;
@@ -171,7 +178,7 @@ public class DashboardController {
         try {
             clientImplNotGlobal = new ClientImplNot(userDTO.getUserID(),null);
             notificationDAO.register(userDTO.getUserID(), clientImplNotGlobal);
-
+            App.clientImpls.add( clientImplNotGlobal);
 
             
         } catch (RemoteException e) {
@@ -302,7 +309,7 @@ public class DashboardController {
             clientImplContact = new ClientImplContact(0, c);
 
             chatDAO.register(userDTO.getUserID(), clientImplContact);
-
+            App.clientImpls.add(clientImplContact);
             hold.sceneProperty().addListener((observable, oldScene, newScene) -> {
                 // if (oldScene != null && newScene!= null) {
                 if (clientImplContact != null) {
@@ -330,11 +337,6 @@ public class DashboardController {
 
             stage.setOnCloseRequest((e) -> {
 
-                settings(event);
-                StackPane temp = new StackPane();
-                StackPane temp2 = new StackPane();
-                borderPane.setCenter(temp);
-                stage.setScene(new Scene(temp2));
                 try {
                     chatDAO.unRegister(userDTO.getUserID(), clientImplContact);
                     // UnicastRemoteObject.unexportObject(clientImplContact, true);
@@ -343,14 +345,6 @@ public class DashboardController {
                     // TODO Auto-generated catch block
                     // e1.printStackTrace();
                 }
-                new Thread(()->{
-                    try {
-                        Thread.sleep(500);
-                    } catch (InterruptedException e1) {
-                        // TODO Auto-generated catch block
-                        e1.printStackTrace();
-                    }
-                }).start();;
                 System.exit(0);
                 Platform.exit();
             });
@@ -492,11 +486,7 @@ public class DashboardController {
 
             stage.setOnCloseRequest((e) -> {
 
-                // settings(event);
-                // StackPane temp = new StackPane();
-                // StackPane temp2 = new StackPane();
-                // borderPane.setCenter(temp);
-                // stage.setScene(new Scene(temp2));
+
                 try {
                     announcementDAO.unRegister(userDTO.getUserID(), clientImplAnn);
                     UnicastRemoteObject.unexportObject(clientImplAnn, true);
@@ -548,6 +538,7 @@ public class DashboardController {
         try {
             notificationDAO.unRegister(userDTO.getUserID(), clientImplNotGlobal);
             UnicastRemoteObject.unexportObject(clientImplNotGlobal, true);
+            
         } catch (RemoteException e1) {
             // TODO Auto-generated catch block
             e1.printStackTrace();
@@ -588,18 +579,7 @@ public class DashboardController {
         clip.setCenterX(30);
         clip.setCenterY(30);
         profileImage.setClip(clip);
-Platform.runLater(()->{
-    Runtime.getRuntime().addShutdownHook(new Thread(() -> {
 
-    try {
-        UnicastRemoteObject.unexportObject(clientImplNotGlobal, true);
-        notificationDAO.unRegister(userDTO.getUserID(), clientImplNotGlobal);
-    } catch (RemoteException e1) {
-        // TODO Auto-generated catch block
-        // e1.printStackTrace();
-    }
-}));    
-});
     }
 
     private String extractFirstName(String fullName) {
