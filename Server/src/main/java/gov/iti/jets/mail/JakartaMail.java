@@ -38,7 +38,7 @@ public class JakartaMail {
         try{
             MimeMessage message = new MimeMessage(mailSession);
             message.setFrom(new InternetAddress("poshspareparts@gmail.com"));
-            message.addRecipient(Message.RecipientType.TO, new InternetAddress("a27m3d@yahoo.com"));
+            message.addRecipient(Message.RecipientType.TO, new InternetAddress(email));
             message.setSubject("New Friend Request Sent to you");
             message.setText(content);
 
