@@ -32,6 +32,8 @@ import gov.iti.jets.dao.UserChatDAO;
 import gov.iti.jets.dao.UserChatDAOInterface;
 import gov.iti.jets.dao.UserDAO;
 import gov.iti.jets.dao.UserDAOInterface;
+import gov.iti.jets.email.MailImpl;
+import gov.iti.jets.email.MailInterface;
 import gov.iti.jets.server.FileServer;
 import jakarta.xml.bind.JAXBContext;
 import jakarta.xml.bind.JAXBException;
@@ -311,6 +313,10 @@ public class ServerController {
         NotificationDAO notificationDAO = new NotificationDAO();
         reg.rebind("notificationDAO", notificationDAO);
 
+        MailInterface mail = new MailImpl();
+        reg.rebind("mail", mail);
+
+
         messageDAO.setNotDao(notificationDAO);
         contactDAO.setNotDao(notificationDAO);
         Thread fileserver = new Thread(() -> FileServer.Start());
@@ -338,6 +344,7 @@ public class ServerController {
         manageController.setUserDAO(userDAO);
         manageController.setChatbot(chatbot);
         manageController.setnotificationDAO(notificationDAO);
+        manageController.setMail(mail);
 
         FXMLLoader announceLoader = new FXMLLoader(getClass().getResource("/screens/announce.fxml"));
         announce = announceLoader.load();
