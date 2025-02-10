@@ -89,7 +89,6 @@ public class App extends Application {
     }
 @Override
 public void stop() throws Exception {
-    System.out.println("as");
     for (ClientInt clientInt : clientImpls) {
         
         if (clientInt != null) {

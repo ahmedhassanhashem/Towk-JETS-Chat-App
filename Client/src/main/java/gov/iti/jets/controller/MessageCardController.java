@@ -12,6 +12,7 @@ import gov.iti.jets.client.Images;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
@@ -31,6 +32,12 @@ public class MessageCardController {
         stage = s;
 
     }
+
+        @FXML
+    private ImageView seen;
+
+    @FXML
+    private ImageView sent;
 
     @FXML
     private HBox messageContainerr;
@@ -53,6 +60,15 @@ public class MessageCardController {
     @FXML
     private Label timeLabel;
 
+    public void setSeen(boolean a){
+        if(a){
+        sent.setVisible(false);
+        seen.setVisible(true);
+    }else{
+        sent.setVisible(true);
+        seen.setVisible(false);
+    }
+    }
     public void setMessageData(String userName, String messageContent, String fileName, String timestamp,
             boolean isSender, boolean isAttachFile) {
         messageTextContainerV.getChildren().clear();

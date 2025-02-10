@@ -131,6 +131,25 @@ public class NotificationDAO extends UnicastRemoteObject implements Notification
         return notList;
     }
 
+    @Override
+    public boolean isSeen(int msgID) throws RemoteException{
+
+        String sql2 = "select * from Notification where messageID = ? ;";
+
+        try (Connection con = dm.getConnection();
+                PreparedStatement preparedStatement = con.prepareStatement(sql2);) {
+
+            preparedStatement.setInt(1, msgID);
+            ResultSet re = preparedStatement.executeQuery();
+
+                    return !re.isBeforeFirst();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
     private NotificationDTO convert(ResultSet re) {
         NotificationDTO notification = new NotificationDTO();
         try {
