@@ -1,6 +1,8 @@
 package gov.iti.jets.client;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.URISyntaxException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
@@ -36,11 +38,11 @@ public class ClientImplNot extends UnicastRemoteObject implements ClientInt<Obje
         RMIConfig p = null;
 
         try {
-            File XMLfile = new File(getClass().getResource("/rmi.xml").toURI());
-            JAXBContext context;
-            context = JAXBContext.newInstance(RMIConfig.class);
+                       InputStream inputStream = getClass().getResourceAsStream("/rmi.xml");
+            JAXBContext context = JAXBContext.newInstance(RMIConfig.class);
             Unmarshaller unmarshaller = context.createUnmarshaller();
-            p = (RMIConfig) unmarshaller.unmarshal(XMLfile);
+            p = (RMIConfig) unmarshaller.unmarshal(inputStream);
+            inputStream.close();
             // System.out.println(p.getIp() +" " + p.getPort());
 
             String ip = p.getIp();
@@ -52,7 +54,7 @@ public class ClientImplNot extends UnicastRemoteObject implements ClientInt<Obje
         } catch (JAXBException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
-        } catch (URISyntaxException e) {
+        } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         } catch (NotBoundException e) {

@@ -3,6 +3,7 @@ package gov.iti.jets.controller;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URISyntaxException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
@@ -144,10 +145,11 @@ public class DashboardController {
         try {
             RMIConfig p = null;
 
-            File XMLfile = new File(getClass().getResource("/rmi.xml").toURI());
+            InputStream inputStream = getClass().getResourceAsStream("/rmi.xml");
             JAXBContext context = JAXBContext.newInstance(RMIConfig.class);
             Unmarshaller unmarshaller = context.createUnmarshaller();
-            p = (RMIConfig) unmarshaller.unmarshal(XMLfile);
+            p = (RMIConfig) unmarshaller.unmarshal(inputStream);
+            inputStream.close();
             // System.out.println(p.getIp() +" " + p.getPort());
 
             String ip = p.getIp();
@@ -169,7 +171,7 @@ public class DashboardController {
         } catch (JAXBException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
-        } catch (URISyntaxException e) {
+        } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }

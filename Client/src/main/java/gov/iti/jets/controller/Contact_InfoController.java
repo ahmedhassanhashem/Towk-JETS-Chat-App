@@ -1,6 +1,8 @@
 package gov.iti.jets.controller;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.URISyntaxException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
@@ -96,11 +98,12 @@ public class Contact_InfoController  {
       
         RMIConfig p = null;
         try { 
-            File XMLfile = new File(getClass().getResource("/rmi.xml").toURI()); 
+            InputStream inputStream = getClass().getResourceAsStream("/rmi.xml");
             JAXBContext context = JAXBContext.newInstance(RMIConfig.class);
-            Unmarshaller unmarshaller = context.createUnmarshaller(); 
-            p = (RMIConfig) unmarshaller.unmarshal(XMLfile);
-        } catch (JAXBException | URISyntaxException ex) {             
+            Unmarshaller unmarshaller = context.createUnmarshaller();
+            p = (RMIConfig) unmarshaller.unmarshal(inputStream);
+            inputStream.close();
+        } catch (JAXBException | IOException ex) {             
             ex.printStackTrace();
         }
 

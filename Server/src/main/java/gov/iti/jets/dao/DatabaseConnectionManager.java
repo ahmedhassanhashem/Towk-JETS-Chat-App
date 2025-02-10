@@ -1,6 +1,8 @@
 package gov.iti.jets.dao;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.net.URISyntaxException;
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -40,10 +42,14 @@ public class DatabaseConnectionManager {
 
         try{
 
-        File XMLfile = new File(DatabaseConnectionManager.class.getResource("/db.xml").toURI()); 
+        // File XMLfile = new File(DatabaseConnectionManager.class.getResource("/db.xml").toURI()); 
+        InputStream is = DatabaseConnectionManager.class.getResourceAsStream("/db.xml");
+if (is == null) {
+    return null;
+}
         JAXBContext context = JAXBContext.newInstance(DBConfig.class);
         Unmarshaller unmarshaller = context.createUnmarshaller(); 
-        DBConfig p = (DBConfig) unmarshaller.unmarshal(XMLfile);
+        DBConfig p = (DBConfig) unmarshaller.unmarshal(is);
             config.setJdbcUrl(p.getURL());
             config.setUsername(p.getUsername());
             config.setPassword(p.getPassword());
@@ -52,9 +58,6 @@ public class DatabaseConnectionManager {
             config.setIdleTimeout(30000);
             config.setMaxLifetime(1800000);
             config.setConnectionTimeout(30000);
-        } catch (URISyntaxException ex) {
-            ex.printStackTrace();
-
         } catch (JAXBException ex) {
             ex.printStackTrace();
 

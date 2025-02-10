@@ -1,6 +1,8 @@
 package gov.iti.jets.controller;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.URISyntaxException;
 import java.rmi.AccessException;
 import java.rmi.NotBoundException;
@@ -62,17 +64,18 @@ public class ManageController {
     private void start(ActionEvent event) {
         RMIConfig p = null;
         try {
-            File XMLfile = new File(getClass().getResource("/rmi.xml").toURI());
+            InputStream inputStream = getClass().getResourceAsStream("/rmi.xml");
             JAXBContext context = JAXBContext.newInstance(RMIConfig.class);
             Unmarshaller unmarshaller = context.createUnmarshaller();
-            p = (RMIConfig) unmarshaller.unmarshal(XMLfile);
+            p = (RMIConfig) unmarshaller.unmarshal(inputStream);
+            inputStream.close();
             // System.out.println(p.getIp() +" " + p.getPort());
         } catch (JAXBException ex) {
             System.out.println(ex.getMessage());
-        } catch (URISyntaxException e1) {
+        } catch (IOException e) {
             // TODO Auto-generated catch block
-            e1.printStackTrace();
-        }
+            e.printStackTrace();
+        } 
 
         String ip = p.getIp();
         int port = p.getPort();

@@ -8,7 +8,6 @@ module gov.iti.jets {
     requires mysql.connector.java;
     requires java.sql.rowset;
     requires java.naming;
-    requires com.zaxxer.hikari;
     requires java.rmi;
     requires java.desktop;
     requires javafx.web;

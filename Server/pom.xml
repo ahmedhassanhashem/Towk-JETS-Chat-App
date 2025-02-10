@@ -14,21 +14,9 @@
     <maven.compiler.release>21</maven.compiler.release>
         <maven.compiler.source>21</maven.compiler.source>
     <maven.compiler.target>21</maven.compiler.target>
+    <project.build.finalName>Server </project.build.finalName>
+
   </properties>
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jar-plugin</artifactId>
-                <version>3.2.2</version>
-                    <configuration>
-        <archive>
-            <manifest>
-                <mainClass>gov.iti.jets.App</mainClass>
-            </manifest>
-        </archive>
-    </configuration>
-            </plugin>
-        </plugins>
-    </build>
+
+
 </project>

@@ -4,9 +4,19 @@ commands :
 
 To convert to exe
 
+install https://github.com/wixtoolset/wix3/releases/tag/wix3141rtm and add install-location/bin to environment path
+
 ```
+mvn clean package
+```
+
+for only one child
+
+```
+
 mvn -pl Client clean package
 mvn -pl Server clean package
+
 ```
 
 to run 
