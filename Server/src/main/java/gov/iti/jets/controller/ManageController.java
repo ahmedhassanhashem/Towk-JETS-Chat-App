@@ -20,7 +20,6 @@ import gov.iti.jets.dao.NotificationDAOInterface;
 import gov.iti.jets.dao.UserChatDAOInterface;
 import gov.iti.jets.dao.UserDAO;
 import gov.iti.jets.dao.UserDAOInterface;
-import gov.iti.jets.mail.MailInterface;
 import jakarta.xml.bind.JAXBContext;
 import jakarta.xml.bind.JAXBException;
 import jakarta.xml.bind.Unmarshaller;
@@ -53,7 +52,6 @@ public class ManageController {
 
     NotificationDAOInterface notificationDAO;
 
-    MailInterface mail;
 
     @FXML
     private Button startButton;
@@ -103,7 +101,6 @@ public class ManageController {
 
             reg.rebind("notificationDAO", notificationDAO);
 
-            reg.rebind("mail", mail);
 
             startButton.setDisable(true);
             stopButton.setDisable(false);
@@ -138,9 +135,7 @@ public class ManageController {
         this.chatbot = chatbot;
     }
 
-    public void setMail(MailInterface mail){
-        this.mail = mail;
-    }
+
 
     public void setStage(Stage stage) {
         this.stage = stage;

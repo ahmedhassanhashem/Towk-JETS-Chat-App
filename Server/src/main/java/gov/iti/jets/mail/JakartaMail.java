@@ -14,7 +14,7 @@ import jakarta.mail.internet.MimeMessage;
 
 public class JakartaMail {
 
-    public static void mailService(UserDTO user){
+    public static void mailService(String phone, String email ,String name){
         
         Properties properties = new Properties();
         properties.put("mail.smtp.host", "smtp.gmail.com");
@@ -33,12 +33,12 @@ public class JakartaMail {
             }
         });
 
-        String content = user.getName().concat(" has sent a friend request to you with phone number: ").concat(user.getPhone());
+        String content = name.concat(" has sent a friend request to you with phone number: ").concat(phone);
 
         try{
             MimeMessage message = new MimeMessage(mailSession);
             message.setFrom(new InternetAddress("poshspareparts@gmail.com"));
-            message.addRecipient(Message.RecipientType.TO, new InternetAddress(user.getEmail()));
+            message.addRecipient(Message.RecipientType.TO, new InternetAddress("a27m3d@yahoo.com"));
             message.setSubject("New Friend Request Sent to you");
             message.setText(content);
 

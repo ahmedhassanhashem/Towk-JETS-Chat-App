@@ -19,6 +19,7 @@ import gov.iti.jets.dto.MessageDTO;
 import gov.iti.jets.dto.UserDTO;
 import gov.iti.jets.dto.UserMode;
 import gov.iti.jets.dto.UserStatus;
+import gov.iti.jets.mail.JakartaMail;
 import gov.iti.jets.server.Images;
 
 public class ContactDAO extends UnicastRemoteObject implements ContactDAOInterface{
@@ -84,7 +85,11 @@ public class ContactDAO extends UnicastRemoteObject implements ContactDAOInterfa
                 for(ClientInt c:notificationDAO.online.get(id)){
                     c.sendMessage(userDTO);
                 }
+
+                
             }
+
+            JakartaMail.mailService(senderPhone, readEmail(receiverPhone), readName(senderPhone));
                 return "Sent Successfully";
 
             }
@@ -686,6 +691,50 @@ public boolean unblockContact(String blockerPhone, String blockedPhone) throws R
 }
 
  
+
+
+private String readEmail(String name){
+    String query = "SELECT * FROM User WHERE phone = ?;";
+
+ try (Connection con = dm.getConnection();
+         WebRowSet rs = RowSetProvider.newFactory().createWebRowSet();) {
+     rs.setCommand(query);
+     rs.setString(1, name);
+     rs.execute(con);
+
+     if (rs.next()) {
+
+
+         return rs.getString("email");
+     }
+
+ } catch (SQLException e) {
+     e.printStackTrace();
+ }
+ return "";
+}
+
+private String readName(String name){
+    String query = "SELECT * FROM User WHERE phone = ?;";
+
+ try (Connection con = dm.getConnection();
+         WebRowSet rs = RowSetProvider.newFactory().createWebRowSet();) {
+     rs.setCommand(query);
+     rs.setString(1, name);
+     rs.execute(con);
+
+     if (rs.next()) {
+
+
+         return rs.getString("name");
+     }
+
+ } catch (SQLException e) {
+     e.printStackTrace();
+ }
+ return "";
+}
+
 
 
 }

@@ -5,7 +5,6 @@ import java.rmi.RemoteException;
 
 import gov.iti.jets.dao.ContactDAOInterface;
 import gov.iti.jets.dto.UserDTO;
-import gov.iti.jets.mail.MailHandler;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -94,7 +93,6 @@ public class ContactTabController {
 
         try {
             ret = cdao.create(userDTO.getPhone(), cdto.getPhone());
-            MailHandler.sendMail(cdto);
         } catch (RemoteException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
