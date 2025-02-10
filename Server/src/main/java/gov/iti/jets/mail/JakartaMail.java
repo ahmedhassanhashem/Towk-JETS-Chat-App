@@ -1,4 +1,4 @@
-package gov.iti.jets.email;
+package gov.iti.jets.mail;
 
 import java.util.Properties;
 
@@ -49,7 +49,4 @@ public class JakartaMail {
         }
             
         }
-    
-    
-
 }

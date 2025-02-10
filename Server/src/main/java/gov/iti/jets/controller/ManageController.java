@@ -20,7 +20,7 @@ import gov.iti.jets.dao.NotificationDAOInterface;
 import gov.iti.jets.dao.UserChatDAOInterface;
 import gov.iti.jets.dao.UserDAO;
 import gov.iti.jets.dao.UserDAOInterface;
-import gov.iti.jets.email.MailInterface;
+import gov.iti.jets.mail.MailInterface;
 import jakarta.xml.bind.JAXBContext;
 import jakarta.xml.bind.JAXBException;
 import jakarta.xml.bind.Unmarshaller;

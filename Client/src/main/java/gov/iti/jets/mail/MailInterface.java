@@ -1,4 +1,4 @@
-package gov.iti.jets.email;
+package gov.iti.jets.mail;
 
 import java.rmi.Remote;
 

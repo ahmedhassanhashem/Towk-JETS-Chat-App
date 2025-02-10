@@ -21,4 +21,5 @@ module gov.iti.jets {
     opens gov.iti.jets.config to jakarta.xml.bind;
     opens gov.iti.jets.dto to jakarta.xml.bind;
     opens gov.iti.jets.client to java.rmi;
+    opens gov.iti.jets.mail to java.rmi;
 }
