@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 <?import javafx.scene.text.TextFlow?>
@@ -20,8 +24,30 @@
             <TextFlow fx:id="messageTextFlow" maxWidth="300" styleClass="message-textflow">
                <Text fx:id="messageText" text="Sample message text" />
             </TextFlow>
-            
-            <Label fx:id="timeLabel" styleClass="message-time-label" text="12:34 PM" />
+            <HBox>
+               <children>
+                  <AnchorPane HBox.hgrow="ALWAYS">
+                     <children>
+                        
+                        <Label fx:id="timeLabel" styleClass="message-time-label" text="12:34 PM" />
+                        <StackPane layoutX="101.5999984741211" AnchorPane.rightAnchor="0.0">
+                           <children>
+                              <ImageView fx:id="seen" fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../images/double-check.png" />
+                                 </image>
+                              </ImageView>
+                              <ImageView fx:id="sent" fitHeight="20.0" fitWidth="20.0" layoutX="10.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../images/sent.png" />
+                                 </image>
+                              </ImageView>
+                           </children>
+                        </StackPane>
+                     </children>
+                  </AnchorPane>
+               </children>
+            </HBox>
          </children>
       </VBox>
    </children>

@@ -106,6 +106,9 @@ public class MessageChatController {
     private ListView<MessageDTO> listView;
     @FXML
     private ImageView image;
+
+
+
     @FXML
     private Label name;
     @FXML
@@ -402,6 +405,7 @@ public class MessageChatController {
                             }
                             try {
                                 notificationDAO.delete(userDTO.getUserID(), chat.getMesssageID());
+                                messageCardController.setSeen(notificationDAO.isSeen(chat.getMesssageID()));
                                 messageCardController.setMessageData(
                                         userDAO.read(chat.getUserID()),
                                         chat.getMessageContent(),
