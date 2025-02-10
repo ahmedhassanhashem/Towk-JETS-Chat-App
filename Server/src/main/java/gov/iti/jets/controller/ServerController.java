@@ -9,6 +9,9 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 import gov.iti.jets.chatbot.ChatbotImpl;
 import gov.iti.jets.chatbot.ChatbotInterface;
@@ -273,7 +276,14 @@ public class ServerController {
         String ip =p.getIp();
         int port = p.getPort();
         reg = LocateRegistry.createRegistry(port);
-
+        System.setProperty("sun.rmi.transport.tcp.connectionPool", "true"); 
+        System.setProperty("sun.rmi.transport.connectionTimeout", "5000"); 
+        System.setProperty("sun.rmi.transport.tcp.maxConnectionThreads", "100"); 
+        System.setProperty("sun.rmi.transport.tcp.readTimeout", "5000");
+        System.setProperty("sun.rmi.transport.tcp.responseTimeout", "5000");
+        System.setProperty("sun.rmi.transport.tcp.threadDaemon", "true");
+        System.setProperty("sun.rmi.dgc.client.gcInterval", "5000");
+        System.setProperty("sun.rmi.dgc.server.gcInterval", "5000");
         UserDAOInterface userDAO = new UserDAO();
         reg.rebind("userDAO", userDAO);
 
@@ -340,5 +350,15 @@ public class ServerController {
         // announce.maxWidthProperty().bind(anchor.widthProperty());
         // anchor.maxHeightProperty().bind(stage.heightProperty().multiply(0.5));
         // anchor.maxWidthProperty().bind(stage.widthProperty().multiply(0.5));
+
+        // ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
+        // scheduler.scheduleAtFixedRate(() -> {
+        //     System.out.println("==== RMI Server Active Threads ====");
+        //     for (Thread t : Thread.getAllStackTraces().keySet()) {
+        //         if (t.getName().contains("RMI")) {  // Filter RMI-related threads
+        //             System.out.println("Thread: " + t.getName() + " | State: " + t.getState());
+        //         }
+        //     }
+        // }, 0, 5, TimeUnit.SECONDS);
     }
 }

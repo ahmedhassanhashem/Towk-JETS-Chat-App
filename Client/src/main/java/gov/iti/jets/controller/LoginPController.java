@@ -94,11 +94,11 @@ public class LoginPController {
                 e.printStackTrace();
             }
             DashboardController dashController = dashLoader.getController();
-            dashController.setStage(stage);
-
+            
             Scene dashScene = new Scene(dashBoard, 600 + 200, 480 + 100);
             // System.out.println(dashScene);
             dashController.setUserDTO(udto2);
+            dashController.setStage(stage);
             dashController.setDashScene(dashScene);
             dashController.setDashboardController(dashController);
             stage.setScene(dashScene);

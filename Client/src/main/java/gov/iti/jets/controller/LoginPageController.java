@@ -107,10 +107,10 @@ public class LoginPageController {
                 e.printStackTrace();
             }
             dashController = dashLoader.getController();
-            dashController.setStage(stage);
             dashScene = new Scene(dashBoard, 600 + 200, 480 + 100);
             // System.out.println(dashScene);
             dashController.setUserDTO(user);
+            dashController.setStage(stage);
             dashController.setDashScene(dashScene);
             dashController.setDashboardController(dashController);
             stage.setScene(dashScene);
@@ -141,10 +141,15 @@ public class LoginPageController {
                 if(!picfile.exists()){
                     picfile.createNewFile();
                 }
-                FileOutputStream fOut = new FileOutputStream(picfile);
-                fOut.write(user.getUserPicture());
-                fOut.flush();
-                fOut.close();
+                byte[] picture = user.getUserPicture();
+if (picture != null && picture.length > 0) {
+
+    FileOutputStream fOut = new FileOutputStream(picfile);
+    if(picfile.getTotalSpace()>1)
+    fOut.write(user.getUserPicture());
+    fOut.flush();
+    fOut.close();
+}
                 
                 marshaller.marshal(user, XMLfile); 
             } catch (JAXBException ex) {

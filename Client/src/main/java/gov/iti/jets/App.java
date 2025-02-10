@@ -3,7 +3,11 @@ package gov.iti.jets;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.rmi.server.UnicastRemoteObject;
+import java.util.ArrayList;
 
+import gov.iti.jets.client.ClientImplNot;
+import gov.iti.jets.client.ClientInt;
 import gov.iti.jets.controller.LoginPController;
 import gov.iti.jets.controller.entreeController;
 import gov.iti.jets.dto.UserDTO;
@@ -11,6 +15,7 @@ import jakarta.xml.bind.JAXBContext;
 import jakarta.xml.bind.JAXBException;
 import jakarta.xml.bind.Unmarshaller;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.GridPane;
@@ -21,7 +26,7 @@ import javafx.stage.Stage;
  * JavaFX App
  */
 public class App extends Application {
-
+    public static ArrayList<ClientInt> clientImpls = new ArrayList<>() ;
     @Override
     public void start(Stage stage) throws IOException {
         // stage.setTitle("Browsar");
@@ -82,5 +87,29 @@ public class App extends Application {
     public static void main(String[] args) {
         launch();
     }
+@Override
+public void stop() throws Exception {
+    System.out.println("as");
+    for (ClientInt clientInt : clientImpls) {
+        
+        if (clientInt != null) {
+            try {
+                
+                // Unexport the object forcibly
+                UnicastRemoteObject.unexportObject(clientInt, true);
+                
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    // }
+    // for (Thread t : Thread.getAllStackTraces().keySet()) {
+    //     System.out.println("Thread: " + t.getName() + " | State: " + t.getState());
+    // }
+    
+    System.exit(0);
+    Platform.exit();
+        super.stop();
+}
 
 }
