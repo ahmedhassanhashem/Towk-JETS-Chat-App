@@ -2,6 +2,7 @@ package gov.iti.jets.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URISyntaxException;
 import java.rmi.AccessException;
 import java.rmi.NotBoundException;
@@ -67,7 +68,7 @@ public class ServerController {
     private void signOut(ActionEvent event) {
         try {
             Stage stage2 = new Stage();
-            int width = 640,height = 480;
+            int width = 640, height = 480;
             FXMLLoader loginLoader = new FXMLLoader(getClass().getResource("/screens/Login.fxml"));
             GridPane rootLogin = loginLoader.load();
             LoginController loginController = loginLoader.getController();
@@ -82,10 +83,10 @@ public class ServerController {
         try {
             boundNames = reg.list();
             for (String name : boundNames) {
-                reg.unbind(name); 
+                reg.unbind(name);
             }
             UnicastRemoteObject.unexportObject(reg, true);
-        } catch (AccessException |NotBoundException e) {
+        } catch (AccessException | NotBoundException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         } catch (RemoteException e) {
@@ -96,20 +97,20 @@ public class ServerController {
     }
     // @FXML
     // private void gotoSingup(){
-    //     stage.setScene(signup);
+    // stage.setScene(signup);
     // }
 
     public void setStage(Stage stage) {
         this.stage = stage;
-        stage.setOnCloseRequest((ev)->{
+        stage.setOnCloseRequest((ev) -> {
             String[] boundNames;
             try {
                 boundNames = reg.list();
                 for (String name : boundNames) {
-                    reg.unbind(name); 
+                    reg.unbind(name);
                 }
                 UnicastRemoteObject.unexportObject(reg, true);
-            } catch (AccessException |NotBoundException e) {
+            } catch (AccessException | NotBoundException e) {
                 // TODO Auto-generated catch block
                 // e.printStackTrace();
                 System.out.println(e.getMessage());
@@ -125,7 +126,7 @@ public class ServerController {
     }
 
     // public void setSignUp(Scene s){
-    //     signup = s;
+    // signup = s;
     // }
 
     // @FXML
@@ -135,8 +136,8 @@ public class ServerController {
     // private TreeItem<FlowPane> allroot;
     @FXML
     private void manageButton(ActionEvent event) {
-        //    borderPane.setCenter(manage.getCenter());
-        //    borderPane.setTop(manage.getTop());
+        // borderPane.setCenter(manage.getCenter());
+        // borderPane.setTop(manage.getTop());
         anchor.getChildren().clear();
         AnchorPane.setTopAnchor(manage, 0.0);
         AnchorPane.setBottomAnchor(manage, 0.0);
@@ -180,8 +181,8 @@ public class ServerController {
         pie.setLegendSide(Side.BOTTOM);
         pie.setLabelLineLength(20);
         // pie.setAnimated(true);
-        // pie.setClockwise(true); 
-        // pie.setLabelLineLength(50); 
+        // pie.setClockwise(true);
+        // pie.setLabelLineLength(50);
         pie.setLegendVisible(true);
         pie.setLabelsVisible(true);
         // borderPane.setCenter(pie);
@@ -202,7 +203,7 @@ public class ServerController {
         // lbl.setText("Gender Statistics");
         PieChart pie = (PieChart) chart.getCenter();
         pie.setTitle("Gender");
-        //    UserDAO user = new UserDAO();
+        // UserDAO user = new UserDAO();
         ObservableList<PieChart.Data> pieChartData = null;
         try {
             pieChartData = userDao.getUserStatistics("gender");
@@ -212,9 +213,9 @@ public class ServerController {
         }
         pie.setData(pieChartData);
         // pie.setAnimated(true);
-        // pie.setClockwise(true); 
+        // pie.setClockwise(true);
         // pie.setLegendVisible(true);
-        // pie.setLabelLineLength(50); 
+        // pie.setLabelLineLength(50);
         // pie.setLabelsVisible(true);
         // borderPane.setCenter(pie);
         AnchorPane.setTopAnchor(chart, 0.0);
@@ -246,8 +247,8 @@ public class ServerController {
         pie.setData(pieChartData);
         // pie.setAnimated(true);
         // pie.setLegendVisible(true);
-        // pie.setClockwise(true); 
-        // pie.setLabelLineLength(50); 
+        // pie.setClockwise(true);
+        // pie.setLabelLineLength(50);
         // pie.setLabelsVisible(true);
         AnchorPane.setTopAnchor(chart, 0.0);
         AnchorPane.setBottomAnchor(chart, 0.0);
@@ -260,25 +261,23 @@ public class ServerController {
     @FXML
     private void initialize() throws IOException {
         RMIConfig p = null;
-                try { 
-            File XMLfile = new File(getClass().getResource("/rmi.xml").toURI()); 
+        try {
+            InputStream inputStream = getClass().getResourceAsStream("/rmi.xml");
             JAXBContext context = JAXBContext.newInstance(RMIConfig.class);
-            Unmarshaller unmarshaller = context.createUnmarshaller(); 
-            p = (RMIConfig) unmarshaller.unmarshal(XMLfile);
+            Unmarshaller unmarshaller = context.createUnmarshaller();
+            p = (RMIConfig) unmarshaller.unmarshal(inputStream);
+            inputStream.close();
             // System.out.println(p.getIp() +" " + p.getPort());
         } catch (JAXBException ex) {
             System.out.println(ex.getMessage());
-        } catch (URISyntaxException e1) {
-            // TODO Auto-generated catch block
-            e1.printStackTrace();
         }
 
-        String ip =p.getIp();
+        String ip = p.getIp();
         int port = p.getPort();
         reg = LocateRegistry.createRegistry(port);
-        System.setProperty("sun.rmi.transport.tcp.connectionPool", "true"); 
-        System.setProperty("sun.rmi.transport.connectionTimeout", "5000"); 
-        System.setProperty("sun.rmi.transport.tcp.maxConnectionThreads", "100"); 
+        System.setProperty("sun.rmi.transport.tcp.connectionPool", "true");
+        System.setProperty("sun.rmi.transport.connectionTimeout", "5000");
+        System.setProperty("sun.rmi.transport.tcp.maxConnectionThreads", "100");
         System.setProperty("sun.rmi.transport.tcp.readTimeout", "5000");
         System.setProperty("sun.rmi.transport.tcp.responseTimeout", "5000");
         System.setProperty("sun.rmi.transport.tcp.threadDaemon", "true");
@@ -317,8 +316,6 @@ public class ServerController {
         fileserver.setDaemon(true);
         fileserver.start();
 
-
-
         try {
             userDao = new UserDAO();
         } catch (RemoteException e) {
@@ -351,14 +348,15 @@ public class ServerController {
         // anchor.maxHeightProperty().bind(stage.heightProperty().multiply(0.5));
         // anchor.maxWidthProperty().bind(stage.widthProperty().multiply(0.5));
 
-        // ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
+        // ScheduledExecutorService scheduler =
+        // Executors.newSingleThreadScheduledExecutor();
         // scheduler.scheduleAtFixedRate(() -> {
-        //     System.out.println("==== RMI Server Active Threads ====");
-        //     for (Thread t : Thread.getAllStackTraces().keySet()) {
-        //         if (t.getName().contains("RMI")) {  // Filter RMI-related threads
-        //             System.out.println("Thread: " + t.getName() + " | State: " + t.getState());
-        //         }
-        //     }
+        // System.out.println("==== RMI Server Active Threads ====");
+        // for (Thread t : Thread.getAllStackTraces().keySet()) {
+        // if (t.getName().contains("RMI")) { // Filter RMI-related threads
+        // System.out.println("Thread: " + t.getName() + " | State: " + t.getState());
+        // }
+        // }
         // }, 0, 5, TimeUnit.SECONDS);
     }
 }

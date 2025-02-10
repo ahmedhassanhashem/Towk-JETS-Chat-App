@@ -4,6 +4,7 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URISyntaxException;
 import java.net.URLEncoder;
 import java.nio.file.Files;
@@ -467,11 +468,12 @@ public class MessageChatController {
         // Load RMI configuration.
         RMIConfig p = null;
         try {
-            File XMLfile = new File(getClass().getResource("/rmi.xml").toURI());
+            InputStream inputStream = getClass().getResourceAsStream("/rmi.xml");
             JAXBContext context = JAXBContext.newInstance(RMIConfig.class);
             Unmarshaller unmarshaller = context.createUnmarshaller();
-            p = (RMIConfig) unmarshaller.unmarshal(XMLfile);
-        } catch (JAXBException | URISyntaxException ex) {
+            p = (RMIConfig) unmarshaller.unmarshal(inputStream);
+            inputStream.close();
+        } catch (JAXBException | IOException ex) {
             ex.printStackTrace();
         }
         String ip = p.getIp();

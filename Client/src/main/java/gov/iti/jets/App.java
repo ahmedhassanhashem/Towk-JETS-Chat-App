@@ -40,13 +40,16 @@ public class App extends Application {
         dashController.setMyScene(dashScene);
         dashController.setStage(stage);
 
-        File XMLfile = new File("C:/.chatLogged/user.xml");
-        if (XMLfile.exists()) {
+        // File XMLfile = new File("C:/.chatLogged/user.xml");
+        String userHome = System.getProperty("user.home");
+            File XMLfile = new File(userHome + "/.chatLogged/user.xml");
+        if (XMLfile.exists() && XMLfile.length() > 0) {
             try {
                 JAXBContext context = JAXBContext.newInstance(UserDTO.class);
                 Unmarshaller unmarshaller = context.createUnmarshaller();
                 UserDTO user = (UserDTO) unmarshaller.unmarshal(XMLfile);
-                File picfile = new File("C:/.chatLogged/user.pic");
+                // File picfile = new File("C:/.chatLogged/user.pic");
+                File picfile = new File(userHome + "/.chatLogged/user.pic");
                 if(picfile.exists()){
                     FileInputStream fIn = new FileInputStream(picfile);
                     user.setUserPicture(fIn.readAllBytes());

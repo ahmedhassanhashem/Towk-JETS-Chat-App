@@ -99,14 +99,15 @@ public class CreateGroupController {
     private void initialize() {
         RMIConfig p = null;
                 try { 
-            File XMLfile = new File(getClass().getResource("/rmi.xml").toURI()); 
-            JAXBContext context = JAXBContext.newInstance(RMIConfig.class);
-            Unmarshaller unmarshaller = context.createUnmarshaller(); 
-            p = (RMIConfig) unmarshaller.unmarshal(XMLfile);
+                    InputStream inputStream = getClass().getResourceAsStream("/rmi.xml");
+                    JAXBContext context = JAXBContext.newInstance(RMIConfig.class);
+                    Unmarshaller unmarshaller = context.createUnmarshaller();
+                    p = (RMIConfig) unmarshaller.unmarshal(inputStream);
+                    inputStream.close();
             // System.out.println(p.getIp() +" " + p.getPort());
         } catch (JAXBException ex) {
             ex.printStackTrace();
-        } catch (URISyntaxException e1) {
+        } catch (IOException e1) {
             // TODO Auto-generated catch block
             e1.printStackTrace();
         }
