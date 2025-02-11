@@ -335,7 +335,7 @@ public class MessageChatController {
             }
             String ret = m.getMessageContent();
             // if (ret.length() > 10) ret = ret.substring(0, 10) + "...";
-            chatCadController.setText(ret);
+            // chatCadController.setText(ret);
 
             try {
                 notificationDAO.delete(userDTO.getUserID(), m.getMesssageID());
