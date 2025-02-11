@@ -348,8 +348,10 @@ public class ChatsController {
                                 clientChat = new ClientImplChat(chatId, chatCardController);
                                 arrClientChat.add(clientChat);
                                 messageDAO.registerChat(chatId, clientChat);
+                                // System.out.println(user.getUserID());
                                 clientChat2 = new ClientImplChat(user.getUserID(), chatCardController);
                                 userDAO.registerwww(user.getUserID(), clientChat2);
+                                arrClientChat.add(clientChat2);
                             } catch (RemoteException e) {
                                 // TODO Auto-generated catch block
                                 e.printStackTrace();

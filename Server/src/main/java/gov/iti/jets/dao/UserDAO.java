@@ -85,6 +85,7 @@ public class UserDAO extends UnicastRemoteObject implements UserDAOInterface {
                 online2.remove(userID);
             }
         }
+        System.out.println("bye --> "+online2);
     }
 
 
@@ -324,7 +325,7 @@ public class UserDAO extends UnicastRemoteObject implements UserDAOInterface {
                         }
                     }
                     for(int i : online2.keySet()){
-                        if(checkFriend(i,userID)){
+                        // if(checkFriend(i,userID)){
                             List<ClientInt> clients = online2.get(i);
                             List<ClientInt> toRemove = new ArrayList<>();
 
@@ -338,7 +339,7 @@ public class UserDAO extends UnicastRemoteObject implements UserDAOInterface {
                             }
                     
                             clients.removeAll(toRemove);
-                        }
+                        // }
                     }
                 
                 return rowsUpdated;
@@ -355,7 +356,7 @@ public class UserDAO extends UnicastRemoteObject implements UserDAOInterface {
         UserDTO ret = new UserDTO();
         StringBuilder query = new StringBuilder("UPDATE User SET ");
         List<Object> params = new ArrayList<>();
-
+// System.out.println(online2);
         if (name != null) {
             query.append("name = ?, ");
             params.add(name);
@@ -409,7 +410,7 @@ public class UserDAO extends UnicastRemoteObject implements UserDAOInterface {
                     }
                 }
                 for(int i : online2.keySet()){
-                    if(checkFriend(i,userID)){
+                    // if(checkFriend(i,userID)){
                         List<ClientInt> clients = online2.get(i);
                         List<ClientInt> toRemove = new ArrayList<>();
                         for (ClientInt client : clients) {
@@ -422,7 +423,7 @@ public class UserDAO extends UnicastRemoteObject implements UserDAOInterface {
                         }
                 
                         clients.removeAll(toRemove);
-                    }
+                    // }
                 }
             return stmnt.executeUpdate();
         } catch (SQLException e) {
