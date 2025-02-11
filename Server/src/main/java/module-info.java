@@ -20,4 +20,6 @@ module gov.iti.jets {
 	requires okhttp3;
     exports gov.iti.jets.chatbot;
     opens gov.iti.jets.config to jakarta.xml.bind;
+    requires jakarta.mail;
+    opens gov.iti.jets.mail to java.rmi;
 }

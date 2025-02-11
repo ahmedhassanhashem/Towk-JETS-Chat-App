@@ -310,6 +310,7 @@ public class ServerController {
         NotificationDAO notificationDAO = new NotificationDAO();
         reg.rebind("notificationDAO", notificationDAO);
 
+
         messageDAO.setNotDao(notificationDAO);
         contactDAO.setNotDao(notificationDAO);
         Thread fileserver = new Thread(() -> FileServer.Start());
