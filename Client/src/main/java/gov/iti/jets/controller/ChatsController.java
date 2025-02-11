@@ -263,6 +263,7 @@ public class ChatsController {
                                                 for(ClientImplChat c :arrClientChat){
                                                     try {
                                                         messageDAO.unRegisterChat(c.chatID, c);
+                                                        userDAO.unRegister(user.getUserID(), c);
                                                         try {
                                                             
                                                             UnicastRemoteObject.unexportObject(c, true);
@@ -305,6 +306,7 @@ public class ChatsController {
                                         for(ClientImplChat c :arrClientChat){
                                             try {
                                                 messageDAO.unRegisterChat(c.chatID, c);
+                                                userDAO.unRegister(user.getUserID(), c);
                                                 try {
                                                     
                                                     UnicastRemoteObject.unexportObject(c, true);
@@ -345,6 +347,7 @@ public class ChatsController {
                                 clientChat = new ClientImplChat(chatId, chatCardController);
                                 arrClientChat.add(clientChat);
                                 messageDAO.registerChat(chatId, clientChat);
+                                userDAO.register(user.getUserID(), clientChat);
                             } catch (RemoteException e) {
                                 // TODO Auto-generated catch block
                                 e.printStackTrace();

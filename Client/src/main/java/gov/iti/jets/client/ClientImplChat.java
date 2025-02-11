@@ -12,7 +12,7 @@ import gov.iti.jets.dto.UserStatus;
 import javafx.application.Platform;
 import javafx.scene.paint.Color;
 
-public class ClientImplChat extends UnicastRemoteObject implements ClientInt<MessageDTO> {
+public class ClientImplChat extends UnicastRemoteObject implements ClientInt<Object> {
 
     public Object msgControl;
     public int chatID;
@@ -25,24 +25,40 @@ public class ClientImplChat extends UnicastRemoteObject implements ClientInt<Mes
     }
 
     @Override
-    public void sendMessage(MessageDTO user) throws RemoteException {
+    public void sendMessage(Object user) throws RemoteException {
+        if(user instanceof MessageDTO messageDTO){
 
-        if (user.getChatID() == chatID) {
-
-            if (msgControl instanceof ChatCadController chatCadController) {
-                String ret = user.getMessageContent();
-                // if (ret.length() > 7)
-                //     ret = ret.substring(0, 7) + "...";
-                String ret2= ret;
-                {
-                    Platform.runLater(() -> {
-                        chatCadController.setText(ret2);
-                    });
-
+            if (messageDTO.getChatID() == chatID) {
+                
+                if (msgControl instanceof ChatCadController chatCadController) {
+                    String ret = messageDTO.getMessageContent();
+                    // if (ret.length() > 7)
+                    //     ret = ret.substring(0, 7) + "...";
+                    String ret2= ret;
+                    {
+                        Platform.runLater(() -> {
+                            chatCadController.setText(ret2);
+                        });
+                        
+                    }
+                    
                 }
+                
+            }
+        }else if(user instanceof UserDTO userDTO){
+
+            if(msgControl instanceof ChatCadController chatCadController){
+                Platform.runLater(() -> {
+
+                if (userDTO.getUserPicture() != null) {
+                    chatCadController.setImage(userDTO.getUserPicture());
+                }
+                if (userDTO.getName() != null) {
+                    chatCadController.setLabel(userDTO.getName());
+                }
+            });
 
             }
-            
         }
     }
 
