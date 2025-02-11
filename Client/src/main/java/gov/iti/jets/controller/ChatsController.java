@@ -87,6 +87,7 @@ public class ChatsController {
     private ClientImplContact clientContact;
     private ClientImplContact clientContactChat;
     private ClientImplChat clientChat;
+    private ClientImplChat clientChat2;
     private ArrayList<ClientImplContact> arrClientContact = new ArrayList<>();
     private ArrayList<ClientImplChat> arrClientChat = new ArrayList<>();
 
@@ -263,7 +264,7 @@ public class ChatsController {
                                                 for(ClientImplChat c :arrClientChat){
                                                     try {
                                                         messageDAO.unRegisterChat(c.chatID, c);
-                                                        userDAO.unRegister(user.getUserID(), c);
+                                                        userDAO.unRegisterwww(user.getUserID(), c);
                                                         try {
                                                             
                                                             UnicastRemoteObject.unexportObject(c, true);
@@ -306,7 +307,7 @@ public class ChatsController {
                                         for(ClientImplChat c :arrClientChat){
                                             try {
                                                 messageDAO.unRegisterChat(c.chatID, c);
-                                                userDAO.unRegister(user.getUserID(), c);
+                                                userDAO.unRegisterwww(user.getUserID(), c);
                                                 try {
                                                     
                                                     UnicastRemoteObject.unexportObject(c, true);
@@ -347,7 +348,8 @@ public class ChatsController {
                                 clientChat = new ClientImplChat(chatId, chatCardController);
                                 arrClientChat.add(clientChat);
                                 messageDAO.registerChat(chatId, clientChat);
-                                userDAO.register(user.getUserID(), clientChat);
+                                clientChat2 = new ClientImplChat(user.getUserID(), chatCardController);
+                                userDAO.registerwww(user.getUserID(), clientChat2);
                             } catch (RemoteException e) {
                                 // TODO Auto-generated catch block
                                 e.printStackTrace();

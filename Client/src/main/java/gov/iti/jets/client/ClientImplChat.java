@@ -46,6 +46,8 @@ public class ClientImplChat extends UnicastRemoteObject implements ClientInt<Obj
                 
             }
         }else if(user instanceof UserDTO userDTO){
+            // System.out.println(userDTO.getUserID() +" "+ chatID);
+            if (userDTO.getUserID() == chatID) {
 
             if(msgControl instanceof ChatCadController chatCadController){
                 Platform.runLater(() -> {
@@ -60,6 +62,7 @@ public class ClientImplChat extends UnicastRemoteObject implements ClientInt<Obj
 
             }
         }
+    }
     }
 
     @Override
