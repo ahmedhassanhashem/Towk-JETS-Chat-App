@@ -54,6 +54,7 @@ public class ManageController {
 
     NotificationDAOInterface notificationDAO;
 
+
     @FXML
     private Button startButton;
 
@@ -103,6 +104,7 @@ public class ManageController {
 
             reg.rebind("notificationDAO", notificationDAO);
 
+
             startButton.setDisable(true);
             stopButton.setDisable(false);
         } catch (RemoteException ex) {
@@ -135,6 +137,8 @@ public class ManageController {
     public void setChatbot(ChatbotInterface chatbot) {
         this.chatbot = chatbot;
     }
+
+
 
     public void setStage(Stage stage) {
         this.stage = stage;

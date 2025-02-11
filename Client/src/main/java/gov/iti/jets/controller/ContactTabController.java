@@ -29,6 +29,7 @@ public class ContactTabController {
     private UserDTO userDTO;
     private Stage stage;
     private  ContactDAOInterface cdao ;
+
     // @FXML
     // private Label name;
 

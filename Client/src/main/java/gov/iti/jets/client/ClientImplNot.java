@@ -116,7 +116,7 @@ public class ClientImplNot extends UnicastRemoteObject implements ClientInt<Obje
                 }
 
             }
-            {
+            else {
 
                 Platform.runLater(() -> {
 
