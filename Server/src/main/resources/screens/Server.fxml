@@ -25,7 +25,7 @@
     <!-- <RowConstraints minHeight="30.0" prefHeight="30.0" vgrow="ALWAYS" /> -->
   </rowConstraints>
    <children>
-      <VBox alignment="CENTER" nodeOrientation="LEFT_TO_RIGHT" spacing="20.0" style="-fx-background-color: linear-gradient(to bottom, #13547a 0%, #80d0c7 40%);" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.rowSpan="3" GridPane.vgrow="ALWAYS">
+      <VBox alignment="CENTER" nodeOrientation="LEFT_TO_RIGHT" spacing="20.0" style="-fx-background-color: linear-gradient(to bottom, #13547a 0%, #80d0c7 40%);" GridPane.hgrow="ALWAYS" GridPane.rowSpan="3" GridPane.vgrow="ALWAYS">
          <children>
             <Button alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#manageButton" prefHeight="34.0" prefWidth="160.0" style="-fx-background-color: linear-gradient(to bottom, #13547a 0%, #80d0c7 100%);" styleClass="button" text="Manage">
                <graphic>
@@ -73,7 +73,7 @@
             <Insets />
          </GridPane.margin> -->
       </VBox>
-      <AnchorPane fx:id="anchor" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.hgrow="NEVER" GridPane.rowIndex="1" GridPane.rowSpan="2" GridPane.vgrow="NEVER">
+      <AnchorPane fx:id="anchor" prefHeight="312.0" prefWidth="400.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.hgrow="NEVER" GridPane.rowSpan="3" GridPane.vgrow="NEVER">
          <children>
             <!-- <BorderPane fx:id="borderPane" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <right>
@@ -81,10 +81,5 @@
                </right></BorderPane> -->
          </children>
       </AnchorPane>
-      <ImageView blendMode="HARD_LIGHT" fitHeight="53.0" fitWidth="2263.0" pickOnBounds="true" GridPane.halignment="LEFT" GridPane.hgrow="ALWAYS" GridPane.valignment="CENTER">
-         <image>
-            <Image url="@../images/5559852.jpg" />
-         </image>
-      </ImageView>
    </children>
 </GridPane>

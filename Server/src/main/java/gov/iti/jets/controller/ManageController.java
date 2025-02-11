@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URISyntaxException;
 import java.rmi.AccessException;
+import java.rmi.NoSuchObjectException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
@@ -22,13 +23,20 @@ import gov.iti.jets.dao.NotificationDAOInterface;
 import gov.iti.jets.dao.UserChatDAOInterface;
 import gov.iti.jets.dao.UserDAO;
 import gov.iti.jets.dao.UserDAOInterface;
+import gov.iti.jets.dto.UserDTO;
 import jakarta.xml.bind.JAXBContext;
 import jakarta.xml.bind.JAXBException;
 import jakarta.xml.bind.Unmarshaller;
+import javafx.beans.Observable;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.stage.Stage;
 
 public class ManageController {
@@ -148,8 +156,72 @@ public class ManageController {
         // invalid.minHeightProperty().bind(h);
     }
 
+
+
+
+
+    @FXML
+    TableView<UserDTO> table;
+    @FXML
+    TableColumn<UserDTO ,String> phone;
+    @FXML
+    TableColumn<UserDTO ,String> password;
+    @FXML
+    TableColumn<UserDTO ,String> name;
+    @FXML
+    TableColumn<UserDTO ,String> email;
+    @FXML
+    TableColumn<UserDTO ,String> bio;
+
+    UserDAO meh;
+    
+    ObservableList<UserDTO> initList(){
+        
+        try {
+            meh = new UserDAO();
+            UnicastRemoteObject.unexportObject(meh, true);
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return meh.users();
+    }
+
+
     @FXML
     private void initialize() {
+        phone.setCellValueFactory(new PropertyValueFactory<UserDTO, String>("phone"));
+        password.setCellValueFactory(new PropertyValueFactory<UserDTO, String>("password"));
+        name.setCellValueFactory(new PropertyValueFactory<UserDTO, String>("name"));
+        email.setCellValueFactory(new PropertyValueFactory<UserDTO, String>("email"));
+        bio.setCellValueFactory(new PropertyValueFactory<UserDTO, String>("bio"));
+
+        table.setItems(initList());
+        // table.setEditable(true);
+        
+
+        bio.setCellFactory(TextFieldTableCell.forTableColumn());
+        bio.setOnEditCommit(event -> {
+            UserDTO user = event.getRowValue();
+            String bio = event.getNewValue();
+            user.setBio(bio);
+            meh.updateBio(user.getUserID(), bio);
+        });
+        name.setCellFactory(TextFieldTableCell.forTableColumn());
+        name.setOnEditCommit(event -> {
+            UserDTO user = event.getRowValue();
+            String name = event.getNewValue();
+            user.setName(name);
+            meh.updateName(user.getUserID(), name);
+        });
+        email.setCellFactory(TextFieldTableCell.forTableColumn());
+        email.setOnEditCommit(event -> {
+            UserDTO user = event.getRowValue();
+            String email = event.getNewValue();
+            user.setEmail(email);
+            meh.updateEmail(user.getUserID(), email);
+        });
+        
 
     }
 

@@ -415,7 +415,153 @@ public class UserDAO extends UnicastRemoteObject implements UserDAOInterface {
             return false;
         }
     }
+
+    private UserDTO convertUser(ResultSet re) {
+        UserDTO user = new UserDTO();
+        try {
+            // Remove or comment out this check
+            // if (!re.next()) {
+            //     return null;
+            // }
+            
+            // Now directly read from the current row
+            user.setUserID(re.getInt("userID"));
+            user.setPhone(re.getString("phone"));
+            user.setName(re.getString("name"));
+            user.setCountry(re.getString("country"));
+            user.setGender(Gender.valueOf(re.getString("gender")));
+            user.setEmail(re.getString("email"));
+            user.setBirthdate(re.getDate("birthdate"));
+            user.setPassword(re.getString("password"));
+            user.setFirstLogin(re.getBoolean("firstLogin"));
+            user.setUserStatus(UserStatus.valueOf(re.getString("userStatus")));
+            
+            // Set userMode safely
+            try {
+                user.setUserMode(UserMode.valueOf(re.getString("userMode")));
+            } catch (IllegalArgumentException | NullPointerException e) {
+                user.setUserMode(null);
+            }
+            
+            // Set bio safely
+            try {
+                user.setBio(re.getString("bio"));
+            } catch (IllegalArgumentException | NullPointerException e) {
+                user.setBio(null);
+            }
+            
+            // Handle userPicture (if any)
+            String picture = re.getString("userPicture");
+            if (picture != null && picture.length() > 0) {
+                user.setUserPicture(images.downloadPP(picture));
+                System.out.println(user.getUserPicture().length);
+            } else {
+                user.setUserPicture(null);
+            }
+            
+            return user;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public ObservableList<UserDTO> users(){
+        ObservableList<UserDTO> list = FXCollections.observableArrayList();
+        String sql2 = "Select * From User";
+        ResultSet re;
+        try (Connection con = meh.getConnection(); PreparedStatement preparedStatement = con.prepareStatement(sql2);) {
+            re = preparedStatement.executeQuery();
+            while (re.next()){
+                UserDTO user = convertUser(re);
+                if(user.getUserStatus().name().equalsIgnoreCase("OFFLINE"))
+                    list.add(user);
+            }
+        } catch (SQLException e) {
+
+            e.printStackTrace();
+        }
+        return list;
+    }
+
+    public int updatePhone(int userID, String phone)  {
+        String query = "Update User \r\n"
+                + "SET phone = ?\r\n"
+                + "WHERE userID = ? \r\n";
+        try (Connection con = meh.getConnection(); PreparedStatement stmnt = con.prepareStatement(query);) {
+            stmnt.setString(1, phone);
+            stmnt.setInt(2, userID);
+
+            int rowsUpdated = stmnt.executeUpdate();
+            if (rowsUpdated > 0) {
+                return rowsUpdated;
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    public int updateEmail(int userID, String email)  {
+        String query = "Update User \r\n"
+                + "SET email = ?\r\n"
+                + "WHERE userID = ? \r\n";
+        try (Connection con = meh.getConnection(); PreparedStatement stmnt = con.prepareStatement(query);) {
+            stmnt.setString(1, email);
+            stmnt.setInt(2, userID);
+
+            int rowsUpdated = stmnt.executeUpdate();
+            if (rowsUpdated > 0) {
+                return rowsUpdated;
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    public int updateName(int userID, String name) {
+        String query = "Update User \r\n"
+                + "SET name = ?\r\n"
+                + "WHERE userID = ? \r\n";
+        try (Connection con = meh.getConnection(); PreparedStatement stmnt = con.prepareStatement(query);) {
+            stmnt.setString(1, name);
+            stmnt.setInt(2, userID);
+
+            int rowsUpdated = stmnt.executeUpdate();
+            if (rowsUpdated > 0) {
+                return rowsUpdated;
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    public int updateBio(int userID, String bio) {
+        String query = "Update User \r\n"
+                + "SET bio = ?\r\n"
+                + "WHERE userID = ? \r\n";
+        try (Connection con = meh.getConnection(); PreparedStatement stmnt = con.prepareStatement(query);) {
+            stmnt.setString(1, bio);
+            stmnt.setInt(2, userID);
+
+            int rowsUpdated = stmnt.executeUpdate();
+            if (rowsUpdated > 0) {
+                return rowsUpdated;
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
 }
+
+    
 
 // class test {
 // public static void main(String[] args) {

@@ -13,7 +13,8 @@ module gov.iti.jets {
     exports gov.iti.jets;
     opens gov.iti.jets.controller to javafx.fxml;
     exports gov.iti.jets.controller;
-    opens gov.iti.jets.dao to java.rmi;
+    opens gov.iti.jets.dao to java.rmi, javafx.base;
+    opens gov.iti.jets.dto to javafx.base;
     exports gov.iti.jets.dao;
     requires jakarta.xml.bind;
     requires org.json;
