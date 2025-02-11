@@ -42,7 +42,7 @@ public class ChatCadController {
 
 
     public void setText(String content) {
-        System.out.println("Original Content1: " + content);
+        // System.out.println("Original Content1: " + content);
         if (content != null) {
             text.getChildren().clear();
             displayFormattedContent(content);
@@ -111,7 +111,7 @@ public class ChatCadController {
     String plainText;
     if (isHtml(content)) {
         plainText = Jsoup.parse(content).text();
-        System.out.println("Content after Jsoup parse: " + plainText);
+        // System.out.println("Content after Jsoup parse: " + plainText);
     } else {
         plainText = content;
     }

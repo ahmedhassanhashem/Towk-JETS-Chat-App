@@ -20,7 +20,7 @@ public class ClientImplChat extends UnicastRemoteObject implements ClientInt<Obj
     public ClientImplChat(int chatID, Object m) throws RemoteException {
         super();
         this.chatID = chatID;
-        System.out.println(chatID);
+        // System.out.println(chatID);s
         msgControl = m;
 
     }

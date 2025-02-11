@@ -93,6 +93,24 @@ public class ChatsController {
 
     public void setStage(Stage s) {
         stage = s;
+        stage.setOnCloseRequest(e->{
+ 
+            for(ClientImplChat c :arrClientChat){
+                try {
+                    messageDAO.unRegisterChat(c.chatID, c);
+                    userDAO.unRegisterwww(c.get(), c);
+                    try {
+                        
+                        UnicastRemoteObject.unexportObject(c, true);
+                    } catch (Exception ea) {
+                        // TODO: handle exception
+                    }
+                } catch (RemoteException e1) {
+                    // TODO Auto-generated catch block
+                    // e1.printStackTrace();
+                }
+            }
+        });
 
     }
 
@@ -264,7 +282,7 @@ public class ChatsController {
                                                 for(ClientImplChat c :arrClientChat){
                                                     try {
                                                         messageDAO.unRegisterChat(c.chatID, c);
-                                                        userDAO.unRegisterwww(user.getUserID(), c);
+                                                        userDAO.unRegisterwww(c.get(), c);
                                                         try {
                                                             
                                                             UnicastRemoteObject.unexportObject(c, true);
@@ -307,7 +325,7 @@ public class ChatsController {
                                         for(ClientImplChat c :arrClientChat){
                                             try {
                                                 messageDAO.unRegisterChat(c.chatID, c);
-                                                userDAO.unRegisterwww(user.getUserID(), c);
+                                                userDAO.unRegisterwww(c.get(), c);
                                                 try {
                                                     
                                                     UnicastRemoteObject.unexportObject(c, true);
