@@ -265,6 +265,23 @@ public class UserDAO extends UnicastRemoteObject implements UserDAOInterface {
 
             int rowsUpdated = stmnt.executeUpdate();
             if (rowsUpdated > 0) {
+                UserDTO ret = new UserDTO();
+                ret.setUserPicture(userPicture);
+                    ret.setUserStatus(UserStatus.ONLINE);
+                    ret.setUserID(userID);
+                    for(int i : online.keySet()){
+                        if(checkFriend(i,userID)){
+                            online.get(i).forEach((e ->{
+                                try {
+                                    e.sendMessage(ret);
+                                } catch (RemoteException e1) {
+                                    // TODO Auto-generated catch block
+                                    e1.printStackTrace();
+                                }
+                            }));
+                        }
+                    }
+                
                 return rowsUpdated;
             }
 
@@ -273,23 +290,33 @@ public class UserDAO extends UnicastRemoteObject implements UserDAOInterface {
         }
         return 0;
     }
-
+    
     @Override
     public int update(int userID, String name, String bio, UserMode userMode) throws RemoteException {
+        UserDTO ret = new UserDTO();
         StringBuilder query = new StringBuilder("UPDATE User SET ");
         List<Object> params = new ArrayList<>();
 
         if (name != null) {
             query.append("name = ?, ");
             params.add(name);
+            ret.setName(name);
+        }else{
+            ret.setName(null);
         }
         if (bio != null) {
             query.append("bio = ?, ");
             params.add(bio);
+            ret.setBio(bio);
+        }else{
+            ret.setBio(null);
         }
         if (userMode != null) {
             query.append("userMode = ?, ");
             params.add(userMode.name());
+            ret.setUserMode(userMode);
+        }else{
+            ret.setUserMode(null);
         }
 
         if (params.isEmpty()) {
@@ -304,6 +331,20 @@ public class UserDAO extends UnicastRemoteObject implements UserDAOInterface {
             for (int i = 0; i < params.size(); i++) {
                 stmnt.setObject(i + 1, params.get(i));
             }
+                ret.setUserStatus(UserStatus.ONLINE);
+                ret.setUserID(userID);
+                for(int i : online.keySet()){
+                    if(checkFriend(i,userID)){
+                        online.get(i).forEach((e ->{
+                            try {
+                                e.sendMessage(ret);
+                            } catch (RemoteException e1) {
+                                // TODO Auto-generated catch block
+                                e1.printStackTrace();
+                            }
+                        }));
+                    }
+                }
             return stmnt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
