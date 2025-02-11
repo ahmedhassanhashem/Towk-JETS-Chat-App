@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <dbConfig>
-    <password>root</password>
-    <URL>jdbc:mysql://127.0.0.1:3307/chat_db</URL>
-    <username>root</username>
+    <password>pass</password>
+    <URL>jdbc:mysql://127.0.0.1:3399/chat_db</URL>
+    <username>user</username>
 </dbConfig>
