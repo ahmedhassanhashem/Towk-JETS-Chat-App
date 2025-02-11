@@ -68,7 +68,7 @@ public class UserDAO extends UnicastRemoteObject implements UserDAOInterface {
     public void registerwww(int userID,ClientInt clientRef) throws RemoteException {
 
         online2.computeIfAbsent(userID, k -> new CopyOnWriteArrayList<>()).add(clientRef);
-System.out.println("hi --> "+online2);
+// System.out.println("hi --> "+online2);
 
     }
 
@@ -85,7 +85,7 @@ System.out.println("hi --> "+online2);
                 online2.remove(userID);
             }
         }
-        System.out.println("bye --> "+online2);
+        // System.out.println("bye --> "+online2);
     }
 
 
