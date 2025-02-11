@@ -23,6 +23,8 @@ import java.util.concurrent.TimeUnit;
 import gov.iti.jets.chatbot.BotService;
 import gov.iti.jets.chatbot.ChatbotInterface;
 import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 
 import gov.iti.jets.client.Images;
 import gov.iti.jets.config.RMIConfig;
@@ -296,6 +298,7 @@ public class MessageChatController {
 
         attachement = null;
         text.setText("");
+        formattedText = null;
     }
 
     private void sendMessage(String msgContent) {
@@ -539,9 +542,79 @@ public class MessageChatController {
     }
 
     public void applyFormattedText(String formattedText) {
-        // text.setText(formattedText);
-        this.formattedText = formattedText;
-        String plainText = Jsoup.parse(formattedText).text();
+        this.formattedText = formattedText + " ";
+        String plainText = Jsoup.parse(this.formattedText).text();
         text.setText(plainText);
+        text.positionCaret(plainText.length());
     }
+
+    
+    @FXML
+private void openEmojiDialog(MouseEvent event) {
+    try {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/screens/EmojiDialog.fxml"));
+        Parent root = loader.load();
+
+        EmojiDialogController controller = loader.getController();
+        Stage stage = new Stage();
+        
+        controller.setParentController(this, stage);
+        
+        stage.setTitle("Select Emoji");
+        stage.setScene(new Scene(root));
+        stage.show();
+    } catch (IOException e) {
+        e.printStackTrace();
+    }
+}
+
+ private String escapeHtml(String text) {
+    return text.replace("&", "&amp;")
+            .replace("<", "&lt;")
+            .replace(">", "&gt;")
+            .replace("\"", "&quot;")
+            .replace("'", "&#39;");
+ }
+  
+  public void insertEmoji(String emoji) {
+    String currentText = text.getText();
+    int caretPosition = text.getCaretPosition();
+    String htmlContent = formattedText != null ? formattedText : "<html><body><p>" + escapeHtml(currentText) + "</p></body></html>";
+    Document doc = Jsoup.parse(htmlContent);
+    doc.outputSettings().prettyPrint(false); 
+
+    Element body = doc.body();
+    String bodyText = body.text();
+    int textLength = bodyText.length();
+    if (caretPosition <= textLength) {
+        String newText = bodyText.substring(0, caretPosition) + emoji + bodyText.substring(caretPosition);
+        body.text(newText);
+    } else {
+        body.appendText(emoji);
+    }
+    formattedText = doc.outerHtml();
+    String plainText = body.text();
+    text.setText(plainText);
+    text.positionCaret(caretPosition + emoji.length());
+}
+// public void insertEmoji(String emoji) {
+    
+//     int caretPosition = text.getCaretPosition();
+
+//     String htmlContent = formattedText != null ? formattedText : "<html><body><p></p></body></html>";
+//     Document doc = Jsoup.parse(htmlContent);
+//     doc.outputSettings().prettyPrint(false); 
+
+//     Element body = doc.body();
+
+//     String plainText = body.text();
+//     String newPlainText = plainText.substring(0, caretPosition) + emoji + plainText.substring(caretPosition);
+
+//     body.text(newPlainText);
+
+//     formattedText = doc.outerHtml();
+//     text.setText(newPlainText);
+
+//     text.positionCaret(caretPosition + emoji.length());
+// }
 }

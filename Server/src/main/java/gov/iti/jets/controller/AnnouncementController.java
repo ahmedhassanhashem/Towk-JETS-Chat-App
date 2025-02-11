@@ -26,8 +26,8 @@ private  AnnouncementDAO announcementDAO;
 
             // AnnouncementDAO c;
         AnnouncementDTO announcement = new AnnouncementDTO();
-        announcement.setAnnouncementTitle(title);
-        announcement.setAnnouncementContent(content);
+        announcement.setAnnouncementTitle(convertToHtml(title));
+        announcement.setAnnouncementContent(convertToHtml(content));
         AnnouncementDTO createdAnnouncement = null;
         try {
             createdAnnouncement = announcementDAO.create(announcement);
@@ -68,5 +68,12 @@ private  AnnouncementDAO announcementDAO;
     @FXML
     private void initialize() {
 
+    }
+
+    private String convertToHtml(String text) {
+        return "<html><body>" + 
+               text.replace("\n", "<br/>")
+                   .replace(" ", "&nbsp;") + 
+               "</body></html>";
     }
 }

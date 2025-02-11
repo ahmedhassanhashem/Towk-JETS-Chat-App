@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<VBox spacing="10" xmlns:fx="http://javafx.com/fxml" 
+      fx:controller="gov.iti.jets.controller.EmojiDialogController"
+      style="-fx-background-color: white;">
+    <padding>
+        <Insets top="10" right="10" bottom="10" left="10"/>
+    </padding>
+
+    <TextField fx:id="searchField" 
+               promptText="Search emojis..."
+               style="-fx-padding: 8px; -fx-border-radius: 5; -fx-background-radius: 5; -fx-border-color: lightgray;"/>
+
+    <HBox fx:id="categoryBar" spacing="10" alignment="CENTER_LEFT"
+          style="-fx-background-color: #f9f9f9; -fx-padding: 5px; -fx-border-color: lightgray; -fx-border-radius: 5; -fx-background-radius: 5;">
+        <!-- Category Buttons will be dynamically added here -->
+    </HBox>
+
+    <ScrollPane fx:id="scrollPane" 
+                prefHeight="500" 
+                prefWidth="400"
+                fitToWidth="true"
+                style="-fx-background-color: transparent;">
+        <FlowPane fx:id="emojiContainer" 
+                  hgap="8" 
+                  vgap="8"
+                  style="-fx-background-color: transparent; -fx-font-family: 'Segoe UI Emoji', 'Apple Color Emoji', 'Noto Color Emoji', sans-serif;">
+            <padding>
+                <Insets top="10" right="10" bottom="10" left="10"/>
+            </padding>
+        </FlowPane>
+    </ScrollPane>
+</VBox>
