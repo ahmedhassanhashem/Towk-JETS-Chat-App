@@ -20,6 +20,7 @@ public class ClientImplChat extends UnicastRemoteObject implements ClientInt<Obj
     public ClientImplChat(int chatID, Object m) throws RemoteException {
         super();
         this.chatID = chatID;
+        // System.out.println(chatID);s
         msgControl = m;
 
     }
@@ -46,7 +47,6 @@ public class ClientImplChat extends UnicastRemoteObject implements ClientInt<Obj
                 
             }
         }else if(user instanceof UserDTO userDTO){
-            // System.out.println(userDTO.getUserID() +" "+ chatID);
             if (userDTO.getUserID() == chatID) {
 
             if(msgControl instanceof ChatCadController chatCadController){
