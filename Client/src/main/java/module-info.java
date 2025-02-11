@@ -14,6 +14,7 @@ module gov.iti.jets {
     requires org.jsoup;
     opens gov.iti.jets to javafx.fxml;
     exports gov.iti.jets;
+    requires emoji.java;
     opens gov.iti.jets.controller to javafx.fxml;
     exports gov.iti.jets.controller;
     requires jakarta.xml.bind;

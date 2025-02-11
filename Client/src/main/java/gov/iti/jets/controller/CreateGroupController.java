@@ -2,6 +2,7 @@ package gov.iti.jets.controller;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -62,6 +63,8 @@ public class CreateGroupController {
     private Label alertLabel1;
     @FXML
     private Label alertLabel2;
+    @FXML
+    private TextField searchField;
 
     private ChatDAOInterface chatDAO;
     private ContactDAOInterface contactDAO;
@@ -73,6 +76,7 @@ public class CreateGroupController {
 
     ObservableList<UserDTO> contacts = FXCollections.observableArrayList();
     private List<GroupMemberCellController> cellControllers = new ArrayList<>();
+    private FilteredList<UserDTO> filteredContacts;
     private UserDTO userDTO = new UserDTO();
     private Stage stage;
     private Scene settingsScene;
@@ -128,14 +132,28 @@ public class CreateGroupController {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        listView.setItems(contacts);
+        filteredContacts = new FilteredList<>(contacts, contact -> true);
+        listView.setItems(filteredContacts);  
+        //listView.setItems(contacts);
         listView.setSelectionModel(null);
         alertLabel1.setVisible(false); 
         alertLabel2.setVisible(false);
+        searchField.textProperty().addListener((observable, oldValue, newValue) -> {
+            filteredContacts.setPredicate(userDto -> {
+                if (newValue == null || newValue.isEmpty()) {
+                    return true;
+                }
+                
+                String lowerCaseFilter = newValue.toLowerCase();
+                String userName = userDto.getName().toLowerCase();
+                
+                return userName.contains(lowerCaseFilter);
+            });
+        });
         Circle clip = new Circle();
-        clip.setRadius(50); 
-        clip.setCenterX(50);
-        clip.setCenterY(50);
+        clip.setRadius(75); 
+        clip.setCenterX(75);
+        clip.setCenterY(75);
         groupImage.setClip(clip);
     }
 

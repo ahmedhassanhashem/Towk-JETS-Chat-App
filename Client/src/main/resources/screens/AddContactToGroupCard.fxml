@@ -16,19 +16,19 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<HBox prefHeight="20.0" spacing="10.0" style="-fx-padding: 10; -fx-border-color: lightgray; -fx-border-width: 1; -fx-border-radius: 5; -fx-background-color: #f9f9f9;" VBox.vgrow="ALWAYS" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gov.iti.jets.controller.GroupMemberCellController">
+<HBox prefHeight="20.0" style="-fx-padding: 10; -fx-border-color: lightgray; -fx-border-width: 1; -fx-border-radius: 5; -fx-background-color: #f9f9f9;" VBox.vgrow="ALWAYS" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gov.iti.jets.controller.GroupMemberCellController">
                     <children>
-      <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0">
+      <HBox alignment="CENTER_LEFT" prefHeight="21.0" prefWidth="140.0">
          <children>
                 <Label fx:id="nameLabel" text="Name" />
          </children>
       </HBox>
-      <HBox alignment="CENTER_LEFT" prefHeight="23.0" prefWidth="200.0">
+      <HBox alignment="CENTER_LEFT" prefHeight="21.0" prefWidth="130.0">
          <children>
                 <Label fx:id="phoneLabel" text="Phone" />
          </children>
       </HBox>
-      <HBox alignment="CENTER_RIGHT" prefHeight="21.0" prefWidth="150.0">
+      <HBox alignment="CENTER_RIGHT" prefHeight="21.0" prefWidth="45.0">
          <children>
                               <CheckBox fx:id="selectCheckBox" />
          </children>

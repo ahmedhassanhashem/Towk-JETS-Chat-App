@@ -18,7 +18,7 @@
    <top>
       <HBox alignment="CENTER_LEFT" spacing="50.0" style="-fx-background-color: white;" BorderPane.alignment="CENTER">
          <children>
-            <HBox alignment="CENTER_LEFT" prefHeight="83.0" prefWidth="221.0" spacing="20.0">
+            <HBox alignment="CENTER_LEFT" prefHeight="83.0" prefWidth="221.0" spacing="20.0" HBox.hgrow="ALWAYS">
                <children>
                   <ImageView fx:id="image" fitHeight="60.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -43,7 +43,7 @@
                   <Insets left="10.0" />
                </padding>
             </HBox>
-            <HBox alignment="CENTER_RIGHT" prefHeight="83.0" prefWidth="102.0">
+            <HBox alignment="CENTER_RIGHT" prefHeight="83.0" prefWidth="127.0" HBox.hgrow="ALWAYS">
                <children>
                   <ImageView fitHeight="26.0" fitWidth="30.0" onMouseClicked="#chatInfo" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -63,7 +63,7 @@
    </top>
    <bottom>
      <HBox alignment="CENTER" prefHeight="70.0" spacing="10.0" style="-fx-background-color: white;" BorderPane.alignment="TOP_LEFT">
-         <Button mnemonicParsing="false" onAction="#attach" style="-fx-background-color: white;">
+         <Button mnemonicParsing="false" onAction="#attach" prefHeight="37.0" prefWidth="51.0" style="-fx-background-color: white;">
             <graphic>
                <ImageView fitHeight="20" fitWidth="20">
                   <image>
@@ -84,7 +84,7 @@
                <TextField fx:id="text" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onAction="#textEnter" prefHeight="40.0" promptText="Type a message" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="5.0" />
             </children>
          </AnchorPane>
-         <ImageView fitHeight="20" fitWidth="20" onMouseClicked="#openFormattingDialog">
+         <ImageView fitHeight="25.0" fitWidth="24.0" onMouseClicked="#openFormattingDialog">
             <image>
                <Image url="@../images/written_2842191.png" />
             </image>
@@ -92,9 +92,14 @@
                <Insets left="10.0" />
             </HBox.margin>
          </ImageView>
-         <Button mnemonicParsing="false" onAction="#send" style="-fx-background-color: white;">
+         <ImageView fitHeight="28.0" fitWidth="28.0" onMouseClicked="#openEmojiDialog">
+            <image>
+               <Image url="@../images/smile.png" />
+            </image>
+         </ImageView>
+         <Button mnemonicParsing="false" onAction="#send" prefHeight="42.0" prefWidth="42.0" style="-fx-background-color: transparent;">
             <graphic>
-               <ImageView fitHeight="20" fitWidth="20">
+               <ImageView fitHeight="26.0" fitWidth="25.0">
                   <image>
                      <Image url="@../images/send.png" />
                   </image>
@@ -104,7 +109,7 @@
                </ImageView>
             </graphic>
             <HBox.margin>
-               <Insets right="10.0" />
+               <Insets />
             </HBox.margin>
          </Button>
          <padding>

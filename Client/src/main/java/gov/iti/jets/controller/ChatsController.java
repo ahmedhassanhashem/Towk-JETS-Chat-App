@@ -13,6 +13,7 @@ import java.rmi.server.UnicastRemoteObject;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -20,6 +21,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.MultipleSelectionModel;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
@@ -67,10 +69,13 @@ public class ChatsController {
 
     private Stage stage;
     ObservableList<UserDTO> contacts = FXCollections.observableArrayList();
+    private FilteredList<UserDTO> filteredContacts;
     @FXML
     private ListView<UserDTO> listView;
     @FXML
     private BorderPane borderPane;
+    @FXML
+    private TextField searchField;
     private UserDTO userDTO = new UserDTO();
     private UserChatDAOInterface userChatDAO;
     private ContactDAOInterface contactDAO;
@@ -151,7 +156,7 @@ public class ChatsController {
 
     public void chatScene(BorderPane chatScene) {
         contacts.clear();
-        listView.setItems(contacts);
+        //listView.setItems(contacts);
         listView.setSelectionModel(new NoSelectionModel<>());
 
         ObservableList<UserDTO> userDTOs = FXCollections.observableArrayList();
@@ -163,7 +168,7 @@ public class ChatsController {
         }catch(NullPointerException e){
             ExceptionUtility.alert();
         }
-
+        listView.setItems(filteredContacts);
         listView.setCellFactory(null);
         listView.setFixedCellSize(70);
         listView.setCellFactory(new Callback<ListView<UserDTO>, ListCell<UserDTO>>() {
@@ -359,7 +364,7 @@ public class ChatsController {
 
     public void contactScene(BorderPane contactScene) {
         contacts.clear();
-        listView.setItems(contacts);
+        //listView.setItems(contacts);
         listView.setSelectionModel(new NoSelectionModel<>());
 
         ObservableList<UserDTO> list = FXCollections.observableArrayList();
@@ -371,7 +376,7 @@ public class ChatsController {
         }catch(NullPointerException e){
             ExceptionUtility.alert();
         }
-
+        listView.setItems(filteredContacts);
         listView.setCellFactory(null);
         listView.setFixedCellSize(70);
         listView.setCellFactory(new Callback<ListView<UserDTO>, ListCell<UserDTO>>() {
@@ -586,7 +591,7 @@ public class ChatsController {
     }
     public void groupScene(BorderPane groupScene) {
         contacts.clear();
-        listView.setItems(contacts);
+        //listView.setItems(contacts);
         listView.setSelectionModel(new NoSelectionModel<>()); // Add this
 
         ObservableList<UserDTO> list = FXCollections.observableArrayList();
@@ -599,7 +604,7 @@ public class ChatsController {
         }catch(NullPointerException e){
             ExceptionUtility.alert();
         }
-
+        listView.setItems(filteredContacts);
         listView.setCellFactory(null);
         listView.setFixedCellSize(70);
         listView.setCellFactory(new Callback<ListView<UserDTO>, ListCell<UserDTO>>() {
@@ -767,6 +772,20 @@ public class ChatsController {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
+        filteredContacts = new FilteredList<>(contacts, contact -> true);
+        //listView.setItems(filteredContacts);
+        searchField.textProperty().addListener((observable, oldValue, newValue) -> {
+            filteredContacts.setPredicate(userDto -> {
+                if (newValue == null || newValue.isEmpty()) {
+                    return true;
+                }
+                
+                String lowerCaseFilter = newValue.toLowerCase();
+                String userName = userDto.getName().toLowerCase();
+                
+                return userName.contains(lowerCaseFilter);
+            });
+        });
     }
 
     public void setScheduledExecutorService(ScheduledExecutorService scheduledExecutorService) {

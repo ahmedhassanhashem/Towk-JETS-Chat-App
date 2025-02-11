@@ -6,6 +6,8 @@ import javafx.scene.text.TextFlow;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import org.jsoup.nodes.Node;
+import org.jsoup.nodes.TextNode;
 import org.jsoup.select.Elements;
 
 import java.util.regex.Matcher;
@@ -18,19 +20,18 @@ public class HtmlToTextFlowConverter {
         if (htmlContent == null || htmlContent.isEmpty()) {
             return textFlow;
         }
-
         try {
-            if (!htmlContent.contains("<html") && !htmlContent.contains("<body")) {
+           
+            if (!htmlContent.toLowerCase().contains("<html")) {
                 htmlContent = "<html><body>" + htmlContent + "</body></html>";
             }
 
             Document doc = Jsoup.parse(htmlContent);
-            Elements elements = doc.select("body > *");
-
-            for (Element element : elements) {
-                processElement(element, textFlow);
-            }
+            doc.outputSettings().prettyPrint(false); 
+            processElement(doc.body(), textFlow);
         } catch (Exception e) {
+            e.printStackTrace();
+            
             Text fallbackText = new Text(htmlContent.replaceAll("<[^>]*>", ""));
             textFlow.getChildren().add(fallbackText);
         }
@@ -39,15 +40,41 @@ public class HtmlToTextFlowConverter {
     }
 
     private static void processElement(Element element, TextFlow textFlow) {
-        String tagName = element.tagName();
-        String text = element.text();
+        if (element.childNodes().isEmpty()) {
+            String text = element.text();
 
-        if (text.isEmpty()) return;
+            if (!text.trim().isEmpty()) {
+                Text textNode = new Text(text);
+                String style = getStyleForElement(element);
+                if (!style.isEmpty()) {
+                    textNode.setStyle(style);
+                }
+                textFlow.getChildren().add(textNode);
+            }
+            return;
+        }
+    
+        for (Node node : element.childNodes()) {
+            if (node instanceof TextNode) {
+                String text = ((TextNode) node).text();
+                if (!text.trim().isEmpty()) {
+                    Text textNode = new Text(text);
+                    String style = getStyleForElement(element);
+                    if (!style.isEmpty()) {
+                        textNode.setStyle(style);
+                    }
+                    textFlow.getChildren().add(textNode);
+                }
+            } else if (node instanceof Element) {
+                processElement((Element) node, textFlow);
+            }
+        }
+    }
 
-        boolean hasBackground = element.attr("style").contains("background-color");
+    private static String getStyleForElement(Element element) {
         StringBuilder styleBuilder = new StringBuilder();
 
-        switch (tagName.toLowerCase()) {
+        switch (element.tagName().toLowerCase()) {
             case "b": case "strong":
                 styleBuilder.append("-fx-font-weight: bold;");
                 break;
@@ -69,37 +96,15 @@ public class HtmlToTextFlowConverter {
             case "h3":
                 styleBuilder.append("-fx-font-size: 18px; -fx-font-weight: bold;");
                 break;
-            case "ol": case "ul":
-                handleList(element, textFlow, tagName.equals("ol"));
-                return;
         }
 
+        
         String inlineStyle = element.attr("style");
         if (!inlineStyle.isEmpty()) {
             styleBuilder.append(convertCssToJavaFxStyle(inlineStyle));
         }
 
-        if (hasBackground) {
-            Label label = new Label(text);
-            label.setStyle(styleBuilder.toString() + "-fx-padding: 2 4; -fx-background-radius: 3;");
-            textFlow.getChildren().add(label);
-        } else {
-            Text textNode = new Text(text + " ");
-            if (!styleBuilder.toString().isEmpty()) {
-                textNode.setStyle(styleBuilder.toString());
-            }
-            textFlow.getChildren().add(textNode);
-        }
-    }
-
-    private static void handleList(Element listElement, TextFlow textFlow, boolean ordered) {
-        Elements items = listElement.select("li");
-        int counter = 1;
-        for (Element item : items) {
-            String prefix = ordered ? counter++ + ". " : "\u2022 ";
-            Text listItem = new Text(prefix + item.text() + "\n");
-            textFlow.getChildren().add(listItem);
-        }
+        return styleBuilder.toString();
     }
 
     private static String convertCssToJavaFxStyle(String cssStyle) {
@@ -137,10 +142,4 @@ public class HtmlToTextFlowConverter {
         }
         return javaFxStyle.toString();
     }
-
-    public static void applyStyledText(String htmlContent, TextFlow previewArea) {
-        TextFlow styledText = convertHtmlToTextFlow(htmlContent);
-        previewArea.getChildren().clear();
-        previewArea.getChildren().addAll(styledText.getChildren());
-    }
-} 
+}
