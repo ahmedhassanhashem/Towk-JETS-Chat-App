@@ -11,6 +11,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import gov.iti.jets.client.ClientInt;
 import gov.iti.jets.dto.UserDTO;
@@ -23,18 +25,18 @@ public class ChatDAO extends UnicastRemoteObject implements ChatDAOInterface {
     UserChatDAO userChatDAO = new UserChatDAO();
     MessageDAO messageDAO = new MessageDAO();
     Images images = new Images();
-    HashMap<Integer, ArrayList<ClientInt>> online;
+    ConcurrentHashMap<Integer, CopyOnWriteArrayList<ClientInt>> online;
 
     public ChatDAO() throws RemoteException {
         super();
-        online = new HashMap<>();
+        online = new ConcurrentHashMap<>();
         dm = DatabaseConnectionManager.getInstance();
     }
 
     @Override
     public void register(int userID, ClientInt clientRef) throws RemoteException {
 
-        online.computeIfAbsent(userID, k -> new ArrayList<>()).add(clientRef);
+        online.computeIfAbsent(userID, k -> new CopyOnWriteArrayList<>()).add(clientRef);
     }
 
     // Unregister a client
@@ -164,15 +166,21 @@ public class ChatDAO extends UnicastRemoteObject implements ChatDAOInterface {
                 for (int i : online.keySet()) {
                     if (checkIn(i, group.getUserID())) {
                         // System.out.println(i+" "+group.getUserID());
-                        online.get(i).forEach((e -> {
+                        List<ClientInt> clients = online.get(i);
+                        List<ClientInt> toRemove = new ArrayList<>();
+
+                        for (ClientInt client : clients) {
                             try {
-                                if(image !=null)group.setUserPicture(image);
-                                e.sendMessage(group);
+                                if (image != null) {
+                                    group.setUserPicture(image);
+                                }
+                                client.sendMessage(group);
                             } catch (RemoteException e1) {
-                                // TODO Auto-generated catch block
-                                // e1.printStackTrace();
+                                toRemove.add(client); 
                             }
-                        }));
+                        }
+                        
+                        clients.removeAll(toRemove);
                     }
                 }
             } catch (RemoteException e) {

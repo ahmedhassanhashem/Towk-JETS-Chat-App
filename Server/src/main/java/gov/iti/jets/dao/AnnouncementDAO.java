@@ -9,6 +9,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import gov.iti.jets.client.ClientInt;
 import gov.iti.jets.dto.AnnouncementDTO;
@@ -17,18 +19,18 @@ import javafx.collections.ObservableList;
 
 public class AnnouncementDAO extends UnicastRemoteObject implements AnnouncementDAOInterface {
 
-        HashMap<Integer,ArrayList<ClientInt>> online;
+        ConcurrentHashMap<Integer,CopyOnWriteArrayList<ClientInt>> online;
 
     public AnnouncementDAO() throws RemoteException {
         super();
-        online = new HashMap<>();
+        online = new ConcurrentHashMap<>();
         //TODO Auto-generated constructor stub
     }
 
     @Override
     public void register(int userID,ClientInt clientRef) throws RemoteException {
 
-        online.computeIfAbsent(userID, k -> new ArrayList<>()).add(clientRef);
+        online.computeIfAbsent(userID, k -> new CopyOnWriteArrayList<>()).add(clientRef);
     }
 
     // Unregister a client
@@ -65,14 +67,21 @@ public class AnnouncementDAO extends UnicastRemoteObject implements Announcement
                     announcement.setAnnouncementID(generatedKeys.getInt(1));
                 }
                 for(int id : online.keySet()){
-                    System.out.println(id);
-                    if(online.get(id)!= null ){
-                        
-                        for(ClientInt c:online.get(id)){
-                            System.out.println(c);
-                            c.sendMessage(announcement);
+                    List<ClientInt> clients = online.get(id);
+                    if (clients != null) {
+                        List<ClientInt> toRemove = new ArrayList<>();
+                
+                        for (ClientInt client : clients) {
+                            try {
+                                client.sendMessage(announcement);
+                            } catch (RemoteException e) {
+                                toRemove.add(client); 
+                            }
                         }
+                
+                        clients.removeAll(toRemove); 
                     }
+
                 }
                 return announcement;
             } else {

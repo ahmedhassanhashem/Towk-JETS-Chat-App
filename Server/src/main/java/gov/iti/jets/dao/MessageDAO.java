@@ -9,6 +9,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import javax.sql.rowset.RowSetProvider;
 import javax.sql.rowset.WebRowSet;
@@ -20,22 +22,22 @@ import gov.iti.jets.dto.NotificationDTO;
 public class MessageDAO extends UnicastRemoteObject implements MessageDAOInterface{
 
     DatabaseConnectionManager dm;
-    HashMap<Integer,ArrayList<ClientInt>> online;
-    HashMap<Integer,ArrayList<ClientInt>> onlineChatCard;
+    ConcurrentHashMap<Integer,CopyOnWriteArrayList<ClientInt>> online;
+    ConcurrentHashMap<Integer,CopyOnWriteArrayList<ClientInt>> onlineChatCard;
     NotificationDAO notificationDAO;
 
     public MessageDAO() throws RemoteException {
         super();
         dm = DatabaseConnectionManager.getInstance();
-        online = new HashMap<>();
-        onlineChatCard=new HashMap<>();
+        online = new ConcurrentHashMap<>();
+        onlineChatCard=new ConcurrentHashMap<>();
         // notificationDAO = new NotificationDAO();
 
     }
     @Override
     public void registerChat(int chatID,ClientInt clientRef) throws RemoteException {
 
-        onlineChatCard.computeIfAbsent(chatID, k -> new ArrayList<>()).add(clientRef);
+        onlineChatCard.computeIfAbsent(chatID, k -> new CopyOnWriteArrayList<>()).add(clientRef);
 
 
     }
@@ -60,7 +62,7 @@ public class MessageDAO extends UnicastRemoteObject implements MessageDAOInterfa
     @Override
     public void register(int chatID,ClientInt clientRef) throws RemoteException {
 
-        online.computeIfAbsent(chatID, k -> new ArrayList<>()).add(clientRef);
+        online.computeIfAbsent(chatID, k -> new CopyOnWriteArrayList<>()).add(clientRef);
 
     }
 

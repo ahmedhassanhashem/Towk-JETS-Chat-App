@@ -11,6 +11,8 @@ import java.sql.Types;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import gov.iti.jets.client.ClientInt;
 import gov.iti.jets.dto.Gender;
@@ -24,7 +26,8 @@ import javafx.scene.chart.PieChart;
 
 public class UserDAO extends UnicastRemoteObject implements UserDAOInterface {
 
-    HashMap<Integer,ArrayList<ClientInt>> online;
+    ConcurrentHashMap<Integer,CopyOnWriteArrayList<ClientInt>> online;
+    ConcurrentHashMap<Integer,CopyOnWriteArrayList<ClientInt>> online2;
 
     DatabaseConnectionManager meh;
     Images images = new Images();
@@ -33,14 +36,15 @@ public class UserDAO extends UnicastRemoteObject implements UserDAOInterface {
     public UserDAO() throws RemoteException {
         super();
         meh = DatabaseConnectionManager.getInstance();
-        online = new HashMap<>();
+        online = new ConcurrentHashMap<>();
+        online2 = new ConcurrentHashMap<>();
         // con = meh.getConnection();
     }
 
     @Override
     public void register(int userID,ClientInt clientRef) throws RemoteException {
 
-        online.computeIfAbsent(userID, k -> new ArrayList<>()).add(clientRef);
+        online.computeIfAbsent(userID, k -> new CopyOnWriteArrayList<>()).add(clientRef);
 
 
     }
@@ -59,6 +63,30 @@ public class UserDAO extends UnicastRemoteObject implements UserDAOInterface {
             }
         }
     }
+
+    @Override
+    public void registerwww(int userID,ClientInt clientRef) throws RemoteException {
+
+        online2.computeIfAbsent(userID, k -> new CopyOnWriteArrayList<>()).add(clientRef);
+
+
+    }
+
+    // Unregister a client
+    @Override
+    public void unRegisterwww(int userID,ClientInt clientRef) throws RemoteException {
+
+        if (online2.containsKey(userID)) {
+            List<ClientInt> clientList = online2.get(userID);
+            
+            clientList.remove(clientRef);
+            
+            if (clientList.isEmpty()) {
+                online2.remove(userID);
+            }
+        }
+    }
+
 
     @Override
     public UserDTO create(UserDTO user) throws RemoteException {
@@ -124,14 +152,19 @@ public class UserDAO extends UnicastRemoteObject implements UserDAOInterface {
                 ret.setUserStatus(UserStatus.ONLINE);
                 for(int i : online.keySet()){
                     if(checkFriend(i,ret.getUserID())){
-                        online.get(i).forEach((e ->{
+                        List<ClientInt> clients = online.get(i);
+                        List<ClientInt> toRemove = new ArrayList<>();
+
+                        for (ClientInt client : clients) {
                             try {
-                                e.sendMessage(ret);
+                                client.sendMessage(ret);
                             } catch (RemoteException e1) {
-                                // TODO Auto-generated catch block
+                                toRemove.add(client);
                                 e1.printStackTrace();
                             }
-                        }));
+                        }
+                
+                        clients.removeAll(toRemove);
                     }
                 }
             }
@@ -148,14 +181,18 @@ public class UserDAO extends UnicastRemoteObject implements UserDAOInterface {
     public void propagateOffline(UserDTO id) throws RemoteException{
         for(int i : online.keySet()){
             if(checkFriend(i,id.getUserID())){
-                online.get(i).forEach((e ->{
+                List<ClientInt> clients = online.get(i);
+                List<ClientInt> toRemove = new ArrayList<>();
+                for (ClientInt client : clients) {
                     try {
-                        e.sendMessage(id);
+                        client.sendMessage(id);
                     } catch (RemoteException e1) {
-                        // TODO Auto-generated catch block
-                        e1.printStackTrace();
+                        toRemove.add(client);
+                        // e1.printStackTrace();
                     }
-                }));
+                }
+                
+                clients.removeAll(toRemove);
             }
         }
     }
@@ -271,14 +308,36 @@ public class UserDAO extends UnicastRemoteObject implements UserDAOInterface {
                     ret.setUserID(userID);
                     for(int i : online.keySet()){
                         if(checkFriend(i,userID)){
-                            online.get(i).forEach((e ->{
+                            List<ClientInt> clients = online.get(i);
+                            List<ClientInt> toRemove = new ArrayList<>();
+
+                            for (ClientInt client : clients) {
                                 try {
-                                    e.sendMessage(ret);
+                                    client.sendMessage(ret);
                                 } catch (RemoteException e1) {
-                                    // TODO Auto-generated catch block
+                                    toRemove.add(client); 
                                     e1.printStackTrace();
                                 }
-                            }));
+                            }
+                    
+                            clients.removeAll(toRemove);
+                        }
+                    }
+                    for(int i : online2.keySet()){
+                        if(checkFriend(i,userID)){
+                            List<ClientInt> clients = online2.get(i);
+                            List<ClientInt> toRemove = new ArrayList<>();
+
+                            for (ClientInt client : clients) {
+                                try {
+                                    client.sendMessage(ret);
+                                } catch (RemoteException e1) {
+                                    toRemove.add(client); 
+                                    e1.printStackTrace();
+                                }
+                            }
+                    
+                            clients.removeAll(toRemove);
                         }
                     }
                 
@@ -335,14 +394,34 @@ public class UserDAO extends UnicastRemoteObject implements UserDAOInterface {
                 ret.setUserID(userID);
                 for(int i : online.keySet()){
                     if(checkFriend(i,userID)){
-                        online.get(i).forEach((e ->{
+                        List<ClientInt> clients = online.get(i);
+                        List<ClientInt> toRemove = new ArrayList<>();
+                        for (ClientInt client : clients) {
                             try {
-                                e.sendMessage(ret);
+                                client.sendMessage(ret);
                             } catch (RemoteException e1) {
-                                // TODO Auto-generated catch block
+                                toRemove.add(client); 
                                 e1.printStackTrace();
                             }
-                        }));
+                        }
+                
+                        clients.removeAll(toRemove);
+                    }
+                }
+                for(int i : online2.keySet()){
+                    if(checkFriend(i,userID)){
+                        List<ClientInt> clients = online2.get(i);
+                        List<ClientInt> toRemove = new ArrayList<>();
+                        for (ClientInt client : clients) {
+                            try {
+                                client.sendMessage(ret);
+                            } catch (RemoteException e1) {
+                                toRemove.add(client); 
+                                e1.printStackTrace();
+                            }
+                        }
+                
+                        clients.removeAll(toRemove);
                     }
                 }
             return stmnt.executeUpdate();
