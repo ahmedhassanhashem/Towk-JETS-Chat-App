@@ -209,6 +209,8 @@ public class MessageChatController {
 
     @FXML
     private void attach(ActionEvent event) {
+        if(attachement != null)
+        attachMe.getChildren().removeFirst();
         FileChooser fileChooser = new FileChooser();
         File file = fileChooser.showOpenDialog(stage);
         if (file != null) {
