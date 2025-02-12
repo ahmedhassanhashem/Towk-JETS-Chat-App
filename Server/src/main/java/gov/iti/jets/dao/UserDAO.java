@@ -271,7 +271,7 @@ public class UserDAO extends UnicastRemoteObject implements UserDAOInterface {
             // }
             if (re.getString("userPicture") != null && re.getString("userPicture").length() > 0) {
                 user.setUserPicture(images.downloadPP(re.getString("userPicture")));
-                System.out.println(user.getUserPicture().length);
+                // System.out.println(user.getUserPicture().length);
 
             } else {
                 // System.out.println("why");
@@ -575,7 +575,7 @@ public class UserDAO extends UnicastRemoteObject implements UserDAOInterface {
             String picture = re.getString("userPicture");
             if (picture != null && picture.length() > 0) {
                 user.setUserPicture(images.downloadPP(picture));
-                System.out.println(user.getUserPicture().length);
+                // System.out.println(user.getUserPicture().length);
             } else {
                 user.setUserPicture(null);
             }
