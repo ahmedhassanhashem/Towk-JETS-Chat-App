@@ -69,6 +69,8 @@ public class ServerController {
         try {
             Stage stage2 = new Stage();
             int width = 640, height = 480;
+            stage2.setMinHeight(height);
+            stage2.setMaxWidth(width);
             FXMLLoader loginLoader = new FXMLLoader(getClass().getResource("/screens/Login.fxml"));
             GridPane rootLogin = loginLoader.load();
             LoginController loginController = loginLoader.getController();
@@ -281,8 +283,8 @@ public class ServerController {
         System.setProperty("sun.rmi.transport.tcp.readTimeout", "5000");
         System.setProperty("sun.rmi.transport.tcp.responseTimeout", "5000");
         System.setProperty("sun.rmi.transport.tcp.threadDaemon", "true");
-        System.setProperty("sun.rmi.dgc.client.gcInterval", "5000");
-        System.setProperty("sun.rmi.dgc.server.gcInterval", "5000");
+        System.setProperty("sun.rmi.dgc.client.gcInterval", "30000");
+        System.setProperty("sun.rmi.dgc.server.gcInterval", "30000");
         UserDAOInterface userDAO = new UserDAO();
         reg.rebind("userDAO", userDAO);
 

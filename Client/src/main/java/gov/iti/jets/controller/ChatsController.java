@@ -87,8 +87,10 @@ public class ChatsController {
     private ClientImplContact clientContact;
     private ClientImplContact clientContactChat;
     private ClientImplChat clientChat;
+    private ClientImplChat clientChat2;
     private ArrayList<ClientImplContact> arrClientContact = new ArrayList<>();
     private ArrayList<ClientImplChat> arrClientChat = new ArrayList<>();
+    private ArrayList<ClientImplChat> arrClientChat2 = new ArrayList<>();
 
     public void setStage(Stage s) {
         stage = s;
@@ -263,6 +265,7 @@ public class ChatsController {
                                                 for(ClientImplChat c :arrClientChat){
                                                     try {
                                                         messageDAO.unRegisterChat(c.chatID, c);
+                                                        userDAO.unRegisterwww(c.get(), c);
                                                         try {
                                                             
                                                             UnicastRemoteObject.unexportObject(c, true);
@@ -277,7 +280,8 @@ public class ChatsController {
                                             
                                         // }
                                     });
-                                    stage.setOnCloseRequest(e->{
+                                    Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+                                    // stage.setOnCloseRequest(e->{
                                         if(client !=null){
 
                                             try {
@@ -305,6 +309,7 @@ public class ChatsController {
                                         for(ClientImplChat c :arrClientChat){
                                             try {
                                                 messageDAO.unRegisterChat(c.chatID, c);
+                                                userDAO.unRegisterwww(c.get(), c);
                                                 try {
                                                     
                                                     UnicastRemoteObject.unexportObject(c, true);
@@ -316,7 +321,23 @@ public class ChatsController {
                                                 // e1.printStackTrace();
                                             }
                                         }
-                                    });
+                                        
+                                        for(ClientImplChat c :arrClientChat2){
+                                            try {
+                                                userDAO.unRegisterwww(c.get(), c);
+                                                try {
+                                                    
+                                                    UnicastRemoteObject.unexportObject(c, true);
+                                                } catch (Exception ea) {
+                                                    // TODO: handle exception
+                                                }
+                                            } catch (RemoteException e1) {
+                                                // TODO Auto-generated catch block
+                                                // e1.printStackTrace();
+                                            }
+                                        }
+                                    // });
+                                }));
                                 } catch (IOException e) {
                                     e.printStackTrace();
                                 }
@@ -345,6 +366,11 @@ public class ChatsController {
                                 clientChat = new ClientImplChat(chatId, chatCardController);
                                 arrClientChat.add(clientChat);
                                 messageDAO.registerChat(chatId, clientChat);
+                                // System.out.println(user.getUserID());
+                                clientChat2 = new ClientImplChat(user.getUserID(), chatCardController);
+                                userDAO.registerwww(user.getUserID(), clientChat2);
+                                arrClientChat.add(clientChat2);
+                                arrClientChat2.add(clientChat2);
                             } catch (RemoteException e) {
                                 // TODO Auto-generated catch block
                                 e.printStackTrace();
@@ -502,7 +528,8 @@ public class ChatsController {
 
                                         // }
                                     });
-                                    stage.setOnCloseRequest(e -> {
+                                    Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+                                    // stage.setOnCloseRequest(e -> {
                                         if (client != null) {
                                             // unloadChat(entry.getKey(), entry.getValue());
                                             try {
@@ -545,7 +572,8 @@ public class ChatsController {
                                             }
                                         }
 
-                                    });
+                                    // });
+                                }));
 
                                 } catch (IOException e) {
                                     e.printStackTrace();
@@ -679,7 +707,10 @@ public class ChatsController {
                                             
                                         // }
                                     });
-                                    stage.setOnCloseRequest(e->{
+                                    Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+                                    // stage.setOnCloseRequest(e->{
+
+
                                         if(client !=null){
                                             // unloadChat(entry.getKey(), entry.getValue());
                                             try {
@@ -704,7 +735,8 @@ public class ChatsController {
                                                 // e1.printStackTrace();
                                             }
                                         }
-                                    });
+                                    // });
+                                }));
                                 } catch (IOException e) {
                                     e.printStackTrace();
                                 }

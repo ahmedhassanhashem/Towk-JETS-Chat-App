@@ -32,6 +32,8 @@ public class App extends Application {
         // stage.setTitle("Browsar");
 
         int width = 640, height = 480;
+        stage.setMinHeight(height);
+        stage.setMinWidth(width);
         FXMLLoader dashLoader = new FXMLLoader(getClass().getResource("/screens/entreeBase.fxml"));
         GridPane dashBoard = dashLoader.load();
         entreeController dashController = dashLoader.getController();

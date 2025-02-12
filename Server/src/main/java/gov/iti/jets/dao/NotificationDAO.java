@@ -9,6 +9,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import gov.iti.jets.client.ClientInt;
 import gov.iti.jets.dto.AnnouncementDTO;
@@ -23,12 +25,12 @@ import javafx.collections.ObservableList;
 
 public class NotificationDAO extends UnicastRemoteObject implements NotificationDAOInterface {
     DatabaseConnectionManager dm;
-    HashMap<Integer,ArrayList<ClientInt>> online;
+    ConcurrentHashMap<Integer,CopyOnWriteArrayList<ClientInt>> online;
 
     public NotificationDAO() throws RemoteException {
         super();
         dm = DatabaseConnectionManager.getInstance();
-        online = new HashMap<>();
+        online = new ConcurrentHashMap<>();
 
         // TODO Auto-generated constructor stub
     }
@@ -36,7 +38,7 @@ public class NotificationDAO extends UnicastRemoteObject implements Notification
     @Override
     public void register(int userID,ClientInt clientRef) throws RemoteException {
 
-        online.computeIfAbsent(userID, k -> new ArrayList<>()).add(clientRef);
+        online.computeIfAbsent(userID, k -> new CopyOnWriteArrayList<>()).add(clientRef);
         // System.out.println(online);
     }
 

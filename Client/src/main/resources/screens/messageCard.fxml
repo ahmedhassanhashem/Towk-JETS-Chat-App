@@ -24,7 +24,7 @@
             <TextFlow fx:id="messageTextFlow" maxWidth="300" styleClass="message-textflow">
                <Text fx:id="messageText" text="Sample message text" />
             </TextFlow>
-            <HBox>
+            <HBox minWidth="80">
                <children>
                   <AnchorPane HBox.hgrow="ALWAYS">
                      <children>
