@@ -20,6 +20,7 @@ import gov.iti.jets.dto.UserDTO;
 import gov.iti.jets.dto.UserMode;
 import jakarta.xml.bind.JAXBContext;
 import jakarta.xml.bind.JAXBException;
+import jakarta.xml.bind.Marshaller;
 import jakarta.xml.bind.Unmarshaller;
 import javafx.fxml.FXML;
 import javafx.scene.control.ComboBox;
@@ -81,9 +82,12 @@ public class ProfileSettingsController {
                     imageBytes = imageToByteArray(file);
                     userDTO.setUserPicture(imageBytes);
                     userDAO.updatePicture(userDTO.getUserID(),file.getName() ,imageBytes);
-                    File picfile = new File("C:/.chatLogged/user.pic");
+                String userHome = System.getProperty("user.home");
+                File picfile = new File(userHome + "/.chatLogged/user.pic");
 
-                                    if(!picfile.exists()){
+                    // File picfile = new File("C:/.chatLogged/user.pic");
+
+                if(!picfile.exists()){
                     picfile.createNewFile();
                 }
                 FileOutputStream fOut = new FileOutputStream(picfile);
@@ -95,7 +99,38 @@ public class ProfileSettingsController {
                 
             }
             rowsUpdated = userDAO.update(userDTO.getUserID(), nmae, bioField, userModeList);
-            if(nmae != null)userDTO.setName(nmae);
+            if(nmae != null){
+                                        try {
+                JAXBContext context = JAXBContext.newInstance(UserDTO.class);
+                Marshaller marshaller = context.createMarshaller(); 
+                
+                marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE); 
+                
+                
+                userDTO.setName(nmae);
+                String userHome = System.getProperty("user.home");
+                // File XMLfile = new File(userHome + "/.chatLogged/user.xml");
+                File XMLfile = new File(userHome + "/.chatLogged/user.xml");
+                
+                File parentDir = XMLfile.getParentFile();
+                if (!parentDir.exists()) {
+                    parentDir.mkdirs();
+                }
+                if(!XMLfile.exists())
+                {
+                    XMLfile.createNewFile();
+                }
+
+                
+                marshaller.marshal(userDTO, XMLfile); 
+            } catch (JAXBException ex) {
+                ex.printStackTrace();
+            } catch (IOException e) {
+                            // TODO Auto-generated catch block
+                            e.printStackTrace();
+                        }
+                    }
+            
         } catch (RemoteException  e) {
             // TODO Auto-generated catch block
             e.printStackTrace();

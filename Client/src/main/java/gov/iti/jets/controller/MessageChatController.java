@@ -464,6 +464,8 @@ attachMe.getChildren().addFirst(hbox);
     @FXML
     private void send(ActionEvent event) {
         System.out.println("Starting Send method");
+        if (text.getText().trim().isEmpty() && attachement == null)
+        return;
         try {
             boolean isBlocked = contactDAO.isContactBlocked(userDTO.getPhone(), contactdto.getPhone());
             boolean isBlocker = contactDAO.isUserBlocker(userDTO.getPhone(), contactdto.getPhone());
