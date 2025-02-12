@@ -68,6 +68,8 @@ public class AccountSettingsController {
             try {
                 Stage stage1 = new Stage();
                 int width = 640, height = 480;
+                stage1.setMinHeight(height);
+                stage1.setMaxWidth(width);
                 FXMLLoader dashLoader = new FXMLLoader(getClass().getResource("/screens/entreeBase.fxml"));
                 GridPane dashBoard = dashLoader.load();
                 entreeController dashController = dashLoader.getController();
