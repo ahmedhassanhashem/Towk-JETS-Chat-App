@@ -124,7 +124,7 @@ public class MessageCardController {
                 messageTextContainerV.getChildren().remove(1, messageTextContainerV.getChildren().size());
             }
 
-            hyperlink.wrappingWidthProperty().bind(messageTextFlow.widthProperty());
+            // hyperlink.wrappingWidthProperty().bind(messageTextFlow.widthProperty());
             messageTextContainerV.getChildren().add(hyperlink);
 
         } else {
