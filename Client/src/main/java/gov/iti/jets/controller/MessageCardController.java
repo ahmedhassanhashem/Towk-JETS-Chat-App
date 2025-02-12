@@ -33,6 +33,14 @@ public class MessageCardController {
 
     }
 
+    public VBox getMessageContainer() {
+        return messageContainer;
+    }
+    
+    public HBox getMessageContainerr() {
+        return messageContainerr;
+    }
+
         @FXML
     private ImageView seen;
 
@@ -124,6 +132,8 @@ public class MessageCardController {
                 messageTextContainerV.getChildren().remove(1, messageTextContainerV.getChildren().size());
             }
         }
+        messageContainer.getStyleClass().clear();
+        messageContainerr.getStyleClass().clear();
         if (isSender) {
             // nameLabel.setVisible(false);
             messageContainer.getStyleClass().add("sender-message");

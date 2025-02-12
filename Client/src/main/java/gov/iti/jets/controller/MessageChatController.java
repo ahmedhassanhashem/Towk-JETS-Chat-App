@@ -408,6 +408,8 @@ public class MessageChatController {
                                 }
                             }
                             try {
+                                messageCardController.getMessageContainer().getStyleClass().clear();
+                                messageCardController.getMessageContainerr().getStyleClass().clear();
                                 notificationDAO.delete(userDTO.getUserID(), chat.getMesssageID());
                                 messageCardController.setSeen(notificationDAO.isSeen(chat.getMesssageID()));
                                 messageCardController.setMessageData(
@@ -415,7 +417,7 @@ public class MessageChatController {
                                         chat.getMessageContent(),
                                         attachementDAO.getAttachmentTitle(chat.getAttachmentID()),
                                         chat.getMessageDate().toString(),
-                                        chat.getUserID() != user.getUserID(),
+                                        chat.getUserID() == user.getUserID(),
                                         chat.getAttachmentID() != 0);
                             } catch (RemoteException e) {
                                 e.printStackTrace();
