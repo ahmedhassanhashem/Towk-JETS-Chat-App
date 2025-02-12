@@ -7,14 +7,39 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
 
-public class Images {
+import gov.iti.jets.config.RMIConfig;
+import jakarta.xml.bind.JAXBContext;
+import jakarta.xml.bind.JAXBException;
+import jakarta.xml.bind.Unmarshaller;
 
+public class Images {
+    String ip;
+    int port;
+    public Images(){
+                RMIConfig p = null;
+                try { 
+            InputStream inputStream = getClass().getResourceAsStream("/rmi.xml");
+            JAXBContext context = JAXBContext.newInstance(RMIConfig.class);
+            Unmarshaller unmarshaller = context.createUnmarshaller();
+            p = (RMIConfig) unmarshaller.unmarshal(inputStream);
+            inputStream.close();
+            // System.out.println(p.getIp() +" " + p.getPort());
+        } catch (JAXBException ex) {
+            ex.printStackTrace();
+        } catch (IOException e1) {
+            // TODO Auto-generated catch block
+            e1.printStackTrace();
+        }
+
+        ip =p.getIp();
+        port = 3331;
+    }
     public byte[] downloadPP(String fileName) {
         Socket s;
         InputStream sIn;
         OutputStream sOut;
         try {
-            s = new Socket("", 3331);
+            s = new Socket(ip, port);
             sIn = s.getInputStream();
             sOut = s.getOutputStream();
         } catch (IOException e) {
@@ -51,7 +76,7 @@ public class Images {
         InputStream sIn;
         OutputStream sOut;
         try {
-            s = new Socket("", 3331);
+            s = new Socket(ip, port);
             sIn = s.getInputStream();
             sOut = s.getOutputStream();
         } catch (IOException e) {
@@ -84,7 +109,7 @@ public class Images {
         InputStream sIn;
         OutputStream sOut;
         try {
-            s = new Socket("", 3331);
+            s = new Socket(ip, port);
             sIn = s.getInputStream();
             sOut = s.getOutputStream();
         } catch (IOException e) {
@@ -116,7 +141,7 @@ public class Images {
             InputStream sIn;
             OutputStream sOut;
             try {
-                s = new Socket("", 3331);
+                s = new Socket(ip, port);
                 sIn = s.getInputStream();
                 sOut = s.getOutputStream();
             } catch (IOException e) {
