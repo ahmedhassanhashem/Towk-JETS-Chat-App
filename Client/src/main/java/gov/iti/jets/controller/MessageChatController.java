@@ -46,9 +46,12 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
@@ -60,6 +63,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -110,7 +114,8 @@ public class MessageChatController {
     @FXML
     private ImageView image;
 
-
+    @FXML
+    private VBox attachMe;
 
     @FXML
     private Label name;
@@ -216,6 +221,30 @@ public class MessageChatController {
                 String type = Files.probeContentType(Paths.get(URLEncoder.encode(file.toURI().toString(), "UTF-8")));
                 attachementDTOCreated.setAttachmentType(type);
                 attachement = attachementDAO.createAttachment(attachementDTOCreated);
+Label fileLabel = new Label(fileName);
+Button removeButton = new Button("X");
+removeButton.setOnAction(e -> {
+    
+    attachMe.getChildren().removeFirst();
+    attachement=null;
+});
+removeButton.setStyle("-fx-background-color: red; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 2 6;");
+// fileLabel.setStyle("-fx-text-fill: white; -fx-font-weight: bold;");
+fileLabel.setStyle("-fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 5 10;");
+HBox hbox = new HBox(fileLabel, removeButton);
+hbox.setSpacing(10);
+hbox.setPadding(new Insets(5, 10, 5, 10));
+hbox.setAlignment(Pos.CENTER_LEFT);
+hbox.setStyle("-fx-background-color: #0073e6; -fx-background-radius: 8; -fx-padding: 5 10;");
+
+
+Rectangle clip = new Rectangle();
+clip.setArcWidth(16);
+clip.setArcHeight(16);
+clip.widthProperty().bind(hbox.widthProperty());
+clip.heightProperty().bind(hbox.heightProperty());
+hbox.setClip(clip);
+attachMe.getChildren().addFirst(hbox);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -280,6 +309,7 @@ public class MessageChatController {
         if (attachement != null) {
             msg.setAttachmentID(attachement.getAttachmentID());
             images.uploadAttachment(attachement.getAttachmentTitle(), upload);
+            attachMe.getChildren().removeFirst();
         }
         try {
             messageDAO.create(msg);

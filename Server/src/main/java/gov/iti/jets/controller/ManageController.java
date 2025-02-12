@@ -84,7 +84,7 @@ public class ManageController {
             reg = LocateRegistry.createRegistry(port);
             System.setProperty("sun.rmi.transport.tcp.connectionPool", "true"); 
             System.setProperty("sun.rmi.transport.connectionTimeout", "5000"); 
-            System.setProperty("sun.rmi.transport.tcp.maxConnectionThreads", "50"); 
+            System.setProperty("sun.rmi.transport.tcp.maxConnectionThreads", "100"); 
             
             reg.rebind("userDAO", userDAO);
 
