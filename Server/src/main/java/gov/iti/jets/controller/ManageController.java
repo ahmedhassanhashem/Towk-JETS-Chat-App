@@ -89,6 +89,8 @@ public class ManageController {
         String ip = p.getIp();
         int port = p.getPort();
         try {
+        System.setProperty("java.rmi.server.hostname", ip); 
+
             reg = LocateRegistry.createRegistry(port);
             System.setProperty("sun.rmi.transport.tcp.connectionPool", "true"); 
             System.setProperty("sun.rmi.transport.connectionTimeout", "5000"); 

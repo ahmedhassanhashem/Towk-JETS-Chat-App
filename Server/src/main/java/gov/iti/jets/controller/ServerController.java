@@ -273,8 +273,9 @@ public class ServerController {
         } catch (JAXBException ex) {
             System.out.println(ex.getMessage());
         }
-
+        
         String ip = p.getIp();
+        System.setProperty("java.rmi.server.hostname", ip); 
         int port = p.getPort();
         reg = LocateRegistry.createRegistry(port);
         System.setProperty("sun.rmi.transport.tcp.connectionPool", "true");
