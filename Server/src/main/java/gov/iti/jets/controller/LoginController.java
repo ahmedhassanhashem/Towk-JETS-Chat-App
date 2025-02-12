@@ -81,7 +81,7 @@ public class LoginController {
         if(user != null){
             try {
                  int ret = userDao.updateFirstLogin(user.getUserID());
-                 int width = 640,height = 480;
+                 int width = 750,height = 500;
                  if(ret ==0){
                      FXMLLoader serveLoader= new FXMLLoader(getClass().getResource("/screens/Server.fxml"));
                      GridPane server = serveLoader.load();
