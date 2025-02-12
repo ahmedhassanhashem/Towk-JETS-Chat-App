@@ -69,6 +69,8 @@ public class ServerController {
         try {
             Stage stage2 = new Stage();
             int width = 640, height = 480;
+            stage2.setMinHeight(height);
+            stage2.setMaxWidth(width);
             FXMLLoader loginLoader = new FXMLLoader(getClass().getResource("/screens/Login.fxml"));
             GridPane rootLogin = loginLoader.load();
             LoginController loginController = loginLoader.getController();

@@ -21,7 +21,8 @@ public class App extends Application {
 
         int width = 640,height = 480;
 
-
+        stage.setMinHeight(height);
+        stage.setMaxWidth(width);
         FXMLLoader loginLoader = new FXMLLoader(getClass().getResource("/screens/Login.fxml"));
 		GridPane rootLogin = loginLoader.load();
         LoginController loginController = loginLoader.getController();
