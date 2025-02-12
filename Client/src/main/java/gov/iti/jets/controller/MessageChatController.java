@@ -255,6 +255,8 @@ attachMe.getChildren().addFirst(hbox);
     private void textEnter(ActionEvent event) {
         // Similar to send action; you could combine these if needed.
         System.out.println("Starting textEnter method");
+        if (text.getText().trim().isEmpty() && attachement == null)
+        return;
         try {
             boolean isBlocked = contactDAO.isContactBlocked(userDTO.getPhone(), contactdto.getPhone());
             boolean isBlocker = contactDAO.isUserBlocker(userDTO.getPhone(), contactdto.getPhone());
@@ -299,8 +301,7 @@ attachMe.getChildren().addFirst(hbox);
         } else {
             msgContent = "<html><body><p>" + text.getText().replace("\n", "<br>") + "</p></body></html>";
         }
-        if (msgContent.trim().isEmpty() && attachement == null)
-            return;
+
         MessageDTO msg = new MessageDTO();
         msg.setMessageContent(msgContent);
         msg.setChatID(chatID);
